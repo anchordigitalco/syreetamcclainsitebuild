@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dr. Syreeta McClain — Contact Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DR. SYREETA McCLAIN — DIRECTION: THE CONTACT SHEET
+   Every piece of content, text included, lives inside a frame.
+   Frames are deliberately unequal. Inequality is the hierarchy.
+   ============================================================ */
+
+:root{
+  /* Brand — exact values, no substitutions */
+  --obsidian:#1A1613;
+  --slate:#474440;
+  --gold:#AF8C5C;
+  --cashmere:#D1C7BD;
+  --porcelain:#E7E2DD;
+
+  --display:'Fraunces', Georgia, serif;
+  --sans:'Montserrat', 'Helvetica Neue', sans-serif;
+
+  /* Spacing tokens — intentional, reused everywhere */
+  --gutter:22px;
+  --stack:clamp(52px,6.5vw,96px);
+  --index-row:clamp(40px,4.4vw,58px);
+  --pad-lg:clamp(26px,3.4vw,52px);
+  --pad-md:clamp(22px,2.4vw,34px);
+  --pad-sm:clamp(18px,1.9vw,26px);
+
+  --rule:rgba(209,199,189,.25);   /* frame border — cashmere @25% */
+  --cap:rgba(209,199,189,.70);    /* caption — cashmere @70% */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--cashmere);
+  background-color:var(--obsidian);
+  /* Layered radial gradients — obsidian ground is never flat */
+  background-image:
+    radial-gradient(1100px 780px at 16% 4%,  rgba(71,68,64,.60), transparent 62%),
+    radial-gradient(900px 720px at 92% 26%,  rgba(175,140,92,.11), transparent 60%),
+    radial-gradient(1000px 820px at 4% 58%,  rgba(71,68,64,.42), transparent 62%),
+    radial-gradient(1200px 900px at 78% 88%, rgba(71,68,64,.46), transparent 64%);
+}
+
+/* Grain — SVG noise filter, fixed above the ground, below content */
+.grain{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.sheet{position:relative; z-index:1; max-width:1340px; margin:0 auto; padding:clamp(30px,5vw,68px) clamp(20px,4vw,54px) clamp(38px,5vw,62px);}
+
+/* ---------- GRID ---------- */
+/* Mobile first: one column, frames full width, heights preserved */
+.grid{display:grid; grid-template-columns:1fr; gap:var(--stack) var(--gutter); align-items:start;}
+.band{margin-bottom:var(--stack)}
+.band--index .grid{row-gap:var(--index-row)}
+.cell{min-width:0}
+
+/* ---------- FRAME ANATOMY — identical on every frame ---------- */
+.frame{
+  position:relative;
+  border:1px solid var(--rule);
+  background:transparent;
+  transition:border-color 240ms cubic-bezier(.22,.61,.36,1);
+}
+.fnum{
+  position:absolute; top:11px; left:13px; z-index:3;
+  font-family:var(--sans); font-size:9px; font-weight:600;
+  letter-spacing:.2em; color:var(--gold);
+  transition:color 240ms cubic-bezier(.22,.61,.36,1);
+}
+.cap{
+  display:block; margin-top:11px;
+  font-family:var(--sans); font-size:9px; font-weight:500;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--cap); text-align:left;
+}
+figure{margin:0}
+
+/* Hover — border to full gold, number brightens. Nothing moves. */
+.frame:hover{border-color:var(--gold)}
+.frame:hover .fnum{color:var(--porcelain)}
+
+/* ---------- PHOTOGRAPHY ---------- */
+/* isolation contains the multiply blend to the image beneath it.
+   No ancestor carries transform / opacity / filter, so nothing traps it. */
+.frame--photo{overflow:hidden; background:var(--obsidian); isolation:isolate;}
+.frame--photo img{width:100%; height:100%; object-fit:cover; display:block;}
+.tint{position:absolute; inset:0; background:linear-gradient(168deg,var(--slate),var(--gold)); mix-blend-mode:multiply; opacity:.44;}
+.veil{position:absolute; inset:0;
+  background:
+    linear-gradient(to top, rgba(26,22,19,.70) 0%, rgba(26,22,19,0) 54%),
+    linear-gradient(to bottom, rgba(26,22,19,.58) 0%, rgba(26,22,19,0) 24%);
+}
+/* Vertical ratios only — never cropped to a wide cinematic frame */
+.r-hero{aspect-ratio:2/3}      /* source 3925x5887 — zero crop */
+.r-seated{aspect-ratio:7/10}   /* source 4267x6198 */
+.r-athletic{aspect-ratio:5/8}  /* source 2633x3942 */
+
+/* ---------- MASTHEAD (beside frame 001, not overlaid) ---------- */
+.masthead{padding-top:6px}
+.submark-plate{background:#1A1613; display:inline-block; padding:14px 18px; margin-bottom:26px;}
+.submark-plate img{display:block; width:132px; height:auto;}
+.name{
+  margin:0; font-family:var(--display);
+  font-size:clamp(46px,7.4vw,92px); line-height:.94;
+  letter-spacing:-.03em; color:var(--porcelain);
+  font-variation-settings:'opsz' 144,'wght' 300,'SOFT' 0,'WONK' 0;
+}
+
+/* ---------- TEXT FRAMES — same border, number, caption as photos ---------- */
+.frame--text{padding:var(--pad-md); padding-top:max(var(--pad-md),38px)}
+.frame--text.pad-lg{padding:var(--pad-lg); padding-top:max(var(--pad-lg),38px)}
+
+.eyebrow{
+  margin:0 0 20px; font-size:9px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--cap);
+}
+.kicker{
+  margin:0 0 14px; font-size:9px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+}
+.tagline{
+  margin:0; font-family:var(--display);
+  font-size:clamp(29px,3.5vw,46px); line-height:1.06;
+  letter-spacing:-.025em; color:var(--porcelain);
+  font-variation-settings:'opsz' 96,'wght' 300,'SOFT' 0,'WONK' 0;
+}
+.bio{margin:0; font-size:15px; font-weight:300; line-height:1.8; color:var(--cashmere);}
+.bio + .bio{margin-top:22px}
+
+.role{margin:0 0 24px; font-size:12px; font-weight:400; letter-spacing:.04em; color:var(--cap);}
+.lede{
+  margin:0 0 26px; font-family:var(--display);
+  font-size:clamp(20px,1.75vw,24px); line-height:1.34;
+  letter-spacing:-.015em; color:var(--porcelain);
+  font-variation-settings:'opsz' 48,'wght' 400,'SOFT' 20,'WONK' 0;
+}
+.body{margin:0; font-size:14px; font-weight:300; line-height:1.8; color:var(--cashmere);}
+.body + .body{margin-top:18px}
+
+/* Micro link — hairline underline, no ghost buttons anywhere */
+.microlink{
+  display:inline-block; margin-top:28px;
+  font-size:9px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); text-decoration:none;
+  border-bottom:1px solid rgba(175,140,92,.45); padding-bottom:5px;
+  transition:color 220ms cubic-bezier(.22,.61,.36,1), border-color 220ms cubic-bezier(.22,.61,.36,1);
+}
+.microlink:hover{color:var(--porcelain); border-bottom-color:var(--porcelain)}
+.microlink:focus-visible{outline:1px solid var(--gold); outline-offset:5px}
+.microlink:active{color:var(--cashmere)}
+
+/* ---------- FRAME 007 — THE INVERTED SCALE MOMENT ---------- */
+/* Physically large, almost entirely empty. Emptiness signals importance. */
+.frame--void{
+  min-height:clamp(300px,31vw,450px);
+  display:flex; align-items:flex-end;
+  padding:var(--pad-md); padding-top:max(var(--pad-md),38px);
+}
+.void-quote{
+  margin:0; max-width:26ch;
+  font-family:var(--display);
+  font-size:clamp(18px,1.5vw,21px); line-height:1.42;
+  letter-spacing:-.01em; color:var(--gold);
+  font-variation-settings:'opsz' 36,'wght' 400,'SOFT' 20,'WONK' 0;
+}
+
+/* ---------- INDEX FRAMES 008–012 ---------- */
+.frame--index{display:flex; flex-direction:column; padding:var(--pad-sm); padding-top:max(var(--pad-sm),38px);}
+a.frame--index{text-decoration:none; color:inherit;}
+a.frame--index:focus-visible{outline:1px solid var(--gold); outline-offset:4px}
+a.frame--index:active{border-color:rgba(175,140,92,.6)}
+.idx-head{display:flex; flex-direction:column; align-items:flex-start; margin-top:auto; padding-top:34px}
+.idx-title{
+  display:block; margin:0 0 9px; font-family:var(--display);
+  font-size:clamp(17px,1.45vw,21px); line-height:1.18;
+  letter-spacing:-.015em; color:var(--porcelain);
+  font-variation-settings:'opsz' 48,'wght' 400,'SOFT' 20,'WONK' 0;
+  transition:color 240ms cubic-bezier(.22,.61,.36,1);
+}
+.idx-desc{display:block; margin:0; font-size:12px; font-weight:300; line-height:1.62; color:var(--cashmere);}
+.idx-go{
+  display:inline-block; margin-top:20px; align-self:flex-start;
+  font-size:9px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); border-bottom:1px solid rgba(175,140,92,.4); padding-bottom:5px;
+  transition:color 240ms cubic-bezier(.22,.61,.36,1), border-color 240ms cubic-bezier(.22,.61,.36,1);
+}
+a.frame--index:hover .idx-go{color:var(--porcelain); border-bottom-color:var(--porcelain)}
+
+/* Frame 011 — three sub-entries sharing the type treatment at reduced scale */
+.bros{display:flex; gap:var(--pad-sm); margin-top:auto; padding-top:30px;}
+.bros-inset{flex:0 0 98px; align-self:stretch; min-height:172px; position:relative; overflow:hidden; background:var(--obsidian); isolation:isolate;}
+.bros-inset img{width:100%; height:100%; object-fit:cover; display:block;}
+.bros-list{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:15px;}
+.bro{text-decoration:none; display:block;}
+.bro-name{
+  display:block; font-family:var(--display);
+  font-size:15px; line-height:1.2; letter-spacing:-.01em; color:var(--porcelain);
+  font-variation-settings:'opsz' 24,'wght' 400,'SOFT' 30,'WONK' 0;
+  transition:color 220ms cubic-bezier(.22,.61,.36,1);
+}
+.bro-meta{
+  display:block; margin-top:6px;
+  font-size:9px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--cap);
+  transition:color 220ms cubic-bezier(.22,.61,.36,1);
+}
+.bro:hover .bro-name{color:var(--gold)}
+.bro:hover .bro-meta{color:var(--gold)}
+.bro:focus-visible{outline:1px solid var(--gold); outline-offset:4px}
+.bro:active .bro-name{color:var(--cashmere)}
+
+/* ---------- FOOTER — outside the grid ---------- */
+.site-footer{
+  position:relative; z-index:1;
+  max-width:1340px; margin:0 auto;
+  padding:26px clamp(20px,4vw,54px) clamp(40px,5vw,60px);
+  border-top:1px solid rgba(209,199,189,.14);
+  display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center;
+}
+.footer-copyright{margin:0; font-size:11px; font-weight:300; letter-spacing:.04em; color:var(--cap);}
+.footer-credit{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--sans); font-size:10px; font-weight:400; letter-spacing:.06em;
+  color:var(--cashmere); text-decoration:none; opacity:.65;
+  transition:opacity 220ms cubic-bezier(.22,.61,.36,1);
+}
+.footer-credit:hover{opacity:1}
+.footer-credit:focus-visible{outline:1px solid var(--gold); outline-offset:5px; opacity:1}
+.footer-credit:active{opacity:.85}
+/* Mark is ~1.97:1 — height set, width follows. Never equal width and height. */
+.footer-mark{height:15px; width:29.6px; flex:0 0 auto; display:block;}
+
+/* ============================================================
+   DESKTOP — 12 columns, consistent gutter, wildly varying spans
+   ============================================================ */
+@media (min-width:900px){
+  .grid{grid-template-columns:repeat(12,1fr); gap:var(--stack) var(--gutter);}
+  .cell{grid-column:var(--col) / span var(--span); margin-top:var(--nudge,0);}
+  .masthead{align-self:end; padding-bottom:8px;}
+  .site-footer{flex-direction:row; justify-content:space-between; text-align:left;}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="sheet">
+
+  <!-- ===== 001 / masthead ===== -->
+  <section class="band">
+    <div class="grid">
+      <figure class="cell" style="--col:1;--span:5">
+        <div class="frame frame--photo r-hero">
+          <span class="fnum">001</span>
+          <img src="../brand_assets/KNOW%20shoot%201.jpg" alt="Dr. Syreeta McClain in a black blouse and white trousers against a grey seamless backdrop">
+          <div class="tint" aria-hidden="true"></div>
+          <div class="veil" aria-hidden="true"></div>
+        </div>
+        <figcaption class="cap">Dr. Syreeta McClain — Rahway, New Jersey — 2026</figcaption>
+      </figure>
+
+      <div class="cell masthead" style="--col:7;--span:6">
+        <span class="submark-plate">
+          <img src="../brand_assets/SM%20submark%20_%20gold_obsidian.png" alt="Dr. Syreeta McClain monogram">
+        </span>
+        <h1 class="name">Dr. Syreeta McClain</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 002 tagline / 003 about ===== -->
+  <section class="band">
+    <div class="grid">
+      <figure class="cell" style="--col:1;--span:4">
+        <div class="frame frame--text">
+          <span class="fnum">002</span>
+          <p class="eyebrow">Educator · Consultant · Momager · Founder</p>
+          <p class="tagline">Where Leadership Meets Legacy</p>
+        </div>
+        <figcaption class="cap">Statement</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:5;--span:8">
+        <div class="frame frame--text pad-lg">
+          <span class="fnum">003</span>
+          <p class="bio">Dr. Syreeta McClain is an accomplished educational leader, high school principal, consultant, speaker, and nonprofit co-founder with more than two decades of experience transforming the lives of young people and the systems that serve them. She specializes in customized high school programming, alternative education, student engagement, leadership development, and creating innovative pathways for student success. As the CEO of Premier Leadership, LLC, she provides leadership coaching, professional development, workshops, program development, and keynote presentations for educators, schools, organizations, parents, and community leaders.</p>
+          <p class="bio">She is also the co-founder of the Everyday Legends Foundation, a nonprofit committed to strengthening communities grounded in their three pillars: education, athletics, and service. Drawing from her unique experience as an educator, executive leader, and nonprofit founder, Dr. McClain now bridges her skillsets with the evolving landscape of sports and NIL, as athletic manager to her sons, while empowering individuals and families to maximize their impact.</p>
+        </div>
+        <figcaption class="cap">Biography</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== 004 / 005 — Premier Leadership, asymmetric pair ===== -->
+  <section class="band">
+    <div class="grid">
+      <figure class="cell" style="--col:1;--span:5">
+        <div class="frame frame--photo r-seated">
+          <span class="fnum">004</span>
+          <img src="../brand_assets/KNOW%20shoot%205.jpg" alt="Dr. Syreeta McClain seated, wearing a leopard-print blazer">
+          <div class="tint" aria-hidden="true"></div>
+          <div class="veil" aria-hidden="true"></div>
+        </div>
+        <figcaption class="cap">Premier Leadership, LLC</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:6;--span:7">
+        <div class="frame frame--text pad-lg">
+          <span class="fnum">005</span>
+          <p class="kicker">Premier Leadership, LLC</p>
+          <p class="role">Founder &amp; CEO | Educational Consultant</p>
+          <p class="lede">“Leadership is not simply a position—it is the responsibility to move people, ideas, and organizations forward.”</p>
+          <p class="body">Premier Leadership was created from more than 20 years of real-world experience leading schools, developing programs, navigating complex systems, and working alongside students, families, educators, and community partners. Dr. McClain brings that experience beyond the schoolhouse to help others turn vision into meaningful action.</p>
+          <p class="body">Through consulting, leadership coaching, professional development, workshops, strategic planning, program development, and speaking engagements, Premier Leadership partners with schools, organizations, leaders, and communities ready to strengthen their people and increase their impact.</p>
+          <a class="microlink" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Visit Premier Leadership</a>
+        </div>
+        <figcaption class="cap">Practice</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== 006 athletics / 007 the inverted scale moment ===== -->
+  <section class="band">
+    <div class="grid">
+      <figure class="cell" style="--col:1;--span:4">
+        <div class="frame frame--photo r-athletic">
+          <span class="fnum">006</span>
+          <img src="../brand_assets/SHP%20shoot%203.jpg" alt="A heeled sandal resting on a football, goalpost beyond">
+          <div class="tint" aria-hidden="true"></div>
+          <div class="veil" aria-hidden="true"></div>
+        </div>
+        <figcaption class="cap">Legacy, in practice</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:9;--span:4;--nudge:72px">
+        <div class="frame frame--void">
+          <span class="fnum">007</span>
+          <p class="void-quote">“Every decision is viewed through a larger lens: Legacy.”</p>
+        </div>
+        <figcaption class="cap">On legacy</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== 008–012 — the index ===== -->
+  <section class="band band--index">
+    <div class="grid">
+      <figure class="cell" style="--col:1;--span:7">
+        <a class="frame frame--index" style="min-height:202px" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
+          <span class="fnum">008</span>
+          <span class="idx-head">
+            <span class="idx-title">Premier Leadership, LLC</span>
+            <span class="idx-desc">Educational consulting &amp; leadership development</span>
+            <span class="idx-go">View</span>
+          </span>
+        </a>
+        <figcaption class="cap">Consulting</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:2;--span:6">
+        <a class="frame frame--index" style="min-height:178px" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
+          <span class="fnum">009</span>
+          <span class="idx-head">
+            <span class="idx-title">Everyday Legends Foundation</span>
+            <span class="idx-desc">Education, athletics &amp; service</span>
+            <span class="idx-go">View</span>
+          </span>
+        </a>
+        <figcaption class="cap">Nonprofit</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:9;--span:3;--nudge:52px">
+        <a class="frame frame--index" style="min-height:258px" href="https://www.ucvts.org" target="_blank" rel="noopener">
+          <span class="fnum">010</span>
+          <span class="idx-head">
+            <span class="idx-title">Educational Leadership</span>
+            <span class="idx-desc">Alternative education high school principal</span>
+            <span class="idx-go">View</span>
+          </span>
+        </a>
+        <figcaption class="cap">Education</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:1;--span:5">
+        <div class="frame frame--index" style="min-height:326px">
+          <span class="fnum">011</span>
+          <span class="idx-head" style="padding-top:0;margin-top:0">
+            <span class="idx-title">The McClain Brothers</span>
+            <span class="idx-desc">Jaylen, KJ &amp; Cam</span>
+          </span>
+          <div class="bros">
+            <div class="bros-inset">
+              <img src="../brand_assets/SHP%20SHoot%207.jpg" alt="Dr. Syreeta McClain in a red blazer and jeans on a downtown street">
+              <div class="tint" aria-hidden="true"></div>
+              <div class="veil" aria-hidden="true"></div>
+            </div>
+            <div class="bros-list">
+              <a class="bro" href="https://www.jaylenmcclain.com" target="_blank" rel="noopener">
+                <span class="bro-name">Jaylen McClain</span>
+                <span class="bro-meta">Ohio State Football | #8</span>
+              </a>
+              <a class="bro" href="https://www.kjmcclain.com" target="_blank" rel="noopener">
+                <span class="bro-name">KJ McClain</span>
+                <span class="bro-meta">University of Tennessee Football | #40</span>
+              </a>
+              <a class="bro" href="https://www.cammcclain.com" target="_blank" rel="noopener">
+                <span class="bro-name">Cam McClain</span>
+                <span class="bro-meta">Seton Hall Prep Football | #6</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <figcaption class="cap">Athletics</figcaption>
+      </figure>
+
+      <figure class="cell" style="--col:7;--span:4;--nudge:64px">
+        <a class="frame frame--index" style="min-height:150px" href="#">
+          <span class="fnum">012</span>
+          <span class="idx-head">
+            <span class="idx-title">Charging It To The Game</span>
+            <span class="idx-desc">The blog</span>
+            <span class="idx-go">View</span>
+          </span>
+        </a>
+        <figcaption class="cap">Writing</figcaption>
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="footer-copyright">&copy; 2026 Dr. Syreeta McClain. All rights reserved.</p>
+  <a class="footer-credit" href="https://anchordigitalco.com" target="_blank" rel="noopener">
+    <svg class="footer-mark" xmlns="http://www.w3.org/2000/svg" viewBox="364 171 615 312" fill="currentColor" aria-hidden="true">
+      <g id="mark-left"><path d="M415.114 175.471C422.662 174.519 435.65 175.176 443.54 175.195C475.422 175.269 507.295 175.281 539.177 175.255L576.692 175.207C595.257 175.148 611.257 173.139 625.62 187.312C636.751 197.725 640.393 211.89 640.298 226.753C640.115 255.322 639.878 284.165 640.286 312.751C640.212 328.236 641.49 344.62 629.769 356.621C617.313 369.374 598.488 367.622 586.181 355.74C575.831 345.747 576.748 329.414 576.941 316.067C561.518 315.177 527.824 315.45 512.193 316.042C512.104 318.43 512.112 320.82 512.215 323.207C513.791 359.643 530.246 391.978 556.936 416.512C581.567 437.314 605.175 447.588 637.603 449.823C620.605 480.092 594.286 475.553 564.537 475.309L512.313 475.248L449.549 475.316C431.366 475.334 408.652 477.773 392.765 467.696C368.303 452.178 372.763 421.988 372.811 397.019L372.836 329.511L372.807 259.148C372.698 222.138 366.501 182.43 415.114 175.471Z"/></g>
+      <g id="mark-right"><path d="M771.304 174.933C791.016 174.375 817.183 174.776 836.55 178.375C878.892 186.232 916.393 210.559 940.835 246.023C971.452 290.987 972.37 334.32 971.198 386.405C970.576 414.066 976.678 448.865 949.908 466.764C943.894 470.865 937.011 473.515 929.8 474.506C920.441 475.719 908.867 475.371 899.243 475.366L854.343 475.321L786.481 475.349C768.499 475.352 750.56 476.424 733.027 472.901C719.864 467.59 713.594 462.068 706.435 449.84C750.429 448.596 792.56 421.072 813.957 383.161C826.412 361.095 830.715 341.105 831.494 316.054C828.479 315.815 825.511 315.766 822.488 315.789C804.754 315.927 786.806 315.402 769.103 316.2C768.982 338.233 767.147 362.719 737.779 365.527C730.259 366.246 721.157 361.852 715.785 356.754C707.03 348.444 705.003 336.711 705.11 325.144C704.996 306.992 704.905 289.389 705.056 271.146C705.227 250.567 703.447 226.794 707.094 206.575C708.111 200.936 713.393 193.174 717.404 189.122C733.293 173.071 751.019 175.213 771.304 174.933Z"/></g>
+    </svg>
+    <span>Built by Anchor Digital</span>
+  </a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+---
+// 5. THE PLATE — a visual breath, no text.
+// Every photograph in the set is 2:3 vertical. This was previously a wide
+// full-bleed band, which is the one crop a vertical frame cannot take: it
+// either decapitates the subject or shrinks her to nothing. It is now a tall
+// plate cropped TIGHTER WITHIN the vertical and hung off the right trim, with
+// the Cashmere ground carrying the rest of the band as negative space.
+---
+
+<section class="plate" aria-hidden="true">
+  <figure class="plate-figure relative m-0 isolate overflow-hidden">
+    <img class="block w-full h-full object-cover" src="/brand_assets/SHP%20shoot%203.jpg" alt="" />
+  </figure>
+</section>
+
+<style>
+  .plate{
+    background-color: var(--cashmere);
+    /* Cashmere is a ground here, not a wash — but it still layers rather
+       than sitting flat. */
+    background-image:
+      radial-gradient(96% 62% at 12% 8%,  rgba(231,226,221,0.30) 0%, rgba(231,226,221,0) 62%),
+      radial-gradient(70% 58% at 88% 92%, rgba(71,68,64,0.16) 0%, rgba(71,68,64,0) 60%);
+    display: grid;
+    /* The empty Cashmere column is the larger of the two. */
+    grid-template-columns: minmax(0, 57fr) minmax(0, 43fr);
+    align-items: center;
+    padding: clamp(96px, 13vw, 184px) 0 clamp(96px, 13vw, 184px) var(--gutter);
+  }
+
+  .plate-figure{
+    grid-column: 2;
+    /* Stays portrait — cropped tighter within the vertical, never widened. */
+    aspect-ratio: 3 / 4;
+    background: var(--obsidian);
+    /* Bleeds hard off the right trim. */
+    margin-right: calc(-1 * var(--gutter));
+  }
+
+  .plate-figure img{
+    object-position: 50% 62%;   /* focal point: the football */
+    /* The turf is the only saturated area on the page; pulled well down so
+       the plate sits inside the Porcelain/Cashmere/Obsidian/Gold palette. */
+    filter: grayscale(0.58) contrast(1.06) saturate(0.52);
+  }
+
+  /* Colour treatment layer — pushed warm, Cashmere-toned rather than a
+     neutral grey, so it agrees with her existing warm ground tones. */
+  .plate-figure::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(184deg, var(--porcelain) 0%, var(--cashmere) 48%, var(--gold) 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.52;
+  }
+
+  /* Gradient overlay */
+  .plate-figure::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(to top,   rgba(26,22,19,0.46) 0%, rgba(26,22,19,0) 38%),
+      linear-gradient(90deg,    rgba(26,22,19,0.22) 0%, rgba(26,22,19,0) 26%);
+  }
+
+  @media (max-width: 900px){
+    .plate{
+      grid-template-columns: minmax(0, 22fr) minmax(0, 78fr);
+      padding: clamp(72px, 15vw, 112px) 0 clamp(72px, 15vw, 112px) var(--gutter);
+    }
+  }
+</style>

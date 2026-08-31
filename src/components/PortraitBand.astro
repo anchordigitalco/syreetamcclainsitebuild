@@ -1,0 +1,145 @@
+---
+// 2. PORTRAIT BAND — full bleed, Obsidian, photo bleeds off RIGHT.
+// The source photograph is vertical (2:3). The column is proportionally wider
+// than the source, so object-fit: cover only ever crops vertically — the full
+// frame width always shows and she is never squeezed into a wide letterbox.
+---
+
+<section class="portrait" id="sec-portrait">
+  <div class="portrait-copy flex flex-col justify-center">
+    <p class="portrait-eyebrow">Educator&nbsp;· Consultant&nbsp;· Momager&nbsp;· Founder</p>
+    <p class="portrait-tagline">Where<br />Leadership<br />Meets <em>Legacy</em></p>
+  </div>
+  <figure class="portrait-figure relative m-0 isolate overflow-hidden">
+    <img
+      class="block w-full h-full object-cover"
+      src="/brand_assets/KNOW%20shoot%201.jpg"
+      alt="Dr. Syreeta McClain in a black blouse and white trousers against a grey seamless backdrop"
+    />
+  </figure>
+</section>
+
+<style>
+  .portrait{
+    background-color: var(--obsidian);
+    background-image:
+      radial-gradient(90% 70% at 6% 12%, rgba(175,140,92,0.10) 0%, rgba(175,140,92,0) 58%),
+      radial-gradient(70% 60% at 2% 96%, rgba(71,68,64,0.55) 0%, rgba(71,68,64,0) 62%);
+    color: var(--porcelain);
+    display: grid;
+    grid-template-columns: minmax(0, 47fr) minmax(0, 53fr);
+    align-items: stretch;
+    min-height: 94svh;
+    overflow: hidden;
+  }
+
+  .portrait-copy{
+    padding: clamp(88px, 13vw, 184px) clamp(28px, 4vw, 64px) clamp(88px, 13vw, 184px) var(--gutter);
+  }
+
+  .portrait-eyebrow{
+    margin: 0 0 clamp(28px, 3.4vw, 48px);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 10.5px;
+    line-height: 1.9;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--cashmere);
+    /* The 42% column is too narrow for one line between ~900-1100px, and so is
+       390px. Each separator is bound to the word before it with a non-breaking
+       space, so a break can only ever fall after a "word ·" pair and never
+       strands a leading separator; balance keeps the two lines even. */
+    text-wrap: balance;
+  }
+
+  .portrait-eyebrow::before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--hair-light);
+    margin-bottom: clamp(24px, 3vw, 40px);
+  }
+
+  .portrait-tagline{
+    margin: 0;
+    font-family: var(--display);
+    /* Section-heading tier — opsz 96, SOFT 32. Sharp enough to hold its
+       contrast at 96px, softened just off the hero's hairline register. */
+    font-variation-settings: var(--fx-display);
+    font-weight: 340;
+    font-size: clamp(40px, 6.6vw, 96px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--porcelain);
+  }
+
+  /* GOLD 1 of 3 */
+  .portrait-tagline em{
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .portrait-figure{
+    min-height: 56svh;
+    /* isolate keeps the multiply tint on the photo, not the page */
+  }
+
+  .portrait-figure img{
+    object-position: 54% 14%;   /* focal point: her face */
+    /* A small zoom about her face closes the dead seamless either side without
+       losing the full-length crop. */
+    transform: scale(1.28);
+    transform-origin: 60% 18%;
+    filter: grayscale(0.30) contrast(1.04);
+  }
+
+  /* Colour treatment layer */
+  .portrait-figure::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(200deg, var(--porcelain) 0%, var(--cashmere) 44%, var(--gold) 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.42;
+  }
+
+  /* Gradient overlay — ties the photo into the Obsidian ground on its left edge */
+  .portrait-figure::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(90deg, rgba(26,22,19,1) 0%, rgba(26,22,19,0.88) 7%, rgba(26,22,19,0.54) 20%, rgba(26,22,19,0.24) 34%, rgba(26,22,19,0.08) 48%, rgba(26,22,19,0) 62%),
+      linear-gradient(to top, rgba(26,22,19,0.60) 0%, rgba(26,22,19,0) 46%);
+  }
+
+  @media (max-width: 900px){
+    .portrait{
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+    .portrait-copy{
+      padding: clamp(72px, 16vw, 104px) var(--gutter) clamp(72px, 14vw, 96px);
+    }
+    .portrait-figure{
+      min-height: 0;
+      aspect-ratio: 4 / 5;
+      margin-left: var(--gutter);   /* still bleeds hard off the right edge */
+    }
+    .portrait-figure::after{
+      background:
+        linear-gradient(90deg, rgba(26,22,19,0.70) 0%, rgba(26,22,19,0.16) 30%, rgba(26,22,19,0) 62%),
+        linear-gradient(to top, rgba(26,22,19,0.62) 0%, rgba(26,22,19,0) 44%);
+    }
+  }
+
+  @media (max-width: 560px){
+    /* Keeps the specified 0.26em tracking; only the size gives way, so the
+       eyebrow still sets on a single line at 390px. */
+    .portrait-eyebrow{ font-size: 9.5px; }
+  }
+</style>

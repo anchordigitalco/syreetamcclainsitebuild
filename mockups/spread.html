@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dr. Syreeta McClain — Where Leadership Meets Legacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE SPREAD — Dr. Syreeta McClain
+   A printed magazine feature translated to screen.
+   Porcelain ground. Obsidian type. Gold exactly three times.
+   ============================================================ */
+
+:root{
+  /* Client brand — exact values, no substitutions */
+  --obsidian:  #1A1613;
+  --slate:     #474440;
+  --gold:      #AF8C5C;
+  --cashmere:  #D1C7BD;
+  --porcelain: #E7E2DD;
+
+  --hair:        rgba(26, 22, 19, 0.16);
+  --hair-strong: rgba(26, 22, 19, 0.30);
+  --hair-light:  rgba(231, 226, 221, 0.22);
+
+  /* Type */
+  --display: 'Fraunces', serif;
+  --sans:    'Montserrat', sans-serif;
+
+  /* Spacing tokens — intentional steps, never arbitrary */
+  --s1: 8px;   --s2: 16px;  --s3: 24px;  --s4: 40px;
+  --s5: 64px;  --s6: 96px;  --s7: 144px; --s8: 200px;
+
+  --gutter:  clamp(24px, 6vw, 88px);
+  --measure: 1100px;
+
+  /* Body metrics — the drop cap solve keys off these */
+  --bio-size: 16.5px;
+  --bio-lh:   1.75;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ -webkit-text-size-adjust: 100%; }
+
+body{
+  margin: 0;
+  background-color: var(--porcelain);
+  /* Never a flat ground — layered washes in porcelain and cashmere */
+  background-image:
+    radial-gradient(120% 78% at 50% -14%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 58%),
+    radial-gradient(88% 60% at 8% 20%,   rgba(209,199,189,0.42) 0%, rgba(209,199,189,0) 62%),
+    radial-gradient(74% 54% at 96% 72%,  rgba(209,199,189,0.34) 0%, rgba(209,199,189,0) 60%);
+  background-attachment: fixed;
+  color: var(--obsidian);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Print-stock grain. Fixed sheet over the whole page.
+   NOTE: this is a sibling of the content, never an ancestor, so it cannot
+   trap the hero submark's mix-blend-mode. */
+.grain{
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+}
+
+::selection{ background: var(--gold); color: var(--porcelain); }
+
+a{ color: inherit; }
+
+/* ------------------------------------------------------------
+   1. HERO — no photograph, deliberately. Almost empty.
+   ------------------------------------------------------------ */
+.hero{
+  min-height: 90svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s8) var(--gutter) var(--s7);
+  text-align: center;
+}
+
+/* The client submark. Source JPEG is 2100x1500 with a baked-in WHITE field
+   (JPEG cannot store alpha). Measured artwork bbox is 814x830 at x[652..1465]
+   y[320..1149]; cropped to it here, then multiplied so the white field drops
+   out against Porcelain.
+   NOTE: no ancestor may carry transform, opacity, filter or isolation, or the
+   blend would composite against a transparent group backdrop and the white
+   box returns. .hero and main are deliberately plain. */
+.hero-mark{
+  width: clamp(200px, 22vw, 340px);
+  aspect-ratio: 814 / 830;
+  background-image: url("../brand_assets/SM%20submark%20_%20black%20transparent.jpeg");
+  background-repeat: no-repeat;
+  background-size: 257.99% auto;
+  background-position: 50.70% 47.76%;
+  mix-blend-mode: multiply;
+}
+
+.hero-name{
+  margin: clamp(var(--s5), 7vw, 92px) 0 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;      /* optical re-centre against trailing tracking */
+  text-transform: uppercase;
+  color: var(--obsidian);
+}
+
+.hero-rule{
+  width: 54px;
+  height: 1px;
+  background: var(--hair-strong);
+  margin: var(--s4) 0;
+}
+
+.hero-credit{
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 9px;
+  line-height: 2.2;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-wrap: balance;
+}
+
+/* ------------------------------------------------------------
+   2. PORTRAIT BAND — full bleed, Obsidian, photo bleeds off RIGHT
+   ------------------------------------------------------------ */
+.portrait{
+  background-color: var(--obsidian);
+  background-image:
+    radial-gradient(90% 70% at 6% 12%, rgba(175,140,92,0.10) 0%, rgba(175,140,92,0) 58%),
+    radial-gradient(70% 60% at 2% 96%, rgba(71,68,64,0.55) 0%, rgba(71,68,64,0) 62%);
+  color: var(--porcelain);
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  align-items: stretch;
+  min-height: 86svh;
+  overflow: hidden;
+}
+
+.portrait-copy{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 10vw, 132px) clamp(32px, 4.5vw, 72px) clamp(72px, 10vw, 132px) var(--gutter);
+}
+
+.portrait-eyebrow{
+  margin: 0 0 clamp(28px, 3.4vw, 48px);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 10.5px;
+  line-height: 1.9;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--cashmere);
+  /* The 42% column is too narrow for one line between ~900-1100px, and so is
+     390px. Each separator is bound to the word before it with a non-breaking
+     space, so a break can only ever fall after a "word ·" pair and never
+     strands a leading separator; balance keeps the two lines even. */
+  text-wrap: balance;
+}
+
+.portrait-eyebrow::before{
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--hair-light);
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.portrait-tagline{
+  margin: 0;
+  font-family: var(--display);
+  /* Display grade — contrast stays high at 36-62px */
+  font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 0, 'WONK' 0;
+  font-weight: 400;
+  font-size: clamp(36px, 4.3vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--porcelain);
+}
+
+/* GOLD 1 of 3 */
+.portrait-tagline em{
+  font-style: italic;
+  color: var(--gold);
+}
+
+.portrait-figure{
+  position: relative;
+  margin: 0;
+  isolation: isolate;    /* keeps the multiply tint on the photo, not the page */
+  overflow: hidden;      /* clips the scaled image below */
+  min-height: 56svh;
+}
+
+.portrait-figure img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 54% 14%;   /* focal point: her face */
+  /* The column is proportionally wider than the 2:3 source, so cover only ever
+     crops vertically and the full frame width always shows. A small zoom about
+     her face closes the dead seamless either side without losing the
+     full-length crop. */
+  transform: scale(1.18);
+  transform-origin: 54% 22%;
+  filter: grayscale(0.30) contrast(1.04);
+}
+
+/* Colour treatment layer */
+.portrait-figure::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(200deg, var(--cashmere) 0%, var(--gold) 46%, var(--slate) 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.38;
+}
+
+/* Gradient overlay — ties the photo into the Obsidian ground on its left edge */
+.portrait-figure::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgba(26,22,19,1) 0%, rgba(26,22,19,0.62) 10%, rgba(26,22,19,0.18) 27%, rgba(26,22,19,0) 48%),
+    linear-gradient(to top, rgba(26,22,19,0.60) 0%, rgba(26,22,19,0) 46%);
+}
+
+/* ------------------------------------------------------------
+   3. ABOUT — true two-column
+   ------------------------------------------------------------ */
+.about{
+  padding: clamp(84px, 12vw, 168px) var(--gutter) 0;
+}
+
+.about-body{
+  max-width: var(--measure);
+  margin: 0 auto;
+  column-count: 2;
+  column-gap: 64px;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: var(--bio-size);
+  line-height: var(--bio-lh);
+  letter-spacing: 0.004em;
+  color: var(--slate);
+  text-align: left;
+  text-wrap: pretty;      /* rag + widow control */
+  orphans: 3;
+  widows: 3;
+}
+
+.about-body p{ margin: 0; }
+.about-body p + p{ margin-top: 1.5em; }
+
+/* Drop cap — spans exactly 5 lines, ink cap-height optically aligned to the
+   cap height of line 1 and its baseline to the baseline of line 5.
+   Solved against Fraunces' measured metrics (cap-height 0.700em,
+   ascent 0.9775em, descent 0.255em; Montserrat cap-height 0.700em):
+     required ink cap-height = 4 x line-height + body cap-height
+                             = 4(28.875) + 0.700(16.5) = 127.05px
+     font-size = 127.05 / 0.700 = 181.5px
+   margin-top drops the ink cap top onto the line-1 cap top. */
+/* GOLD 2 of 3 */
+.dropcap{
+  float: left;
+  font-family: var(--display);
+  /* Largest glyph on the page — top of the opsz axis, maximum contrast */
+  font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 0, 'WONK' 0;
+  font-weight: 400;
+  font-size: 181.5px;
+  line-height: 0.636;                /* box 115.434px; float bottom lands in line 5 */
+  color: var(--gold);
+  margin: 0.070523em 0.044105em 0 0; /* top 12.800px. The analytic solve gives
+                                        12.573px and rasterisation quantises the
+                                        measured cap top in ~1px steps; 12.80px
+                                        sits at the centre of that step. */
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------
+   4. PILLAR — Premier Leadership, LLC. Asymmetric, photo bleeds LEFT.
+   ------------------------------------------------------------ */
+.pillar{
+  margin-top: clamp(96px, 13vw, 176px);
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.pillar-figure{
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+  min-height: 74svh;
+  background: var(--obsidian);
+}
+
+.pillar-figure img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 56% 20%;   /* focal point: her face */
+  filter: grayscale(0.14) contrast(1.03);
+}
+
+.pillar-figure::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(196deg, var(--cashmere) 0%, var(--gold) 52%, var(--slate) 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.30;
+}
+
+.pillar-figure::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(270deg, rgba(231,226,221,0.30) 0%, rgba(231,226,221,0) 19%),
+    linear-gradient(to top, rgba(26,22,19,0.34) 0%, rgba(26,22,19,0) 44%);
+}
+
+.pillar-copy{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 9vw, 128px) var(--gutter) clamp(72px, 9vw, 128px) clamp(40px, 5.4vw, 96px);
+  max-width: 760px;
+}
+
+.pillar-kicker{
+  margin: 0 0 var(--s3);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 10.5px;
+  line-height: 1.8;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.pillar-kicker::before{
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--hair-strong);
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.pillar-role{
+  margin: 0 0 clamp(32px, 4vw, 52px);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(12px, 1.1vw, 14px);
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--obsidian);
+}
+
+.pillar-lede{
+  margin: 0 0 clamp(36px, 4.2vw, 56px);
+  font-family: var(--display);
+  /* One step down from display grade — 23-31px sits between the two */
+  font-variation-settings: 'opsz' 36, 'wght' 400, 'SOFT' 10, 'WONK' 0;
+  font-weight: 400;
+  font-size: clamp(23px, 2.3vw, 31px);
+  line-height: 1.34;
+  letter-spacing: -0.012em;
+  color: var(--obsidian);
+  text-wrap: pretty;
+}
+
+.pillar-body{
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: 0.004em;
+  color: var(--slate);
+  text-wrap: pretty;
+}
+
+.pillar-body p{ margin: 0; }
+.pillar-body p + p{ margin-top: 1.5em; }
+
+.pillar-link{
+  align-self: flex-start;
+  margin-top: clamp(36px, 4.2vw, 56px);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1.8;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--obsidian);
+  text-decoration: none;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--hair-strong);
+  transition: color 320ms var(--ease), border-color 320ms var(--ease), transform 320ms var(--ease);
+}
+
+.pillar-link:hover,
+.pillar-link:focus-visible{
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  transform: translateX(4px);
+}
+.pillar-link:active{ transform: translateX(2px); }
+.pillar-link:focus-visible{ outline: 1px solid var(--gold); outline-offset: 8px; }
+
+/* ------------------------------------------------------------
+   5. FULL-BLEED BREAK — a visual breath, no text
+   ------------------------------------------------------------ */
+.break{
+  position: relative;
+  margin: 0;
+  height: 70vh;
+  min-height: 420px;
+  background: var(--obsidian);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.break img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 48% 57%;   /* focal point: the football */
+  /* The turf is the only saturated area on the page; pulled well down so the
+     break sits inside the Porcelain/Obsidian/Gold palette. */
+  filter: grayscale(0.34) contrast(1.05) saturate(0.88);
+}
+
+.break::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--cashmere) 0%, var(--gold) 55%, var(--slate) 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.34;
+}
+
+.break::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to bottom, rgba(26,22,19,0.42) 0%, rgba(26,22,19,0) 26%),
+    linear-gradient(to top,    rgba(26,22,19,0.46) 0%, rgba(26,22,19,0) 30%);
+}
+
+/* ------------------------------------------------------------
+   6. PULL QUOTE — breaks the grid
+   ------------------------------------------------------------ */
+.pullquote{
+  margin: 0;
+  padding: clamp(120px, 15vw, 208px) var(--gutter);
+}
+
+/* GOLD 3 of 3 */
+.pullquote p{
+  max-width: var(--measure);
+  margin: 0 auto;
+  font-family: var(--display);
+  /* Display grade, italic — near the top of the opsz axis at 72px */
+  font-variation-settings: 'opsz' 120, 'wght' 400, 'SOFT' 0, 'WONK' 0;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(36px, 5.4vw, 72px);
+  line-height: 1.14;
+  letter-spacing: -0.018em;
+  color: var(--gold);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ------------------------------------------------------------
+   7. THE INDEX — numbered editorial index, never a card grid
+   ------------------------------------------------------------ */
+.index{
+  padding: 0 var(--gutter) clamp(64px, 9vw, 120px);
+}
+
+.index-list{
+  max-width: var(--measure);
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+
+.index-row{
+  display: grid;
+  grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
+  align-items: baseline;
+  gap: 0 var(--s3);
+  padding: clamp(22px, 2.6vw, 34px) 0;
+  border-bottom: 1px solid var(--hair);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 420ms var(--ease);
+}
+
+.index-num{
+  font-family: var(--display);
+  /* Mid grade — numerals fall to 30px on mobile, so contrast eases down */
+  font-variation-settings: 'opsz' 48, 'wght' 400, 'SOFT' 0, 'WONK' 0;
+  font-weight: 400;
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--obsidian);
+  transition: color 420ms var(--ease);
+}
+
+.index-name{
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(12px, 1.15vw, 15px);
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--obsidian);
+}
+
+.index-desc{
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(11.5px, 0.95vw, 13px);
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  color: var(--slate);
+  text-align: right;
+}
+
+/* Identical treatment across all five — no destination is distinguishable */
+.index-row:hover,
+.index-row:focus-visible{ transform: translateX(8px); }
+.index-row:hover .index-num,
+.index-row:focus-visible .index-num{ color: var(--gold); }
+.index-row:active{ transform: translateX(5px); }
+.index-row:focus-visible{
+  outline: 1px solid var(--gold);
+  outline-offset: 10px;
+}
+
+/* Row 04 expands rather than linking out. Open by default so the sub-rows
+   are present on load, in full-page captures and in any PDF the client makes. */
+.index-expand{ border: 0; }
+.index-expand > summary{
+  cursor: pointer;
+  list-style: none;
+}
+.index-expand > summary::-webkit-details-marker{ display: none; }
+.index-expand > summary::marker{ content: ""; }
+
+.subindex{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subrow{
+  display: grid;
+  grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
+  align-items: baseline;
+  gap: 0 var(--s3);
+  padding: clamp(13px, 1.5vw, 18px) 0;
+  border-bottom: 1px solid var(--hair);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 420ms var(--ease);
+}
+
+.subrow > .sub-indent{
+  /* the row treatment at reduced scale: indent stands in for the numeral */
+  border-top: 1px solid var(--hair-strong);
+  align-self: center;
+  width: 22px;
+  margin-left: auto;
+  height: 1px;
+  transition: background-color 420ms var(--ease), border-color 420ms var(--ease);
+}
+
+.sub-name{
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(11px, 0.95vw, 12.5px);
+  line-height: 1.5;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--obsidian);
+  padding-left: clamp(20px, 2.4vw, 34px);
+}
+
+.sub-desc{
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(10.5px, 0.85vw, 11.5px);
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  color: var(--slate);
+  text-align: right;
+}
+
+.subrow:hover,
+.subrow:focus-visible{ transform: translateX(8px); }
+.subrow:hover .sub-indent,
+.subrow:focus-visible .sub-indent{ border-top-color: var(--gold); }
+.subrow:active{ transform: translateX(5px); }
+.subrow:focus-visible{ outline: 1px solid var(--gold); outline-offset: 8px; }
+
+/* ------------------------------------------------------------
+   8. FOOTER
+   ------------------------------------------------------------ */
+.footer-wrap{ padding: 0 var(--gutter); }
+
+.site-footer{
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(28px, 3.4vw, 44px) 0 clamp(56px, 7vw, 88px);
+  border-top: 1px solid var(--hair);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+
+.footer-copyright{
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.footer-credit{
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 320ms var(--ease);
+}
+
+.footer-credit:hover,
+.footer-credit:focus-visible{ opacity: 1; }
+.footer-credit:focus-visible{ outline: 1px solid var(--gold); outline-offset: 6px; }
+.footer-credit:active{ opacity: 0.8; }
+
+/* Anchor Digital mark. viewBox 364 171 615 312 is 1.971:1 — height is set and
+   width derived from it (14 x 1.9712 = 27.6px). Never equal width and height.
+   The root carries fill="currentColor", so it inherits the credit's colour;
+   no fill or color override here. */
+.footer-mark{
+  display: inline-block;
+  width: 27.6px;
+  height: 14px;
+  margin-right: 0.85em;
+  vertical-align: -0.35em;   /* centres the mark on the credit's cap band */
+}
+
+/* ------------------------------------------------------------
+   SIGNATURE MOVE — folio marginalia
+   ------------------------------------------------------------ */
+.folio{
+  position: fixed;
+  left: 0;
+  top: 50%;
+  z-index: 40;
+  transform: translateY(-50%);
+  padding-left: 22px;
+  pointer-events: none;
+  display: none;
+}
+
+/* vertical-rl + rotate(180deg) reads bottom-to-top exactly like rotate(-90deg)
+   but keeps the box narrow and left-anchored, so the folio sits at a fixed
+   distance from the trim edge no matter how long the label is. */
+.folio-inner{
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--slate);
+  opacity: 0;
+  transition: opacity 520ms var(--ease);
+}
+
+.folio-inner.is-visible{ opacity: 0.75; }
+
+.folio-num{ margin-right: 1.1em; }
+
+@media (min-width: 1024px){
+  .folio{ display: block; }
+}
+
+/* ------------------------------------------------------------
+   Motion — transform only. Nothing on the page ever starts invisible.
+   ------------------------------------------------------------ */
+/* A printed spread does not animate. The only orchestrated motion is a short
+   transform-only settle on the hero wordmark block; no opacity is involved,
+   so every element renders at full opacity on load and in captures. */
+@keyframes settle{
+  from{ transform: translateY(12px); }
+  to{   transform: none; }
+}
+.hero-name, .hero-rule, .hero-credit{
+  animation: settle 900ms var(--ease) both;
+}
+.hero-name   { animation-delay: 120ms; }
+.hero-rule   { animation-delay: 240ms; }
+.hero-credit { animation-delay: 340ms; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+@media (max-width: 900px){
+  .portrait{
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .portrait-copy{
+    padding: clamp(72px, 16vw, 104px) var(--gutter) clamp(72px, 14vw, 96px);
+  }
+  .portrait-figure{
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    margin-left: var(--gutter);   /* still bleeds hard off the right edge */
+  }
+  .portrait-figure::after{
+    background:
+      linear-gradient(90deg, rgba(26,22,19,0.70) 0%, rgba(26,22,19,0.16) 30%, rgba(26,22,19,0) 62%),
+      linear-gradient(to top, rgba(26,22,19,0.62) 0%, rgba(26,22,19,0) 44%);
+  }
+
+  .about-body{
+    column-count: 1;
+    max-width: 62ch;
+  }
+
+  .pillar{
+    grid-template-columns: 1fr;
+  }
+  .pillar-figure{
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    margin-right: var(--gutter);  /* bleeds off the left edge */
+  }
+  .pillar-figure::after{
+    background:
+      linear-gradient(90deg, rgba(231,226,221,0) 62%, rgba(231,226,221,0.36) 100%),
+      linear-gradient(to top, rgba(26,22,19,0.30) 0%, rgba(26,22,19,0) 44%);
+  }
+  .pillar-copy{
+    padding: clamp(56px, 12vw, 88px) var(--gutter);
+    max-width: none;
+  }
+
+  .break{ height: 56vh; min-height: 340px; }
+
+  .index-row,
+  .subrow{
+    grid-template-columns: clamp(48px, 12vw, 64px) minmax(0, 1fr);
+    align-items: start;
+    gap: 6px var(--s2);
+  }
+  .index-num{ grid-row: span 2; }
+  .index-desc,
+  .sub-desc{ text-align: left; }
+  .subrow > .sub-indent{ grid-row: span 2; align-self: start; margin-top: 8px; }
+  .sub-name{ padding-left: 0; }
+
+  .site-footer{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--s2);
+  }
+}
+
+@media (max-width: 560px){
+  :root{
+    --bio-size: 16px;
+    --bio-lh: 1.72;
+  }
+  .dropcap{
+    /* Re-solved for the 16px/1.72 mobile body:
+       4(27.52) + 0.700(16) = 121.28px ink cap-height / 0.700 = 173.257px */
+    font-size: 173.257px;
+    margin-top: 0.068656em;    /* 11.895px */
+    margin-right: 0.040674em;
+  }
+  /* Keeps the specified 0.26em tracking; only the size gives way, so the
+     eyebrow still sets on a single line at 390px. */
+  .portrait-eyebrow{ font-size: 9.5px; }
+  .hero-name{ font-size: 11px; letter-spacing: 0.34em; text-indent: 0.34em; }
+  .hero-credit{ font-size: 8.5px; letter-spacing: 0.24em; text-indent: 0.24em; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIGNATURE MOVE: folio marginalia -->
+<div class="folio" aria-hidden="true">
+  <div class="folio-inner" id="folio"><span class="folio-num">01</span><span id="folio-label">Portrait</span></div>
+</div>
+
+<main>
+
+  <!-- 1. HERO -->
+  <header class="hero">
+    <div class="hero-mark" role="img" aria-label="Dr. Syreeta McClain submark"></div>
+    <h1 class="hero-name">Dr.&nbsp;Syreeta McClain</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-credit">KNOW Women — 50 Under 50 Women to Know in NJ — 2026</p>
+  </header>
+
+  <!-- 2. PORTRAIT BAND -->
+  <section class="portrait" id="sec-portrait">
+    <div class="portrait-copy">
+      <p class="portrait-eyebrow">Educator&nbsp;· Consultant&nbsp;· Momager&nbsp;· Founder</p>
+      <p class="portrait-tagline">Where Leadership<br>Meets <em>Legacy</em></p>
+    </div>
+    <figure class="portrait-figure">
+      <img src="../brand_assets/KNOW%20shoot%201.jpg" alt="Dr. Syreeta McClain in a black blouse and white trousers against a grey seamless backdrop">
+    </figure>
+  </section>
+
+  <!-- 3. ABOUT -->
+  <section class="about" id="sec-about">
+    <div class="about-body">
+      <p><span class="dropcap">D</span>r. Syreeta McClain is an accomplished educational leader, high school principal, consultant, speaker, and nonprofit co-founder with more than two decades of experience transforming the lives of young people and the systems that serve them. She specializes in customized high school programming, alternative education, student engagement, leadership development, and creating innovative pathways for student success. As the CEO of Premier Leadership, LLC, she provides leadership coaching, professional development, workshops, program development, and keynote presentations for educators, schools, organizations, parents, and community leaders.</p>
+      <p>She is also the co-founder of the Everyday Legends Foundation, a nonprofit committed to strengthening communities grounded in their three pillars: education, athletics, and service. Drawing from her unique experience as an educator, executive leader, and nonprofit founder, Dr.&nbsp;McClain now bridges her skillsets with the evolving landscape of sports and NIL, as athletic manager to her sons, while empowering individuals and families to maximize their impact.</p>
+    </div>
+  </section>
+
+  <!-- 4. PILLAR — PREMIER LEADERSHIP, LLC -->
+  <section class="pillar" id="sec-pillar">
+    <figure class="pillar-figure">
+      <img src="../brand_assets/KNOW%20shoot%205.jpg" alt="Dr. Syreeta McClain seated in a leopard-print blazer against a warm tan ground">
+    </figure>
+    <div class="pillar-copy">
+      <p class="pillar-kicker">Premier Leadership, LLC</p>
+      <p class="pillar-role">Founder &amp; CEO | Educational Consultant</p>
+      <p class="pillar-lede">“Leadership is not simply a position—it is the responsibility to move people, ideas, and organizations forward.”</p>
+      <div class="pillar-body">
+        <p>Premier Leadership was created from more than 20 years of real-world experience leading schools, developing programs, navigating complex systems, and working alongside students, families, educators, and community partners. Dr.&nbsp;McClain brings that experience beyond the schoolhouse to help others turn vision into meaningful action.</p>
+        <p>Through consulting, leadership coaching, professional development, workshops, strategic planning, program development, and speaking engagements, Premier Leadership partners with schools, organizations, leaders, and communities ready to strengthen their people and increase their impact.</p>
+      </div>
+      <a class="pillar-link" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Visit Premier Leadership</a>
+    </div>
+  </section>
+
+  <!-- 5. FULL-BLEED BREAK -->
+  <section class="break" aria-hidden="true">
+    <img src="../brand_assets/SHP%20shoot%203.jpg" alt="">
+  </section>
+
+  <!-- 6. PULL QUOTE -->
+  <section class="pullquote" id="sec-quote">
+    <p>“Every decision is viewed through a larger lens: Legacy.”</p>
+  </section>
+
+  <!-- 7. THE INDEX -->
+  <section class="index" id="sec-index">
+    <ul class="index-list">
+      <li><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
+        <span class="index-num">01</span>
+        <span class="index-name">Premier Leadership, LLC</span>
+        <span class="index-desc">Educational consulting &amp; leadership development</span>
+      </a></li>
+      <li><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
+        <span class="index-num">02</span>
+        <span class="index-name">Everyday Legends Foundation</span>
+        <span class="index-desc">Education, athletics &amp; service</span>
+      </a></li>
+      <li><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
+        <span class="index-num">03</span>
+        <span class="index-name">Educational Leadership</span>
+        <span class="index-desc">Alternative education high school principal</span>
+      </a></li>
+      <li>
+        <details class="index-expand" open>
+          <summary class="index-row">
+            <span class="index-num">04</span>
+            <span class="index-name">The McClain Brothers</span>
+            <span class="index-desc">Jaylen, KJ &amp; Cam</span>
+          </summary>
+          <ul class="subindex">
+            <li><a class="subrow" href="https://www.jaylenmcclain.com" target="_blank" rel="noopener">
+              <span class="sub-indent" aria-hidden="true"></span>
+              <span class="sub-name">Jaylen McClain</span>
+              <span class="sub-desc">Ohio State Football | #8</span>
+            </a></li>
+            <li><a class="subrow" href="https://www.kjmcclain.com" target="_blank" rel="noopener">
+              <span class="sub-indent" aria-hidden="true"></span>
+              <span class="sub-name">KJ McClain</span>
+              <span class="sub-desc">University of Tennessee Football | #40</span>
+            </a></li>
+            <li><a class="subrow" href="https://www.cammcclain.com" target="_blank" rel="noopener">
+              <span class="sub-indent" aria-hidden="true"></span>
+              <span class="sub-name">Cam McClain</span>
+              <span class="sub-desc">Seton Hall Prep Football | #6</span>
+            </a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a class="index-row" href="#">
+        <span class="index-num">05</span>
+        <span class="index-name">Charging It to the Game</span>
+        <span class="index-desc">The blog</span>
+      </a></li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- 8. FOOTER -->
+<div class="footer-wrap">
+  <footer class="site-footer">
+    <p class="footer-copyright">&copy; 2026 Dr. Syreeta McClain. All rights reserved.</p>
+    <a class="footer-credit" href="https://anchordigitalco.com" target="_blank" rel="noopener">
+      <svg class="footer-mark" viewBox="364 171 615 312" fill="currentColor" aria-hidden="true">
+        <g id="mark-left"><path d="M415.114 175.471C422.662 174.519 435.65 175.176 443.54 175.195C475.422 175.269 507.295 175.281 539.177 175.255L576.692 175.207C595.257 175.148 611.257 173.139 625.62 187.312C636.751 197.725 640.393 211.89 640.298 226.753C640.115 255.322 639.878 284.165 640.286 312.751C640.212 328.236 641.49 344.62 629.769 356.621C617.313 369.374 598.488 367.622 586.181 355.74C575.831 345.747 576.748 329.414 576.941 316.067C561.518 315.177 527.824 315.45 512.193 316.042C512.104 318.43 512.112 320.82 512.215 323.207C513.791 359.643 530.246 391.978 556.936 416.512C581.567 437.314 605.175 447.588 637.603 449.823C620.605 480.092 594.286 475.553 564.537 475.309L512.313 475.248L449.549 475.316C431.366 475.334 408.652 477.773 392.765 467.696C368.303 452.178 372.763 421.988 372.811 397.019L372.836 329.511L372.807 259.148C372.698 222.138 366.501 182.43 415.114 175.471Z"/></g>
+        <g id="mark-right"><path d="M771.304 174.933C791.016 174.375 817.183 174.776 836.55 178.375C878.892 186.232 916.393 210.559 940.835 246.023C971.452 290.987 972.37 334.32 971.198 386.405C970.576 414.066 976.678 448.865 949.908 466.764C943.894 470.865 937.011 473.515 929.8 474.506C920.441 475.719 908.867 475.371 899.243 475.366L854.343 475.321L786.481 475.349C768.499 475.352 750.56 476.424 733.027 472.901C719.864 467.59 713.594 462.068 706.435 449.84C750.429 448.596 792.56 421.072 813.957 383.161C826.412 361.095 830.715 341.105 831.494 316.054C828.479 315.815 825.511 315.766 822.488 315.789C804.754 315.927 786.806 315.402 769.103 316.2C768.982 338.233 767.147 362.719 737.779 365.527C730.259 366.246 721.157 361.852 715.785 356.754C707.03 348.444 705.003 336.711 705.11 325.144C704.996 306.992 704.905 289.389 705.056 271.146C705.227 250.567 703.447 226.794 707.094 206.575C708.111 200.936 713.393 193.174 717.404 189.122C733.293 173.071 751.019 175.213 771.304 174.933Z"/></g>
+      </svg><span>Built by Anchor Digital</span>
+    </a>
+  </footer>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+
+<script>
+(function () {
+  /* Folio marginalia — the only scroll-driven behaviour on the page.
+     It never gates content visibility; it only relabels the margin. */
+  var folio = document.getElementById('folio');
+  var label = document.getElementById('folio-label');
+  var num   = folio.querySelector('.folio-num');
+  var map = [
+    { id: 'sec-portrait', n: '01', t: 'Portrait' },
+    { id: 'sec-about',    n: '02', t: 'About' },
+    { id: 'sec-pillar',   n: '03', t: 'Premier Leadership' },
+    { id: 'sec-index',    n: '04', t: 'Index' }
+  ];
+  var nodes = map.map(function (m) {
+    return { el: document.getElementById(m.id), n: m.n, t: m.t };
+  }).filter(function (m) { return m.el; });
+
+  function sync() {
+    var mid = window.scrollY + window.innerHeight / 2;
+    var active = null;
+    nodes.forEach(function (m) {
+      var top = m.el.offsetTop;
+      if (mid >= top && mid < top + m.el.offsetHeight) active = m;
+    });
+    if (active) {
+      if (num.textContent !== active.n) { num.textContent = active.n; label.textContent = active.t; }
+      folio.classList.add('is-visible');
+    } else {
+      folio.classList.remove('is-visible');
+    }
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { sync(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', sync, { passive: true });
+  sync();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+---
+// 7. THE INDEX — numbered editorial index, never a card grid.
+// Every entry 01-05 carries identical visual treatment. Row 05 points at "#"
+// because the blog does not exist yet, and it must remain indistinguishable
+// from the four live destinations.
+---
+
+<section class="index" id="sec-index">
+  <ul class="index-list list-none p-0">
+    <li><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
+      <span class="index-num">01</span>
+      <span class="index-name">Premier Leadership, LLC</span>
+      <span class="index-desc">Educational consulting &amp; leadership development</span>
+    </a></li>
+    <li><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
+      <span class="index-num">02</span>
+      <span class="index-name">Everyday Legends Foundation</span>
+      <span class="index-desc">Education, athletics &amp; service</span>
+    </a></li>
+    <li><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
+      <span class="index-num">03</span>
+      <span class="index-name">Educational Leadership</span>
+      <span class="index-desc">Alternative education high school principal</span>
+    </a></li>
+    <li>
+      <!-- Open by default so the sub-rows are present on load, in full-page
+           captures and in any PDF the client makes. -->
+      <details class="index-expand" open>
+        <summary class="index-row">
+          <span class="index-num">04</span>
+          <span class="index-name">The McClain Brothers</span>
+          <span class="index-desc">Jaylen, KJ &amp; Cam</span>
+        </summary>
+        <ul class="subindex list-none p-0">
+          <li><a class="subrow" href="https://www.jaylenmcclain.com" target="_blank" rel="noopener">
+            <span class="sub-indent" aria-hidden="true"></span>
+            <span class="sub-name">Jaylen McClain</span>
+            <span class="sub-desc">Ohio State Football | #8</span>
+          </a></li>
+          <li><a class="subrow" href="https://www.kjmcclain.com" target="_blank" rel="noopener">
+            <span class="sub-indent" aria-hidden="true"></span>
+            <span class="sub-name">KJ McClain</span>
+            <span class="sub-desc">University of Tennessee Football | #40</span>
+          </a></li>
+          <li><a class="subrow" href="https://www.cammcclain.com" target="_blank" rel="noopener">
+            <span class="sub-indent" aria-hidden="true"></span>
+            <span class="sub-name">Cam McClain</span>
+            <span class="sub-desc">Seton Hall Prep Football | #6</span>
+          </a></li>
+        </ul>
+      </details>
+    </li>
+    <li><a class="index-row" href="#">
+      <span class="index-num">05</span>
+      <span class="index-name">Charging It to the Game</span>
+      <span class="index-desc">The blog</span>
+    </a></li>
+  </ul>
+</section>
+
+<style>
+  /* Hung off-axis like the About block, and given far more air: this is the
+     conversion path, so it is the last place that should feel cramped. */
+  .index{
+    padding: clamp(128px, 19vw, 260px) var(--gutter) clamp(96px, 13vw, 168px) var(--gutter-wide);
+  }
+
+  .index-list{
+    max-width: var(--measure);
+    margin: 0 auto 0 0;
+    /* A gold hairline opens the index as well as closing each row. */
+    border-top: 1px solid var(--hair-gold);
+  }
+
+  .index-row{
+    display: grid;
+    grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
+    align-items: baseline;
+    gap: 0 var(--s3);
+    padding: clamp(34px, 4.6vw, 62px) 0;
+    /* Hairline, and gold rather than obsidian — the rules stop reading as
+       a table and start reading as an index. */
+    border-bottom: 1px solid var(--hair-gold);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 420ms var(--ease), border-color 420ms var(--ease);
+  }
+
+  .index-num{
+    font-family: var(--display);
+    /* Numeral tier — opsz 48, SOFT 40. Mid-scale, so the terminals carry
+       noticeably more roundness than the display tiers above. */
+    font-variation-settings: var(--fx-numeral);
+    font-weight: 400;
+    font-size: clamp(32px, 3.7vw, 54px);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--obsidian);
+    transition: color 420ms var(--ease);
+  }
+
+  .index-name{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(12px, 1.15vw, 15px);
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+  }
+
+  .index-desc{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: clamp(11.5px, 0.95vw, 13px);
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    color: var(--slate);
+    text-align: right;
+  }
+
+  /* Identical treatment across all five — no destination is distinguishable */
+  .index-row:hover,
+  .index-row:focus-visible{ transform: translateX(10px); border-bottom-color: var(--gold); }
+  .index-row:hover .index-num,
+  .index-row:focus-visible .index-num{ color: var(--gold); }
+  .index-row:active{ transform: translateX(5px); }
+  .index-row:focus-visible{
+    outline: 1px solid var(--gold);
+    outline-offset: 10px;
+  }
+
+  /* Row 04 expands rather than linking out. */
+  .index-expand{ border: 0; }
+  /* The whole sub-list is inset from the parent rows. */
+  .subindex{ margin: 0 0 0 clamp(26px, 4vw, 64px); }
+  .index-expand > summary{
+    cursor: pointer;
+    list-style: none;
+  }
+  .index-expand > summary::-webkit-details-marker{ display: none; }
+  .index-expand > summary::marker{ content: ""; }
+
+  .subrow{
+    display: grid;
+    grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
+    align-items: baseline;
+    gap: 0 var(--s3);
+    padding: clamp(20px, 2.4vw, 30px) 0;
+    /* Fainter than the parent rules, and inset so the sub-list reads as
+       subordinate to row 04 rather than as five more top-level entries. */
+    border-bottom: 1px solid var(--hair-gold-faint);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 420ms var(--ease), border-color 420ms var(--ease);
+  }
+
+  .subrow > .sub-indent{
+    /* the row treatment at reduced scale: indent stands in for the numeral */
+    border-top: 1px solid var(--hair-gold);
+    align-self: center;
+    width: 26px;
+    margin-left: auto;
+    height: 1px;
+    transition: background-color 420ms var(--ease), border-color 420ms var(--ease);
+  }
+
+  .sub-name{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(11px, 0.95vw, 12.5px);
+    line-height: 1.5;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+    padding-left: clamp(20px, 2.4vw, 34px);
+  }
+
+  .sub-desc{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: clamp(10.5px, 0.85vw, 11.5px);
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    color: var(--slate);
+    text-align: right;
+  }
+
+  .subrow:hover,
+  .subrow:focus-visible{ transform: translateX(10px); border-bottom-color: var(--hair-gold); }
+  .subrow:hover .sub-indent,
+  .subrow:focus-visible .sub-indent{ border-top-color: var(--gold); }
+  .subrow:active{ transform: translateX(5px); }
+  .subrow:focus-visible{ outline: 1px solid var(--gold); outline-offset: 8px; }
+
+  @media (max-width: 900px){
+    .index{
+      padding: clamp(96px, 18vw, 148px) var(--gutter) clamp(72px, 13vw, 112px);
+    }
+    .subindex{ margin-left: clamp(16px, 5vw, 34px); }
+
+    .index-row,
+    .subrow{
+      grid-template-columns: clamp(48px, 12vw, 64px) minmax(0, 1fr);
+      align-items: start;
+      gap: 8px var(--s2);
+    }
+    .index-num{
+      grid-row: span 2;
+      /* Body-adjacent grade — at ~32px the numerals are being read rather
+         than seen, so opsz drops and SOFT rises for warmth and legibility. */
+      font-variation-settings: var(--fx-small);
+    }
+    .index-desc,
+    .sub-desc{ text-align: left; }
+    .subrow > .sub-indent{ grid-row: span 2; align-self: start; margin-top: 8px; }
+    .sub-name{ padding-left: 0; }
+  }
+</style>

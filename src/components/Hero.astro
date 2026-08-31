@@ -1,0 +1,111 @@
+---
+// 1. HERO — the opening spread. No photograph, deliberately.
+// Hung hard off the left axis with a wasteful right margin: a magazine
+// cover never centre-stacks. The monogram is a mark of authorship; the
+// name is the display line, set at the top of the opsz axis so the
+// hairlines go as thin as Fraunces will take them.
+---
+
+<header class="hero">
+  <p class="hero-slug">KNOW Women — 50 Under 50 Women to Know in NJ — 2026</p>
+  <div class="hero-mark" role="img" aria-label="Dr. Syreeta McClain submark"></div>
+  <h1 class="hero-name">Dr.&nbsp;Syreeta<br /><span class="hero-name-last">McClain</span></h1>
+  <div class="hero-rule"></div>
+</header>
+
+<style>
+  .hero{
+    min-height: 92svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    /* Uneven by design: the right margin is roughly 2.5x the left. */
+    padding: clamp(112px, 17vw, 224px) var(--gutter-wide) clamp(96px, 12vw, 168px) var(--gutter);
+    text-align: left;
+  }
+
+  .hero-slug{
+    margin: 0 0 clamp(56px, 7vw, 104px);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 9.5px;
+    line-height: 2.2;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* The client submark. Source JPEG is 2100x1500 with a baked-in WHITE field
+     (JPEG cannot store alpha). Measured artwork bbox is 814x830 at x[652..1465]
+     y[320..1149]; cropped to it here, then multiplied so the white field drops
+     out against Porcelain.
+     NOTE: no ancestor may carry transform, opacity, filter or isolation, or the
+     blend would composite against a transparent group backdrop and the white
+     box returns. .hero, main and body are deliberately plain.
+     Never recoloured, distorted or stretched — aspect-ratio is locked to the
+     measured artwork box. */
+  .hero-mark{
+    width: clamp(112px, 12vw, 186px);
+    aspect-ratio: 814 / 830;
+    background-image: url("/brand_assets/SM%20submark%20_%20black%20transparent.jpeg");
+    background-repeat: no-repeat;
+    background-size: 257.99% auto;
+    background-position: 50.70% 47.76%;
+    mix-blend-mode: multiply;
+    margin-left: -0.06em;   /* optical: hangs the monogram to the text edge */
+  }
+
+  /* Display tier — opsz 144, wght 300, SOFT 15.
+     Maximum stroke contrast, thin elegant hairlines. */
+  .hero-name{
+    margin: clamp(32px, 4.5vw, 64px) 0 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-hero);
+    font-weight: 300;
+    font-size: clamp(50px, 10.4vw, 156px);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    color: var(--obsidian);
+  }
+
+  /* The second line hangs further left than the first — the page's first
+     statement that nothing here sits on a centre axis. */
+  .hero-name-last{
+    display: inline-block;
+    margin-left: clamp(28px, 6vw, 104px);
+  }
+
+  .hero-rule{
+    width: clamp(72px, 9vw, 132px);
+    height: 1px;
+    background: var(--hair-gold);
+    /* Tight to the name so it terminates the block rather than floating. */
+    margin: clamp(34px, 3.6vw, 52px) 0 0;
+  }
+
+  /* Transform-only settle. No opacity is involved, so the block renders at
+     full opacity on load and in full-page captures. */
+  /* The submark is deliberately NOT animated: an animated transform on a
+     mix-blend-mode element risks compositing it into its own layer mid-run,
+     which would bring the baked-in white JPEG field back. */
+  .hero-slug, .hero-name, .hero-rule{
+    animation: settle 900ms var(--ease) both;
+  }
+  .hero-slug { animation-delay:  80ms; }
+  .hero-name { animation-delay: 240ms; }
+  .hero-rule { animation-delay: 340ms; }
+
+  @media (max-width: 900px){
+    .hero{
+      min-height: 88svh;
+      padding: clamp(104px, 22vw, 160px) var(--gutter) clamp(96px, 18vw, 140px) var(--gutter);
+    }
+  }
+
+  @media (max-width: 560px){
+    .hero-slug{ font-size: 8.5px; letter-spacing: 0.26em; }
+    .hero-name{ letter-spacing: -0.028em; }
+    .hero-name-last{ margin-left: clamp(16px, 7vw, 32px); }
+  }
+</style>

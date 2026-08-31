@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ============================================================
+   THE SPREAD — Dr. Syreeta McClain
+   A printed magazine feature translated to screen.
+   Editorial refinement pass: the femininity is carried by
+   typographic contrast and negative space, not by colour.
+   ============================================================ */
+
+/* Client brand — exact values, no substitutions. These five are the whole
+   palette; nothing outside this list appears anywhere on the site. */
+@theme {
+  --color-obsidian:  #1A1613;
+  --color-slate:     #474440;
+  --color-gold:      #AF8C5C;
+  --color-cashmere:  #D1C7BD;
+  --color-porcelain: #E7E2DD;
+
+  --font-display: 'Fraunces', serif;
+  --font-sans:    'Montserrat', sans-serif;
+}
+
+:root{
+  /* Short aliases so the section CSS reads the way it was written */
+  --obsidian:  var(--color-obsidian);
+  --slate:     var(--color-slate);
+  --gold:      var(--color-gold);
+  --cashmere:  var(--color-cashmere);
+  --porcelain: var(--color-porcelain);
+
+  --hair:        rgba(26, 22, 19, 0.16);
+  --hair-strong: rgba(26, 22, 19, 0.30);
+  --hair-light:  rgba(231, 226, 221, 0.22);
+  /* Gold hairlines — accent weight only, never a fill */
+  --hair-gold:        rgba(175, 140, 92, 0.44);
+  --hair-gold-faint:  rgba(175, 140, 92, 0.26);
+
+  /* Type */
+  --display: var(--font-display);
+  --sans:    var(--font-sans);
+
+  /* ----------------------------------------------------------
+     OPTICAL SYSTEM
+     Fraunces' opsz axis swaps structural detail, it does not merely
+     scale: high opsz goes sharp and high-contrast, low opsz thickens
+     strokes and opens spacing for legibility. SOFT rounds the
+     terminals (0 crisp, 100 very round). WONK swaps in the quirky
+     letterforms — in italic it gives flagged ball terminals on
+     b d h k l v w.
+
+     Sharp and high-contrast where the type is SEEN.
+     Soft and warm where the type is READ.
+
+     Fraunces' own defaults are wght 900, WONK 1, SOFT 100. Every
+     tier below states all four axes so no default ever applies.
+     ---------------------------------------------------------- */
+  --fx-hero:    'opsz' 144, 'wght' 300, 'SOFT' 15, 'WONK' 0;
+  --fx-display: 'opsz' 96,  'wght' 340, 'SOFT' 32, 'WONK' 0;
+  --fx-quote:   'opsz' 96,  'wght' 340, 'SOFT' 40, 'WONK' 1;
+  --fx-dropcap: 'opsz' 144, 'wght' 380, 'SOFT' 20, 'WONK' 0;
+  --fx-lede:    'opsz' 72,  'wght' 350, 'SOFT' 35, 'WONK' 0;
+  --fx-numeral: 'opsz' 48,  'wght' 400, 'SOFT' 40, 'WONK' 0;
+  --fx-small:   'opsz' 24,  'wght' 420, 'SOFT' 70, 'WONK' 0;
+
+  /* Spacing tokens — intentional steps, never arbitrary */
+  --s1: 8px;   --s2: 16px;  --s3: 24px;  --s4: 40px;
+  --s5: 64px;  --s6: 96px;  --s7: 144px; --s8: 200px;
+
+  /* Negative space is the material. The trim gutter is generous; the
+     "wide" gutter is the deliberately wasteful side that breaks the
+     page off its centre axis. */
+  --gutter:      clamp(26px, 7vw, 128px);
+  --gutter-wide: clamp(26px, 16vw, 340px);
+  --measure:     1100px;
+
+  /* Body metrics — the drop cap solve keys off these */
+  --bio-size: 17px;
+  --bio-lh:   1.8;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ -webkit-text-size-adjust: 100%; }
+
+body{
+  margin: 0;
+  background-color: var(--porcelain);
+  /* Never a flat ground — layered washes in porcelain and cashmere */
+  background-image:
+    radial-gradient(120% 78% at 50% -14%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 58%),
+    radial-gradient(88% 60% at 8% 20%,   rgba(209,199,189,0.42) 0%, rgba(209,199,189,0) 62%),
+    radial-gradient(74% 54% at 96% 72%,  rgba(209,199,189,0.34) 0%, rgba(209,199,189,0) 60%);
+  background-attachment: fixed;
+  color: var(--obsidian);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Print-stock grain. Fixed sheet over the whole page.
+   NOTE: this is a sibling of the content, never an ancestor, so it cannot
+   trap the hero submark's mix-blend-mode. */
+.grain{
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+}
+
+::selection{ background: var(--gold); color: var(--porcelain); }
+
+a{ color: inherit; }
+
+/* ------------------------------------------------------------
+   Motion — transform only. Nothing on the page ever starts invisible.
+   A printed spread does not animate. The only orchestrated motion is a short
+   transform-only settle on the hero block; no opacity is involved, so every
+   element renders at full opacity on load and in captures.
+   ------------------------------------------------------------ */
+@keyframes settle{
+  from{ transform: translateY(12px); }
+  to{   transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Body metrics step down on small screens; the drop cap solve is re-run
+   against these values at this breakpoint in About.astro. */
+@media (max-width: 560px){
+  :root{
+    --bio-size: 16px;
+    --bio-lh: 1.74;
+  }
+}

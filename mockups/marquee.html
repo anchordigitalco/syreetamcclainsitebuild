@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dr. Syreeta McClain — Marquee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<script>
+  /* ?static=1 — pauses every marquee and pins tracks to translateX(0) for screenshots. */
+  if (new URLSearchParams(location.search).has('static')) {
+    document.documentElement.classList.add('is-static');
+  }
+</script>
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --obsidian:#1A1613;
+  --slate:#474440;
+  --gold:#AF8C5C;
+  --cashmere:#D1C7BD;
+  --porcelain:#E7E2DD;
+
+  /* spacing scale — intentional steps, not arbitrary */
+  --sp-1:8px;  --sp-2:16px; --sp-3:24px; --sp-4:40px;
+  --sp-5:64px; --sp-6:96px; --sp-7:140px; --sp-8:200px;
+
+  --shell:1320px;
+  --gut:24px;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--obsidian);
+  color:var(--porcelain);
+  font-family:'Montserrat',sans-serif;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;}
+
+.display{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 144,'wght' 400,'SOFT' 0,'WONK' 0;
+}
+
+/* micro-type — the connective tissue across every band */
+.micro{
+  font-family:'Montserrat',sans-serif;
+  font-weight:300;
+  font-size:11px;
+  line-height:1.5;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+}
+
+.shell{
+  width:100%;
+  max-width:var(--shell);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+/* ============================================================
+   GROUNDS — obsidian bands carry depth, never a flat fill
+   ============================================================ */
+.ground-obsidian{
+  position:relative;
+  background-color:var(--obsidian);
+  background-image:
+    radial-gradient(120% 90% at 12% 0%, rgba(175,140,92,.13), rgba(175,140,92,0) 58%),
+    radial-gradient(100% 80% at 88% 100%, rgba(209,199,189,.075), rgba(209,199,189,0) 62%),
+    radial-gradient(70% 60% at 50% 45%, rgba(71,68,64,.34), rgba(71,68,64,0) 70%);
+  isolation:isolate;
+}
+.ground-obsidian::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:var(--grain);
+  background-size:260px 260px;
+  opacity:.055;
+  mix-blend-mode:overlay;
+  pointer-events:none;
+  z-index:0;
+}
+.ground-obsidian > *{position:relative;z-index:1;}
+
+.ground-porcelain{
+  position:relative;
+  background-color:var(--porcelain);
+  background-image:
+    radial-gradient(110% 70% at 78% 0%, rgba(209,199,189,.62), rgba(209,199,189,0) 60%),
+    radial-gradient(90% 60% at 8% 100%, rgba(175,140,92,.10), rgba(175,140,92,0) 66%);
+  color:var(--slate);
+  isolation:isolate;
+}
+.ground-porcelain::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:var(--grain);
+  background-size:260px 260px;
+  opacity:.05;
+  mix-blend-mode:multiply;
+  pointer-events:none;
+  z-index:0;
+}
+.ground-porcelain > *{position:relative;z-index:1;}
+
+/* ============================================================
+   MARQUEE ENGINE — transform only, seamless, duplicated track
+   ============================================================ */
+.mq{
+  overflow:hidden;
+  width:100%;
+}
+.mq__track{
+  display:flex;
+  width:max-content;
+  will-change:transform;
+  animation:mq-left var(--dur,40s) linear infinite;
+}
+.mq--rev .mq__track{animation-name:mq-right;}
+
+.mq__group{
+  display:block;
+  white-space:nowrap;
+  padding-inline-end:.32em;
+}
+
+@keyframes mq-left{
+  from{transform:translate3d(0,0,0);}
+  to{transform:translate3d(-50%,0,0);}
+}
+@keyframes mq-right{
+  from{transform:translate3d(-50%,0,0);}
+  to{transform:translate3d(0,0,0);}
+}
+/* index rows carry four copies — one group is 25% of the track */
+.mq--quad .mq__track{animation-name:mq-left-q;}
+.mq--quad.mq--rev .mq__track{animation-name:mq-right-q;}
+@keyframes mq-left-q{
+  from{transform:translate3d(0,0,0);}
+  to{transform:translate3d(-25%,0,0);}
+}
+@keyframes mq-right-q{
+  from{transform:translate3d(-25%,0,0);}
+  to{transform:translate3d(0,0,0);}
+}
+
+.d{
+  color:var(--gold);
+  -webkit-text-stroke:0;
+  padding-inline:.14em;
+}
+
+/* screenshot mode */
+.is-static .mq__track{
+  animation-play-state:paused !important;
+  transform:translateX(0) !important;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mq__track{
+    animation:none !important;
+    transform:translateX(0) !important;
+  }
+  *{transition-duration:.01ms !important;}
+}
+
+/* ============================================================
+   1 — HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-block:var(--sp-6);
+  overflow:hidden;
+}
+.hero::before{
+  /* vignette so the moving type sits in a lit room, not a flat void */
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(75% 55% at 50% 50%, rgba(26,22,19,0) 30%, rgba(26,22,19,.72) 100%);
+  pointer-events:none;
+  z-index:0;
+}
+.hero__band{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 144,'wght' 400,'SOFT' 0,'WONK' 0;
+  font-size:24vw;
+  line-height:.84;
+  letter-spacing:-.028em;
+  text-transform:uppercase;
+}
+.hero__band--solid .mq__group{color:var(--porcelain);}
+.hero__band--outline .mq__group{
+  color:transparent;
+  -webkit-text-stroke:1px var(--porcelain);
+}
+
+.hero__name{
+  display:block;
+  text-align:center;
+  color:var(--porcelain);
+  font-size:11px;
+  letter-spacing:.4em;
+  padding-block:var(--sp-5);
+  margin:0;
+  font-weight:300;
+  text-transform:uppercase;
+}
+.hero__name::before,
+.hero__name::after{
+  content:'';
+  display:block;
+  width:34px;
+  height:1px;
+  background:rgba(175,140,92,.55);
+  margin-inline:auto;
+}
+.hero__name::before{margin-bottom:var(--sp-3);}
+.hero__name::after{margin-top:var(--sp-3);}
+
+/* ============================================================
+   2 — PORTRAIT
+   ============================================================ */
+.portrait{
+  padding-block:var(--sp-7);
+}
+.portrait__grid{
+  display:grid;
+  gap:var(--sp-6);
+}
+.portrait__text{padding-inline:var(--gut);}
+.portrait__media{
+  height:70vh;
+  min-height:420px;
+  max-height:760px;
+}
+.portrait__eyebrow{
+  color:var(--slate);
+  margin:0 0 var(--sp-4);
+  font-size:10px;
+  letter-spacing:.16em;
+  opacity:.85;
+}
+.portrait__tagline{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 120,'wght' 400,'SOFT' 0,'WONK' 0;
+  color:var(--obsidian);
+  font-size:clamp(40px,9vw,80px);
+  line-height:1.04;
+  letter-spacing:-.03em;
+  margin:0;
+}
+.portrait__tagline em{
+  font-style:normal;
+  color:var(--gold);
+}
+
+/* photo treatment — gradient overlay + multiply colour layer */
+.photo{
+  position:relative;
+  overflow:hidden;
+  background:var(--obsidian);
+  isolation:isolate;
+}
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.photo::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background:linear-gradient(to top, rgba(26,22,19,.40), rgba(26,22,19,0) 54%);
+  pointer-events:none;
+}
+.photo::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(to bottom, rgba(175,140,92,.20), rgba(71,68,64,.26));
+  mix-blend-mode:multiply;
+  pointer-events:none;
+}
+
+/* ============================================================
+   3 — ABOUT
+   ============================================================ */
+.about{
+  padding-block:0 var(--sp-7);
+}
+.about__body{
+  max-width:720px;
+  margin-inline:auto;
+}
+.about__body p{
+  font-size:17px;
+  line-height:1.8;
+  font-weight:300;
+  color:var(--slate);
+  margin:0 0 var(--sp-4);
+}
+.about__body p:last-child{margin-bottom:0;}
+
+/* ============================================================
+   4 — PILLAR
+   ============================================================ */
+.pillar{
+  padding-block:var(--sp-7);
+  border-top:1px solid rgba(71,68,64,.14);
+}
+.pillar__grid{
+  display:grid;
+  gap:var(--sp-6);
+}
+.pillar__text{padding-inline:var(--gut);}
+.pillar__media{
+  height:66vh;
+  min-height:400px;
+  max-height:720px;
+}
+.pillar__kicker{
+  color:var(--slate);
+  margin:0 0 var(--sp-2);
+  opacity:.8;
+}
+.pillar__role{
+  font-family:'Montserrat',sans-serif;
+  font-weight:500;
+  font-size:13px;
+  letter-spacing:.06em;
+  color:var(--obsidian);
+  margin:0 0 var(--sp-4);
+}
+.pillar__lede{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 36,'wght' 400,'SOFT' 12,'WONK' 0;
+  color:var(--obsidian);
+  font-size:clamp(24px,3.2vw,31px);
+  line-height:1.3;
+  letter-spacing:-.018em;
+  margin:0 0 var(--sp-4);
+}
+.pillar__body p{
+  max-width:540px;
+  font-size:16px;
+  line-height:1.8;
+  font-weight:300;
+  color:var(--slate);
+  margin:0 0 var(--sp-3);
+}
+.pillar__link{
+  display:inline-block;
+  margin-top:var(--sp-3);
+  color:var(--obsidian);
+  text-decoration:none;
+  border-bottom:1px solid rgba(175,140,92,.7);
+  padding-bottom:6px;
+  transition:color .35s var(--ease), border-color .35s var(--ease);
+}
+.pillar__link:hover{color:var(--gold);border-color:var(--gold);}
+.pillar__link:active{color:var(--slate);}
+.pillar__link:focus-visible{
+  outline:1px solid var(--gold);
+  outline-offset:6px;
+}
+
+/* ============================================================
+   5 — FULL-BLEED BREAK
+   ============================================================ */
+.break{
+  padding:0;
+}
+.break .photo{
+  height:70vh;
+  min-height:380px;
+}
+.break .photo img{object-position:center 58%;}
+.break .photo::before{
+  background:linear-gradient(to top, rgba(26,22,19,.58), rgba(26,22,19,0) 50%),
+             linear-gradient(to bottom, rgba(26,22,19,.42), rgba(26,22,19,0) 34%);
+}
+
+/* ============================================================
+   6 — PULL QUOTE
+   ============================================================ */
+.quote{
+  padding-block:var(--sp-8);
+  text-align:center;
+}
+.quote p{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 96,'wght' 400,'SOFT' 0,'WONK' 0;
+  color:var(--gold);
+  font-size:clamp(30px,6.2vw,64px);
+  line-height:1.16;
+  letter-spacing:-.028em;
+  margin:0;
+  max-width:900px;
+  margin-inline:auto;
+}
+
+/* ============================================================
+   7 — THE INDEX
+   ============================================================ */
+.index{
+  padding-block:var(--sp-6) var(--sp-6);
+  border-top:1px solid rgba(209,199,189,.10);
+}
+.idx-row{
+  display:block;
+  text-decoration:none;
+  color:var(--porcelain);
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-variation-settings:'opsz' 72,'wght' 400,'SOFT' 0,'WONK' 0;
+  font-size:clamp(26px,5.2vw,48px);
+  line-height:1.34;
+  letter-spacing:-.02em;
+  text-transform:uppercase;
+  padding-block:16px;
+  border-bottom:1px solid rgba(209,199,189,.10);
+  transition:color .4s var(--ease), -webkit-text-stroke-color .4s var(--ease);
+}
+.idx-row--solid .mq__group{color:var(--porcelain);}
+.idx-row--outline .mq__group{
+  color:transparent;
+  -webkit-text-stroke:1px var(--porcelain);
+}
+.idx-row:hover .mq__track,
+.idx-row:focus-visible .mq__track{animation-play-state:paused;}
+.idx-row:hover .mq__group,
+.idx-row:focus-visible .mq__group{color:var(--gold);}
+.idx-row--outline:hover .mq__group,
+.idx-row--outline:focus-visible .mq__group{
+  color:transparent;
+  -webkit-text-stroke-color:var(--gold);
+}
+.idx-row:focus-visible{
+  outline:1px solid var(--gold);
+  outline-offset:-1px;
+}
+.idx-row:active .mq__group{color:var(--cashmere);}
+
+.brothers{
+  list-style:none;
+  margin:0;
+  padding:0 var(--gut) 0 clamp(20px,6vw,88px);
+  border-bottom:1px solid rgba(209,199,189,.10);
+}
+.brothers li + li{border-top:1px solid rgba(209,199,189,.10);}
+.brothers a{
+  display:block;
+  padding-block:22px;
+  color:var(--cashmere);
+  text-decoration:none;
+  letter-spacing:.1em;
+  font-size:10px;
+  text-wrap:balance;
+  transition:color .3s var(--ease), transform .4s var(--ease);
+}
+.brothers a:hover{color:var(--gold);transform:translateX(6px);}
+.brothers a:active{color:var(--porcelain);}
+.brothers a:focus-visible{
+  outline:1px solid var(--gold);
+  outline-offset:2px;
+}
+
+/* ============================================================
+   8 — FOOTER
+   ============================================================ */
+.site-footer{
+  /* flat #1A1613 — the client submark PNG has obsidian baked in and must match exactly */
+  background:#1A1613;
+  border-top:1px solid rgba(209,199,189,.10);
+  padding-block:var(--sp-5);
+}
+.foot-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:var(--sp-4);
+}
+.foot-submark{
+  width:128px;
+  height:91px;
+  object-fit:contain;
+  margin:0 auto var(--sp-3);
+}
+.footer-copyright{
+  margin:0;
+  font-size:11px;
+  font-weight:300;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--cashmere);
+}
+.footer-credit{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--cashmere);
+  opacity:.65;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:300;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  transition:opacity .3s var(--ease);
+}
+.footer-credit:hover{opacity:1;}
+.footer-credit:active{opacity:.8;}
+.footer-credit:focus-visible{
+  opacity:1;
+  outline:1px solid var(--gold);
+  outline-offset:6px;
+}
+.footer-mark{
+  /* viewBox 364 171 615 312 → 1.971:1. Height = credit cap height; width follows. */
+  height:15px;
+  width:29.57px;
+  flex:0 0 auto;
+}
+
+/* ============================================================
+   RESPONSIVE — mobile-first above, desktop refinements here
+   ============================================================ */
+@media (min-width:600px){
+  :root{--gut:40px;}
+  .micro{font-size:12px;}
+  .hero__name{font-size:12px;}
+  .hero__band{font-size:20vw;}
+  .portrait__eyebrow{font-size:12px;letter-spacing:.28em;}
+  .brothers a{font-size:12px;letter-spacing:.2em;}
+}
+
+@media (min-width:900px){
+  :root{--gut:56px;}
+
+  .hero__band{font-size:14vw;}
+  .hero__name{padding-block:var(--sp-5);}
+
+  .portrait{padding-block:var(--sp-8);}
+  .portrait__grid{
+    grid-template-columns:minmax(0,48fr) minmax(0,52fr);
+    /* the tagline shares a baseline with the foot of the photo rather than
+       floating in the middle of the column */
+    align-items:end;
+    gap:var(--sp-6);
+    /* the grid is full-bleed: the photo runs to the viewport edge while the text
+       column keeps the shell inset. Percentages resolve against the section width,
+       so this never disagrees with the scrollbar the way 100vw does. */
+    padding-right:max(var(--gut), calc((100% - var(--shell)) / 2 + var(--gut)));
+  }
+  .portrait__media{height:86vh;max-height:880px;}
+  .portrait__text{padding-inline:0;padding-bottom:var(--sp-2);}
+
+  .about{padding-block:0 var(--sp-8);}
+
+  .pillar{padding-block:var(--sp-8);}
+  .pillar__grid{
+    grid-template-columns:minmax(0,58fr) minmax(0,42fr);
+    align-items:center;
+    gap:var(--sp-7);
+    /* mirrored: text keeps the shell inset, photo bleeds to the right edge */
+    padding-left:max(var(--gut), calc((100% - var(--shell)) / 2 + var(--gut)));
+  }
+  .pillar__text{padding-inline:0;max-width:660px;}
+  .pillar__media{height:78vh;max-height:780px;}
+
+  .foot-inner{
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:flex-end;
+    text-align:left;
+    gap:var(--sp-5);
+  }
+  .foot-submark{margin-inline:0;}
+}
+
+@media (min-width:1400px){
+  .hero__band--outline .mq__group{-webkit-text-stroke-width:1.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     1 — HERO
+     ============================================================ -->
+<header class="hero ground-obsidian">
+  <div class="hero__band hero__band--solid mq" aria-label="Educational leader, consultant, NIL momager, founder, speaker, principal">
+    <div class="mq__track" style="--dur:40s">
+      <span class="mq__group">EDUCATIONAL LEADER <span class="d">&#9670;</span> CONSULTANT <span class="d">&#9670;</span> NIL MOMAGER <span class="d">&#9670;</span> FOUNDER <span class="d">&#9670;</span> SPEAKER <span class="d">&#9670;</span> PRINCIPAL <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EDUCATIONAL LEADER <span class="d">&#9670;</span> CONSULTANT <span class="d">&#9670;</span> NIL MOMAGER <span class="d">&#9670;</span> FOUNDER <span class="d">&#9670;</span> SPEAKER <span class="d">&#9670;</span> PRINCIPAL <span class="d">&#9670;</span></span>
+    </div>
+  </div>
+
+  <p class="hero__name">Dr. Syreeta McClain</p>
+
+  <div class="hero__band hero__band--outline mq mq--rev" aria-hidden="true">
+    <div class="mq__track" style="--dur:40s">
+      <span class="mq__group">SPEAKER <span class="d">&#9670;</span> PRINCIPAL <span class="d">&#9670;</span> EDUCATIONAL LEADER <span class="d">&#9670;</span> CONSULTANT <span class="d">&#9670;</span> NIL MOMAGER <span class="d">&#9670;</span> FOUNDER <span class="d">&#9670;</span></span>
+      <span class="mq__group">SPEAKER <span class="d">&#9670;</span> PRINCIPAL <span class="d">&#9670;</span> EDUCATIONAL LEADER <span class="d">&#9670;</span> CONSULTANT <span class="d">&#9670;</span> NIL MOMAGER <span class="d">&#9670;</span> FOUNDER <span class="d">&#9670;</span></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     2 — PORTRAIT
+     ============================================================ -->
+<div class="porcelain-stack ground-porcelain">
+<section class="portrait">
+    <div class="portrait__grid">
+      <figure class="portrait__media photo" style="margin:0">
+        <img src="../brand_assets/SHP%20SHoot%207.jpg"
+             alt="Dr. Syreeta McClain in a red blazer and jeans, standing on a downtown street"
+             style="object-position:center 42%">
+      </figure>
+      <div class="portrait__text">
+        <p class="portrait__eyebrow micro">Educator &middot; Consultant &middot; Momager &middot; Founder</p>
+        <h1 class="portrait__tagline">Where Leadership Meets <em>Legacy</em></h1>
+      </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     3 — ABOUT
+     ============================================================ -->
+<section class="about">
+  <div class="shell">
+    <div class="about__body">
+      <p>Dr. Syreeta McClain is an accomplished educational leader, high school principal, consultant, speaker, and nonprofit co-founder with more than two decades of experience transforming the lives of young people and the systems that serve them. She specializes in customized high school programming, alternative education, student engagement, leadership development, and creating innovative pathways for student success. As the CEO of Premier Leadership, LLC, she provides leadership coaching, professional development, workshops, program development, and keynote presentations for educators, schools, organizations, parents, and community leaders.</p>
+      <p>She is also the co-founder of the Everyday Legends Foundation, a nonprofit committed to strengthening communities grounded in their three pillars: education, athletics, and service. Drawing from her unique experience as an educator, executive leader, and nonprofit founder, Dr. McClain now bridges her skillsets with the evolving landscape of sports and NIL, as athletic manager to her sons, while empowering individuals and families to maximize their impact.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4 — PILLAR : PREMIER LEADERSHIP, LLC
+     ============================================================ -->
+<section class="pillar">
+    <div class="pillar__grid">
+      <div class="pillar__text">
+        <p class="pillar__kicker micro">Premier Leadership, LLC</p>
+        <p class="pillar__role">Founder &amp; CEO | Educational Consultant</p>
+        <p class="pillar__lede">Leadership is not simply a position&mdash;it is the responsibility to move people, ideas, and organizations forward.</p>
+        <div class="pillar__body">
+          <p>Premier Leadership was created from more than 20 years of real-world experience leading schools, developing programs, navigating complex systems, and working alongside students, families, educators, and community partners. Dr. McClain brings that experience beyond the schoolhouse to help others turn vision into meaningful action.</p>
+          <p>Through consulting, leadership coaching, professional development, workshops, strategic planning, program development, and speaking engagements, Premier Leadership partners with schools, organizations, leaders, and communities ready to strengthen their people and increase their impact.</p>
+        </div>
+        <a class="pillar__link micro" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Visit Premier Leadership</a>
+      </div>
+      <figure class="pillar__media photo" style="margin:0">
+        <img src="../brand_assets/KNOW%20shoot%205.jpg"
+             alt="Dr. Syreeta McClain seated, wearing a leopard-print blazer"
+             style="object-position:center 34%">
+      </figure>
+    </div>
+</section>
+</div><!-- /.porcelain-stack -->
+
+<!-- ============================================================
+     5 — FULL-BLEED BREAK
+     ============================================================ -->
+<section class="break ground-obsidian" aria-hidden="true">
+  <div class="photo">
+    <img src="../brand_assets/SHP%20shoot%203.jpg" alt="">
+  </div>
+</section>
+
+<!-- ============================================================
+     6 — PULL QUOTE
+     ============================================================ -->
+<section class="quote ground-obsidian">
+  <div class="shell">
+    <p>&ldquo;Every decision is viewed through a larger lens: Legacy.&rdquo;</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     7 — THE INDEX
+     ============================================================ -->
+<section class="index ground-obsidian" aria-label="Index">
+
+  <a class="idx-row idx-row--solid mq mq--quad" href="https://www.premierleadersllc.com" target="_blank" rel="noopener" aria-label="Premier Leadership, LLC — educational consulting and leadership development">
+    <div class="mq__track" style="--dur:39s">
+      <span class="mq__group">PREMIER LEADERSHIP, LLC <span class="d">&#9670;</span> EDUCATIONAL CONSULTING &amp; LEADERSHIP DEVELOPMENT <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">PREMIER LEADERSHIP, LLC <span class="d">&#9670;</span> EDUCATIONAL CONSULTING &amp; LEADERSHIP DEVELOPMENT <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">PREMIER LEADERSHIP, LLC <span class="d">&#9670;</span> EDUCATIONAL CONSULTING &amp; LEADERSHIP DEVELOPMENT <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">PREMIER LEADERSHIP, LLC <span class="d">&#9670;</span> EDUCATIONAL CONSULTING &amp; LEADERSHIP DEVELOPMENT <span class="d">&#9670;</span></span>
+    </div>
+  </a>
+
+  <a class="idx-row idx-row--outline mq mq--quad mq--rev" href="https://www.everydaylegend.com" target="_blank" rel="noopener" aria-label="Everyday Legends Foundation — education, athletics and service">
+    <div class="mq__track" style="--dur:33s">
+      <span class="mq__group">EVERYDAY LEGENDS FOUNDATION <span class="d">&#9670;</span> EDUCATION, ATHLETICS &amp; SERVICE <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EVERYDAY LEGENDS FOUNDATION <span class="d">&#9670;</span> EDUCATION, ATHLETICS &amp; SERVICE <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EVERYDAY LEGENDS FOUNDATION <span class="d">&#9670;</span> EDUCATION, ATHLETICS &amp; SERVICE <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EVERYDAY LEGENDS FOUNDATION <span class="d">&#9670;</span> EDUCATION, ATHLETICS &amp; SERVICE <span class="d">&#9670;</span></span>
+    </div>
+  </a>
+
+  <a class="idx-row idx-row--solid mq mq--quad" href="https://www.ucvts.org" target="_blank" rel="noopener" aria-label="Educational leadership — alternative education high school principal">
+    <div class="mq__track" style="--dur:36s">
+      <span class="mq__group">EDUCATIONAL LEADERSHIP <span class="d">&#9670;</span> ALTERNATIVE EDUCATION HIGH SCHOOL PRINCIPAL <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EDUCATIONAL LEADERSHIP <span class="d">&#9670;</span> ALTERNATIVE EDUCATION HIGH SCHOOL PRINCIPAL <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EDUCATIONAL LEADERSHIP <span class="d">&#9670;</span> ALTERNATIVE EDUCATION HIGH SCHOOL PRINCIPAL <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">EDUCATIONAL LEADERSHIP <span class="d">&#9670;</span> ALTERNATIVE EDUCATION HIGH SCHOOL PRINCIPAL <span class="d">&#9670;</span></span>
+    </div>
+  </a>
+
+  <div class="idx-row idx-row--outline mq mq--quad mq--rev" aria-label="The McClain Brothers — Jaylen, KJ, Cam">
+    <div class="mq__track" style="--dur:21s">
+      <span class="mq__group">THE McCLAIN BROTHERS <span class="d">&#9670;</span> JAYLEN &middot; KJ &middot; CAM <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">THE McCLAIN BROTHERS <span class="d">&#9670;</span> JAYLEN &middot; KJ &middot; CAM <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">THE McCLAIN BROTHERS <span class="d">&#9670;</span> JAYLEN &middot; KJ &middot; CAM <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">THE McCLAIN BROTHERS <span class="d">&#9670;</span> JAYLEN &middot; KJ &middot; CAM <span class="d">&#9670;</span></span>
+    </div>
+  </div>
+
+  <ul class="brothers">
+    <li><a class="micro" href="https://www.jaylenmcclain.com" target="_blank" rel="noopener">Jaylen McClain &mdash; Ohio State Football | #8</a></li>
+    <li><a class="micro" href="https://www.kjmcclain.com" target="_blank" rel="noopener">KJ McClain &mdash; University of Tennessee Football | #40</a></li>
+    <li><a class="micro" href="https://www.cammcclain.com" target="_blank" rel="noopener">Cam McClain &mdash; Seton Hall Prep Football | #6</a></li>
+  </ul>
+
+  <a class="idx-row idx-row--solid mq mq--quad" href="#" aria-label="Charging It To The Game — the blog">
+    <div class="mq__track" style="--dur:19s">
+      <span class="mq__group">CHARGING IT TO THE GAME <span class="d">&#9670;</span> THE BLOG <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">CHARGING IT TO THE GAME <span class="d">&#9670;</span> THE BLOG <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">CHARGING IT TO THE GAME <span class="d">&#9670;</span> THE BLOG <span class="d">&#9670;</span></span>
+      <span class="mq__group" aria-hidden="true">CHARGING IT TO THE GAME <span class="d">&#9670;</span> THE BLOG <span class="d">&#9670;</span></span>
+    </div>
+  </a>
+
+</section>
+
+<!-- ============================================================
+     8 — FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="shell foot-inner">
+    <div>
+      <img class="foot-submark" src="../brand_assets/SM%20submark%20_%20gold_obsidian.png" alt="Dr. Syreeta McClain submark" width="2100" height="1500">
+      <p class="footer-copyright">&copy; 2026 Dr. Syreeta McClain. All rights reserved.</p>
+    </div>
+    <a class="footer-credit" href="https://anchordigitalco.com" target="_blank" rel="noopener">
+      <svg class="footer-mark" viewBox="364 171 615 312" fill="currentColor" aria-hidden="true">
+        <g id="mark-left"><path d="M415.114 175.471C422.662 174.519 435.65 175.176 443.54 175.195C475.422 175.269 507.295 175.281 539.177 175.255L576.692 175.207C595.257 175.148 611.257 173.139 625.62 187.312C636.751 197.725 640.393 211.89 640.298 226.753C640.115 255.322 639.878 284.165 640.286 312.751C640.212 328.236 641.49 344.62 629.769 356.621C617.313 369.374 598.488 367.622 586.181 355.74C575.831 345.747 576.748 329.414 576.941 316.067C561.518 315.177 527.824 315.45 512.193 316.042C512.104 318.43 512.112 320.82 512.215 323.207C513.791 359.643 530.246 391.978 556.936 416.512C581.567 437.314 605.175 447.588 637.603 449.823C620.605 480.092 594.286 475.553 564.537 475.309L512.313 475.248L449.549 475.316C431.366 475.334 408.652 477.773 392.765 467.696C368.303 452.178 372.763 421.988 372.811 397.019L372.836 329.511L372.807 259.148C372.698 222.138 366.501 182.43 415.114 175.471Z"/></g>
+        <g id="mark-right"><path d="M771.304 174.933C791.016 174.375 817.183 174.776 836.55 178.375C878.892 186.232 916.393 210.559 940.835 246.023C971.452 290.987 972.37 334.32 971.198 386.405C970.576 414.066 976.678 448.865 949.908 466.764C943.894 470.865 937.011 473.515 929.8 474.506C920.441 475.719 908.867 475.371 899.243 475.366L854.343 475.321L786.481 475.349C768.499 475.352 750.56 476.424 733.027 472.901C719.864 467.59 713.594 462.068 706.435 449.84C750.429 448.596 792.56 421.072 813.957 383.161C826.412 361.095 830.715 341.105 831.494 316.054C828.479 315.815 825.511 315.766 822.488 315.789C804.754 315.927 786.806 315.402 769.103 316.2C768.982 338.233 767.147 362.719 737.779 365.527C730.259 366.246 721.157 361.852 715.785 356.754C707.03 348.444 705.003 336.711 705.11 325.144C704.996 306.992 704.905 289.389 705.056 271.146C705.227 250.567 703.447 226.794 707.094 206.575C708.111 200.936 713.393 193.174 717.404 189.122C733.293 173.071 751.019 175.213 771.304 174.933Z"/></g>
+      </svg>
+      <span>Built by Anchor Digital</span>
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
