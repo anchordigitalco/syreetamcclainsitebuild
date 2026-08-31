@@ -1,0 +1,229 @@
+---
+// 5. PILLAR — Athletic Management / "Momager".
+// Modelled on PillarPremier: kicker, role, body copy, photograph. No CTA —
+// the brothers' own sites are the destination and they are already entry 04
+// in the index below.
+//
+// The section ends on the body copy deliberately. CONTEXT.md's source
+// paragraph runs on into "Every decision is viewed through a larger lens:
+// Legacy", but that line is the PullQuote component immediately following, at
+// full display scale. It is not repeated here.
+//
+// The bleachers plate bleeds off the RIGHT trim only, with a Cashmere ground
+// carrying the rest of the band as visible negative space — the treatment the
+// cleats detail used to get from BreakBand, before that component was
+// dissolved and its gradient + multiply layer moved into .plate-img.
+// Crop provenance. brand_assets/mcclain-bleachers.jpg carries EXIF
+// orientation 6: its stored buffer is 2976x1984 but it displays as 1984x2976 —
+// a PORTRAIT frame, not a horizontal one. Crops were cut from a master with
+// that rotation applied (sharp .rotate(), giving 1984x2976):
+//   -plate  extract left 280, top 620, 1500 x 2000   (3:4, cut low and in
+//           from the right to drop nearly all the sky)
+// and mcclain-field-torso from brand_assets/mcclain-field.jpg (no EXIF flag):
+//   extract left 911, top 1040, 950 x 1425           (2:3, torso-up)
+import { Image } from 'astro:assets';
+import bleachersPlate from '../assets/mcclain-bleachers-plate.jpg';
+import fieldTorso from '../assets/mcclain-field-torso.jpg';
+---
+
+<section class="athletics" id="sec-athletics">
+  <!-- Cashmere band. Full width so the ground reads as a ground; the
+       photograph inside it meets one trim only. -->
+  <div class="plate-panel">
+    <figure class="plate-figure plate-img">
+      <Image
+        src={bleachersPlate}
+        alt="Dr. Syreeta McClain seated on stadium bleachers, a football resting in her hands"
+        widths={[420, 640, 900, 1200, 1500]}
+        sizes="(max-width: 1024px) 92vw, 50vw"
+        quality={80}
+        loading="eager"
+      />
+    </figure>
+  </div>
+
+  <div class="spread athletics-copy">
+    <div class="col-body">
+      <p class="pillar-kicker">Athletic Management</p>
+      <p class="pillar-role">Momager | Athletic Manager to the McClain Brothers</p>
+      <div class="pillar-body">
+        <p>Long before NIL became part of college athletics, there were early mornings, long drives, practices, recruiting conversations, academic decisions, sacrifices, victories, disappointments, and countless lessons learned along the way.</p>
+        <p>As the mother of three football players navigating the high school and Division&nbsp;I levels, Dr.&nbsp;McClain&rsquo;s role as &ldquo;Momager&rdquo; grew organically from motherhood into strategy.</p>
+      </div>
+    </div>
+
+    <!-- Secondary, and deliberately a different weight to the plate above:
+         roughly half its width and a narrower frame, so the two never read
+         as a matched pair. -->
+    <figure class="field-inset col-inset plate-img">
+      <Image
+        src={fieldTorso}
+        alt="Dr. Syreeta McClain on the field in a black blazer, cropped close"
+        widths={[320, 480, 720, 950]}
+        sizes="(max-width: 1024px) 100vw, 23vw"
+        quality={80}
+        loading="eager"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .athletics{ margin-top: var(--vr-standard); }
+
+  /* --- The Cashmere band ----------------------------------------- */
+  .plate-panel{
+    background-color: var(--cashmere);
+    /* Cashmere is a ground here, not a wash — but it still layers rather
+       than sitting flat. */
+    background-image:
+      radial-gradient(96% 62% at 12% 8%,  rgba(231,226,221,0.34) 0%, rgba(231,226,221,0) 62%),
+      radial-gradient(70% 58% at 88% 92%, rgba(71,68,64,0.14) 0%, rgba(71,68,64,0) 60%);
+    display: grid;
+    /* The photograph meets the LEFT trim and stops at the right edge of
+       column 6; Cashmere carries the rest of the band as negative space.
+       That puts the empty half under columns 9-12 — the live margin — so the
+       running head sits over ground rather than over the picture, where at
+       9.5px it was unreadable. */
+    grid-template-columns:
+      calc(var(--grid-left) + var(--grid-pad) + 6 * var(--col-w) + 5 * var(--grid-gap))
+      minmax(0, 1fr);
+    align-items: center;
+    padding: clamp(88px, 11vw, 160px) 0 clamp(88px, 11vw, 160px) 0;
+  }
+
+  .plate-figure{
+    grid-column: 1;
+    /* Tall, cropped tight within the vertical to hold the sky down. Runs to
+       the left trim and stops — it meets one edge, not both. */
+    aspect-ratio: 3 / 4;
+  }
+
+  .plate-figure :global(img){
+    object-position: 50% 46%;
+    /* The cream, gold and white are already in palette; the sky behind the
+       railing is not, and it survived a lighter grade. */
+    filter: grayscale(0.44) contrast(1.05) saturate(0.52);
+  }
+
+  /* Weighted to the top of the frame where the sky sits. Multiplying Gold and
+     Cashmere over the sky pulls it warm; lower down it meets Porcelain, which
+     multiplies to almost nothing and leaves the blazer alone. Every stop is a
+     locked palette value. */
+  .plate-figure::before{
+    background: linear-gradient(to bottom,
+      var(--gold)      0%,
+      var(--gold)     16%,
+      var(--cashmere) 38%,
+      var(--porcelain) 66%,
+      var(--porcelain) 100%);
+    opacity: 0.46;
+  }
+
+  .plate-figure::after{
+    background:
+      linear-gradient(to top,  rgba(26,22,19,0.30) 0%, rgba(26,22,19,0) 42%),
+      linear-gradient(270deg,  rgba(209,199,189,0.36) 0%, rgba(209,199,189,0) 24%);
+  }
+
+  /* --- Copy, and the secondary plate in the live margin ----------- */
+  .athletics-copy{ padding-top: var(--vr-standard); }
+
+  .pillar-kicker{
+    margin: 0 0 var(--s3);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .pillar-kicker::before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--hair-strong);
+    margin-bottom: clamp(24px, 3vw, 40px);
+  }
+
+  .pillar-role{
+    margin: 0 0 clamp(32px, 4vw, 52px);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(12px, 1.1vw, 14px);
+    line-height: 1.6;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+  }
+
+  .pillar-body{
+    margin: 0;
+    max-width: 62ch;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.75;
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  .pillar-body p{ margin: 0; }
+  .pillar-body p + p{ margin-top: 1.5em; }
+
+  .field-inset{
+    /* Dropped down the measure so its top edge does not line up with the
+       kicker beside it. */
+    margin-top: clamp(64px, 8vw, 132px);
+    /* Narrower frame than the plate above, at roughly half its width. */
+    aspect-ratio: 2 / 3;
+    align-self: start;
+  }
+
+  .field-inset :global(img){
+    object-position: 50% 42%;
+    /* The tight crop removed the sky and most of the turf; the track still
+       reads orange behind her and there is blue signage at the fence line. */
+    filter: grayscale(0.58) contrast(1.06) saturate(0.42);
+  }
+
+  /* Weighted to the BOTTOM of this frame — the opposite of the plate above,
+     because here the out-of-palette colour is the track and the turf behind
+     her waist, not sky overhead. Gold multiplied over the track carries it to
+     a warm neutral. Locked palette values only. */
+  .field-inset::before{
+    background: linear-gradient(to top,
+      var(--gold)      0%,
+      var(--gold)     12%,
+      var(--cashmere) 36%,
+      var(--porcelain) 64%,
+      var(--porcelain) 100%);
+    opacity: 0.46;
+  }
+
+  @media (max-width: 1024px){
+    /* The band keeps its one-sided bleed: a strip of Cashmere on the left,
+       the photograph running off the right trim. */
+    .plate-panel{
+      grid-template-columns: minmax(0, 1fr) var(--gutter);
+      padding: clamp(64px, 12vw, 104px) 0;
+    }
+
+    /* Both are full width at this size, so the weight difference has to come
+       from the frame: the plate goes tall, the secondary stays squarer. */
+    .plate-figure{ aspect-ratio: 2 / 3; }
+
+    .athletics-copy{ padding-top: var(--vr-tight); }
+
+    .field-inset{
+      margin-top: var(--vr-tight);
+      aspect-ratio: 4 / 5;
+    }
+
+    .pillar-body{ max-width: none; }
+  }
+</style>

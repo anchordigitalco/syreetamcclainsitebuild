@@ -48,10 +48,11 @@
   var label = document.getElementById('folio-label');
   var num   = folio.querySelector('.folio-num');
   var map = [
-    { id: 'sec-portrait', n: '01', t: 'Portrait' },
-    { id: 'sec-about',    n: '02', t: 'About' },
-    { id: 'sec-pillar',   n: '03', t: 'Premier Leadership' },
-    { id: 'sec-index',    n: '04', t: 'Index' }
+    { id: 'sec-portrait',  n: '01', t: 'Portrait' },
+    { id: 'sec-about',     n: '02', t: 'About' },
+    { id: 'sec-pillar',    n: '03', t: 'Premier Leadership' },
+    { id: 'sec-athletics', n: '04', t: 'Athletic Management' },
+    { id: 'sec-index',     n: '05', t: 'Index' }
   ];
   var nodes = map.map(function (m) {
     return { el: document.getElementById(m.id), n: m.n, t: m.t };
