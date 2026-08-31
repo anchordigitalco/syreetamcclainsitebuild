@@ -1,29 +1,37 @@
 ---
 // 5. PILLAR — Athletic Management / "Momager".
-// Modelled on PillarPremier: kicker, role, body copy, photograph. No CTA —
-// the brothers' own sites are the destination and they are already entry 04
-// in the index below.
+// Modelled on PillarPremier: kicker, role, lede, body copy, photography. No
+// CTA — the brothers' own sites are the destination and they are already
+// entry 04 in the index below.
 //
 // The section ends on the body copy deliberately. CONTEXT.md's source
 // paragraph runs on into "Every decision is viewed through a larger lens:
 // Legacy", but that line is the PullQuote component immediately following, at
 // full display scale. It is not repeated here.
 //
-// The bleachers plate bleeds off the RIGHT trim only, with a Cashmere ground
-// carrying the rest of the band as visible negative space — the treatment the
-// cleats detail used to get from BreakBand, before that component was
-// dissolved and its gradient + multiply layer moved into .plate-img.
+// Photo hierarchy: the FIELD frame leads. It is composed and direct, like
+// every other photograph of her on this site. The bleachers frame is the one
+// candid — glancing off-axis, seated loosely — so it sits at secondary scale
+// in the live margin, where it reads as a human detail instead of competing
+// with the editorial portraits around it.
+//
 // Crop provenance. brand_assets/mcclain-bleachers.jpg carries EXIF
-// orientation 6: its stored buffer is 2976x1984 but it displays as 1984x2976 —
-// a PORTRAIT frame, not a horizontal one. Crops were cut from a master with
-// that rotation applied (sharp .rotate(), giving 1984x2976):
-//   -plate  extract left 280, top 620, 1500 x 2000   (3:4, cut low and in
-//           from the right to drop nearly all the sky)
-// and mcclain-field-torso from brand_assets/mcclain-field.jpg (no EXIF flag):
-//   extract left 911, top 1040, 950 x 1425           (2:3, torso-up)
+// orientation 6: its stored buffer is 2976x1984 but it renders 1984x2976 —
+// a PORTRAIT frame. Verified with sharp().metadata(); sips reports the raw
+// buffer and is misleading here. Crops were cut from a master with that
+// rotation applied:
+//   -detail   extract left 260, top 640, 1200 x 1800   (2:3, tall, cut in
+//             from the right where sky shows through the railings)
+// and from brand_assets/mcclain-field.jpg (no EXIF flag):
+//   -primary  extract left 816, top 900,  1140 x 1425  (4:5, torso-up;
+//             the window sits high so white bleachers, not turf, fill the
+//             ground behind her)
+// The field crop is 4:5 rather than the old 2:3 because a less-tall frame
+// buys width at the same torso-up framing — 1140px of source for a ~708px
+// slot, where the old crop had 950px.
 import { Image } from 'astro:assets';
-import bleachersPlate from '../assets/mcclain-bleachers-plate.jpg';
-import fieldTorso from '../assets/mcclain-field-torso.jpg';
+import fieldPrimary from '../assets/mcclain-field-primary.jpg';
+import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
 ---
 
 <section class="athletics" id="sec-athletics">
@@ -32,10 +40,10 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
   <div class="plate-panel">
     <figure class="plate-figure plate-img">
       <Image
-        src={bleachersPlate}
-        alt="Dr. Syreeta McClain seated on stadium bleachers, a football resting in her hands"
-        widths={[420, 640, 900, 1200, 1500]}
-        sizes="(max-width: 1024px) 92vw, 50vw"
+        src={fieldPrimary}
+        alt="Dr. Syreeta McClain on the field in a black blazer, cropped close"
+        widths={[480, 720, 900, 1140]}
+        sizes="(max-width: 1024px) 96vw, 50vw"
         quality={80}
         loading="eager"
       />
@@ -43,23 +51,26 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
   </div>
 
   <div class="spread athletics-copy">
-    <div class="col-body">
+    <div class="athletics-head">
       <p class="pillar-kicker">Athletic Management</p>
       <p class="pillar-role">Momager | Athletic Manager to the McClain Brothers</p>
-      <div class="pillar-body">
-        <p>Long before NIL became part of college athletics, there were early mornings, long drives, practices, recruiting conversations, academic decisions, sacrifices, victories, disappointments, and countless lessons learned along the way.</p>
-        <p>As the mother of three football players navigating the high school and Division&nbsp;I levels, Dr.&nbsp;McClain&rsquo;s role as &ldquo;Momager&rdquo; grew organically from motherhood into strategy.</p>
-      </div>
     </div>
 
-    <!-- Secondary, and deliberately a different weight to the plate above:
-         roughly half its width and a narrower frame, so the two never read
-         as a matched pair. -->
-    <figure class="field-inset col-inset plate-img">
+    <!-- Columns 2-10, the same break PillarPremier's lede takes, so the two
+         sections rhyme rather than merely resemble each other. -->
+    <p class="pillar-lede">Long before NIL became part of college athletics, there were early mornings, long drives, practices, recruiting conversations, academic decisions, sacrifices, victories, disappointments, and countless lessons learned along the way.</p>
+
+    <div class="pillar-body">
+      <p>As the mother of three football players navigating the high school and Division&nbsp;I levels, Dr.&nbsp;McClain&rsquo;s role as &ldquo;Momager&rdquo; grew organically from motherhood into strategy.</p>
+    </div>
+
+    <!-- Secondary. Roughly half the plate's width and a taller frame, so the
+         two never read as one proportion at two sizes. -->
+    <figure class="detail-inset plate-img">
       <Image
-        src={fieldTorso}
-        alt="Dr. Syreeta McClain on the field in a black blazer, cropped close"
-        widths={[320, 480, 720, 950]}
+        src={bleachersDetail}
+        alt="Dr. Syreeta McClain seated on stadium bleachers, a football resting in her hands"
+        widths={[320, 480, 720, 1200]}
         sizes="(max-width: 1024px) 100vw, 23vw"
         quality={80}
         loading="eager"
@@ -71,7 +82,7 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
 <style>
   .athletics{ margin-top: var(--vr-standard); }
 
-  /* --- The Cashmere band ----------------------------------------- */
+  /* --- The Cashmere band, carrying the PRIMARY photograph -------- */
   .plate-panel{
     background-color: var(--cashmere);
     /* Cashmere is a ground here, not a wash — but it still layers rather
@@ -89,45 +100,53 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
       calc(var(--grid-left) + var(--grid-pad) + 6 * var(--col-w) + 5 * var(--grid-gap))
       minmax(0, 1fr);
     align-items: center;
-    padding: clamp(88px, 11vw, 160px) 0 clamp(88px, 11vw, 160px) 0;
+    padding: clamp(88px, 11vw, 160px) 0;
   }
 
   .plate-figure{
     grid-column: 1;
-    /* Tall, cropped tight within the vertical to hold the sky down. Runs to
-       the left trim and stops — it meets one edge, not both. */
-    aspect-ratio: 3 / 4;
+    /* 4:5 — squarer than the secondary below it, so the pair differ in shape
+       and not only in scale. */
+    aspect-ratio: 4 / 5;
   }
 
   .plate-figure :global(img){
-    object-position: 50% 46%;
-    /* The cream, gold and white are already in palette; the sky behind the
-       railing is not, and it survived a lighter grade. */
-    filter: grayscale(0.44) contrast(1.05) saturate(0.52);
+    object-position: 50% 38%;
+    /* The running track behind her is the one out-of-palette area left after
+       the crop. Measured on the rendered frame: this grade lands the track at
+       ~24deg hue and under 0.18 saturation — muted clay, inside the warm
+       earth family, without the sepia cast that a hue-mapping filter would
+       give it. Sepia was tested and rejected: no other photograph on the site
+       uses one, and it broke tonal consistency with the leopard portrait. */
+    filter: grayscale(0.58) contrast(1.05) saturate(0.42);
   }
 
-  /* Weighted to the top of the frame where the sky sits. Multiplying Gold and
-     Cashmere over the sky pulls it warm; lower down it meets Porcelain, which
-     multiplies to almost nothing and leaves the blazer alone. Every stop is a
-     locked palette value. */
+  /* Weighted to the BOTTOM of the frame, where the track and turf sit.
+     Multiplying Gold over them carries both to a warm neutral. Every stop is
+     a locked palette value. */
   .plate-figure::before{
-    background: linear-gradient(to bottom,
+    background: linear-gradient(to top,
       var(--gold)      0%,
-      var(--gold)     16%,
+      var(--gold)     14%,
       var(--cashmere) 38%,
       var(--porcelain) 66%,
       var(--porcelain) 100%);
-    opacity: 0.46;
+    opacity: 0.52;
   }
 
   .plate-figure::after{
     background:
-      linear-gradient(to top,  rgba(26,22,19,0.30) 0%, rgba(26,22,19,0) 42%),
+      linear-gradient(to top,  rgba(26,22,19,0.28) 0%, rgba(26,22,19,0) 42%),
       linear-gradient(270deg,  rgba(209,199,189,0.36) 0%, rgba(209,199,189,0) 24%);
   }
 
-  /* --- Copy, and the secondary plate in the live margin ----------- */
+  /* --- Copy ------------------------------------------------------ */
   .athletics-copy{ padding-top: var(--vr-standard); }
+
+  .athletics-head{ grid-column: 3 / 9;  grid-row: 1; }
+  .pillar-lede   { grid-column: 2 / 11; grid-row: 2; }
+  .pillar-body   { grid-column: 3 / 9;  grid-row: 3; }
+  .detail-inset  { grid-column: 9 / 12; grid-row: 3; }
 
   .pillar-kicker{
     margin: 0 0 var(--s3);
@@ -160,6 +179,22 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
     color: var(--obsidian);
   }
 
+  /* Type treatment copied from PillarPremier's .pillar-lede verbatim, so the
+     two sections read as siblings. No value here is new. */
+  .pillar-lede{
+    margin: 0 0 var(--vr-tight);
+    font-family: var(--display);
+    /* Lede tier — unchanged. */
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(27px, 3.6vw, 52px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: pretty;
+  }
+
+  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
   .pillar-body{
     margin: 0;
     max-width: 62ch;
@@ -175,55 +210,61 @@ import fieldTorso from '../assets/mcclain-field-torso.jpg';
   .pillar-body p{ margin: 0; }
   .pillar-body p + p{ margin-top: 1.5em; }
 
-  .field-inset{
+  /* --- The SECONDARY photograph, in the live margin -------------- */
+  .detail-inset{
     /* Dropped down the measure so its top edge does not line up with the
-       kicker beside it. */
-    margin-top: clamp(64px, 8vw, 132px);
-    /* Narrower frame than the plate above, at roughly half its width. */
+       body copy beside it. */
+    margin-top: clamp(40px, 5vw, 88px);
+    /* 2:3 — taller and narrower than the 4:5 plate above. */
     aspect-ratio: 2 / 3;
     align-self: start;
   }
 
-  .field-inset :global(img){
+  .detail-inset :global(img){
     object-position: 50% 42%;
-    /* The tight crop removed the sky and most of the turf; the track still
-       reads orange behind her and there is blue signage at the fence line. */
-    filter: grayscale(0.58) contrast(1.06) saturate(0.42);
+    /* A wedge of sky survives in the top right corner of this crop. */
+    filter: grayscale(0.44) contrast(1.05) saturate(0.50);
   }
 
-  /* Weighted to the BOTTOM of this frame — the opposite of the plate above,
-     because here the out-of-palette colour is the track and the turf behind
-     her waist, not sky overhead. Gold multiplied over the track carries it to
-     a warm neutral. Locked palette values only. */
-  .field-inset::before{
-    background: linear-gradient(to top,
+  /* Weighted to the TOP here — the opposite of the plate above — because this
+     frame's out-of-palette colour is sky overhead, not track underfoot. */
+  .detail-inset::before{
+    background: linear-gradient(to bottom,
       var(--gold)      0%,
-      var(--gold)     12%,
-      var(--cashmere) 36%,
-      var(--porcelain) 64%,
+      var(--gold)     16%,
+      var(--cashmere) 38%,
+      var(--porcelain) 66%,
       var(--porcelain) 100%);
     opacity: 0.46;
   }
 
   @media (max-width: 1024px){
-    /* The band keeps its one-sided bleed: a strip of Cashmere on the left,
-       the photograph running off the right trim. */
+    /* The band keeps its one-sided bleed: the photograph runs off the left
+       trim, a strip of Cashmere on the right. */
     .plate-panel{
       grid-template-columns: minmax(0, 1fr) var(--gutter);
       padding: clamp(64px, 12vw, 104px) 0;
     }
 
-    /* Both are full width at this size, so the weight difference has to come
-       from the frame: the plate goes tall, the secondary stays squarer. */
-    .plate-figure{ aspect-ratio: 2 / 3; }
+    /* Single column: the two are the same width, so the weight difference has
+       to come from the frame. The plate stays generous, the detail goes
+       distinctly taller and is held short of the full measure. */
+    .plate-figure{ aspect-ratio: 4 / 5; }
+
+    .athletics-head,
+    .pillar-lede,
+    .pillar-body,
+    .detail-inset{ grid-column: 1 / -1; grid-row: auto; }
 
     .athletics-copy{ padding-top: var(--vr-tight); }
 
-    .field-inset{
-      margin-top: var(--vr-tight);
-      aspect-ratio: 4 / 5;
-    }
-
     .pillar-body{ max-width: none; }
+
+    .detail-inset{
+      margin-top: var(--vr-tight);
+      aspect-ratio: 2 / 3;
+      width: 72%;
+      margin-right: auto;
+    }
   }
 </style>
