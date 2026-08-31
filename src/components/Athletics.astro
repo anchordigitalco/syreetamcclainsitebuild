@@ -1,0 +1,140 @@
+---
+// 5. ATHLETICS / LEGACY — the section opener for the back half of the page.
+// The bleachers plate is one of the page's two bleeds. The field portrait sits
+// at `column` width below it, tall and narrow, so the two photographs are
+// different SHAPES and not merely different sizes.
+//
+// Note on the bleachers source: the original file carries EXIF orientation 6,
+// so its stored buffer is 2976x1984 but it displays as 1984x2976 — it is a
+// PORTRAIT photograph, not a horizontal one. The copies staged in src/assets
+// have the rotation baked in and the flag cleared.
+//
+// The bleed is art-directed rather than object-fit cropped: a wide 16:9 cut
+// for desktop and a tall 4:5 cut for phones, as two separate sources. Serving
+// the full portrait and cropping it in CSS meant shipping ~2.7x the pixels
+// actually shown at bleed width, and the browser intermittently painted the
+// container's ground before the oversized frame finished decoding.
+//
+// Crops were cut from brand_assets/mcclain-bleachers.jpg after applying its
+// EXIF rotation (sharp .rotate(), giving a 1984x2976 portrait master):
+//   -wide  extract left 0,   top 744, 1984 x 1116   (16:9)
+//   -tall  extract left 213, top 600, 1600 x 2000   (4:5, cut low to drop sky)
+// and mcclain-field-torso from brand_assets/mcclain-field.jpg (no EXIF flag):
+//   extract left 911, top 1040, 950 x 1425          (2:3, torso-up)
+import { getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
+import bleachersWide from '../assets/mcclain-bleachers-wide.jpg';
+import bleachersTall from '../assets/mcclain-bleachers-tall.jpg';
+import fieldTorso from '../assets/mcclain-field-torso.jpg';
+
+const wide = await getImage({ src: bleachersWide, widths: [768, 1152, 1440, 1984], format: 'webp', quality: 80 });
+const tall = await getImage({ src: bleachersTall, widths: [430, 640, 860, 1200], format: 'webp', quality: 80 });
+---
+
+<section class="athletics" id="sec-athletics">
+  <figure class="bleachers plate-img">
+    <picture>
+      <source media="(max-width: 1024px)" srcset={tall.srcSet.attribute} sizes="100vw" type="image/webp" />
+      <source srcset={wide.srcSet.attribute} sizes="100vw" type="image/webp" />
+      <img
+        src={wide.src}
+        width={1984}
+        height={1116}
+        alt="Dr. Syreeta McClain seated on stadium bleachers, a football resting in her hands"
+        loading="eager"
+        decoding="sync"
+      />
+    </picture>
+  </figure>
+
+  <div class="spread">
+    <figure class="field col-body plate-img">
+      <Image
+        src={fieldTorso}
+        alt="Dr. Syreeta McClain on the field in a black blazer, cropped close"
+        widths={[480, 720, 950]}
+        sizes="(max-width: 1024px) 100vw, 48vw"
+        quality={80}
+      loading="eager"
+      decoding="sync"
+    />
+    </figure>
+  </div>
+</section>
+
+<style>
+  /* Opens with the standard step. The OPEN step is spent below, on the
+     chapter break, and nowhere else. */
+  .athletics{ margin-top: var(--vr-standard); }
+
+  /* --- BLEED 1 of 2 --- */
+  /* Sits at the top level of the section rather than inside .spread, so it is
+     full viewport width by nature and needs no negative-margin escape. */
+  .bleachers{
+    aspect-ratio: 16 / 9;
+  }
+
+  /* The <picture> wrapper has to carry the same box as the <img> or the
+     plate collapses around an inline element. */
+  .bleachers picture{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bleachers :global(img){
+    /* The cream, gold and white are already in palette; the sky and treeline
+       are not. Enough desaturation to carry them, held back from flattening
+       the blazer. */
+    filter: grayscale(0.34) contrast(1.04) saturate(0.68);
+  }
+
+  /* This frame is already warm — cream blazer, gold hardware, white bleachers.
+     The treatment is dialled well below the page default so it only has to
+     catch the sky and foliage at the top right, not flatten the cream. No new
+     hue is introduced: the layer is Porcelain -> Cashmere -> Gold, all locked
+     palette values. */
+  /* Weighted to the TOP of the frame, where the sky is. Multiplying Gold and
+     Cashmere over the sky pulls it warm; the lower half meets Porcelain, which
+     multiplies to almost nothing and leaves the blazer alone. All four stops
+     are locked palette values — no new hue enters. */
+  .bleachers::before{
+    background: linear-gradient(to bottom,
+      var(--gold)      0%,
+      var(--cashmere) 22%,
+      var(--porcelain) 55%,
+      var(--porcelain) 100%);
+    opacity: 0.34;
+  }
+
+  .bleachers::after{
+    background:
+      linear-gradient(to top, rgba(26,22,19,0.30) 0%, rgba(26,22,19,0) 40%),
+      linear-gradient(to bottom, rgba(26,22,19,0.18) 0%, rgba(26,22,19,0) 30%);
+  }
+
+  /* --- The field portrait, `column` tier --- */
+  .field{
+    margin-top: var(--vr-tight);
+    /* Tall and narrow against the wide band above it. */
+    aspect-ratio: 2 / 3;
+  }
+
+  /* The physical crop removed the sky entirely and most of the turf, but the
+     running track still reads orange behind her waist and there is blue
+     signage at the fence line. Desaturation plus a heavier warm multiply
+     carries both back inside the palette. */
+  .field :global(img){
+    object-position: 50% 42%;
+    filter: grayscale(0.46) contrast(1.05) saturate(0.58);
+  }
+
+  .field::before{ opacity: 0.40; }
+
+  @media (max-width: 1024px){
+    /* A wide short band is unreadable on a phone. The <source> above swaps in
+       the tall cut; this matches the box to it. The bleed stays a bleed. */
+    .bleachers{ aspect-ratio: 4 / 5; }
+    .field{ aspect-ratio: 3 / 4; }
+  }
+</style>

@@ -66,6 +66,35 @@
   --s1: 8px;   --s2: 16px;  --s3: 24px;  --s4: 40px;
   --s5: 64px;  --s6: 96px;  --s7: 144px; --s8: 200px;
 
+  /* ----------------------------------------------------------
+     THE GRID — 12 columns, 1440px trim, 24px gutters, centred.
+     Body text sits in 3-8, deliberately left of the page's middle.
+     Columns 9-12 are the LIVE MARGIN: not empty space, but the
+     strip that carries insets, section numerals and the running
+     head, exactly as the outer margin of a printed page does.
+     ---------------------------------------------------------- */
+  --grid-max: 1440px;
+  --grid-pad: 24px;
+  --grid-gap: 24px;
+  --grid-w:    min(100vw, var(--grid-max));
+  --col-w:     calc((var(--grid-w) - (2 * var(--grid-pad)) - (11 * var(--grid-gap))) / 12);
+  --grid-left: calc((100vw - var(--grid-w)) / 2);
+  /* left edge of column 9 and the full width of the live margin */
+  --margin-x:  calc(var(--grid-left) + var(--grid-pad) + (8 * (var(--col-w) + var(--grid-gap))));
+  --margin-w:  calc((4 * var(--col-w)) + (3 * var(--grid-gap)));
+
+  /* ----------------------------------------------------------
+     VERTICAL RHYTHM — three values, never one.
+     The page is supposed to cluster and then breathe. A single
+     repeating gap is what made the old build read flat.
+       tight    — things that belong to each other
+       standard — ordinary section change
+       open     — the chapter break, and nothing else
+     ---------------------------------------------------------- */
+  --vr-tight:    clamp(56px, 7vw, 96px);
+  --vr-standard: clamp(104px, 13vw, 190px);
+  --vr-open:     clamp(168px, 23vw, 330px);
+
   /* Negative space is the material. The trim gutter is generous; the
      "wide" gutter is the deliberately wasteful side that breaks the
      page off its centre axis. */
@@ -140,5 +169,114 @@ a{ color: inherit; }
   :root{
     --bio-size: 16px;
     --bio-lh: 1.74;
+  }
+}
+
+/* ============================================================
+   GRID PRIMITIVES
+   Reusable tiers, defined once. No section invents its own
+   width — that repetition of one identical measure down the
+   whole scroll is the thing this pass exists to remove.
+   ============================================================ */
+
+/* The trim. Everything that is not a bleed lives inside this. */
+.spread{
+  max-width: var(--grid-max);
+  margin-inline: auto;
+  padding-inline: var(--grid-pad);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+/* --- The three image tiers, plus the text measure they answer to --- */
+
+/* Body text and the default photograph width: columns 3-8.
+   Left of the page's middle, never centred on it. */
+.col-body{ grid-column: 3 / 9; }
+
+/* The live margin: columns 9-11 for insets, 9-12 for marginalia. */
+.col-inset { grid-column: 9 / 12; }
+.col-margin{ grid-column: 9 / 13; }
+
+/* A pull quote must not share both edges with the paragraphs it
+   interrupts, so it starts a column earlier and ends two later. */
+.col-break{ grid-column: 2 / 11; }
+
+/* Full-viewport bleed. Used exactly twice on the page.
+   No transform is involved: a transform here would open a stacking
+   context and change how the photo treatment layers composite. */
+.bleed{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  max-width: none;
+}
+
+/* --- Photograph treatment, shared by every tier ----------------
+   Every photograph on the page is loaded eagerly and decoded
+   synchronously. CONTEXT.md's build notes require all content to be
+   visible on load, because anything that resolves late is missing
+   from full-page captures and from any PDF the client generates.
+   Lazy loading and async decode both reproduce that failure: the
+   plate's ground paints and the photograph arrives after the
+   capture. */
+/* Gradient overlay + a warm Cashmere-toned multiply layer. Applied
+   per the frontend-design skill; pushed warm rather than neutral
+   grey so it agrees with the page's existing ground tones. */
+.plate-img{
+  position: relative;
+  margin: 0;
+  isolation: isolate;   /* keeps the multiply on the photo, not the page */
+  overflow: hidden;
+  background: var(--obsidian);
+}
+
+.plate-img img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plate-img::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(196deg, var(--porcelain) 0%, var(--cashmere) 50%, var(--gold) 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.34;
+}
+
+.plate-img::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(26,22,19,0.34) 0%, rgba(26,22,19,0) 44%);
+}
+
+/* ============================================================
+   MOBILE — the 12-column grid collapses to one column.
+   Bleeds stay bleeds; they already read correctly at phone width.
+   ============================================================ */
+@media (max-width: 1024px){
+  .spread{
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: var(--gutter);
+    column-gap: 0;
+  }
+
+  /* Every tier becomes full column width. */
+  .col-body,
+  .col-inset,
+  .col-margin,
+  .col-break{ grid-column: 1 / -1; }
+
+  /* The bleed has to undo the parent's gutter padding as well as
+     centre itself, or it stops short of both edges. */
+  .bleed{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
   }
 }

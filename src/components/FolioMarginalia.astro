@@ -40,6 +40,10 @@
 
 <script is:inline>
 (function () {
+  // Pre-existing defect: this component renders before <main>, so resolving
+  // the section elements inline captured an empty list and the folio never
+  // became visible or changed label. Initialisation now waits for parse.
+  function init() {
   var folio = document.getElementById('folio');
   var label = document.getElementById('folio-label');
   var num   = folio.querySelector('.folio-num');
@@ -76,5 +80,12 @@
   }, { passive: true });
   window.addEventListener('resize', sync, { passive: true });
   sync();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>

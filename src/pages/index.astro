@@ -1,18 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FolioMarginalia from '../components/FolioMarginalia.astro';
+import RunningHead from '../components/RunningHead.astro';
 import Hero from '../components/Hero.astro';
 import PortraitBand from '../components/PortraitBand.astro';
 import About from '../components/About.astro';
 import PillarPremier from '../components/PillarPremier.astro';
-import BreakBand from '../components/BreakBand.astro';
+import Athletics from '../components/Athletics.astro';
 import PullQuote from '../components/PullQuote.astro';
 import FunnelIndex from '../components/FunnelIndex.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
+  <!-- Folio at the left trim, running head in the live margin at the right.
+       In print these are two different pieces of apparatus and both appear. -->
   <FolioMarginalia />
+  <RunningHead />
 
   <!-- main carries no transform, opacity, filter or isolation, so the hero
        submark's mix-blend-mode composites against the page ground. -->
@@ -21,7 +25,7 @@ import Footer from '../components/Footer.astro';
     <PortraitBand />
     <About />
     <PillarPremier />
-    <BreakBand />
+    <Athletics />
     <PullQuote />
     <FunnelIndex />
   </main>

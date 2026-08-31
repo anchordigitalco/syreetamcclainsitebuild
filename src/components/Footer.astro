@@ -4,7 +4,7 @@
 // Copyright year is the build year, hardcoded — never a JS auto-updating year.
 ---
 
-<div class="footer-wrap">
+<div class="footer-wrap spread">
   <footer class="site-footer flex items-baseline justify-between">
     <p class="footer-copyright">&copy; 2026 Dr. Syreeta McClain. All rights reserved.</p>
     <a class="footer-credit" href="https://anchordigitalco.com" target="_blank" rel="noopener">
@@ -19,12 +19,11 @@
 </div>
 
 <style>
-  /* Aligned to the index block above it, so the two share a left edge. */
-  .footer-wrap{ padding: 0 var(--gutter) 0 var(--gutter-wide); }
-
+  /* On the page grid: the footer runs from the body measure's left edge
+     (column 3) to the outer trim (column 12), so it shares a left edge with
+     the index rows and a right edge with their hung numerals. */
   .site-footer{
-    max-width: var(--measure);
-    margin: 0 auto 0 0;
+    grid-column: 3 / 13;
     padding: clamp(34px, 4vw, 56px) 0 clamp(72px, 9vw, 120px);
     border-top: 1px solid var(--hair-gold);
     gap: var(--s3);
@@ -74,9 +73,9 @@
   }
 
   /* Mobile: stacked and centred, client copyright first. */
-  @media (max-width: 900px){
-    .footer-wrap{ padding: 0 var(--gutter); }
+  @media (max-width: 1024px){
     .site-footer{
+      grid-column: 1 / -1;
       flex-direction: column;
       align-items: center;
       text-align: center;

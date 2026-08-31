@@ -1,35 +1,42 @@
 ---
-// 7. THE INDEX — numbered editorial index, never a card grid.
+// 7. THE INDEX — the site's table of contents, and the most designed element
+// on the page. The numerals are set at true display scale and HUNG in the live
+// margin at the outer trim, the way page numbers hang on a printed contents
+// page; the hairline rule under each row is what bridges name to numeral.
+//
 // Every entry 01-05 carries identical visual treatment. Row 05 points at "#"
 // because the blog does not exist yet, and it must remain indistinguishable
 // from the four live destinations.
+//
+// The numerals keep the --fx-numeral tier exactly as it was. Only their SIZE
+// changes here; no font-variation-settings value is touched by this pass.
 ---
 
 <section class="index" id="sec-index">
-  <ul class="index-list list-none p-0">
-    <li><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
-      <span class="index-num">01</span>
+  <ul class="index-list spread list-none p-0">
+    <li class="index-item"><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
       <span class="index-name">Premier Leadership, LLC</span>
       <span class="index-desc">Educational consulting &amp; leadership development</span>
+      <span class="index-num">01</span>
     </a></li>
-    <li><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
-      <span class="index-num">02</span>
+    <li class="index-item"><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
       <span class="index-name">Everyday Legends Foundation</span>
       <span class="index-desc">Education, athletics &amp; service</span>
+      <span class="index-num">02</span>
     </a></li>
-    <li><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
-      <span class="index-num">03</span>
+    <li class="index-item"><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
       <span class="index-name">Educational Leadership</span>
       <span class="index-desc">Alternative education high school principal</span>
+      <span class="index-num">03</span>
     </a></li>
-    <li>
+    <li class="index-item">
       <!-- Open by default so the sub-rows are present on load, in full-page
            captures and in any PDF the client makes. -->
       <details class="index-expand" open>
         <summary class="index-row">
-          <span class="index-num">04</span>
           <span class="index-name">The McClain Brothers</span>
           <span class="index-desc">Jaylen, KJ &amp; Cam</span>
+          <span class="index-num">04</span>
         </summary>
         <ul class="subindex list-none p-0">
           <li><a class="subrow" href="https://www.jaylenmcclain.com" target="_blank" rel="noopener">
@@ -50,56 +57,76 @@
         </ul>
       </details>
     </li>
-    <li><a class="index-row" href="#">
-      <span class="index-num">05</span>
+    <li class="index-item"><a class="index-row" href="#">
       <span class="index-name">Charging It to the Game</span>
       <span class="index-desc">The blog</span>
+      <span class="index-num">05</span>
     </a></li>
   </ul>
 </section>
 
 <style>
-  /* Hung off-axis like the About block, and given far more air: this is the
-     conversion path, so it is the last place that should feel cramped. */
-  .index{
-    padding: clamp(128px, 19vw, 260px) var(--gutter) clamp(96px, 13vw, 168px) var(--gutter-wide);
+  .index{ padding-bottom: var(--vr-standard); }
+
+  .index-item{ grid-column: 1 / -1; }
+
+  /* The rules run from the body measure's left edge (column 3) to the outer
+     trim, so they start where every other element on the page starts.
+     Spanning all 12 columns left them alone in columns 1-2 and they read as
+     unanchored. Drawn as a positioned background rather than a border so the
+     inset can be expressed in grid columns.
+       column 3 starts at 2 x (column width + gutter) */
+  .index-list,
+  .index-row,
+  .subrow{
+    --rule-inset: calc(2 * (var(--col-w) + var(--grid-gap)));
+    background-repeat: no-repeat;
+    background-size: calc(100% - var(--rule-inset)) 1px;
   }
 
+  /* A gold hairline opens the index as well as closing each row. */
   .index-list{
-    max-width: var(--measure);
-    margin: 0 auto 0 0;
-    /* A gold hairline opens the index as well as closing each row. */
-    border-top: 1px solid var(--hair-gold);
+    background-image: linear-gradient(var(--hair-gold), var(--hair-gold));
+    background-position: var(--rule-inset) 0;
   }
 
   .index-row{
-    display: grid;
-    grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
-    align-items: baseline;
-    gap: 0 var(--s3);
-    padding: clamp(34px, 4.6vw, 62px) 0;
-    /* Hairline, and gold rather than obsidian — the rules stop reading as
-       a table and start reading as an index. */
-    border-bottom: 1px solid var(--hair-gold);
-    text-decoration: none;
-    color: inherit;
-    transition: transform 420ms var(--ease), border-color 420ms var(--ease);
+    background-image: linear-gradient(var(--hair-gold), var(--hair-gold));
+    background-position: var(--rule-inset) 100%;
   }
 
-  .index-num{
-    font-family: var(--display);
-    /* Numeral tier — opsz 48, SOFT 40. Mid-scale, so the terminals carry
-       noticeably more roundness than the display tiers above. */
-    font-variation-settings: var(--fx-numeral);
-    font-weight: 400;
-    font-size: clamp(32px, 3.7vw, 54px);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: var(--obsidian);
-    transition: color 420ms var(--ease);
+  .subrow{
+    background-image: linear-gradient(var(--hair-gold-faint), var(--hair-gold-faint));
+    background-position: var(--rule-inset) 100%;
+  }
+
+  .index-row:hover,
+  .index-row:focus-visible{
+    background-image: linear-gradient(var(--gold), var(--gold));
+  }
+
+  .subrow:hover,
+  .subrow:focus-visible{
+    background-image: linear-gradient(var(--hair-gold), var(--hair-gold));
+  }
+
+  /* Re-divides the full trim into the same 12 tracks as .spread, so the row's
+     children land on the page grid without needing subgrid. */
+  .index-row{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    align-items: baseline;
+    padding: clamp(30px, 3.4vw, 48px) 0;
+    /* Hairline, gold rather than obsidian — the rules stop reading as a table
+       and start reading as an index. The rule itself is drawn as an inset
+       background above, so it can start at column 3 with the text. */
+    text-decoration: none;
+    color: inherit;
   }
 
   .index-name{
+    grid-column: 3 / 7;
     font-family: var(--sans);
     font-weight: 500;
     font-size: clamp(12px, 1.15vw, 15px);
@@ -110,21 +137,34 @@
   }
 
   .index-desc{
+    grid-column: 7 / 9;
     font-family: var(--sans);
     font-weight: 300;
     font-size: clamp(11.5px, 0.95vw, 13px);
     line-height: 1.6;
     letter-spacing: 0.03em;
     color: var(--slate);
-    text-align: right;
+  }
+
+  /* HUNG IN THE LIVE MARGIN. Right-aligned to the outer trim, at display
+     scale — a graphic element, not a label. */
+  .index-num{
+    grid-column: 9 / 13;
+    justify-self: end;
+    font-family: var(--display);
+    /* Numeral tier, unchanged. Only the size below is new. */
+    font-variation-settings: var(--fx-numeral);
+    font-weight: 400;
+    font-size: clamp(54px, 6.6vw, 96px);
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    color: var(--obsidian);
+    transition: color 420ms var(--ease);
   }
 
   /* Identical treatment across all five — no destination is distinguishable */
-  .index-row:hover,
-  .index-row:focus-visible{ transform: translateX(10px); border-bottom-color: var(--gold); }
   .index-row:hover .index-num,
   .index-row:focus-visible .index-num{ color: var(--gold); }
-  .index-row:active{ transform: translateX(5px); }
   .index-row:focus-visible{
     outline: 1px solid var(--gold);
     outline-offset: 10px;
@@ -132,8 +172,6 @@
 
   /* Row 04 expands rather than linking out. */
   .index-expand{ border: 0; }
-  /* The whole sub-list is inset from the parent rows. */
-  .subindex{ margin: 0 0 0 clamp(26px, 4vw, 64px); }
   .index-expand > summary{
     cursor: pointer;
     list-style: none;
@@ -141,31 +179,33 @@
   .index-expand > summary::-webkit-details-marker{ display: none; }
   .index-expand > summary::marker{ content: ""; }
 
+  /* The sub-list keeps its nesting under 04, on the same 12 tracks. */
+  .subindex{ margin: 0; }
+
   .subrow{
     display: grid;
-    grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr) minmax(0, auto);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
     align-items: baseline;
-    gap: 0 var(--s3);
-    padding: clamp(20px, 2.4vw, 30px) 0;
-    /* Fainter than the parent rules, and inset so the sub-list reads as
-       subordinate to row 04 rather than as five more top-level entries. */
-    border-bottom: 1px solid var(--hair-gold-faint);
+    padding: clamp(18px, 2.1vw, 26px) 0;
+    /* Fainter than the parent rules so the sub-list reads as subordinate to
+       row 04 rather than as three more top-level entries. */
     text-decoration: none;
     color: inherit;
-    transition: transform 420ms var(--ease), border-color 420ms var(--ease);
   }
 
+  /* The indent rule stands in for the numeral and marks the nesting. */
   .subrow > .sub-indent{
-    /* the row treatment at reduced scale: indent stands in for the numeral */
-    border-top: 1px solid var(--hair-gold);
+    grid-column: 3 / 4;
     align-self: center;
+    border-top: 1px solid var(--hair-gold);
     width: 26px;
-    margin-left: auto;
     height: 1px;
-    transition: background-color 420ms var(--ease), border-color 420ms var(--ease);
+    transition: border-color 420ms var(--ease);
   }
 
   .sub-name{
+    grid-column: 4 / 7;
     font-family: var(--sans);
     font-weight: 500;
     font-size: clamp(11px, 0.95vw, 12.5px);
@@ -173,47 +213,64 @@
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--obsidian);
-    padding-left: clamp(20px, 2.4vw, 34px);
   }
 
   .sub-desc{
+    grid-column: 7 / 9;
     font-family: var(--sans);
     font-weight: 300;
     font-size: clamp(10.5px, 0.85vw, 11.5px);
     line-height: 1.6;
     letter-spacing: 0.03em;
     color: var(--slate);
-    text-align: right;
   }
 
-  .subrow:hover,
-  .subrow:focus-visible{ transform: translateX(10px); border-bottom-color: var(--hair-gold); }
   .subrow:hover .sub-indent,
   .subrow:focus-visible .sub-indent{ border-top-color: var(--gold); }
-  .subrow:active{ transform: translateX(5px); }
   .subrow:focus-visible{ outline: 1px solid var(--gold); outline-offset: 8px; }
 
-  @media (max-width: 900px){
-    .index{
-      padding: clamp(96px, 18vw, 148px) var(--gutter) clamp(72px, 13vw, 112px);
+  /* ---- Single column. The numerals lead the row again, because there is no
+     margin left to hang them in. ---- */
+  @media (max-width: 1024px){
+    /* One column: the rules run the full measure again. */
+    .index-list,
+    .index-row,
+    .subrow{
+      --rule-inset: 0px;
+      background-size: 100% 1px;
     }
-    .subindex{ margin-left: clamp(16px, 5vw, 34px); }
 
     .index-row,
     .subrow{
-      grid-template-columns: clamp(48px, 12vw, 64px) minmax(0, 1fr);
+      grid-template-columns: clamp(52px, 13vw, 76px) minmax(0, 1fr);
       align-items: start;
       gap: 8px var(--s2);
     }
+    /* Rows are stated explicitly. The numeral is LAST in source order so it
+       can hang in the margin on desktop; with only auto-placement the sparse
+       algorithm cannot walk back up to row 1 and the numeral dropped BELOW
+       the entry it labels. */
+    .index-name{ grid-column: 2; grid-row: 1; }
+    .index-desc{ grid-column: 2; grid-row: 2; }
     .index-num{
-      grid-row: span 2;
-      /* Body-adjacent grade — at ~32px the numerals are being read rather
-         than seen, so opsz drops and SOFT rises for warmth and legibility. */
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      justify-self: start;
+      font-size: clamp(32px, 9vw, 44px);
+      /* Body-adjacent grade — at this size the numerals are being read rather
+         than seen. Tier unchanged from the previous build. */
       font-variation-settings: var(--fx-small);
+      line-height: 1;
     }
-    .index-desc,
-    .sub-desc{ text-align: left; }
-    .subrow > .sub-indent{ grid-row: span 2; align-self: start; margin-top: 8px; }
-    .sub-name{ padding-left: 0; }
+    .subindex{ margin-left: clamp(16px, 5vw, 34px); }
+    .subrow > .sub-indent{
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      align-self: start;
+      margin-top: 8px;
+      margin-left: auto;
+    }
+    .sub-name{ grid-column: 2; grid-row: 1; }
+    .sub-desc{ grid-column: 2; grid-row: 2; }
   }
 </style>

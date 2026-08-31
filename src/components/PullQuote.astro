@@ -1,32 +1,40 @@
 ---
-// 6. PULL QUOTE — breaks the grid.
+// 6. THE CHAPTER BREAK — bleed 2 of 2.
+// This is the page's structural pivot: everything above it is her own work,
+// everything below it is the index. It carries the OPEN rhythm step, which is
+// spent here and nowhere else, so it reads as a deliberate pause rather than
+// one more block in the stack.
+//
 // Obsidian ground. Gold on Obsidian is 5.8:1; gold on Porcelain is 2.4:1 and
 // on Cashmere 1.9:1, both of which fail even the 3:1 large-text floor, so the
 // dark ground is what lets this stay the page's loudest gold moment.
 ---
 
 <section class="pullquote" id="sec-quote">
-  <p>&ldquo;Every decision is viewed through a larger lens: <em>Legacy</em>.&rdquo;</p>
+  <div class="spread">
+    <p class="col-body">&ldquo;Every decision is viewed through a larger lens: <em>Legacy</em>.&rdquo;</p>
+  </div>
 </section>
 
 <style>
+  /* Full viewport width by nature — a top-level section, never inside .spread.
+     The OPEN step sits both outside and inside it. */
   .pullquote{
-    margin: 0;
+    margin: var(--vr-open) 0;
+    padding: var(--vr-open) 0;
     background-color: var(--obsidian);
     background-image:
       radial-gradient(88% 72% at 78% 10%, rgba(175,140,92,0.13) 0%, rgba(175,140,92,0) 60%),
       radial-gradient(70% 60% at 6% 94%,  rgba(71,68,64,0.58) 0%, rgba(71,68,64,0) 62%);
-    padding: clamp(140px, 20vw, 300px) var(--gutter) clamp(140px, 20vw, 300px) var(--gutter-wide);
   }
 
   /* GOLD — the page's largest accent. Quote tier: opsz 96, SOFT 40, WONK 1.
      WONK 1 in italic swaps in the flagged ball terminals on b, d, h, k, l,
-     v and w. That flourish is the whole reason this tier exists. */
+     v and w. That flourish is the whole reason this tier exists. Axes
+     unchanged by this pass. */
   .pullquote p{
-    /* Narrow enough that the line breaks well before the right trim: the
-       void to its right is what makes the block read as hung rather than
-       centred. At 16ch it filled the measure and the margins came out
-       245px / 216px — effectively symmetrical. */
+    /* Narrow inside its column: the void to its right is what makes the block
+       read as hung rather than centred. */
     max-width: 12ch;
     margin: 0;
     font-family: var(--display);
@@ -48,10 +56,7 @@
     color: var(--porcelain);
   }
 
-  @media (max-width: 900px){
-    .pullquote{
-      padding: clamp(104px, 22vw, 168px) var(--gutter);
-    }
+  @media (max-width: 1024px){
     .pullquote p{ max-width: none; }
   }
 </style>

@@ -1,26 +1,37 @@
 ---
-// 3. ABOUT — true two-column, with the five-line drop cap.
+// 3. ABOUT — body text in columns 3-8, with the five-line drop cap.
+// The cleats/football detail shot now hangs in the live margin (9-11) beside
+// this copy rather than occupying a section of its own: it is a detail, and
+// details belong in the margin.
+import { Image } from 'astro:assets';
+import athleticsDetail from '../assets/athletics-detail.jpg';
 ---
 
-<section class="about" id="sec-about">
-  <div class="about-body">
+<section class="about spread" id="sec-about">
+  <div class="about-body col-body">
     <p><span class="dropcap">D</span>r. Syreeta McClain is an accomplished educational leader, high school principal, consultant, speaker, and nonprofit co-founder with more than two decades of experience transforming the lives of young people and the systems that serve them. She specializes in customized high school programming, alternative education, student engagement, leadership development, and creating innovative pathways for student success. As the CEO of Premier Leadership, LLC, she provides leadership coaching, professional development, workshops, program development, and keynote presentations for educators, schools, organizations, parents, and community leaders.</p>
     <p>She is also the co-founder of the Everyday Legends Foundation, a nonprofit committed to strengthening communities grounded in their three pillars: education, athletics, and service. Drawing from her unique experience as an educator, executive leader, and nonprofit founder, Dr.&nbsp;McClain now bridges her skillsets with the evolving landscape of sports and NIL, as athletic manager to her sons, while empowering individuals and families to maximize their impact.</p>
   </div>
+
+  <figure class="about-inset col-inset plate-img">
+    <Image
+      src={athleticsDetail}
+      alt="A heel resting on a football, goalposts standing behind"
+      widths={[320, 480, 640, 900]}
+      sizes="(max-width: 1024px) 100vw, 22vw"
+      quality={78}
+      loading="eager"
+      decoding="sync"
+    />
+  </figure>
 </section>
 
 <style>
-  /* Hung off-axis: the left inset is roughly 2.4x the right, so the text
-     block sits well right of the trim and never reads as a centred column. */
-  .about{
-    padding: clamp(128px, 19vw, 268px) var(--gutter) 0 var(--gutter-wide);
-  }
+  .about{ padding-top: var(--vr-standard); }
 
   .about-body{
-    max-width: var(--measure);
-    margin: 0 auto 0 0;
     column-count: 2;
-    column-gap: clamp(48px, 5.6vw, 88px);
+    column-gap: clamp(32px, 3.4vw, 52px);
     font-family: var(--sans);
     font-weight: 300;
     font-size: var(--bio-size);
@@ -36,30 +47,38 @@
   .about-body p{ margin: 0; }
   .about-body p + p{ margin-top: 1.5em; }
 
+  /* The inset deliberately does NOT start where the paragraph starts.
+     Dropping it well down the measure is what stops the margin reading as
+     a second column and makes it read as a margin. */
+  .about-inset{
+    margin-top: clamp(96px, 13vw, 210px);
+    aspect-ratio: 3 / 4;
+    align-self: start;
+  }
+
+  .about-inset :global(img){
+    object-position: 50% 62%;   /* focal point: the football */
+    /* Restored from the previous build: the turf is the only saturated area
+       in this frame and it has to come well down to sit in the palette. */
+    filter: grayscale(0.58) contrast(1.06) saturate(0.52);
+  }
+
+  /* Warmer than the shared default, to match the heavier desaturation. */
+  .about-inset::before{ opacity: 0.44; }
+
   /* Drop cap — spans exactly 5 lines. Ink cap-height optically aligned to the
      cap height of line 1, ink baseline to the baseline of line 5.
 
-     Re-solved for this pass: BOTH the body metrics (16.5/1.75 -> 17/1.8) and
-     the drop cap's own axes (SOFT 0 -> 20, wght 400 -> 380) changed, and either
-     alone invalidates the previous solve. Measured against actual rendered ink
-     rather than assumed metrics: Montserrat cap-height 0.70000, Fraunces
-     cap-height at these axes 0.69946 (not the 0.700 previously assumed).
+     Untouched by this layout pass: the solve keys off --bio-size and --bio-lh
+     and off the drop cap's own axes, none of which changed here.
 
        required ink cap-height = 4 x line-height + body cap-height
                                = 4(30.6) + 0.70000(17) = 134.30px
-       font-size               = 134.30 / 0.69946 = 191.933px
-
-     Verified on the rendered page: ink height 134.25px, cap-top error
-     -0.006px, baseline error -0.056px. Solved separately at each breakpoint
-     below, because the body type size changes there. */
+       font-size               = 134.30 / 0.69946 = 191.933px */
   /* GOLD */
   .dropcap{
     float: left;
     font-family: var(--display);
-    /* Drop cap tier — opsz 144, SOFT 20. Largest glyph on the page, so it sits
-       at the top of the optical-size axis where the thick/thin contrast is
-       greatest; SOFT 20 takes the hard edge off the terminals without
-       surrendering that contrast. */
     font-variation-settings: var(--fx-dropcap);
     font-weight: 380;
     font-size: 191.933px;
@@ -71,13 +90,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  @media (max-width: 900px){
-    .about{
-      padding: clamp(96px, 18vw, 148px) var(--gutter) 0;
-    }
+  @media (max-width: 1024px){
     .about-body{
       column-count: 1;
       max-width: 62ch;
+    }
+    /* In one column the inset is no longer a margin element; it becomes a
+       full-width plate and needs ordinary section spacing above it. */
+    .about-inset{
+      margin-top: var(--vr-tight);
+      aspect-ratio: 4 / 5;
     }
   }
 
@@ -85,9 +107,7 @@
     .dropcap{
       /* Re-solved independently for the 16px/1.74 mobile body:
            4(27.84) + 0.70000(16) = 122.56px ink cap-height
-           122.56 / 0.69948 = 175.129px
-         Verified: ink height 122.50px, cap-top error -0.003px,
-         baseline error -0.063px. */
+           122.56 / 0.69948 = 175.129px */
       font-size: 175.129px;
       line-height: 0.6451;         /* box 112.976px */
       margin-top: 0.07026em;       /* 12.304px */
