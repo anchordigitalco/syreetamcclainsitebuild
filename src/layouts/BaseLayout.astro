@@ -18,9 +18,12 @@ const { title } = Astro.props;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- Fraunces is requested with all four axes — ital, opsz, wght, SOFT and
        WONK — so no axis is ever left to its default. Every rule that sets
-       Fraunces states all four explicitly. -->
+       Fraunces states all four explicitly.
+       Montserrat carries only 300/400/500: those are the only three weights
+       any rule in src/ asks for, and body sets font-synthesis-weight: none, so
+       an unused weight is pure download. -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Montserrat:wght@200;300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Montserrat:wght@300;400;500&display=swap"
     rel="stylesheet"
   />
 </head>

@@ -3,6 +3,17 @@
 // The source photograph is vertical (2:3). The column is proportionally wider
 // than the source, so object-fit: cover only ever crops vertically — the full
 // frame width always shows and she is never squeezed into a wide letterbox.
+//
+// Served through astro:assets, not as a raw <img> off /public. The raw tag was
+// shipping the 3925x5887 original at 1055 kB — 64% of the whole page's weight,
+// in the SECOND section, unresized and un-transcoded. The pipeline emits webp
+// at the sizes actually used and carries intrinsic width/height, which also
+// removes the layout shift the bare tag caused.
+//
+// Note the img is scaled 1.28x by CSS, so the widths list runs past the box
+// width: 53vw at 1440 is ~763px, x1.28 = ~977px, x2 DPR = ~1954px.
+import { Image } from 'astro:assets';
+import portraitHero from '../assets/portrait-hero.jpg';
 ---
 
 <section class="portrait" id="sec-portrait">
@@ -11,10 +22,15 @@
     <p class="portrait-tagline">Where<br />Leadership<br />Meets <em>Legacy</em></p>
   </div>
   <figure class="portrait-figure relative m-0 isolate overflow-hidden">
-    <img
+    <Image
       class="block w-full h-full object-cover"
-      src="/brand_assets/KNOW%20shoot%201.jpg"
+      src={portraitHero}
       alt="Dr. Syreeta McClain in a black blouse and white trousers against a grey seamless backdrop"
+      widths={[480, 800, 1200, 1600, 2000]}
+      sizes="(max-width: 900px) 100vw, 53vw"
+      quality={80}
+      loading="eager"
+      decoding="sync"
     />
   </figure>
 </section>
@@ -86,7 +102,7 @@
     /* isolate keeps the multiply tint on the photo, not the page */
   }
 
-  .portrait-figure img{
+  .portrait-figure :global(img){
     object-position: 54% 14%;   /* focal point: her face */
     /* A small zoom about her face closes the dead seamless either side without
        losing the full-length crop. */

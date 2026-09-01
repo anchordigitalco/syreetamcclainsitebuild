@@ -1,0 +1,263 @@
+---
+// PILLAR — Charging It to the Game. The last content on the page, after the
+// index and before the footer.
+//
+// SECTION OPENING: the EYEBROW leads into a display-scale heading. The index
+// above it opens on a gold hairline and a hung display numeral, so the two do
+// not match.
+//
+// NO post index, NO fabricated posts, NO "coming soon". There are no articles
+// and no blog URL. The copy is a manifesto and stands as one; a fake post list
+// reads worse than no post list.
+//
+// The section element carries id="charging-it-to-the-game" so funnel index
+// entry 05 — currently href="#" — has a real anchor available to be repointed
+// at. That repointing is NOT done here: it is Jackson's call and the index is
+// not this pass's scope.
+//
+// PHOTOGRAPH. Canonical source is brand_assets/SHP SHoot 7.jpg — the
+// red-blazer downtown-street frame. CONTEXT.md records it as
+// brand_assets/photography/lifestyle-street.jpg; that path and that directory
+// do not exist on disk. Verified 2832x4240 with sharp().metadata(), no EXIF
+// orientation flag, so the stored buffer is also the presented frame. It is a
+// VERTICAL frame and is not cropped wide. Inset crop cut from a figure-centred
+// window:
+//   extract left 700, top 980, 1500 x 2100   (5:7, three-quarter length —
+//   head at ~12% from the top, the street receding on both sides)
+// 5:7 is used nowhere else on the page: the other frames run 3:4, 4:5 and 2:3,
+// so this one differs in proportion and not only in size.
+import { Image } from 'astro:assets';
+import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
+---
+
+<section class="blog spread" id="charging-it-to-the-game">
+  <div class="blog-head">
+    <p class="pillar-kicker">The Blog</p>
+    <h2 class="blog-title">Charging It to the Game</h2>
+  </div>
+
+  <!-- Columns 2-10, the break every lede on this page takes. -->
+  <p class="pillar-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
+
+  <div class="pillar-body">
+    <p>Charging It to the Game is where sports, family, leadership, and life meet&mdash;and where the experiences behind the accomplishments get a voice.</p>
+    <p>Through personal stories, candid reflections, lessons learned, sacrifices made, wins celebrated, and losses absorbed, Dr.&nbsp;McClain shares the journey behind raising athletes while simultaneously navigating motherhood, marriage, education, leadership, business, and life.</p>
+
+    <!-- The TURN. Isolated on both sides at the tight step and set in Obsidian
+         against the Slate around it, so it can never be read as the tail of
+         the paragraph above or the head of the one below. -->
+    <p class="body-beat">But this is not simply a football story.</p>
+
+    <p>It is about the miles driven when no one was watching. The sacrifices families make behind the scenes. The decisions that change trajectories. The relationships that shape people. The losses that teach more than victories ever could. And the understanding that sometimes the lesson only makes sense after living through it.</p>
+    <p>For parents, athletes, educators, coaches, leaders, and anyone navigating a journey that does not come with a perfect playbook, Charging It to the Game creates space to tell the truth about the process, find meaning in the experience, and keep moving forward.</p>
+  </div>
+
+  <!-- Inset tier: columns 9-11, hung in the live margin and dropped down the
+       measure so its top edge does not line up with the paragraph beside it. -->
+  <figure class="blog-inset plate-img">
+    <Image
+      src={lifestyleStreet}
+      alt="Dr. Syreeta McClain in a red blazer and jeans, standing on a downtown street"
+      widths={[320, 480, 750, 1500]}
+      sizes="(max-width: 1024px) 100vw, 22vw"
+      quality={80}
+      loading="eager"
+      decoding="sync"
+    />
+  </figure>
+
+  <!-- THE CODA. Three lines, typeset as three blocks. The line breaks are the
+       design: they can wrap on a narrow screen but they can never run together
+       into a sentence. Left-aligned, no rules between them. Last in source
+       order — the last thing said on the page before the footer. -->
+  <p class="blog-coda">
+    <span class="coda-line">Because some things are wins.</span>
+    <span class="coda-line">Some things are lessons.</span>
+    <span class="coda-line">And some things you simply have to charge to the game.</span>
+  </p>
+</section>
+
+<style>
+  .blog{ padding-top: var(--vr-standard); }
+
+  .blog-head    { grid-column: 3 / 9;  grid-row: 1; }
+  .pillar-lede  { grid-column: 2 / 11; grid-row: 2; }
+  .pillar-body  { grid-column: 3 / 9;  grid-row: 3; }
+  .blog-inset   { grid-column: 9 / 12; grid-row: 3; }
+  /* Columns 3-10, not the body's 3-8. At 3-8 the third line wrapped at
+     1440 and the cadence broke at the widest breakpoint, where it is
+     least excusable. The coda keeps the body's LEFT edge and is given
+     the room the closing lines need. */
+  .blog-coda    { grid-column: 3 / 11; grid-row: 4; }
+
+  .blog-head{ margin-bottom: clamp(40px, 5vw, 72px); }
+
+  .pillar-kicker{
+    margin: 0 0 var(--s3);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .pillar-kicker::before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--hair-strong);
+    margin-bottom: clamp(24px, 3vw, 40px);
+  }
+
+  /* Section-heading tier — opsz 96, wght 340, SOFT 32, WONK 0. Smaller than
+     the lede below, for the same reason as PillarLegends: the lede is the
+     section's display anchor and the title is the label on it. */
+  .blog-title{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-display);
+    font-weight: 340;
+    font-size: clamp(26px, 2.8vw, 40px);
+    line-height: 1.14;
+    letter-spacing: -0.014em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* Type treatment copied from PillarPremier's .pillar-lede verbatim. */
+  .pillar-lede{
+    margin: 0 0 var(--vr-tight);
+    font-family: var(--display);
+    /* Lede tier — opsz 72, wght 350, SOFT 35, WONK 0. */
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(27px, 3.6vw, 52px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: pretty;
+  }
+
+  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
+  .pillar-body{
+    margin: 0;
+    max-width: 62ch;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.75;
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  .pillar-body p{ margin: 0; }
+  .pillar-body p + p{ margin-top: 1.5em; }
+
+  .body-beat{
+    color: var(--obsidian);
+    font-weight: 400;
+  }
+  .pillar-body p + .body-beat{ margin-top: var(--vr-tight); }
+  /* Qualified with .pillar-body: the bare `.body-beat + p` selector is
+     less specific than `.pillar-body p + p` and lost to it, so the beat
+     had air above it and none below and read as a lead-in. */
+  .pillar-body .body-beat + p{ margin-top: var(--vr-tight); }
+
+  /* --- The inset photograph -------------------------------------- */
+  .blog-inset{
+    margin-top: clamp(88px, 11vw, 190px);
+    /* 5:7 — a proportion used nowhere else on the page. */
+    aspect-ratio: 5 / 7;
+    align-self: start;
+  }
+
+  .blog-inset :global(img){
+    object-position: 50% 40%;
+    /* The red blazer is the most saturated area anywhere in the usable set and
+       red sits outside the five locked hexes. Graded down hard so it lands as
+       a muted clay inside the warm earth family rather than as a sixth colour;
+       the same pass carries the sky and the yellow road paint down with it. */
+    filter: grayscale(0.76) contrast(1.04) saturate(0.32) brightness(1.05);
+  }
+
+  /* NOT directional. The two athletics frames weight their gradient to one
+     edge because their out-of-palette areas are at an edge — track underfoot,
+     sky overhead. This frame's problem area is the RED BLAZER, which sits in
+     the middle of the picture, so an edge-weighted wash misses it entirely and
+     instead lands its gold on the sky, which is where the sepia cast came
+     from. Gold is carried across the middle band and Cashmere closes both
+     ends. Every stop is a locked palette value. */
+  .blog-inset::before{
+    background: linear-gradient(to bottom,
+      var(--cashmere)  0%,
+      var(--gold)     52%,
+      var(--cashmere) 100%);
+    opacity: 0.42;
+  }
+
+  /* Lighter than the shared default. The blazer is already the darkest thing
+     in the frame and crushing it further pushes its relative saturation back
+     UP, which is the opposite of what the grade above is for. */
+  .blog-inset::after{
+    background:
+      linear-gradient(to top, rgba(26,22,19,0.22) 0%, rgba(26,22,19,0) 40%),
+      linear-gradient(90deg,  rgba(209,199,189,0.30) 0%, rgba(209,199,189,0) 26%);
+  }
+
+  /* --- The coda ---------------------------------------------------- */
+  /* The OPEN step above. As with the education coda, the chapter break spends
+     this step twice over, so it remains the page's largest gap. */
+  .blog-coda{
+    margin: var(--vr-open) 0 0;
+    font-family: var(--display);
+    /* Coda tier — opsz 48, wght 360, SOFT 45, WONK 0. */
+    font-variation-settings: var(--fx-coda);
+    font-weight: 360;
+    font-size: clamp(20px, 2.1vw, 30px);
+    line-height: 1.52;
+    letter-spacing: -0.008em;
+    color: var(--obsidian);
+    text-align: left;      /* never centred */
+  }
+
+  /* Block-level, so the three lines are three lines structurally and not just
+     visually. A wrapped line stays inside its own block; the three can never
+     collapse into one paragraph. */
+  .coda-line{
+    display: block;
+    text-wrap: pretty;
+  }
+
+  /* Generous leading BETWEEN the lines as well as within them — the cadence is
+     the point, and three blocks at ordinary paragraph spacing would read as a
+     single stanza. */
+  .coda-line + .coda-line{ margin-top: 0.34em; }
+
+  /* ---- One stacked column. ---- */
+  @media (max-width: 1024px){
+    .blog-head,
+    .pillar-lede,
+    .pillar-body,
+    .blog-inset,
+    .blog-coda{ grid-column: 1 / -1; grid-row: auto; }
+
+    .pillar-body{ max-width: none; }
+
+    /* The inset becomes a full-measure column image. */
+    .blog-inset{
+      margin-top: var(--vr-tight);
+      aspect-ratio: 4 / 5;
+    }
+  }
+
+  @media (max-width: 560px){
+    /* Slightly tighter so the third line has a better chance of holding one
+       line; if it still wraps that is acceptable, so long as it stays its own
+       block, which .coda-line guarantees. */
+    .blog-coda{ font-size: 19px; }
+  }
+</style>

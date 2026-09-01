@@ -5,10 +5,13 @@ import RunningHead from '../components/RunningHead.astro';
 import Hero from '../components/Hero.astro';
 import PortraitBand from '../components/PortraitBand.astro';
 import About from '../components/About.astro';
+import PillarEducation from '../components/PillarEducation.astro';
 import PillarPremier from '../components/PillarPremier.astro';
+import PillarLegends from '../components/PillarLegends.astro';
 import PillarAthletics from '../components/PillarAthletics.astro';
 import PullQuote from '../components/PullQuote.astro';
 import FunnelIndex from '../components/FunnelIndex.astro';
+import SectionBlog from '../components/SectionBlog.astro';
 import Footer from '../components/Footer.astro';
 ---
 
@@ -24,13 +27,24 @@ import Footer from '../components/Footer.astro';
     <Hero />
     <PortraitBand />
     <About />
+    <!-- Earliest chronological pillar, so it leads the run. -->
+    <PillarEducation />
     <PillarPremier />
+    <!-- Sits before the Cashmere band, which is the first thing
+         PillarAthletics renders. CONTEXT.md refers to that band as
+         BreakBand.astro; there is no such component in this build — the band
+         was folded into PillarAthletics during Phase D. -->
+    <PillarLegends />
     <PillarAthletics />
     <!-- The quote is this pillar's own closing line; it follows immediately
          and delivers it at full scale, so the pillar's body copy stops short
          of it rather than repeating it. -->
     <PullQuote />
     <FunnelIndex />
+    <!-- Last content on the page. Carries id="charging-it-to-the-game" so
+         index entry 05 has a real anchor available; entry 05 itself is
+         deliberately left at href="#" for Jackson to decide. -->
+    <SectionBlog />
   </main>
 
   <Footer />

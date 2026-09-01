@@ -1,0 +1,196 @@
+---
+// PILLAR — Everyday Legends Foundation. Sits after Premier Leadership and
+// before the Cashmere band that opens PillarAthletics.
+//
+// SECTION OPENING: the HEADING leads, set in Fraunces at section-heading
+// scale. PillarPremier above opens on a 10.5px uppercase kicker and
+// PillarAthletics below opens on a full-width photograph, so neither
+// neighbour is matched.
+//
+// NO second outbound website link. Funnel index entry 02 already carries
+// everydaylegend.com with identical visual treatment, and a duplicate button
+// here would send a visitor to a destination the page already offers. The
+// live margin instead carries the Instagram handle, which appears nowhere
+// else on the page, so the section still has an outbound without repeating
+// the index.
+//
+// COPY NOTE: paragraph 3 reads "education, sports, and community" in the
+// client's source document. It is set here as "education, athletics, and
+// service" per the project-wide pillars decision in CONTEXT.md, which matches
+// the About copy and all three mockups. Deliberate — do not revert.
+---
+
+<section class="legends spread" id="sec-legends">
+  <div class="legends-head">
+    <h2 class="legends-title">Everyday Legends Foundation</h2>
+    <p class="pillar-role">Co-Founder &amp; Executive Director</p>
+  </div>
+
+  <!-- Columns 2-10, the break both other pillar ledes take. -->
+  <p class="pillar-lede">Some of the most extraordinary people will never become household names.</p>
+
+  <div class="pillar-body">
+    <p>They are the educators, coaches, mentors, parents, community leaders, organizations, and young people who quietly show up, pour into others, open doors, and make their communities better.</p>
+
+    <!-- A BEAT, not a body paragraph. Isolated on both sides at the tight
+         step, and set in Obsidian against the Slate around it, so it carries
+         primary weight in the opacity hierarchy without changing scale. -->
+    <p class="body-beat">Everyday Legends Foundation was created to honor them&mdash;and to continue their work.</p>
+
+    <p>Grounded in the pillars of education, athletics, and service, Everyday Legends celebrates those who create pathways for others while investing in the next generation through scholarships, youth initiatives, athletics, mentorship, community partnerships, and service.</p>
+    <p>For Dr.&nbsp;McClain, the mission is deeply personal. Education, athletics, and service are not simply organizational pillars; they reflect values that have shaped the McClain family for years. Time, sacrifice, resources, and purpose have been intentionally invested in creating opportunities for young people while teaching the next generation that achievement carries a responsibility to give back.</p>
+  </div>
+
+  <!-- Live margin. Last in source order so it collapses inline after the
+       copy rather than ahead of it. -->
+  <aside class="legends-margin">
+    <p class="margin-label">Instagram</p>
+    <a class="margin-link" href="https://www.instagram.com/everydaylegendsfoundation" target="_blank" rel="noopener">@everydaylegendsfoundation</a>
+  </aside>
+</section>
+
+<style>
+  .legends{ padding-top: var(--vr-standard); }
+
+  .legends-head   { grid-column: 3 / 9;  grid-row: 1; }
+  .pillar-lede    { grid-column: 2 / 11; grid-row: 2; }
+  .pillar-body    { grid-column: 3 / 9;  grid-row: 3; }
+  .legends-margin { grid-column: 9 / 13; grid-row: 3; }
+
+  .legends-head{ margin-bottom: clamp(40px, 5vw, 72px); }
+
+  /* Section-heading tier — opsz 96, wght 340, SOFT 32, WONK 0. Deliberately
+     SMALLER than the lede below it: the lede is the section's display anchor
+     and the name is the label on it, not the other way round. */
+  .legends-title{
+    margin: 0 0 var(--s3);
+    font-family: var(--display);
+    font-variation-settings: var(--fx-display);
+    font-weight: 340;
+    font-size: clamp(26px, 2.8vw, 40px);
+    line-height: 1.14;
+    letter-spacing: -0.014em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  .pillar-role{
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(12px, 1.1vw, 14px);
+    line-height: 1.6;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+    /* Secondary in the hierarchy — the title above it is primary. */
+    opacity: 0.7;
+  }
+
+  /* Type treatment copied from PillarPremier's .pillar-lede verbatim. */
+  .pillar-lede{
+    margin: 0 0 var(--vr-tight);
+    font-family: var(--display);
+    /* Lede tier — opsz 72, wght 350, SOFT 35, WONK 0. */
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(27px, 3.6vw, 52px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: pretty;
+  }
+
+  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
+  .pillar-body{
+    margin: 0;
+    max-width: 62ch;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.75;
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  .pillar-body p{ margin: 0; }
+  .pillar-body p + p{ margin-top: 1.5em; }
+
+  /* Air on BOTH sides — a beat that only had air above it would still bind to
+     the paragraph below and read as a lead-in rather than as a turn. */
+  .body-beat{
+    color: var(--obsidian);
+    font-weight: 400;
+  }
+  .pillar-body p + .body-beat{ margin-top: var(--vr-tight); }
+  /* Qualified with .pillar-body: the bare `.body-beat + p` selector is
+     less specific than `.pillar-body p + p` and lost to it, so the beat
+     had air above it and none below and read as a lead-in. */
+  .pillar-body .body-beat + p{ margin-top: var(--vr-tight); }
+
+  /* --- Marginalia ------------------------------------------------- */
+  .legends-margin{
+    margin-top: clamp(72px, 9vw, 150px);
+    align-self: start;
+    padding-top: var(--s3);
+    border-top: 1px solid var(--hair);
+  }
+
+  .margin-label{
+    margin: 0 0 var(--s2);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 9.5px;
+    line-height: 1.9;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    /* Slate at FULL opacity. At 0.72 this measured 3.81:1 on Porcelain, under
+       the 4.5:1 AA floor for 9.5px text. The step below the Obsidian link it
+       labels is carried by colour and size, which is enough — it does not need
+       an opacity knock-down that costs legibility. */
+    color: var(--slate);
+  }
+
+  /* Handle is set lowercase, not uppercased — an @handle is a literal string
+     and casing it up would misrepresent it. */
+  .margin-link{
+    display: inline-block;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(11.5px, 0.95vw, 13px);
+    line-height: 1.6;
+    letter-spacing: 0.06em;
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-color: var(--hair-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    overflow-wrap: anywhere;
+    transition: color 320ms var(--ease),
+                text-decoration-color 320ms var(--ease),
+                transform 320ms var(--ease);
+  }
+
+  .margin-link:hover,
+  .margin-link:focus-visible{
+    color: var(--slate);
+    text-decoration-color: var(--obsidian);
+    transform: translateY(-1px);
+  }
+  .margin-link:active{ transform: translateY(0); }
+  .margin-link:focus-visible{ outline: 1px solid var(--slate); outline-offset: 6px; }
+
+  /* ---- One stacked column. ---- */
+  @media (max-width: 1024px){
+    .legends-head,
+    .pillar-lede,
+    .pillar-body,
+    .legends-margin{ grid-column: 1 / -1; grid-row: auto; }
+
+    .pillar-body{ max-width: none; }
+
+    /* Inline in reading order, after the copy. */
+    .legends-margin{ margin-top: var(--vr-tight); }
+  }
+</style>

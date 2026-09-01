@@ -59,6 +59,10 @@
   --fx-quote:   'opsz' 96,  'wght' 340, 'SOFT' 40, 'WONK' 1;
   --fx-dropcap: 'opsz' 144, 'wght' 380, 'SOFT' 20, 'WONK' 0;
   --fx-lede:    'opsz' 72,  'wght' 350, 'SOFT' 35, 'WONK' 0;
+  /* Coda tier — the intermediate step between lede and body, for a section's
+     closing line. Sits between --fx-lede and --fx-small on every axis, so it
+     reads as display type being READ rather than SEEN. All four axes stated. */
+  --fx-coda:    'opsz' 48,  'wght' 360, 'SOFT' 45, 'WONK' 0;
   --fx-numeral: 'opsz' 48,  'wght' 400, 'SOFT' 40, 'WONK' 0;
   --fx-small:   'opsz' 24,  'wght' 420, 'SOFT' 70, 'WONK' 0;
 
@@ -79,8 +83,7 @@
   --grid-w:    min(100vw, var(--grid-max));
   --col-w:     calc((var(--grid-w) - (2 * var(--grid-pad)) - (11 * var(--grid-gap))) / 12);
   --grid-left: calc((100vw - var(--grid-w)) / 2);
-  /* left edge of column 9 and the full width of the live margin */
-  --margin-x:  calc(var(--grid-left) + var(--grid-pad) + (8 * (var(--col-w) + var(--grid-gap))));
+  /* the full width of the live margin (columns 9-12) */
   --margin-w:  calc((4 * var(--col-w)) + (3 * var(--grid-gap)));
 
   /* ----------------------------------------------------------
@@ -100,7 +103,6 @@
      page off its centre axis. */
   --gutter:      clamp(26px, 7vw, 128px);
   --gutter-wide: clamp(26px, 16vw, 340px);
-  --measure:     1100px;
 
   /* Body metrics — the drop cap solve keys off these */
   --bio-size: 17px;
