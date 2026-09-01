@@ -83,8 +83,6 @@
   --grid-w:    min(100vw, var(--grid-max));
   --col-w:     calc((var(--grid-w) - (2 * var(--grid-pad)) - (11 * var(--grid-gap))) / 12);
   --grid-left: calc((100vw - var(--grid-w)) / 2);
-  /* the full width of the live margin (columns 9-12) */
-  --margin-w:  calc((4 * var(--col-w)) + (3 * var(--grid-gap)));
 
   /* ----------------------------------------------------------
      VERTICAL RHYTHM — three values, never one.
@@ -140,6 +138,23 @@ body{
   opacity: 0.42;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+}
+
+/* Visually hidden, but still in the accessibility tree. Used for the two
+   section headings the design carries no visible title for — About and the
+   index. Never display:none or visibility:hidden, which would remove them
+   from the tree and defeat the purpose. Absolutely positioned so it creates
+   no grid row in .spread. */
+.vh{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 ::selection{ background: var(--gold); color: var(--porcelain); }

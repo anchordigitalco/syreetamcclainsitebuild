@@ -1,11 +1,25 @@
 ---
 // SIGNATURE MOVE — folio marginalia.
-// The only scroll-driven behaviour on the page. It never gates content
-// visibility; it only relabels the margin.
+//
+// This is now the ONLY current-section indicator on the page, and the only
+// scroll-driven behaviour anywhere in the build. RunningHead.astro used to
+// render a second one in the live margin (columns 9-12) off its own hand-copied
+// copy of the same section list; at any scroll position the two displayed the
+// identical string. In print a folio marks the page and a running head marks
+// the section — they do not repeat each other — so the duplicate was removed
+// rather than restyled. The live margin now carries only what individual
+// sections put there: the district link, the Instagram handle, the insets.
+//
+// It never gates content visibility; it only relabels the margin.
+//
+// The section list is imported, not restated. See src/data/sections.ts.
+import { sections } from '../data/sections';
+
+const first = sections[0];
 ---
 
 <div class="folio hidden lg:block fixed left-0 top-1/2 z-40 pointer-events-none" aria-hidden="true">
-  <div class="folio-inner" id="folio"><span class="folio-num">01</span><span id="folio-label">Portrait</span></div>
+  <div class="folio-inner" id="folio"><span class="folio-num">{first.n}</span><span id="folio-label">{first.label}</span></div>
 </div>
 
 <style>
@@ -38,52 +52,59 @@
   .folio-num{ margin-right: 1.1em; }
 </style>
 
-<script is:inline>
+<!-- define:vars implies is:inline, so the list is serialised straight into the
+     tag and the script is never bundled or deferred behind a module graph. -->
+<script is:inline define:vars={{ sections }}>
 (function () {
-  // Pre-existing defect: this component renders before <main>, so resolving
-  // the section elements inline captured an empty list and the folio never
-  // became visible or changed label. Initialisation now waits for parse.
+  // This component renders before <main>, so resolving the section elements
+  // immediately captured an empty list and the folio never became visible or
+  // changed label. Initialisation waits for the document to finish parsing.
   function init() {
-  var folio = document.getElementById('folio');
-  var label = document.getElementById('folio-label');
-  var num   = folio.querySelector('.folio-num');
-  var map = [
-    { id: 'sec-portrait',            n: '01', t: 'Portrait' },
-    { id: 'sec-about',               n: '02', t: 'About' },
-    { id: 'sec-education',           n: '03', t: 'Educational Leader' },
-    { id: 'sec-pillar',              n: '04', t: 'Premier Leadership' },
-    { id: 'sec-legends',             n: '05', t: 'Everyday Legends' },
-    { id: 'sec-athletics',           n: '06', t: 'Athletic Management' },
-    { id: 'sec-index',               n: '07', t: 'Index' },
-    { id: 'charging-it-to-the-game', n: '08', t: 'Charging It to the Game' }
-  ];
-  var nodes = map.map(function (m) {
-    return { el: document.getElementById(m.id), n: m.n, t: m.t };
-  }).filter(function (m) { return m.el; });
+    var folio = document.getElementById('folio');
+    var label = document.getElementById('folio-label');
+    var num   = folio.querySelector('.folio-num');
 
-  function sync() {
-    var mid = window.scrollY + window.innerHeight / 2;
-    var active = null;
-    nodes.forEach(function (m) {
-      var top = m.el.offsetTop;
-      if (mid >= top && mid < top + m.el.offsetHeight) active = m;
-    });
-    if (active) {
-      if (num.textContent !== active.n) { num.textContent = active.n; label.textContent = active.t; }
-      folio.classList.add('is-visible');
-    } else {
-      folio.classList.remove('is-visible');
+    var nodes = sections
+      .map(function (m) { return { el: document.getElementById(m.id), n: m.n, t: m.label }; })
+      .filter(function (m) { return m.el; });
+
+    function sync() {
+      // A plain scroll-position check against each section's box. No observer,
+      // so nothing on the page depends on visibility to render.
+      var mid = window.scrollY + window.innerHeight / 2;
+      var active = null;
+      nodes.forEach(function (m) {
+        var top = m.el.offsetTop;
+        if (mid >= top && mid < top + m.el.offsetHeight) active = m;
+      });
+      if (active) {
+        if (num.textContent !== active.n) { num.textContent = active.n; label.textContent = active.t; }
+        folio.classList.add('is-visible');
+      } else {
+        folio.classList.remove('is-visible');
+      }
     }
-  }
 
-  var ticking = false;
-  window.addEventListener('scroll', function () {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () { sync(); ticking = false; });
-  }, { passive: true });
-  window.addEventListener('resize', sync, { passive: true });
-  sync();
+    // Coalesce scroll work into one frame, but never let the guard LATCH.
+    // The inherited version set a `ticking` flag and cleared it only inside
+    // the rAF callback: if that frame was never serviced — a throttled or
+    // backgrounded renderer is enough — the flag stayed true and every
+    // subsequent scroll returned early, leaving the folio frozen on its
+    // first label for the rest of the page. Observed exactly that. The flag
+    // is now cleared at the top of the callback AND by an independent
+    // timeout, so a dropped frame costs one update, never all of them.
+    var pending = false;
+    function release() { pending = false; }
+    function onScroll() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { release(); sync(); });
+      setTimeout(release, 250);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', sync, { passive: true });
+    sync();
   }
 
   if (document.readyState === 'loading') {
