@@ -11,6 +11,7 @@ import PillarAthletics from '../components/PillarAthletics.astro';
 import PullQuote from '../components/PullQuote.astro';
 import FunnelIndex from '../components/FunnelIndex.astro';
 import SectionBlog from '../components/SectionBlog.astro';
+import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
 
@@ -42,10 +43,15 @@ import Footer from '../components/Footer.astro';
          of it rather than repeating it. -->
     <PullQuote />
     <FunnelIndex />
-    <!-- Last content on the page. Carries id="charging-it-to-the-game" so
-         index entry 05 has a real anchor available; entry 05 itself is
-         deliberately left at href="#" for Jackson to decide. -->
+    <!-- Carries id="charging-it-to-the-game" so index entry 05 has a real
+         anchor available; entry 05 itself is deliberately left at href="#"
+         for Jackson to decide. -->
     <SectionBlog />
+    <!-- Last content on the page. Follows the blog's coda deliberately: the
+         reading order is what she does, then her voice, then how to reach
+         her. It opens on its lede rather than on an eyebrow, so it does not
+         open the same way the blog above it does. -->
+    <ContactSection />
   </main>
 
   <Footer />

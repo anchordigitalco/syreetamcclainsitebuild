@@ -1,0 +1,671 @@
+---
+// 9. CONTACT — Formspree + Cloudflare Turnstile. Phase F.
+//
+// PROVIDER. Formspree, decided. It has native Turnstile support (April 2026),
+// documents the `cf-turnstile-response` token field, documents the fetch()
+// path this build needs, and carries CAPTCHA on all plans. It was also this
+// project's original spec, so nothing migrated.
+//
+// THE SITE STAYS STATIC. No adapter, no output:'server', no prerender:false.
+// That is the whole reason a third-party endpoint is used at all: there is no
+// server in this project to verify a Turnstile token, so Formspree verifies it
+// with the SECRET key held in its own dashboard. The secret never enters this
+// repo. The two values read below are public by design — a Turnstile sitekey
+// is public by specification and the Formspree endpoint is a public POST
+// target, which is what the token and the honeypot exist to protect.
+//
+// SECTION OPENING: this section opens on the LEDE at display scale, with no
+// eyebrow and no visible title. SectionBlog immediately above opens on an
+// eyebrow leading into a display heading, and CONTEXT.md's rule is that no two
+// adjacent sections open with the same element leading. The lede rule is still
+// satisfied — "Speaking, consulting, partnership, and press inquiries." is the
+// detached display-scale line, and it labels the section better than the word
+// "Contact" would. The <h2> naming the section is therefore visually hidden
+// via .vh, exactly as About and the index already do. It stays in the
+// accessibility tree and its text matches the folio label, per the Phase E.5
+// heading rule.
+//
+// INQUIRY OPTIONS ARE AN ASSUMPTION. CONTEXT.md requires a native <select> for
+// inquiry type but does not enumerate the options anywhere. The six below are
+// derived from the site's own funnel index plus the four categories named in
+// the approved lede. They need client confirmation before launch.
+//
+// The selected option is written into a hidden `_subject` field so she can
+// triage from the inbox list view without opening anything.
+const endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? '';
+// Falls back to Cloudflare's official always-passes TEST sitekey so the form
+// is exercisable on localhost with no .env present. Never pair this with a
+// live secret in the Formspree dashboard.
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x00000000000000000000AA';
+
+const inquiries = [
+  'Speaking or keynote',
+  'Consulting or professional development',
+  'Everyday Legends Foundation',
+  'Athletic management or NIL',
+  'Press or media',
+  'Something else',
+];
+
+// Phase G. The page does not exist yet; this is the intended path and is
+// flagged in the Phase F report rather than pointed at "#".
+const privacyPath = '/privacy';
+const inbox = 'premierleadersllc' + '@' + 'gmail.com';
+---
+
+<section class="contact spread" id="sec-contact">
+  <h2 class="vh">Contact</h2>
+
+  <!-- Columns 2-10, the break every lede on this page takes. Uses the
+       .col-break PRIMITIVE rather than a hand-set grid-column: the primitive
+       already carries its own mobile collapse, and hand-setting it here
+       spawned implicit columns that collapsed the rest of the section. See
+       the note on .pillar-lede below. -->
+  <p class="pillar-lede col-break">Speaking, consulting, partnership, and press inquiries.</p>
+
+  <div class="contact-grid col-body">
+    <form
+      class="contact-form"
+      id="contact-form"
+      method="POST"
+      action={endpoint}
+      novalidate={false}
+    >
+      <!-- Subject line carries the selected inquiry type. Kept in sync by the
+           script below so the inbox list view is triageable. -->
+      <input type="hidden" name="_subject" id="contact-subject" value="Website inquiry" />
+
+      <!-- Honeypot, second layer behind Turnstile. Off-screen rather than
+           display:none — a hidden field is trivially detected, an off-screen
+           one is not. Never focusable, never announced. -->
+      <div class="honeypot" aria-hidden="true">
+        <label for="contact-company">Company</label>
+        <input type="text" id="contact-company" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-name">Name</label>
+        <input class="field-input" type="text" id="contact-name" name="name"
+               autocomplete="name" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-email">Email</label>
+        <input class="field-input" type="email" id="contact-email" name="email"
+               autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-type">Inquiry type</label>
+        <!-- Native <select>. The popup is the OS's own; only the resting box
+             is restyled to the page's underline, never replaced with a
+             scripted dropdown. -->
+        <select class="field-input field-select" id="contact-type" name="inquiry" required>
+          <option value="" disabled selected>Choose one</option>
+          {inquiries.map((label) => <option value={label}>{label}</option>)}
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-message">Message</label>
+        <textarea class="field-input field-textarea" id="contact-message" name="message"
+                  rows="5" required></textarea>
+      </div>
+
+      <!-- Turnstile mounts here. Explicit render so the widget id is held and
+           can be reset after a failed submission; an unreset widget hands the
+           same spent token to the retry and fails again. -->
+      <div class="turnstile-slot">
+        <div id="turnstile-widget"></div>
+      </div>
+
+      <button class="contact-submit" type="submit" id="contact-submit">
+        <span data-label-idle>Send inquiry</span>
+        <span data-label-busy hidden>Sending…</span>
+      </button>
+
+    </form>
+
+    <!-- Four states share one live region. Never an opacity:0 reveal — the
+         region is empty and `hidden` at rest, and content is written into it.
+         OUTSIDE the form on purpose: the success state hides the form, and a
+         status region nested inside it would be hidden along with it. -->
+    <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
+
+    <!-- Also outside the form, and AFTER the status. Inside the form it was
+         the last child, which put the error message visually below the
+         privacy link instead of directly under the button that produced it.
+         Out here it stays visible in all four states, success included. -->
+    <p class="contact-privacy">
+      <a href={privacyPath}>Privacy policy</a>
+    </p>
+  </div>
+
+  <!-- LIVE MARGIN, columns 9-12. The page's rule is that this strip is never
+       empty for long stretches; here it carries the direct address, which is
+       also the fallback every error state points at. -->
+  <aside class="contact-direct col-margin">
+    <p class="direct-kicker">Direct</p>
+    <p class="direct-line">
+      <a class="direct-link" href={`mailto:${inbox}`}>{inbox}</a>
+    </p>
+    <p class="direct-note">Premier Leadership &middot; Everyday Legends Foundation</p>
+  </aside>
+</section>
+
+<style>
+  .contact{ padding-top: var(--vr-standard); }
+
+  /* Matches every other lede on the page: columns 2-10, so neither edge lines
+     up with the form below it. Metrics copied from PillarPremier's .pillar-lede
+     verbatim — same tier, same optical axes.
+     WIDTH IS NOT SET HERE. It comes from the .col-break primitive on the
+     element. This rule originally carried `grid-column: 2 / 11` directly, and
+     that was a real bug: at <=1024 .spread collapses to ONE explicit column,
+     so `-1` resolves to line 2, while a hand-set `2 / 11` still demanded ten
+     column lines. Grid supplied the missing nine as IMPLICIT auto-width
+     columns, and every sibling spanning `1 / -1` — the form and the direct
+     block — was squeezed into a 62.75px first column while the implicit
+     columns took the rest. Measured exactly that at 768px. The primitives are
+     collapse-aware; a hand-set span is not. Use the tier classes. */
+  .pillar-lede{
+    margin: 0 0 var(--vr-tight);
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(27px, 3.6vw, 52px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: pretty;
+  }
+
+  .contact-grid{ position: relative; }
+
+  .contact-form{
+    /* Held short of the full 3-8 span, like .pillar-body. A form that fills
+       its column reads as an app screen; held short it reads as a measure. */
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* --- Fields ---------------------------------------------------------
+     Underline only. No border box, no radius, no fill: the page is built
+     out of rules and measures, and a boxed input is SaaS convention. */
+  .field{ margin-bottom: var(--s4); }
+
+  .field-label{
+    display: block;          /* always visible, above the field */
+    margin-bottom: var(--s1);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .field-input{
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0 12px;
+    border: 0;
+    border-bottom: 1px solid var(--hair-strong);
+    border-radius: 0;                 /* iOS adds one to text inputs */
+    background-color: transparent;
+    background-image: none;
+    font-family: var(--sans);
+    font-weight: 300;
+    /* 16px MINIMUM. Below this iOS Safari zooms the viewport on focus and the
+       whole layout jumps. Applies to the select and textarea too. */
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: 0.004em;
+    color: var(--obsidian);
+    transition: border-color 320ms var(--ease);
+  }
+
+  .field-input::placeholder{ color: transparent; }   /* never a label */
+
+  .field-input:hover{ border-bottom-color: var(--slate); }
+
+  .field-input:focus{
+    outline: 0;
+    border-bottom-color: var(--obsidian);
+  }
+
+  .field-input:focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 5px;
+  }
+
+  .field-textarea{
+    resize: vertical;
+    min-height: 7.5em;
+  }
+
+  /* Native select, restyled to the underline. appearance:none removes the OS
+     box AND its arrow, so the arrow is redrawn as a background chevron. The
+     popup itself stays the platform's own. */
+  .field-select{
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%231A1613' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    cursor: pointer;
+  }
+
+  .field-select:invalid{ color: var(--slate); }   /* the "Choose one" state */
+
+  /* Off-screen, not display:none. Never focusable, never announced. */
+  .honeypot{
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* --- Turnstile -------------------------------------------------------
+     The widget is a fixed ~300px x 65px iframe and does not reflow. At 360px
+     the measure is 308px, so it fits with 8px to spare; below that it would
+     overflow the trim, so the slot is scaled from its LEFT edge and the
+     container height is compensated to match. Scaling rather than swapping to
+     `compact` at render time means a resize needs no re-render. */
+  .turnstile-slot{
+    margin-bottom: var(--s4);
+    min-height: 65px;
+  }
+
+  /* --- Submit ----------------------------------------------------------
+     Solid fill, never ghost or outline. Obsidian, NOT gold: this matches
+     .pillar-link and keeps gold doing structural work rather than sitting on
+     a control. Porcelain on Obsidian is 12.9:1.
+     Metrics copied from PillarPremier's .pillar-link. */
+  .contact-submit{
+    display: inline-block;
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--porcelain);
+    background-color: var(--obsidian);
+    border: 0;
+    border-radius: 0;
+    padding: 18px 32px;
+    cursor: pointer;
+    box-shadow:
+      0 1px 2px rgba(26, 22, 19, 0.16),
+      0 8px 20px -6px rgba(26, 22, 19, 0.26),
+      0 18px 42px -14px rgba(71, 68, 64, 0.30);
+    transition: background-color 320ms var(--ease), color 320ms var(--ease),
+                transform 320ms var(--ease), box-shadow 320ms var(--ease);
+  }
+
+  .contact-submit:hover,
+  .contact-submit:focus-visible{
+    background-color: var(--slate);
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 2px rgba(26, 22, 19, 0.18),
+      0 12px 26px -6px rgba(26, 22, 19, 0.30),
+      0 26px 54px -16px rgba(71, 68, 64, 0.34);
+  }
+
+  .contact-submit:active{
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(26, 22, 19, 0.20);
+  }
+
+  .contact-submit:focus-visible{ outline: 2px solid var(--gold); outline-offset: 5px; }
+
+  .contact-submit[disabled]{
+    cursor: default;
+    background-color: var(--slate);
+    transform: none;
+    box-shadow: 0 1px 2px rgba(26, 22, 19, 0.16);
+  }
+
+  .contact-privacy{
+    margin: var(--s4) 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .contact-privacy a{
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair-gold);
+    padding-bottom: 2px;
+    transition: border-color 320ms var(--ease), color 320ms var(--ease);
+  }
+
+  .contact-privacy a:hover{ color: var(--obsidian); border-bottom-color: var(--gold); }
+  .contact-privacy a:focus-visible{ outline: 1px solid var(--gold); outline-offset: 4px; }
+
+  /* --- The four states -------------------------------------------------
+     idle is the form itself; the other three render here.
+
+     EVERY selector below that targets status CONTENT is :global(), and must
+     stay that way. The .status-head / .status-body elements are written by
+     the script with innerHTML, so they never receive Astro's
+     data-astro-cid-* attribute and a scoped selector silently does not match
+     them. Observed exactly that: the success line rendered in body sans
+     instead of Fraunces. Same hazard the E.5 pass documented for <Image> and
+     :global(img) — a scoped selector quietly failing against DOM the
+     component did not itself author. .form-status is in the markup, so the
+     element itself stays scoped; only its injected children are global. */
+  /* Sits directly under the button that produced it. No top margin at rest —
+     the element is `hidden` then and contributes no box at all. */
+  .form-status{ max-width: 52ch; margin-top: var(--s4); }
+
+  .form-status[data-state="success"] :global(.status-head){
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-coda);
+    font-weight: 360;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.24;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+  }
+
+  .form-status :global(.status-body){
+    margin: var(--s3) 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--slate);
+  }
+
+  .form-status[data-state="error"]{
+    border-left: 2px solid var(--hair-strong);
+    padding-left: var(--s3);
+  }
+
+  .form-status[data-state="error"] :global(.status-head){
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1.8;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+  }
+
+  .form-status :global(a){
+    color: var(--obsidian);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair-gold);
+  }
+  .form-status :global(a:hover){ border-bottom-color: var(--gold); }
+  .form-status :global(a:focus-visible){ outline: 1px solid var(--gold); outline-offset: 4px; }
+
+  /* --- Live margin ------------------------------------------------------ */
+  .contact-direct{
+    grid-row: 2;              /* beside the form, not under the lede */
+    align-self: start;
+    margin: 0;
+    /* Dropped down the measure so its top edge does not line up with the
+       first field label beside it. */
+    padding-top: clamp(40px, 5vw, 92px);
+  }
+
+  .direct-kicker{
+    margin: 0 0 var(--s2);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .direct-kicker::before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--hair-strong);
+    margin-bottom: clamp(20px, 2.4vw, 32px);
+  }
+
+  .direct-line{ margin: 0; }
+
+  .direct-link{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: var(--obsidian);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair-gold);
+    padding-bottom: 3px;
+    transition: border-color 320ms var(--ease);
+  }
+
+  .direct-link:hover{ border-bottom-color: var(--gold); }
+  .direct-link:focus-visible{ outline: 1px solid var(--gold); outline-offset: 4px; }
+
+  .direct-note{
+    margin: var(--s3) 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 10.5px;
+    line-height: 1.8;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  @media (max-width: 1024px){
+    /* Live-margin content collapses INLINE in reading order — never into a
+       sidebar, never hidden. It follows the form. */
+    .contact-direct{
+      grid-row: auto;
+      padding-top: var(--vr-tight);
+    }
+
+    .contact-form,
+    .form-status{ max-width: none; }
+  }
+
+  /* Below the 360px floor the Turnstile iframe is wider than the measure.
+     transform-origin:left keeps it on the trim; the height is compensated so
+     the scale does not leave a gap under the widget. */
+  @media (max-width: 359px){
+    .turnstile-slot{
+      transform: scale(0.86);
+      transform-origin: left top;
+      min-height: 56px;      /* 65 * 0.86 */
+    }
+  }
+</style>
+
+<!-- define:vars implies is:inline, matching FolioMarginalia: the config is
+     serialised into the tag rather than bundled behind a module graph. -->
+<script is:inline define:vars={{ endpoint, sitekey, inbox }}>
+(function () {
+  function init() {
+    var form    = document.getElementById('contact-form');
+    var status  = document.getElementById('form-status');
+    var submit  = document.getElementById('contact-submit');
+    var select  = document.getElementById('contact-type');
+    var subject = document.getElementById('contact-subject');
+    var pot     = document.getElementById('contact-company');
+    var idle    = submit.querySelector('[data-label-idle]');
+    var busy    = submit.querySelector('[data-label-busy]');
+    if (!form) return;
+
+    var widgetId = null;
+    var mailto = '<a href="mailto:' + inbox + '">' + inbox + '</a>';
+
+    // ---- Subject line carries the inquiry type -------------------------
+    function syncSubject() {
+      var picked = select.value;
+      subject.value = picked ? 'Website inquiry — ' + picked : 'Website inquiry';
+    }
+    select.addEventListener('change', syncSubject);
+    syncSubject();
+
+    // ---- The four states ----------------------------------------------
+    // idle | submitting | success | error. One live region, polite, so a
+    // screen reader is told the outcome without being interrupted mid-field.
+    function setState(state, head, body) {
+      if (state === 'idle') {
+        status.hidden = true;
+        status.removeAttribute('data-state');
+        status.innerHTML = '';
+        form.hidden = false;
+        submit.disabled = false;
+        idle.hidden = false; busy.hidden = true;
+        return;
+      }
+
+      if (state === 'submitting') {
+        submit.disabled = true;
+        idle.hidden = true; busy.hidden = false;
+        status.hidden = true;
+        status.innerHTML = '';
+        return;
+      }
+
+      submit.disabled = false;
+      idle.hidden = false; busy.hidden = true;
+      status.hidden = false;
+      status.setAttribute('data-state', state);
+      status.innerHTML =
+        '<p class="status-head">' + head + '</p>' +
+        '<p class="status-body">' + body + '</p>';
+
+      // The form is replaced on success; on error it stays put so the typed
+      // message is not thrown away.
+      form.hidden = (state === 'success');
+    }
+
+    function fail(head, body) {
+      setState('error', head, body);
+      // A spent token fails the retry too. Reset so the next submission
+      // carries a fresh one.
+      if (window.turnstile && widgetId !== null) {
+        try { window.turnstile.reset(widgetId); } catch (e) {}
+      }
+    }
+
+    // ---- Submit ---------------------------------------------------------
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Honeypot. Report success to the bot and send nothing.
+      if (pot && pot.value) {
+        setState('success', 'Received. She&rsquo;ll be in touch.', '');
+        return;
+      }
+
+      if (!endpoint) {
+        fail(
+          'Not configured',
+          'The form endpoint is missing. Please email ' + mailto + ' directly.'
+        );
+        return;
+      }
+
+      var token = form.querySelector('[name="cf-turnstile-response"]');
+      if (!token || !token.value) {
+        fail(
+          'Verification needed',
+          'The verification check has not completed. Wait a moment and try again, ' +
+          'or email ' + mailto + ' directly.'
+        );
+        return;
+      }
+
+      setState('submitting');
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form)
+      })
+        .then(function (res) {
+          if (res.ok) {
+            setState(
+              'success',
+              'Received. She&rsquo;ll be in touch.',
+              'A copy of your inquiry has been sent. If it is urgent, ' + mailto + ' reaches her directly.'
+            );
+            form.reset();
+            syncSubject();
+            return;
+          }
+          // Distinguish a rejected token from an ordinary server error: the
+          // caller can retry a token failure, but not a 5xx.
+          return res.json().catch(function () { return null; }).then(function (data) {
+            var msg = data && data.errors && data.errors.length
+              ? data.errors.map(function (x) { return x.message; }).join(' ')
+              : '';
+            if (/captcha|turnstile|challenge/i.test(msg) || res.status === 403) {
+              fail(
+                'Verification failed',
+                'The security check did not pass. Please complete it again and resend, ' +
+                'or email ' + mailto + ' directly.'
+              );
+            } else {
+              fail(
+                'Not sent',
+                (msg ? msg + ' ' : 'The message could not be sent. ') +
+                'Please try again, or email ' + mailto + ' directly.'
+              );
+            }
+          });
+        })
+        .catch(function () {
+          // Transport-level failure — offline, DNS, CORS, blocked request.
+          fail(
+            'Connection problem',
+            'The message could not be sent because the connection failed. ' +
+            'Check your network and try again, or email ' + mailto + ' directly.'
+          );
+        });
+    });
+
+    // ---- Turnstile ------------------------------------------------------
+    // Explicit render so the widget id is retained for reset(). The callback
+    // is installed before the API script is requested.
+    window.onTurnstileLoad = function () {
+      widgetId = window.turnstile.render('#turnstile-widget', {
+        sitekey: sitekey,
+        theme: 'light',
+        action: 'contact'
+      });
+    };
+
+    var s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

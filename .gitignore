@@ -4,3 +4,7 @@ dist/
 .DS_Store
 .vercel/
 temporary screenshots/
+
+# Env — Formspree endpoint and Turnstile sitekey. .env.example is committed.
+.env
+.env.production

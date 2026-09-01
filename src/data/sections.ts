@@ -32,4 +32,5 @@ export const sections: PageSection[] = [
   { id: 'sec-athletics',           n: '06', label: 'Athletic Management' },
   { id: 'sec-index',               n: '07', label: 'Index' },
   { id: 'charging-it-to-the-game', n: '08', label: 'Charging It to the Game' },
+  { id: 'sec-contact',             n: '09', label: 'Contact' },
 ];
