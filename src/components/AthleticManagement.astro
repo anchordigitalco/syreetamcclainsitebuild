@@ -249,10 +249,18 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     beside the detail.
 
     ⚠️ THIS TEXT IS NEW COPY AND IS NOT IN COPY.md. It requires
-    Jackson's approval before launch. Seven words, factual, editorial,
-    inside CONTEXT.md's eight-word ceiling, and NEVER file metadata.
-    It names no school, so it raises no OSU clearance question, and it
-    does not surface Jaylen's unannounced 2026 captaincy.
+    Jackson's approval before launch. Four words, factual, editorial,
+    far inside CONTEXT.md's eight-word ceiling, and NEVER file
+    metadata. It names no school, so it raises no OSU clearance
+    question, and it does not surface Jaylen's unannounced 2026
+    captaincy.
+
+    R6.1 REPLACED THE PREVIOUS LINE AND THE REASON IS WORTH KEEPING.
+    R6 shipped "Three sons, high school through Division I" — 42
+    characters against a window that holds 27 at the caption register,
+    which forced a container-derived font-size rendering 8.93px at
+    1440 and 6.82px at 1146. The sizing was the correct response to
+    the copy it was given; the copy was the problem.
 
     Montserrat, small, letterspaced, uppercase, Smoked Slate at
     reduced opacity, via the page's existing .plate-caption primitive
@@ -266,7 +274,7 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     at column 7 — and could not then hold columns 1-3 of the sheet.
     The association survives; only the nesting does not.
   -->
-  <p class="win-ath-caption plate-caption ath-caption" id="ath-caption"><span class="ath-caption-line">Three sons, high school through Division I</span></p>
+  <p class="win-ath-caption plate-caption ath-caption" id="ath-caption"><span class="ath-caption-line">Three sons, three programs</span></p>
 
   <figure class="win-ath-detail ath-detail">
     <!--
@@ -658,7 +666,51 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      / SOFT 100. 1.86x the body and 0.58x the lede at 1440 — clearly a
      third tier, subordinate to the lede and distinct from the body. */
   .ath-close{
-    margin: 0;
+    /* THE LAST BASELINE SITS ON THE DETAIL PHOTOGRAPH'S BOTTOM EDGE.
+       (R6.1.)
+
+       `align-self: end` on the primitive puts this element's MARGIN
+       BOX bottom on the bottom edge of its two-row span, which is the
+       detail's bottom edge. The last baseline sits above that box
+       bottom by the coda's own descender space, so the box is lifted
+       by exactly that much — a NEGATIVE margin-bottom, which pushes
+       the box down past the row edge until the baseline lands on it.
+
+       Distance from a box bottom up to the last baseline is
+       `line-height - B`, where B is the first-baseline offset inside
+       a line box:
+
+           B  = lh/2 + (ascent - descent)/2 x font-size
+
+       so  lh - B = 0.5lh - 0.36029em
+
+       using Fraunces' measured ascent - descent of 0.72058em — R2's
+       number, measured from rendered ink, reused rather than
+       re-derived, because this is the same face at the same coda
+       tier that About's closing line uses.
+
+       Hence margin-bottom = -(0.5lh - 0.36029em) = 0.36029em - 0.5lh,
+       which is -9.27px at 1440's 32px/1.3 and re-resolves at every
+       width from the element's own units. NOTHING HERE COUNTS A LINE
+       and nothing is a pixel measured at one width: the body's
+       rendered height cancels out of the arithmetic entirely because
+       the anchor is the row's END, which is R2's lesson and the third
+       time this project has applied it.
+
+       WHY AN IMAGE EDGE AND NOT A TEXT BASELINE. About aligns its
+       closing line to body paragraph 2's last baseline, so both terms
+       in its offset are line-height-minus-baseline and the expression
+       is a difference of two descender spaces. Here the target is a
+       photograph's trim, which has no baseline of its own, so only
+       this element's term survives and the expression is simpler by
+       one half. Same device, one fewer term.
+
+       The R6 build put this line at the top of row 4 with roughly
+       900px of Porcelain under it at 1440. It now closes the section
+       on one level line with the detail, which is the same thing
+       About does at the top of the page. */
+    align-self: end;
+    margin: 0 0 calc(0.36029em - 0.5lh);
     font-family: var(--display);
     font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
     font-weight: 400;
@@ -689,67 +741,35 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
 
      THE TRACKED UPPERCASE LINE MUST NOT WRAP. A tracked uppercase
      label that wraps is not a label — the finding that moved R4's
-     margin from two columns to three. This caption is 42 characters,
-     which is far more than a 3-column window holds at 10.5px, so the
-     size is derived from the window instead of fixed: the caption is
-     an inline-size container and the text is sized in cqw, capped at
-     the primitive's own 10.5px. See the arithmetic on .ath-caption
-     below. The measured ink width against the window at every band is
-     in the R6 report, and so is the recommendation that follows from
-     it. */
-  .ath-caption{
-    /* The element that DECLARES container-type is not itself
-       queryable — cqw resolves against the nearest ancestor container
-       — so the tracked line is a child span and the query unit is
-       written on the span, not here. */
-    container-type: inline-size;
-  }
+     margin from two columns to three.
 
-  /* THE SIZE IS DERIVED FROM THE WINDOW, WITH NO BREAKPOINT.
+     IT SETS AT A FIXED 10.5px. (R6.1.) R6 derived the size from the
+     window with a container query, because its 42-character line did
+     not fit a 3-column window at the register: it rendered 8.93px at
+     1440 and 6.82px at 1146, which is not a caption. The expression
+     was right and the copy was wrong. The line is now 26 characters
+     and fits at 10.5px at every width the spread runs, so the
+     container query, the cqw term and the min() are DELETED rather
+     than kept as a fallback. Left in, they would silently shrink the
+     type again the next time the copy changed, which is the failure
+     this correction exists to remove — the same reason R4.1 deleted
+     the sampled scrim colour instead of retaining it as an
+     alternative.
 
-     The caption is 42 characters and, with the tracking written in
-     `em` so it scales with the size, the line's ink width is linear
-     in font-size — so one measurement fixes the ratio for every size.
-     MEASURED, not estimated: rendered in Montserrat 400 at 0.22em
-     with the trailing letter-space removed, the line is 362.86px at
-     10.5px and 414.70px at 12px, which is 34.558 ink-px per px of
-     font-size at both sizes. A line that must fit its container
-     therefore wants
-
-         font-size <= container-width / 34.558  =  2.894cqw
-
-     and it must never grow past the caption register's own 10.5px, so
-
-         font-size: min(10.5px, 2.87cqw)
-
-     2.87 rather than 2.894, so the line lands INSIDE the window
-     rather than exactly on it — a line that measures its container to
-     the last hundredth of a pixel wraps the moment a font falls back.
-
-     THE FIRST BUILD OF THIS RULE USED AN ESTIMATED 32.75 AND WRAPPED
-     AT 1440. 32.75 was a per-character guess rather than a
-     measurement, and the 5% error was enough to put the line over its
-     window and onto a second line. Same lesson as the 750px collapse
-     threshold: measure it, do not calculate it.
-
-     This is a derived measurement rather than a swept band — it
-     re-resolves at every width in every band from the container's own
-     width, with no media query and nothing to go stale if the window
-     changes. WHAT IT CANNOT DO is make the line legible at a size the
-     window will not carry. At 1440 the window is 311.1px and the line
-     renders at 8.93px; at 751 the window is 239.1px and it renders at
-     6.86px. The rendered size at every band, and the recommendation
-     that follows from it, are in the R6 report. */
+     MEASURED, NOT CALCULATED. R6 shipped a 5% error from a
+     per-character estimate and wrapped this line at 1440. The ink
+     width per width is measured with a nowrap probe in the rendered
+     page, at the rendered size, with the trailing letter-space
+     removed, and it is in the R6.1 report. */
   .ath-caption-line{
-    font-size: min(10.5px, 2.87cqw);
-    /* THE TRACKING IS RE-DECLARED HERE AND THAT IS NOT REDUNDANT.
+    /* THE TRACKING IS DECLARED HERE AND THAT IS NOT REDUNDANT.
        .plate-caption sets 0.22em on the <p>, where it resolves once
-       against the paragraph's 10.5px and INHERITS AS AN ABSOLUTE
-       2.31px. A span at 8.93px would then carry 10.5px worth of
-       tracking — measured, that is what put the first build of this
-       line onto two lines at 1440 even after the ratio was corrected.
-       Re-declaring it in `em` makes it resolve against this element's
-       own size, which is what the linear ink model above assumes. */
+       against the paragraph's font-size and INHERITS AS AN ABSOLUTE
+       LENGTH. Declaring it in `em` on the element that actually
+       carries the type makes it resolve against that element's own
+       size. It is kept from R6 even though the two sizes now agree,
+       because a tracking value that is only right by coincidence is a
+       landmine for whichever pass changes one of the two. */
     letter-spacing: 0.22em;
   }
 
@@ -929,14 +949,25 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
        rather than as marginalia. Same treatment and same reasoning as
        Educational Leader's district link and Premier's topics list.
 
-       IT NEEDS NO SIZE OVERRIDE. The full measure is wide enough to
-       carry the line at the register's own 10.5px from 751 up, so the
-       cap in min(10.5px, 2.87cqw) takes over on its own with nothing
-       to switch off. Below about 590px of measure the derived term
-       binds again and the line shrinks rather than wrapping, which is
-       the behaviour the rule exists for. */
+       IT NEEDS NO SIZE OVERRIDE. The line is a fixed 10.5px at every
+       width on the page, and the stacked measure is wider than the
+       spread's 3-column window at every width in this band, so if it
+       fits in the spread it fits here. */
     .ath-caption{
       margin-top: var(--s4);
+    }
+
+    /* THE BOTTOM ANCHOR IS RELEASED WITH THE SPREAD. Stacked, the
+       detail sits BELOW the closing line rather than beside it, so
+       there is no image edge at the line's level to align to — the
+       same reason About's snap gives way to ordinary rhythm in its
+       own stacked bands. The primitive releases the span and the
+       alignment; this releases the descender lift that went with
+       them. The gap above the line is the body's derived two lines,
+       unchanged from R6. */
+    .ath-close{
+      align-self: auto;
+      margin: 0;
     }
   }
 

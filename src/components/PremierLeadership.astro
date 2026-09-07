@@ -629,17 +629,48 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     .prem{ grid-template-rows: none; }
     .prem-plate{ margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh)); }
 
-    /* R4.2 — THE 4:5 COMES BACK, and it has to. Stacked, the plate is
-       alone in its row, so `height: 100%` resolves against a row whose
-       height is the plate's own — a circular definition that renders
-       as zero. The aspect ratio is the plate's intrinsic height in
-       every stacked band, exactly as it was before R4.2, and the crop
-       percentages are unchanged, so this band renders identically to
-       the shipped R4.1 build. The bottom-edge alignment does not exist
-       here and cannot: the photograph is ABOVE the type, not beside
-       it, so there are no two horizontal edges near each other at the
-       foot of the section for it to fix. */
-    .prem-frame{ aspect-ratio: 4 / 5; height: auto; }
+    /* R4.2 — AN INTRINSIC ASPECT COMES BACK, and it has to. Stacked,
+       the plate is alone in its row, so `height: 100%` resolves
+       against a row whose height is the plate's own — a circular
+       definition that renders as zero. The aspect ratio is the plate's
+       intrinsic height in every stacked band. The bottom-edge
+       alignment does not exist here and cannot: the photograph is
+       ABOVE the type, not beside it, so there are no two horizontal
+       edges near each other at the foot of the section for it to fix.
+
+       R6.1 — 0.82, NOT 4:5. The stacked plate was 4:5 = exactly 0.800
+       from R4 through R6, and so is the Cover's plate at every width
+       from 800 down: the Cover's `min(125vw, max(100vw, 118svh))`
+       resolves to 1/1.25 on a full-width plate, and 1/1.25 is 0.800.
+       Two photographs on one page sharing an EXACT crop is the one
+       thing CONTEXT.md's rule forbids outright.
+
+       THE COVER'S EXPRESSION IS NOT THE ONE TO MOVE. It is R1
+       territory, it carries a portrait-safety floor and an svh cap
+       that hold the frame square on short landscape viewports, and it
+       is load-bearing in a way a plain ratio is not. This one is a
+       single number.
+
+       0.82 CLEARS BOTH NEIGHBOURS. It sits 0.02 from the Cover's 0.800
+       and 0.12 from the Athletic detail's 0.700. The rule being
+       enforced is exact equality — the page already ships pairs 0.013
+       apart at other widths and those are accepted — so 0.02 is not a
+       near-miss to be widened, it is a clearance.
+
+       THE CROP SURVIVES IT, and that was checked from the render
+       rather than assumed. Both horizontal crop terms are percentages
+       of the plate's OWN width, so the source window's left and right
+       trims do not move at all and she is still cut by both side
+       trims. Only the vertical changes: the img box aspect goes from
+       1.616 x 0.80 = 1.293 to 1.616 x 0.82 = 1.325, still far wider
+       than the file's native 0.688, so object-fit still spreads the
+       full source width and the visible vertical fraction narrows from
+       0.532 to 0.519. With --crop-y unchanged at 5.18% the window top
+       moves from 0.0242 to 0.0249 of the source — seven ten-thousandths,
+       nowhere near the crown of her head — and the bottom trim rises
+       from 0.5566 to 0.5442, so she crosses it slightly harder, which
+       is the direction R4.2 already moved it deliberately. */
+    .prem-frame{ aspect-ratio: 0.82; height: auto; }
   }
 
   /* ---- BAND 3 · 751-1023 -----------------------------------------

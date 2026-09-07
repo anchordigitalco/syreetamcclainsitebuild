@@ -1011,12 +1011,56 @@ a{ color: inherit; }
 
    ---- .win-ath-close — the closing line -----------------------
    ONE COLUMN IN FROM THE BODY'S RIGHT EDGE, ON THE SAME LEFT EDGE.
-     >= 1280    columns 8-11.
-     1024-1279  columns 7-11.
-     751-1023   columns 5-7 of 8.
+     >= 1280    columns 8-11, SPANNING TWO ROWS AND ANCHORED TO THE
+                BOTTOM OF THEM.
+     1024-1279  columns 7-11, same span and anchor.
+     751-1023   columns 5-7 of 8, span and anchor released.
      <= 750     1 / -1. The step-in is a multi-column device; on a
                 phone measure a line held short of the right edge
                 reads as a rag, not as a coda.
+
+   IT BOTTOM-ALIGNS TO THE DETAIL PHOTOGRAPH'S BOTTOM EDGE. (R6.1.)
+   R6 shipped it at the top of row 4, which put roughly 900px of
+   Porcelain under it at 1440 with the detail floating in that field
+   and nothing at its level on either side. It did not read as an
+   image running past a text column; it read as a column that stopped
+   early.
+
+   THE MECHANISM IS ABOUT'S, APPLIED TO AN IMAGE EDGE INSTEAD OF A
+   TEXT BASELINE. `span 2` puts the closing line in the type column's
+   last row AND the photographic footer row beneath it; `align-self:
+   end` puts its margin-box bottom on the bottom edge of that pair,
+   which is row 5's bottom edge, which is the detail's bottom edge —
+   the detail is the tallest thing in row 5 by a wide margin (479.5px
+   of outer height against the caption's 56px at 1440, and the ratio
+   never inverts because the caption is one line at every width).
+   The component then lifts the box by the coda's own descender space
+   so the LAST BASELINE lands on that edge rather than the box bottom.
+
+   IT IS A SPAN, NOT A ROW NUMBER, and nothing counts a line. R2
+   deleted a five-band `--p1-lines` lookup by re-anchoring its closing
+   line from its row's END; this is the same move, and it cancels the
+   body's rendered height out of the arithmetic in the same way. There
+   is nothing here to re-sweep and nothing to go stale when the copy
+   rewraps.
+
+   THE PLACEMENT WALK IS UNCHANGED BY THE SPAN. After the closing line
+   is placed in rows 4-5 at columns 8-11, grid's cursor sits at row 4
+   column 12. The caption asks for columns 1-3: row 4's columns 1-3
+   are occupied by the frame, so it drops to row 5 and leaves the
+   cursor at column 4, exactly where the detail asks to start. The
+   caption and the detail still share row 5 and neither moves.
+
+   ROW 4 STOPS BEING SIZED BY THE CLOSING LINE, and that is a real
+   consequence rather than a side effect to hide. Row 4 is the
+   flexible track, so an item spanning it is sized in the step that
+   distributes space only to flexible tracks; with the closing line
+   now also spanning row 5, its contribution to row 4 goes to zero and
+   the frame's own floor becomes what sets the row. The frame is
+   therefore exactly its declared 0.95 wherever the type column no
+   longer forces it taller. Measured at 1440: 862.44px rather than
+   915.42px. The lap is unaffected — it is measured from row 5's top
+   edge, which is still the frame's bottom edge.
 
    ---- .win-ath-caption — the section's one caption ------------
    THE PHOTOGRAPHY RULE GIVES EVERY PHOTOGRAPH IN A SECTION A CAPTION
@@ -1081,7 +1125,7 @@ a{ color: inherit; }
 
 .win-ath-bleed     { grid-column: 1 / 8;  grid-row: 1 / 5; }
 .win-ath-text      { grid-column: 8 / 13; }
-.win-ath-close     { grid-column: 8 / 12; }
+.win-ath-close     { grid-column: 8 / 12; grid-row: span 2; align-self: end; }
 .win-ath-caption   { grid-column: 1 / 4;  align-self: start; }
 .win-ath-detail    { grid-column: 4 / 8;  }
 
@@ -1300,7 +1344,12 @@ a{ color: inherit; }
 @media (max-width: 1145px){
   .win-ath-bleed   { grid-column: 1 / 10; grid-row: auto; }
   .win-ath-text    { grid-column: 1 / 8;  }
-  .win-ath-close   { grid-column: 1 / 7;  }
+  /* The two-row span and the bottom anchor are released with the
+     spread. Stacked, the detail is BELOW the closing line rather than
+     beside it, so there is no image edge to align to — exactly the
+     reason About's own snap gives way to ordinary rhythm below 1024.
+     The component resets the negative margin to match. */
+  .win-ath-close   { grid-column: 1 / 7;  grid-row: auto; align-self: auto; }
   .win-ath-caption { grid-column: 1 / 8;  }
   .win-ath-detail  { grid-column: 1 / 8;  }
 }
