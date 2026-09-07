@@ -1,0 +1,637 @@
+---
+/**
+ * THE INDEX — slice R8. The funnel spread, five destinations.
+ *
+ * CONTEXT.md Section Composition table, row "Index 01-05":
+ *
+ *   Entrance      Numerals already at display scale
+ *   Column window 1-11
+ *   Image         none
+ *   Rhythm        standard
+ *   Margin holds  — (empty)
+ *   Length        index only
+ *
+ * THE ENTRANCE IS THE NUMERALS AND NOTHING IS ADDED ON TOP OF THEM.
+ * No kicker, no hairline head, no visible section title, no decorative
+ * mark, no photograph, no live-margin content. The table says the
+ * entrance IS the numerals at display scale; an entrance device laid
+ * over an entrance is two entrances.
+ *
+ * IT IS THE FIRST SECTION AFTER THE PIVOT. Everything above the
+ * Feature Quote is her own work; everything below it is this. The
+ * Index is the page's navigation, and it is the only section flush to
+ * the sheet's left trim across its full width — see the window note in
+ * the stylesheet for why that is what makes it read as a contents page
+ * rather than as another section.
+ *
+ * ---- COPY -------------------------------------------------------
+ * Verbatim from COPY.md, "Index". Five rows, in COPY.md's order:
+ *
+ *   01  Premier Leadership            Consulting & leadership development
+ *   02  Everyday Legends Foundation   Education, athletics & service
+ *   03  Educational Leadership        Alternative education high school principal
+ *   04  The McClain Brothers          Jaylen, KJ & Cam
+ *   05  Charging It to the Game       The blog
+ *
+ * THIS NUMBERING IS THE INDEX'S OWN. It is unrelated to page order, to
+ * src/data/sections.ts's folio numerals, and to the decorative marks in
+ * the abridged sections. CONTEXT.md's "Decorative marks vs. Index
+ * numbers" rule: the three are unrelated typographic devices and MUST
+ * NOT be made to agree. This has been flagged four times.
+ *
+ * ENTRY 01 READS "PREMIER LEADERSHIP", NOT "PREMIER LEADERSHIP, LLC".
+ * The old build's FunnelIndex.astro carries the suffix; it does not
+ * travel. COPY.md's resolved naming decision puts the legal form in
+ * exactly one place on the site — the About paragraph, where the
+ * client wrote it herself.
+ *
+ * THE UPPERCASE ON THE DESCRIPTIONS IS A text-transform, a visual
+ * treatment. The authored strings are set in sentence case exactly as
+ * COPY.md writes them, so a copy diff against the deck is a string
+ * comparison and not a case-folding exercise.
+ *
+ * ---- DESTINATIONS -----------------------------------------------
+ * 01/02/03 are outbound links, new tab, rel="noopener". NOT
+ * "noopener noreferrer": anchor-digital-standards.md is the
+ * authoritative cross-repo standard and noreferrer strips the Referer
+ * header, costing Anchor referral attribution from every client site
+ * it ships.
+ *
+ * 04 IS NOT A LINK. It is the <summary> of the expansion below it.
+ *
+ * 05 IS AN IN-PAGE ANCHOR, same tab, no rel. Its href is taken from
+ * src/data/sections.ts rather than invented — the blog section's id in
+ * that list is `charging-it-to-the-game`, so the anchor is
+ * `#charging-it-to-the-game`. The section itself is R9 and does not
+ * exist yet, so the anchor resolves to nothing today; that is expected
+ * and is why the id is READ from the list rather than guessed. R9
+ * mounts a <section> carrying that exact id.
+ *
+ * ---- THE EXPANSION IS NATIVE <details> --------------------------
+ * NO JAVASCRIPT. No scroll listener, no observer, no toggle script, no
+ * ARIA state management. <details>/<summary> handles aria-expanded
+ * itself, and CONTEXT.md's "one scroll listener exists in the entire
+ * build" budget is spent on the folio (R12), not on a disclosure.
+ *
+ * CLOSED ON LOAD. CONTEXT.md's "all content visible on load" rule is
+ * about scroll-reveals and opacity-0 initial states — content that a
+ * full-page capture or a client-generated PDF would render blank. The
+ * three brothers are content behind a control the reader operates, not
+ * content hidden from them, and the control announces itself. The old
+ * build shipped `open` for the capture reason; that reasoning does not
+ * survive the rule being read for what it is.
+ *
+ * ---- THE THREE BROTHERS -----------------------------------------
+ * Data only, no prose. COPY.md gives three columns — name, program,
+ * website — and three columns ship. No Instagram handle, no X handle,
+ * no jersey graphic, no headshot, no class year beyond the one COPY.md
+ * puts inside Cam's program string.
+ *
+ * ALL THREE DOMAINS ARE PLAIN TEXT, NOT LINKS. CONTEXT.md, Site
+ * Structure: liveness is unconfirmed, and a dead click reads as a
+ * broken site rather than as coming-soon while printed magazines are
+ * driving traffic. Visual treatment is identical either way; only the
+ * click is removed. They are NOT wrapped in <a>.
+ *
+ * OSU INTERIM RULE, ALL THREE SCHOOLS. School names as plain text
+ * only. No logos, no marks, no team photography, no school-keyed
+ * colour. Jaylen's 2026 Ohio State captaincy is NOT surfaced — the
+ * client has made no public announcement.
+ *
+ * ---- NO GOLD ----------------------------------------------------
+ * CONTEXT.md's gold budget, read as R7 left it: saturated type accents
+ * are 3 of 3 and genuinely spent. The hairline-gold bucket reads 0 of
+ * 8 — but 8 is a CEILING rather than a spend, and five rules in one
+ * navigational section would consume most of that ceiling for the
+ * page's least emphatic content. The Index's rules are Smoked Slate.
+ * The old build's index drew every rule in gold; that does not travel
+ * either.
+ */
+import { sections } from '../data/sections.ts';
+
+/* The blog anchor is READ from the section list, never typed. If R9
+   ships the blog under a different id, this breaks loudly at build
+   time rather than shipping a silently dead anchor. */
+const blog = sections.find((s) => s.label === 'Charging It to the Game');
+if (!blog) {
+  throw new Error(
+    'R8: no "Charging It to the Game" entry in src/data/sections.ts — ' +
+      'the Index cannot derive entry 05’s anchor.'
+  );
+}
+const blogHref = `#${blog.id}`;
+---
+
+<section class="sheet index" id="sec-index" aria-labelledby="index-heading">
+  {/* The section announces itself through the numerals and the rules,
+      not through a title — so the <h2> is visually hidden via the .vh
+      primitive (position:absolute + clip-path:inset(50%)), never
+      display:none, which would take it out of the accessibility tree.
+      The string matches this section's label in src/data/sections.ts
+      exactly, per CONTEXT.md's locked heading structure: each
+      section's <h2> is the same string the folio uses. */}
+  <h2 class="vh" id="index-heading">Index</h2>
+
+  {/* An <ol>, because the entries are an ordered list and the numerals
+      are its numbering. The displayed numerals are authored text
+      carrying aria-hidden="true": the list is ALREADY ordered, and
+      "oh one" read before every name is noise. */}
+  <ol class="idx-window idx-list">
+    <li class="idx-item">
+      <a
+        class="idx-row"
+        href="https://www.premierleadersllc.com"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="idx-num" aria-hidden="true">01</span>
+        <span class="idx-body">
+          <span class="idx-line"><span class="idx-name">Premier Leadership</span></span>
+          <span class="idx-desc">Consulting &amp; leadership development</span>
+        </span>
+      </a>
+    </li>
+
+    <li class="idx-item">
+      <a
+        class="idx-row"
+        href="https://www.everydaylegend.com"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="idx-num" aria-hidden="true">02</span>
+        <span class="idx-body">
+          <span class="idx-line"><span class="idx-name">Everyday Legends Foundation</span></span>
+          <span class="idx-desc">Education, athletics &amp; service</span>
+        </span>
+      </a>
+    </li>
+
+    <li class="idx-item">
+      <a class="idx-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
+        <span class="idx-num" aria-hidden="true">03</span>
+        <span class="idx-body">
+          <span class="idx-line"><span class="idx-name">Educational Leadership</span></span>
+          <span class="idx-desc">Alternative education high school principal</span>
+        </span>
+      </a>
+    </li>
+
+    {/* 04 — THE EXPANSION. The whole row is the <summary>; entry 04 is
+        not a link. The rule that closes this entry sits on the <li>,
+        BELOW the <details>, so it moves down when the expansion opens.
+        That is correct: the rule closes the entry, not the summary. */}
+    <li class="idx-item">
+      <details class="idx-details">
+        <summary class="idx-row">
+          <span class="idx-num" aria-hidden="true">04</span>
+          <span class="idx-body">
+            <span class="idx-line">
+              <span class="idx-name">The McClain Brothers</span>
+              {/* The indicator. Entry 04 is the only row carrying one —
+                  it is the only row whose behaviour differs, and the
+                  four link rows need no glyph to announce that they are
+                  links. The glyph itself is generated content so the
+                  +/- swap is a CSS state and not a script; the span is
+                  aria-hidden because <details> already exposes
+                  aria-expanded. NO rotation, NO transition, NO
+                  transform. */}
+              <span class="idx-sign" aria-hidden="true"></span>
+            </span>
+            <span class="idx-desc">Jaylen, KJ &amp; Cam</span>
+          </span>
+        </summary>
+
+        {/* Placed on .idx-body, so the brothers start on the same left
+            edge as the names above them. NO sub-columns and NO new left
+            edges — CONTEXT.md's three-edges rule holds inside this
+            section as strictly as it holds outside it. */}
+        <div class="idx-body idx-expand">
+          <ul class="idx-bros">
+            <li class="idx-bro">
+              <span class="idx-bro-line">
+                <span class="idx-bro-name">Jaylen McClain</span>
+                <span class="idx-bro-site">jaylenmcclain.com</span>
+              </span>
+              <span class="idx-bro-prog">Ohio State Football | #8</span>
+            </li>
+            <li class="idx-bro">
+              <span class="idx-bro-line">
+                <span class="idx-bro-name">KJ McClain</span>
+                <span class="idx-bro-site">kjmcclain.com</span>
+              </span>
+              <span class="idx-bro-prog">University of Tennessee Football | #40</span>
+            </li>
+            <li class="idx-bro">
+              <span class="idx-bro-line">
+                <span class="idx-bro-name">Cam McClain</span>
+                <span class="idx-bro-site">cammcclain.com</span>
+              </span>
+              <span class="idx-bro-prog">Seton Hall Prep Football | #6 · Class of 2028</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </li>
+
+    <li class="idx-item">
+      <a class="idx-row" href={blogHref}>
+        <span class="idx-num" aria-hidden="true">05</span>
+        <span class="idx-body">
+          <span class="idx-line"><span class="idx-name">Charging It to the Game</span></span>
+          <span class="idx-desc">The blog</span>
+        </span>
+      </a>
+    </li>
+  </ol>
+</section>
+
+<style>
+  /* ---- PADDING ---------------------------------------------------
+     FLAT 110px TOP AND BOTTOM AT EVERY WIDTH, per CONTEXT.md's
+     per-section table: Cover 64 · About 96 · Educational Leader 110 ·
+     Premier 80 · Everyday Legends 70 · Athletic 110 · Feature Quote
+     150 · INDEX 110 · Blog 110/40 · Contact 96. Sections MUST NOT
+     share a padding token, so the value is set here and nowhere else.
+
+     NO TAPER AND NO svh TERM. The pivot directly above carries a
+     clamp — flat 150 in bands 1 and 2, clamp(116px, 14.67vw, 150px)
+     below — and About carries a max(96px, 20svh + 12px). Neither
+     reason applies here: the pivot's taper exists because 150px of
+     padding around one line of type eats a phone viewport, and
+     About's svh term exists to keep its lede below an 80svh Cover's
+     fold. This section is five rows tall at every width and sits in
+     the middle of the scroll. Flat 110, the same value Educational
+     Leader and Athletic Management ship.
+
+     NO min-height, NO svh, NO viewport-height floor of any kind
+     (R1.4). */
+  .index {
+    padding-block: 110px;
+  }
+
+  /* ---- THE TYPE, AND EVERY AXIS -----------------------------------
+     Fraunces defaults to wght 900, WONK ON and SOFT 100 when an axis
+     is left unstated. Both tiers below enumerate all four, and
+     `font-weight` restates the wght axis in the property the browser
+     uses for fallback selection so a Fraunces-less render is not
+     900-weight.
+
+     WONK IS 0 ON BOTH. WONK 1 is spent at the Feature Quote and
+     nowhere else — it is the pivot's flourish. Numerals set with
+     flagged terminals would put the pivot's one signature on the
+     page's navigation.
+
+     These are new roles rather than existing --fx-* tiers: the
+     numeral is a display-scale FIGURE, which wants opsz 96's sharp
+     high-contrast register at wght 300 and SOFT 30, and the row name
+     is a small-display role at opsz 24 / wght 400 / SOFT 60 — softer
+     and more open than any existing tier, because it is read at 28px
+     beside a 56px figure rather than seen alone. Declared locally so
+     no other section inherits them.
+     ---------------------------------------------------------------- */
+  .index {
+    --idx-num-size: clamp(36px, 3.9vw, 56px);
+    --idx-num-lh: 1;
+
+    --idx-name-size: clamp(20px, 1.95vw, 28px);
+    --idx-name-lh: 1.15;
+
+    --idx-desc-size: 11px;
+    --idx-desc-lh: 1.6;
+    /* The description's line box. Every internal gap in this section
+       is a multiple of this or of the name's line box — never a fixed
+       pixel value, per R3.1: "Derive internal gaps from the type, not
+       from pixels. Fixed pixel gaps set from one width are a swept
+       band by another name." */
+    --idx-desc-line: calc(var(--idx-desc-size) * var(--idx-desc-lh));
+  }
+
+  .idx-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- THE ROW ----------------------------------------------------
+     ONE NUMERAL AND ONE TEXT BLOCK ON ONE BASELINE. The row is a
+     subgrid of the section (see the primitive block in global.css) and
+     carries `align-items: baseline`, so grid's own baseline-sharing
+     group answers the alignment.
+
+     THE OFFSET IS NOT MODELLED IN em. R6.3: Chrome rounds a font's
+     ascent and descent to whole pixels at the rendered size, so a
+     hand-written `lh/2 + (asc - desc)/2` offset drifts unpredictably
+     with font-size — measured 0.02px out at 31.68px and 1.27px out at
+     26px on this same face. The numeral runs from 36px to 56px across
+     the page's widths and the name from 20px to 28px, so an em
+     constant would be wrong at most of them. Baseline delta measured
+     at 0.00px; see the pass report.
+
+     VERTICAL PADDING IS DERIVED FROM THE DESCRIPTION'S LINE BOX, at
+     1.15 of it. It is a calc() over the type tokens above, so moving
+     the description's size or leading re-resolves every row's rhythm
+     with nothing swept and no breakpoint band. */
+  .idx-row {
+    align-items: baseline;
+    padding-block: calc(1.15 * var(--idx-desc-line));
+    color: inherit;
+    text-decoration: none;
+    /* Only opacity transitions anywhere in this section. Never
+       transition-all, and never a colour transition — the hover
+       states below are instant by specification. */
+    transition: opacity 140ms var(--ease);
+  }
+
+  /* The whole row is the control on entry 04. The default disclosure
+     marker comes off in both engines. */
+  summary.idx-row {
+    list-style: none;
+    cursor: pointer;
+  }
+  summary.idx-row::-webkit-details-marker {
+    display: none;
+  }
+
+  /* ---- THE NUMERAL ------------------------------------------------
+     Fraunces, opsz 96 · wght 300 · SOFT 30 · WONK 0. Obsidian.
+
+     LEFT-ALIGNED INSIDE ITS WINDOW — never centred, never
+     right-aligned. The window is three columns of twelve and the
+     figures fill roughly a third of it; the air to their right is the
+     leader space of a printed contents page and is deliberate. It is
+     NOT closed by shrinking the window, which would put the text block
+     on a fourth left edge.
+
+     SCALE IS RELATIONAL, NOT ABSOLUTE. clamp(36px, 3.9vw, 56px)
+     resolves to 56px at 1440 against a largest rendered lede of
+     54.72px — a ratio of 1.02, inside the 0.90-1.15 window. The Index
+     is the page's NAVIGATION; numerals set larger than the sections'
+     own opening statements would invert the hierarchy. Against the row
+     name it is 2.00x at 1440 and never falls below 1.80x at any width
+     the page renders, both ends of the clamp included.
+
+     `font-variant-numeric: tabular-nums` so 01-05 occupy identical
+     advance widths — a contents column whose figures shift left and
+     right by the width of a 1 is a contents column with five left
+     edges. */
+  .idx-num {
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 300, 'SOFT' 30, 'WONK' 0;
+    font-weight: 300;
+    font-size: var(--idx-num-size);
+    line-height: var(--idx-num-lh);
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--obsidian);
+  }
+
+  /* ---- THE TEXT BLOCK ---------------------------------------------
+     Its left edge is column 4 in the 12-column bands, which is the
+     lede edge — one of CONTEXT.md's three established left edges.
+     Nothing in this section lands on a fourth. */
+  .idx-body {
+    display: block;
+  }
+
+  /* The name's line. A flex row so the name and — on entry 04 only —
+     the indicator share a baseline and the indicator right-aligns to
+     THIS block's right edge rather than to an edge of its own. With
+     one child (every row but 04) the name simply sits flush left and
+     the flex container's first baseline is the name's, which is what
+     the row's baseline group aligns the numeral to. Identical
+     structure on all five rows, so all five baselines are computed the
+     same way. */
+  .idx-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--idx-desc-line);
+  }
+
+  /* Fraunces, opsz 24 · wght 400 · SOFT 60 · WONK 0. Obsidian. */
+  .idx-name {
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 24, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    font-weight: 400;
+    font-size: var(--idx-name-size);
+    line-height: var(--idx-name-lh);
+    color: var(--obsidian);
+  }
+
+  /* Montserrat 11px / 500 / 0.14em / uppercase, Smoked Slate.
+
+     THE UPPERCASE IS A text-transform. The authored string in the
+     markup above is sentence case, exactly as COPY.md writes it.
+
+     DESCRIPTIONS MAY WRAP. They are not the Athletic caption, which
+     has to clear a three-column window on one line. A two-line
+     description at 390 is correct behaviour, and the type is NOT
+     shrunk and the tracking is NOT tightened to prevent it.
+
+     The gap above is 0.30 of the NAME's line box, so it scales with
+     the name across the clamp instead of holding one pixel value from
+     one width — 9.66px at 1440, 6.90px at 390. */
+  .idx-desc {
+    display: block;
+    margin-top: calc(0.3 * var(--idx-name-size) * var(--idx-name-lh));
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--idx-desc-size);
+    line-height: var(--idx-desc-lh);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ---- THE ROW HAIRLINES ------------------------------------------
+     FOUR RULES, NOT FIVE AND NOT SIX. A bottom rule on entries 01, 02,
+     03 and 04; NO rule under entry 05 and NO rule above entry 01. An
+     index that opens and closes with a rule is a boxed table; one that
+     only ever appears BETWEEN entries is a contents page.
+
+     THE RULE IS ON THE <li>, NOT ON THE ROW. On entry 04 the <details>
+     is inside the <li>, so the rule sits below the expansion and moves
+     down when it opens. The rule closes the ENTRY, not the summary.
+
+     1px Smoked Slate. NO GOLD — see the header comment. */
+  .idx-item:not(:last-child) {
+    border-bottom: 1px solid var(--slate);
+  }
+
+  /* ---- INTERACTIVE STATES -----------------------------------------
+     Every clickable element gets hover, focus-visible and active.
+
+     HOVER: the name takes a 1px underline and the row's hairline goes
+     Obsidian. BOTH INSTANT — no colour transition anywhere. The
+     hairline lives on the <li>, so the row's hover has to reach it
+     through :has(); that is why the selector is shaped this way rather
+     than sitting on .idx-row:hover.
+     ---------------------------------------------------------------- */
+  .idx-row:hover .idx-name {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .idx-item:has(.idx-row:hover) {
+    border-bottom-color: var(--obsidian);
+  }
+
+  .idx-row:focus-visible {
+    outline: 2px solid var(--slate);
+    outline-offset: 4px;
+  }
+
+  .idx-row:active {
+    opacity: 0.7;
+  }
+
+  /* ---- THE INDICATOR ----------------------------------------------
+     Montserrat + at description scale, Smoked Slate, right-aligned to
+     the text block's right edge, becoming − (U+2212, the true minus,
+     not a hyphen) under [open].
+
+     NO ROTATION, NO TRANSITION, NO TRANSFORM. A rotating + is a
+     component convention; this page is a printed spread and a printed
+     spread's glyphs do not spin. The swap is a content change on a
+     pseudo-element, which is why it needs no script.
+
+     `flex-shrink: 0` so a long name never squeezes the glyph, and the
+     span is aria-hidden — <details> already exposes aria-expanded and
+     a screen reader announcing "plus" adds nothing. */
+  .idx-sign {
+    flex: 0 0 auto;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--idx-desc-size);
+    line-height: var(--idx-desc-lh);
+    color: var(--slate);
+  }
+  .idx-sign::before {
+    content: '+';
+  }
+  .idx-details[open] .idx-sign::before {
+    content: '\2212';
+  }
+
+  /* ---- THE EXPANSION ----------------------------------------------
+     Data only, no prose. It sits on .idx-body, so it starts on the
+     same left edge as the names — no sub-columns, no new left edges.
+
+     THE GAP ABOVE THE FIRST BROTHER IS NOT THE GAP BETWEEN BROTHERS,
+     AND THE FIRST ROUND SHIPPED IT AS ONE. The summary already carries
+     its own 1.15-line bottom padding, and the brothers are 1.15 lines
+     apart from each other, so with no padding here the expansion's
+     first row sat exactly as far below "JAYLEN, KJ & CAM" as "KJ
+     McClain" sits below Jaylen's program line — measured 37px against
+     37px at 1440. Four items at one rhythm read as one list, and the
+     description belongs to the SUMMARY, not to the brothers.
+
+     0.62 lines on top of the summary's 1.15 makes the boundary 1.77
+     lines against the list's own 1.15 — a 1.54:1 step, which is the
+     smallest ratio that reads as a level change rather than as a
+     slightly loose gap. Derived from the description's line box like
+     every other gap in this section; nothing swept, no line count.
+
+     The bottom gap stays at 1.15 lines, so the entry's rule closes the
+     expansion at the same rhythm a closed row's rule closes it. */
+  .idx-expand {
+    padding-top: calc(0.62 * var(--idx-desc-line));
+    padding-bottom: calc(1.15 * var(--idx-desc-line));
+  }
+
+  .idx-bros {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .idx-bro + .idx-bro {
+    margin-top: calc(1.15 * var(--idx-desc-line));
+  }
+
+  /* Line 1: name left, domain right-aligned on the SAME LINE, sharing
+     a baseline through flex's baseline alignment. The domain aligns to
+     the text block's right edge — the one right-hand alignment this
+     section permits, and it is an alignment to an edge that already
+     exists rather than a new one.
+
+     In bands 3 and 4 this becomes a block and the domain drops beneath
+     the name; see the collapse block at the foot of this file. */
+  .idx-bro-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--idx-desc-line);
+  }
+
+  .idx-bro-name {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--obsidian);
+  }
+
+  /* PLAIN TEXT, NOT A LINK, and not wrapped in an <a>. Liveness is
+     unconfirmed and a dead click reads as a broken site. The visual
+     treatment is what it would have been either way; only the click is
+     removed. */
+  .idx-bro-site {
+    flex: 0 0 auto;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    color: var(--slate);
+  }
+
+  /* Line 2: the program. School names as plain text — the OSU interim
+     rule is in force for all three schools: no logos, no marks, no
+     team photography, no school-keyed colour. */
+  .idx-bro-prog {
+    display: block;
+    margin-top: calc(0.3 * var(--idx-desc-line));
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ---- BANDS 3 AND 4 ----------------------------------------------
+     THE DOMAIN DROPS BENEATH THE NAME rather than right-aligning. At
+     eight tracks the text block is five of eight — 556.5px at 1023 and
+     421.4px at 751 — and "University of Tennessee Football | #40" plus
+     "kjmcclain.com" on one line leaves a leader gap of a few
+     characters, which reads as a failed justification rather than as
+     an alignment. Below 750 there is one column and the question does
+     not arise.
+
+     Keyed at 1023 so it covers bands 3 and 4 together; there is no
+     separate 750 rule, because a block is a block in both. */
+  @media (max-width: 1023px) {
+    .idx-bro-line {
+      display: block;
+    }
+    .idx-bro-site {
+      display: block;
+      margin-top: calc(0.2 * var(--idx-desc-line));
+    }
+  }
+
+  /* Band 4 only. The numeral takes its own line above the text block
+     — that is the grid primitive's doing, in global.css — and the two
+     need a gap between them that the row's baseline group no longer
+     provides once they are on separate rows. Derived from the
+     numeral's own line box, not from a pixel. */
+  @media (max-width: 750px) {
+    .idx-row {
+      row-gap: calc(0.34 * var(--idx-num-size) * var(--idx-num-lh));
+    }
+  }
+</style>

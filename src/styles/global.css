@@ -1225,6 +1225,122 @@ a{ color: inherit; }
    ============================================================ */
 .win-quote         { grid-column: 2 / 11; }
 
+/* ============================================================
+   R8 — THE INDEX.  The funnel spread, five destinations.
+
+   THE ENTRANCE IS THE NUMERALS. Per the Composition table, "numerals
+   already at display scale" IS the entrance — so there is no kicker,
+   no hairline head, no section title, no photograph and no live-margin
+   content in this section. Nothing is added on top of them.
+
+   THE SECTION WINDOW IS COLUMNS 1-11 OF 12, and it carries exactly two
+   properties:
+
+     - THE LEFT EDGE SITS ON COLUMN 1, the sheet's left trim. This is
+       the only section on the page flush to the trim across its full
+       width, and that is what makes it read as a contents page rather
+       than as another section. Every other section either starts at
+       column 4 (Educational Leader), column 5 (Premier), column 8
+       (Athletic) or insets a column (the pivot).
+     - EXACTLY ONE COLUMN OF AIR AT THE RIGHT, so the four row
+       hairlines stop short of the right trim rather than running trim
+       to trim. A rule that reaches both trims is a horizontal divider;
+       a rule that stops short is a contents-page leader.
+
+   BAND 3 IS COLUMNS 1-7 OF 8, NOT A RATIO TRANSCRIPTION. Per R7's
+   standing rule, a column window does not transcribe between track
+   counts by arithmetic — transcribe its PROPERTIES. 1-11 of 12 is
+   11/12 of the sheet; 11/12 of 8 tracks is 7.33 and rounds to nothing
+   real. The two properties above select 1-7 of 8 uniquely: flush to
+   the left trim, one column of air at the right. Seven of eight is
+   the only window that keeps both.
+
+   COLLAPSE CONTRACTS, ALL FOUR BANDS, WRITTEN BEFORE THE
+   IMPLEMENTATION.
+
+     .idx-window   the <ol>. The section window.
+       >= 1280   1 / 12   columns 1-11 of 12
+       1024-1279 1 / 12   UNCHANGED — the Index has no live margin to
+                          give a column back to, so unlike every other
+                          section on the page nothing moves at 1280.
+                          Absent from the band-2 block by design.
+       751-1023  1 / 8    columns 1-7 of 8
+       <= 750    1 / -1   the single collapsed column, full measure
+
+     .idx-item     the <li>, and .idx-details / ::details-content and
+     .idx-row      the <a> or <summary>. All four span the WHOLE of
+                   their subgrid parent at every width, so they are
+                   `1 / -1` in all four bands and appear once.
+
+     .idx-num      the numeral's window. LEFT-ALIGNED INSIDE IT — never
+                   centred, never right-aligned. The air between the
+                   numeral and the name is the leader space of a
+                   contents page and is deliberate; it is NOT closed by
+                   shrinking this window.
+       >= 1280   1 / 4    columns 1-3
+       1024-1279 1 / 4    unchanged
+       751-1023  1 / 3    columns 1-2 of 8
+       <= 750    1 / -1   its own line, flush left, above the body
+
+     .idx-body     the text block: name, description, and (on 04) the
+                   expansion. ITS LEFT EDGE IS COLUMN 4 IN THE
+                   12-COLUMN BANDS, WHICH IS THE LEDE EDGE — one of
+                   CONTEXT.md's three established left edges (kicker 1,
+                   lede 4, body 5). NOTHING IN THIS SECTION LANDS ON A
+                   FOURTH EDGE. The one right-hand alignment permitted
+                   is the brothers' domains, and they align to THIS
+                   window's right edge rather than introducing an edge
+                   of their own.
+       >= 1280   4 / 12   columns 4-11
+       1024-1279 4 / 12   unchanged
+       751-1023  3 / 8    columns 3-7 of 8
+       <= 750    1 / -1   flush left, beneath the numeral
+
+   WHY SUBGRID AND NOT A NESTED TRACK LIST. Each row spans the section
+   window and re-declares `grid-template-columns: subgrid`, so the
+   numeral and the text block sit on the SECTION'S REAL COLUMNS. The
+   alternative — a two-track grid inside the row with the numeral track
+   derived in pixels — would put the text block's left edge on a number
+   computed from the row's own width rather than on the page's column
+   4, and it would drift from the lede edge at every width the sheet's
+   track size is not an integer. Verified in Chrome 148: the chain
+   .sheet -> ol -> li -> details -> ::details-content -> summary
+   resolves the numeral to x=64 w=310 and the body to x=398 w=866.66 at
+   1440, which is columns 1-3 and 4-11 exactly.
+
+   ::details-content IS PART OF THE CHAIN AND MUST BE DECLARED. Chrome
+   129+ wraps a <details> element's non-summary children in a
+   ::details-content box. Left at its `display: block` default that box
+   is an ordinary grid item of .idx-details, auto-placed into column 1,
+   and the expansion measures ONE COLUMN wide at x=64 instead of eight
+   at x=398 — measured, before the rule below was added. The selector
+   is in its own rule so a browser without the pseudo drops that rule
+   alone and the rest of the chain survives.
+   ============================================================ */
+.idx-window        { grid-column: 1 / 12; }
+.idx-item,
+.idx-row           { grid-column: 1 / -1; }
+.idx-details       { grid-column: 1 / -1; }
+.idx-num           { grid-column: 1 / 4;  }
+.idx-body          { grid-column: 4 / 12; }
+
+/* Every link in the chain is a subgrid of the one above it, so the
+   tracks the numeral and the body resolve against are the SHEET's
+   tracks and not a recomputation of them. */
+.idx-window,
+.idx-item,
+.idx-details,
+.idx-row           { display: grid; grid-template-columns: subgrid; }
+
+/* The UA-generated wrapper around <details>'s non-summary children.
+   Its own rule, so an unsupporting engine drops this and nothing
+   else. */
+.idx-details::details-content{
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
 /* --- BAND 2 · 1024-1279 -----------------------------------------
    THE LIVE MARGIN IS NO LONGER SUPPRESSED HERE. R1 turned it off
    across this band and returned its columns to the measure, on
@@ -1334,6 +1450,17 @@ a{ color: inherit; }
   .win-ath-text   { grid-column: 7 / 13; }
   .win-ath-close  { grid-column: 7 / 12; }
   .win-ath-detail { grid-column: 4 / 7;  }   /* unchanged — band 2 was already 4-6 */
+
+  /* R8 — THE INDEX IS ABSENT FROM THIS BLOCK BY DESIGN, NOT BY
+     OMISSION, AND IT IS THE ONLY SECTION ON THE PAGE THAT IS. Every
+     other section gives a column back at 1280 because the live margin
+     re-enters at 11-12 and the body has to vacate column 11 for it.
+     The Index HAS NO LIVE MARGIN — the Composition table's "Margin
+     holds" cell for this row is empty and the entrance is the numerals
+     themselves — so there is nothing here to make room for. Its window
+     is 1-11 in both 12-column bands, and the one column of air at the
+     right is the section's own composition rather than a margin it has
+     surrendered. Nothing to restate. */
 }
 
 /* ============================================================
@@ -1701,6 +1828,28 @@ a{ color: inherit; }
      for why 2-10 of 12 cannot be transcribed by arithmetic, and why
      this window does NOT take the shell's 900 crossover. */
   .win-quote       { grid-column: 2 / 8; }
+
+  /* R8 — The Index. Columns 1-7 of 8, transcribed by PROPERTY and not
+     by ratio: flush to the left trim, exactly one column of air at the
+     right. 11/12 of eight tracks is 7.33 and selects nothing; seven of
+     eight is the only window that keeps both properties, which is the
+     same move R7 made from 2-10 of 12 to 2-7 of 8, arriving at the
+     opposite edge.
+
+     The numeral drops to two of eight and the body starts at column 3.
+     The numeral's window is still a leader space and is still
+     left-aligned inside it — 168.5px at 1023 against the body's
+     556.5px. THIS SECTION DOES NOT TAKE THE SHELL'S 900 CROSSOVER.
+     That crossover exists to keep BODY COPY off the 45-character
+     floor; the Index has no body copy. Its longest string is a 42-
+     character description set at 11px, which measures ~440px against a
+     421px window at 751 and wraps to two lines there — the specified
+     and correct behaviour, not a measure failure. Inheriting a body
+     crossover here would move the section's only interior edge for a
+     reason that is not its own. */
+  .idx-window      { grid-column: 1 / 8; }
+  .idx-num         { grid-column: 1 / 3; }
+  .idx-body        { grid-column: 3 / 8; }
 }
 
 /* --- The crossover, at 900px. -----------------------------------
@@ -1808,7 +1957,10 @@ a{ color: inherit; }
   .win-ath-close,
   .win-ath-caption,
   .win-ath-detail,
-  .win-quote{ grid-column: 1 / -1; grid-row: auto; }
+  .win-quote,
+  .idx-window,
+  .idx-num,
+  .idx-body{ grid-column: 1 / -1; grid-row: auto; }
 }
 
 /* ============================================================
