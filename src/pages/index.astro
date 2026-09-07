@@ -9,11 +9,13 @@
  *   R-shell  Collapse bands      <- shipped (four bands, 8-col tablet step)
  *   R3       Educational Leader  <- shipped
  *   R4       Premier Leadership  <- THIS SLICE (batched with R5)
- *   R5       Everyday Legends    <- THIS SLICE (batched with R4)
+ *   R5       Everyday Legends    <- shipped
+ *   R4.2     Premier corrections <- shipped
+ *   R6       Athletic Management <- THIS SLICE
  *
- *   R6  Athletic Management  R9   Charging It to the Game
  *   R7  Feature Quote        R10  Contact + footer (form is PORTED)
  *   R8  Index                R11  /privacy
+ *   R9  Charging It to the Game
  *
  * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
  * built to rhyme and the failure mode of a rhyme is a repeat, so they
@@ -41,6 +43,7 @@ import About from '../components/About.astro';
 import EducationalLeader from '../components/EducationalLeader.astro';
 import PremierLeadership from '../components/PremierLeadership.astro';
 import EverydayLegends from '../components/EverydayLegends.astro';
+import AthleticManagement from '../components/AthleticManagement.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -50,5 +53,6 @@ import EverydayLegends from '../components/EverydayLegends.astro';
     <EducationalLeader />
     <PremierLeadership />
     <EverydayLegends />
+    <AthleticManagement />
   </main>
 </BaseLayout>

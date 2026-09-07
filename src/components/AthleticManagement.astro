@@ -1,0 +1,965 @@
+---
+/**
+ * ATHLETIC MANAGEMENT — slice R6.
+ *
+ * CONTEXT.md Section Composition table, row "Athletic Management":
+ *
+ *   Entrance      D — THE SPREAD. The photograph breaks the LEFT page
+ *                 trim before any type. Everyday Legends directly
+ *                 above opens on a display-scale mark hung in columns
+ *                 1-2 with no photograph at all; this opens on a
+ *                 frame that runs off the sheet. That is the turn.
+ *   Column window frame 1-7 off the left trim · detail 4-7 ·
+ *                 lede 8-12 · body 8-12 · closing 8-11 · caption 1-3
+ *   Image         `bleed-left` — mcclain-bleachers.jpg
+ *                 PLUS `inset` — athletics-detail.jpg, lapped upward
+ *   Rhythm        open. 110px, matching Educational Leader, which is
+ *                 the other of the page's two tallest sections.
+ *   Margin holds  the caption — and it is on the LEFT.
+ *   Length        FULL — opening statement + two paragraphs + coda.
+ *
+ * THIS IS THE PAGE'S SINGLE SPREAD MOMENT AND ITS ONLY BROKEN GUTTER.
+ * CONTEXT.md's image-tier table allots exactly one `bleed-left` and
+ * exactly one `inset` on the whole page, and both are spent here. It
+ * is also the only section carrying two photographs; CONTEXT.md's
+ * "photography does not sit in adjacent sections" rule names this
+ * pair as the deliberate exception.
+ *
+ * THE SECTION MIRRORS THE PAGE, INCLUDING ITS MARGIN. Every section
+ * from About down runs type left and marginalia right, on a margin
+ * edge that has held at x=1066 since About. Athletic inverts it, and
+ * because text at 8-12 leaves no room on the right, the caption hangs
+ * at columns 1-3 on the sheet's LEFT trim. CONTEXT.md's R6 note is
+ * explicit that this breaks the right-margin continuity on purpose
+ * and that the break is what makes the inversion legible. It is not
+ * to be "restored".
+ *
+ * NO SECTION NUMERAL. The table's original margin cell read "numeral
+ * + caption"; CONTEXT.md's R6 note supersedes it with "caption only".
+ * No shipped section carries a numeral, and a lone numeral on a page
+ * whose Index runs 01-05 in a different order is the exact confusion
+ * the decorative-marks rule exists to prevent — flagged four times.
+ *
+ * COPY: SET VERBATIM FROM COPY.md, "Athletic Management". Nothing is
+ * reworded, nothing is added, nothing is restored from the Appendix.
+ *
+ * ONE LINE IS DELIBERATELY ABSENT. "Every decision is viewed through
+ * a larger lens: Legacy" belongs to the Feature Quote one screen
+ * below and appears on this page EXACTLY ONCE. COPY.md marks it as a
+ * deletion for placement, not a rewrite. Do not restore it here; a
+ * second instance dilutes the page's one structural pivot.
+ *
+ * THE CAPTION TEXT IS NEW COPY AND IS NOT IN COPY.md. COPY.md's
+ * "never add copy without sign-off" rule applies to anything added
+ * after the September 4 rewrite, so this line REQUIRES JACKSON'S
+ * APPROVAL BEFORE LAUNCH. It is built, not substituted.
+ *
+ * OSU CLEARANCE IS UNRESOLVED AND THIS SECTION RESPECTS THE INTERIM
+ * RULE IN FULL. No school name is rendered anywhere in this section,
+ * in markup or in a comment — the copy says "Division I" and the
+ * caption says "Division I", which are nominative and generic. No
+ * logo, no mark, no team photography, no school-keyed colour. The
+ * helmet in the bleachers frame is separately cleared by Jackson,
+ * September 4 2026, with no crop restriction. AND: Jaylen's 2026 OSU
+ * captaincy has not been publicly announced by the client and is not
+ * surfaced here in any form.
+ *
+ * NO grid-column IS SET IN THIS FILE. Five collapse-aware primitives
+ * carry every placement — .win-ath-bleed, -text, -close, -caption,
+ * -detail — and each one's behaviour in all four bands (>=1280 /
+ * 1024-1279 / 751-1023 / <=750) is written out in full above the
+ * implementation in global.css, before the implementation.
+ *
+ * ONE grid-row IS SET, on .win-ath-bleed, and it is STRUCTURAL rather
+ * than a measurement: the type column is authored in exactly four
+ * blocks — head, lede, body, closing line — so the frame spans from
+ * the first to the last. It is not a line count and it does not go
+ * stale when the copy rewraps. The CAPTION and the DETAIL are seated
+ * in the row below it by DOCUMENT ORDER alone, with no row number and
+ * no offset.
+ *
+ * ONE TYPE LEFT EDGE, NOT THREE. CONTEXT.md's staircase is a device
+ * for type anchored to the sheet's own left trim. This section's type
+ * is anchored to a photograph, so under the rule R4.1 added, its left
+ * edge is a function of the frame's right trim plus one gap — column
+ * 8 follows column 7 and is not chosen. That is permitted only
+ * because there is NO EMPTY COLUMN between the frame and the type,
+ * which is verified by measured x in every band. The lede, the body
+ * and the closing line therefore differentiate on the RIGHT edge
+ * instead, which is R3's lede 4-11 / closing 4-9 relationship
+ * transposed onto this window.
+ *
+ * NO TRANSFORM ON EITHER PHOTOGRAPH, EVER. Both crops are done by
+ * object-position, and the detail's additionally by oversizing the
+ * <img> box inside overflow:hidden. A static transform: scale() on an
+ * <img> silently kills the mix-blend-mode treatment — measured in R1,
+ * the treated backdrop reverted to the raw source colour — because
+ * the transformed image composites into its own layer.
+ *
+ * NO BORDER, NO SHADOW, NO ROUNDED CORNERS on either frame.
+ *
+ * GOLD: ZERO NEW. Both budgets are spent — 3 saturated type accents
+ * (the Legacy tagline, About's drop cap, the pull quote) and 8
+ * hairline-gold rule contexts. No type in this section is gold and
+ * this section contains NO RULE AT ALL, so it adds 0 of the 8. The
+ * two frames carry the page's existing photograph treatment, which
+ * multiplies by Gold; that is reuse of a shipped treatment layer and
+ * is neither of the two things the budget counts. THE CAPTION IS
+ * SMOKED SLATE, per CONTEXT.md's explicit "no gold rule" on captions.
+ *
+ * OVERLAP: ONE, AND IT WAS ALREADY BUDGETED. CONTEXT.md counts the
+ * Athletic detail crop as one of the two SPENT overlaps, alongside
+ * the Cover name overrunning its portrait. R6 implements that one; it
+ * does not spend the third, which stays reserved for Jackson. Nothing
+ * else in this section overlaps anything.
+ */
+import { Image } from 'astro:assets';
+import bleachers from '../../brand_assets/mcclain-bleachers.jpg';
+import athleticsDetail from '../assets/athletics-detail.jpg';
+---
+
+<section class="sheet ath" id="sec-athletics">
+  <!--
+    SOURCE ORDER IS STRUCTURAL. frame -> head -> lede -> body ->
+    closing -> caption -> detail is what makes grid's sparse cursor
+    put the caption and the detail in ONE row below the frame: the
+    cursor sits past column 11 at the end of the type column, so the
+    caption's column 1 is behind it and drops to a new row, leaving
+    the cursor at column 4 exactly where the detail asks to start.
+    Reordering these siblings changes the composition. See global.css.
+
+    THE CAPTION IS AUTHORED BEFORE THE DETAIL AND THAT IS THE WHOLE
+    MECHANISM. Authored after it, the cursor would sit past column 7
+    and the caption's column 1 would be behind it again — a second row
+    drop, putting the caption UNDER the detail instead of beside it,
+    and needing a hardcoded grid-row to get it back. Document order
+    makes the placement cancel instead, which is what CONTEXT.md asks
+    for and what R3, R4 and R5 all already do.
+
+    It is also a defensible stacked reading order below 750:
+    photograph, name, subtitle, opening statement, the two paragraphs,
+    the closing line, the caption, then the detail. The caption
+    reading as an introduction to the frame below it is ordinary
+    editorial behaviour — captions sit above photographs as often as
+    below them — and the B5 ruling makes it the SECTION's one caption
+    rather than either photograph's.
+  -->
+  <figure class="win-ath-bleed ath-bleed" aria-labelledby="ath-caption">
+    <!--
+      THE BLEED FRAME. `bleed-left` tier — the only one on the page.
+
+      IT RUNS OFF THE LEFT PAGE TRIM, past --gutter, to the viewport
+      edge, and that MUST be unambiguous. CONTEXT.md's own overlap
+      floor applies to a bleed for the same reason it applies to an
+      overlap: a frame that stops a few pixels short of the trim, or
+      crosses it by a few, reads as a misaligned image rather than as
+      a broken gutter. The negative margin below is exactly --gutter,
+      so the frame's left edge is the viewport's left edge at every
+      width in every band, with nothing to sweep.
+
+      IT IS NOT CROPPED WIDE AT ANY BAND. The source is presented
+      1984x2976 — see the EXIF note on .ath-frame — and the frame is
+      0.95, which is still portrait. CONTEXT.md refuses a horizontal
+      band at spec time rather than solving it by cropping a vertical
+      photograph, and that refusal is upheld here including at <=750,
+      where the frame is full-bleed to both trims: a tall portrait at
+      full viewport width is not a wide crop.
+
+      NO BORDER, NO SHADOW, NO ROUNDED CORNERS.
+
+      Eager + sync decode: a photograph that resolves late is absent
+      from full-page captures and from any PDF the client generates.
+    -->
+    <div class="plate-img ath-frame">
+      <!--
+        `sizes` DESCRIBES THE <img> BOX. This frame's box IS the
+        frame — the crop is vertical only, so there is no oversized
+        box here and the box width is the frame width. Measured at the
+        WIDER end of each band, as a fraction of the viewport:
+
+          <=1145   full bleed, both trims           1145 -> 100vw
+          <=1279   64 + 6t + 5g, t=(vw-392)/12      1279 ->  50vw
+          else     64 + 7t + 6g, t=(vw-392)/12      1440 ->  57vw
+
+        The break is at Athletic's own 1145 crossover, not at a shell
+        band boundary, because that is where the frame's WIDTH changes
+        — the shell's 1023 and 750 thresholds do not move it, since it
+        is already full-bleed at both.
+      -->
+      <Image
+        src={bleachers}
+        alt="Dr. Syreeta McClain seated on stadium bleachers in a cream suit, a football in one hand and a helmet on the bench beside her."
+        widths={[640, 960, 1280, 1600, 1984]}
+        sizes="(max-width: 1145px) 100vw, (max-width: 1279px) 50vw, 57vw"
+        loading="eager"
+        decoding="sync"
+      />
+    </div>
+  </figure>
+
+  <div class="win-ath-text ath-head">
+    <!--
+      THE <h2> IS THE SECTION NAME. CONTEXT.md's locked heading
+      structure: each section's <h2> is the element whose text names
+      the section, and that string equals the folio label. Verified
+      against src/data/sections.ts — { id: 'sec-athletics', n: '06',
+      label: 'Athletic Management' } — not assumed.
+
+      The head sits at the top of the type block on the type block's
+      own left edge, in the established .role register. Everyday
+      Legends directly above uses the same register, and that is
+      correct: CONTEXT.md makes the SUBTITLE a shared device across
+      the pillars and the ENTRANCE the thing that must differ. R5
+      opens on a display-scale mark hung outside its type; this opens
+      on a photograph that leaves the page.
+    -->
+    <h2 class="role ath-name">Athletic Management</h2>
+    <!-- Set verbatim from COPY.md, middle dots and all. Sentence case
+         against the uppercase name above it, so the head has two
+         registers rather than two identical-looking lines. -->
+    <p class="ath-subtitle">Momager &middot; Athletic Manager to the McClain Brothers</p>
+  </div>
+
+  <p class="win-ath-text ath-lede">Long before NIL, there were early mornings, long drives, and decisions no one else saw.</p>
+
+  <div class="win-ath-text ath-body">
+    <p>As the mother of three football players moving through the high school and Division I levels, Dr. McClain&rsquo;s role grew organically from motherhood into strategy.</p>
+    <p>Her approach is intentionally bigger than the game. Opportunities and contracts matter, but so do character, financial literacy, reputation, and preparation for life after football.</p>
+  </div>
+
+  <!--
+    THE CLOSING LINE. It steps in ONE COLUMN ON THE RIGHT and keeps
+    the body's left edge — the only differentiation available to a
+    section that runs a single type edge. Educational Leader's coda
+    does the same thing in mirror image, stepping back OUT to the
+    lede's left edge; the two sections use the same relationship on
+    opposite edges, which is the difference between a system and a
+    repeat.
+
+    NO RULE ABOVE IT. Educational Leader owns the coda-with-a-lid
+    entrance and repeating it here would make two of the page's three
+    coda-bearing sections open their codas identically. The gap does
+    the work instead — see .ath-body's derived bottom margin.
+  -->
+  <p class="win-ath-close ath-close">The goal was never simply to develop successful athletes. It is to raise young men who understand what their name is worth.</p>
+
+  <!--
+    THE CAPTION — the section's one, belonging to the bleed frame.
+    Hung at columns 1-3 on the sheet's left trim, below the frame,
+    beside the detail.
+
+    ⚠️ THIS TEXT IS NEW COPY AND IS NOT IN COPY.md. It requires
+    Jackson's approval before launch. Seven words, factual, editorial,
+    inside CONTEXT.md's eight-word ceiling, and NEVER file metadata.
+    It names no school, so it raises no OSU clearance question, and it
+    does not surface Jaylen's unannounced 2026 captaincy.
+
+    Montserrat, small, letterspaced, uppercase, Smoked Slate at
+    reduced opacity, via the page's existing .plate-caption primitive
+    — reused rather than reinvented, so this section's caption and any
+    future one sit in the same register. NO GOLD: CONTEXT.md's caption
+    rule says so outright and the budget is spent regardless.
+
+    It is the <figure>'s accessible name via aria-labelledby rather
+    than a nested <figcaption>, because a <figcaption> would have to
+    live inside the frame's box — which bleeds off the trim and ends
+    at column 7 — and could not then hold columns 1-3 of the sheet.
+    The association survives; only the nesting does not.
+  -->
+  <p class="win-ath-caption plate-caption ath-caption" id="ath-caption"><span class="ath-caption-line">Three sons, high school through Division I</span></p>
+
+  <figure class="win-ath-detail ath-detail">
+    <!--
+      THE DETAIL CROP. `inset` tier — the only one on the page, and
+      already counted by CONTEXT.md as one of the two SPENT overlaps.
+
+      IT LAPS UPWARD ONTO THE BLEED FRAME BY A DERIVED AMOUNT, NOT A
+      PIXEL. See --ath-lap below. Grid placement plus a negative
+      margin, never position:absolute with a hard offset — the overlap
+      has to survive a resize, and an absolutely positioned inset
+      would need a new offset at every width.
+
+      WHAT IT COVERS, AND WHAT IT MUST NOT. It sits at the frame's
+      bottom-right and covers a strip of bleachers and her lower legs.
+      It does NOT cover her face, which the crop puts at 21-31% of the
+      frame's height, and it does NOT cover the football, which the
+      crop puts at 61-77% of the frame's height and left of the
+      detail's own left edge. Both verified from the render, not
+      asserted.
+
+      THE TWO FRAMES SHARE A RIGHT EDGE, expressed as a shared grid
+      line so it cannot drift: the frame ends on line 8 and the detail
+      ends on line 8, line 7 in band 2, line 5 in band 3. That shared
+      edge is what makes the pair read as interlocking rather than as
+      two photographs that happen to be near each other.
+
+      A DIFFERENT CROP FROM EVERY OTHER FRAME ON THE PAGE. 0.70
+      against the bleed frame's 0.95 — CONTEXT.md: aspect ratio is a
+      separate lever from width, and no two photographs on the page
+      share a crop.
+
+      NO CAPTION OF ITS OWN. The B5 ruling: one caption for the
+      section. The detail is the same subject matter in the same
+      frame and a second caption would be file metadata with a line
+      break in it.
+    -->
+    <div class="plate-img ath-detail-frame">
+      <!--
+        `sizes` DESCRIBES THE <img> BOX, WHICH IS 138.9% OF THE
+        DETAIL, because that is how the horizontal crop is done
+        without a transform. Measured at the WIDER end of each band:
+
+          <=750    62% of 1 col,  x1.389    750 -> 77vw
+          <=900    62% of 6 of 8, x1.389    900 -> 59vw
+          <=1023   62% of 5 of 8, x1.389   1023 -> 49vw
+          <=1145   62% of 7 of 12,x1.389   1145 -> 44vw
+          <=1279   3t + 2g of 12, x1.389   1279 -> 30vw
+          else     4t + 3g of 12, x1.389   1440 -> 41vw
+
+        The 1279 step is the smallest box on the page and the 1145
+        step is nearly half again as large, because the detail stops
+        being a 3-column inset and becomes 62% of a stacked measure at
+        that boundary. Both were computed at both ends of their band.
+      -->
+      <Image
+        src={athleticsDetail}
+        alt="A gold heel resting on a football on a turf field, goalposts out of focus behind."
+        widths={[480, 720, 960, 1280, 1600]}
+        sizes="(max-width: 750px) 77vw, (max-width: 900px) 59vw, (max-width: 1023px) 49vw, (max-width: 1145px) 44vw, (max-width: 1279px) 30vw, 41vw"
+        loading="eager"
+        decoding="sync"
+      />
+    </div>
+  </figure>
+</section>
+
+<style>
+  /* CONTEXT.md's per-section padding table gives Athletic Management
+     110 — `open` rhythm, and the same number as Educational Leader,
+     which is the other of the page's two tallest sections. Everyday
+     Legends directly above is 70, so the step into this section is
+     the largest on the page so far and the section announces itself
+     before a word of it is read.
+
+     FLAT AT EVERY BAND, which is the pattern R3 set and R4 and R5
+     followed: one declaration, no media query. Inventing a scale here
+     would put R6 on a rule the three sections above it do not use.
+
+     THE ROW TRACK LIST. Five rows. Rows 1-4 are the type column's
+     four authored blocks; row 5 is the photographic footer — caption
+     at the left trim, detail at the frame's right trim.
+
+     ROW 4 IS THE ONLY FLEXIBLE TRACK, and that is the same mechanism
+     R4.2 uses one section above, for the mirror-image reason. The
+     bleed frame spans rows 1-4 and is TALLER than the type column at
+     every width that carries the spread; without a flexible track,
+     grid would distribute that surplus across all four rows and
+     silently inflate the internal type gaps, which are derived from
+     the type tokens and MUST NOT be added to. With row 4 flexible,
+     grid sizes the frame in the step that distributes space only to
+     flexible tracks, so the whole surplus lands in one place — below
+     the closing line, where it is ordinary section space, and where
+     it also guarantees that row 5 starts exactly on the frame's
+     bottom edge. That guarantee is what the detail's negative margin
+     is measured from.
+
+     R4.2 needed a flexible track to stop a MARGIN inflating a row;
+     R6 needs one to stop a PHOTOGRAPH inflating four. Same tool, and
+     in both cases the alternative was a hardcoded height. */
+  .ath{
+    padding-block: 110px;
+    grid-template-rows: auto auto auto 1fr auto;
+  }
+
+  /* ---- THE BLEED FRAME — entrance D ------------------------------ */
+
+  /* OFF THE LEFT PAGE TRIM. The frame is a grid item at columns 1-7,
+     so its box starts at the gutter; a negative inline-start margin
+     of exactly --gutter takes it to the viewport edge. It is written
+     against the token rather than as 64px, so it follows the gutter
+     through all four bands — 64px in bands 1 and 2, 40px in band 3,
+     and the clamp in band 4 — with nothing to re-measure.
+
+     `body` already carries overflow-x: hidden, so this cannot open a
+     horizontal scrollbar even transiently.
+
+     The RIGHT trim is untouched: it stays on column 7's grid line,
+     which is what the type's left edge is measured from. */
+  .ath-bleed{
+    margin: 0;
+    margin-inline-start: calc(var(--gutter) * -1);
+    /* The frame inside is taken out of flow (below), so the figure
+       needs to establish the containing block for it. */
+    position: relative;
+  }
+
+  /* THE SHAPE FLOOR IS A PERCENTAGE-PADDING SPACER, NOT
+     `aspect-ratio`, AND THAT IS A CORRECTION WITH TWO MEASUREMENTS
+     BEHIND IT.
+
+     What is wanted is "at least 0.95, and taller if the type column
+     is taller" — a MINIMUM shape, not a fixed one, because the
+     frame's bottom edge has to be row 5's top edge or the detail's
+     lap is spent on empty ground. `aspect-ratio` cannot express a
+     minimum, and both ways of trying it failed differently:
+
+       aspect-ratio + height:100%   the ratio computed the WIDTH from
+                                    the definite height — 915.42 x
+                                    0.95 = 869.64px inside an 819.33px
+                                    figure — and the frame covered the
+                                    first 26px of every line of type
+                                    beside it. When a box has a ratio
+                                    and exactly one axis definite, the
+                                    ratio computes the other, and
+                                    `width: auto` on a stretched grid
+                                    item is not definite enough to win
+                                    that argument.
+       aspect-ratio + height:auto   the width was right and the
+                                    stretch never fired: Chrome sizes
+                                    the box from the ratio, so 819.33
+                                    x 862.44 inside a 915.42px row
+                                    span, and the lap fell back to
+                                    69.41px.
+
+     `width: 100%` would fix the first and break the bleed, because
+     100% of the grid area is the column span and the negative margin
+     then pulls the RIGHT trim left by a whole gutter. Auto width is
+     what makes the box fill the area PLUS its negative margin.
+
+     A percentage padding-top resolves against the element's own
+     WIDTH and only ever contributes a minimum in-flow height, so it
+     cannot compute a width from anything and cannot stop the stretch.
+     105.263% is 1 / 0.95. The frame itself is taken out of flow and
+     pinned to the figure's box, so the spacer governs nothing but the
+     floor. */
+  .ath-bleed::before{
+    content: "";
+    display: block;
+    padding-top: 105.263%;   /* 1 / 0.95 */
+  }
+
+  .ath-frame{
+    position: absolute;
+    inset: 0;
+  }
+
+  /* THE CROP.
+
+     EXIF FIRST, BEFORE ANY CROP DECISION. mcclain-bleachers.jpg is
+     stored 2976x1984 and carries EXIF orientation 6, so every
+     renderer presents it as 1984x2976 — a portrait 0.6667. `sips`
+     reports the raw buffer and is WRONG on this file; verified with
+     sharp().metadata(), which returns width 2976, height 1984,
+     orientation 6. Every number below is against the PRESENTED
+     1984x2976, not the buffer.
+
+     THE MECHANISM IS OBJECT-POSITION, NOT A TRANSFORM AND NOT AN
+     OVERSIZED BOX. This frame is cropped vertically only — the full
+     source width is used — so the box IS the frame and no negative
+     left offset is needed. At 0.95 the box is wider than the file's
+     native 0.6667, so object-fit: cover spreads the full source width
+     across it and crops the height; the visible fraction is
+     0.6667 / 0.95 = 0.7018 of the source height, and object-position
+     Y places that window:
+
+         window top = Y x (1 - 0.7018) = Y x 0.29825
+
+     0.10 of the source height is where the window is wanted, so
+     Y = 0.10 / 0.29825 = 33.5%, giving the window [0.100, 0.802].
+     The whole expression is in percentages of the source, so there is
+     no breakpoint and nothing to sweep. The HORIZONTAL window is
+     identical at every viewport width in every band — it is the full
+     source width. The VERTICAL window tracks the frame's rendered
+     aspect; see the note on .ath-frame below.
+
+     WHAT THAT WINDOW HOLDS, measured off the source rather than
+     eyeballed. Source fractions, then where they land in the frame:
+
+         face        y 0.248-0.314   ->  frame y 0.21-0.31
+         helmet      y 0.405-0.510   ->  frame y 0.43-0.58
+         football    y 0.524-0.638   ->  frame y 0.60-0.77
+         her figure  y 0.224-0.862   ->  crosses the bottom trim
+
+     It cuts sky off the top, which is the part of this frame that
+     fights the palette hardest, and it cuts her at mid-calf on the
+     bottom trim — so the figure terminates against the page edge
+     rather than sitting inside the rectangle, and the detail crop
+     below then shows the heel the frame just cut. That continuation
+     is why the bottom trim is where it is.
+
+     0.95 IS A FLOOR ON THE SHAPE, NOT A FIXED SHAPE, and that is
+     deliberate. The figure is a stretched grid item spanning rows
+     1-4, so `height: 100%` fills whatever those rows resolve to; the
+     aspect-ratio is what the frame contributes to sizing them. So the
+     frame is 0.95 whenever it is the taller column and grows to match
+     the type column whenever the type is taller. Row 5's top is then
+     the frame's bottom edge in every band, which is what the detail's
+     lap is measured from — see .ath-detail.
+
+     THE ALTERNATIVE WAS MEASURED AND REJECTED. With `align-self:
+     start` and a fixed 0.95, the type column ran 915.42px at 1440
+     against a frame of 862.44px, so row 5 began 52.98px below the
+     frame and the declared 122.4px lap rendered as 69.41px of ACTUAL
+     overlap — nearer the Cover's failed 54px than its own declared
+     depth. Fixing that by choosing a taller aspect would be choosing
+     a number that holds at one width and drifts at every other;
+     stretching makes it hold everywhere with nothing swept.
+
+     THE FLOOR IS WHAT KEEPS IT PORTRAIT. A purely derived height
+     could go landscape wherever the type column is shorter than the
+     frame is wide, and CONTEXT.md refuses a wide crop of a vertical
+     photograph outright. With the floor the frame can only ever be
+     TALLER than 0.95, never wider, at any viewport.
+
+     THE VERTICAL WINDOW THEREFORE MOVES WITH THE FRAME'S HEIGHT; the
+     horizontal window does not, because it is the full source width
+     at every width in every band. The measured windows per band are
+     in the R6 report. Every one of them holds her figure and cuts her
+     at mid-calf on the bottom trim, which is the property the window
+     is chosen for.
+
+     0.95, AND EVERY SHAPE ABOVE IT, IS PORTRAIT AND UNIQUE ON THE
+     PAGE. CONTEXT.md: no two photographs share a crop, and all client
+     photography is vertical — no wide crop anywhere, at any band. */
+  /* The frame is pinned to the figure by .ath-frame above; the crop
+     numbers are all that is left here. */
+
+  /* :global() — <Image> emits its own <img>, which never receives
+     Astro's data-astro-cid-*, so a scoped selector silently stops
+     matching. This has bitten this project twice. */
+  .ath-frame :global(img){
+    object-position: 50% 33.5%;
+  }
+
+  /* ---- THE TREATMENT --------------------------------------------
+     PULLED DOWN HARDER THAN THE STUDIO FRAMES, and CONTEXT.md is
+     explicit about why: this is the one candid frame in a set of
+     composed ones, and its saturated sky-blue and turf-green fight
+     Antique Gold and Cashmere in a way the studio backdrops do not.
+     The studio frames may sit closer to natural; this one may not.
+
+     The page's shared treatment is a FLAT Gold multiply at 0.24 —
+     flat rather than a ramp because a gradient's corner renders as
+     its first stop whatever the stop positions, which put a visible
+     light strip in the Cover's frame for two passes. That reasoning
+     is unchanged and this frame inherits it; only the opacity moves.
+
+     BOTH FRAMES IN THIS SECTION TAKE THE SAME OPACITY. They are one
+     shoot, one subject and one register, and two different multiply
+     strengths on two photographs that touch each other would read as
+     a colour mismatch at the seam.
+
+     THE VALUE IS SET BY THE EDGE STEP, MEASURED. CONTEXT.md's target
+     where a photograph meets the page ground is 35-50 luminance units
+     against Porcelain at ~227. The measured numbers and the sweep
+     that produced this opacity are in the R6 report; the constraint
+     runs in the opposite direction from the Cover's, because this
+     frame is LIGHT — bleachers and sky — rather than a mid-grey
+     studio backdrop, so its untreated step is too SMALL and the
+     multiply has to open it rather than close it.
+
+     MEASURED WARMTH IS NOT PERCEIVED WARMTH: CONTEXT.md records that
+     multiplying by Cashmere moves R-B about 4 units, below the
+     threshold at which anyone sees a hue change. Gold is the only
+     saturated warm in the locked palette and is what this multiplies
+     by. The R-B shift and what it actually looks like are both in the
+     report, because the numbers alone have been wrong twice. */
+  .ath-frame::before,
+  .ath-detail-frame::before{
+    opacity: 0.44;
+  }
+
+  /* ---- THE HEAD -------------------------------------------------- */
+
+  .ath-head{
+    /* HEAD -> LEDE. One body line, via the body's own tokens rather
+       than a pixel: calc(1.0 x 17px x 1.8) = 30.6px. It re-resolves
+       from the type at every width with no breakpoint. R4's number
+       and R4's reasoning: a fixed pixel gap set from one width is a
+       swept band by another name. */
+    margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .ath-name{
+    margin: 0;
+    margin-left: -0.07em;   /* half of .role's 0.14em tracking */
+  }
+
+  /* The deck, in the register Educational Leader, Premier Leadership
+     and Everyday Legends all share. Set verbatim from COPY.md. */
+  .ath-subtitle{
+    margin: 2px 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3, on the shared --lede-size token. Same face, same
+     four axes, same line-height and letterfit as About's, Educational
+     Leader's, Premier's and Everyday Legends' — CONTEXT.md's lede
+     rule. This section differs from its neighbours in ENTRANCE,
+     WINDOW and RHYTHM, which is where the difference belongs;
+     re-scaling the lede would break the page's one display tier into
+     two that mean nothing.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else. */
+  .ath-lede{
+    /* LEDE -> BODY. 0.75 of the lede's OWN line-height via `lh`, so
+       it re-resolves from the type rather than from a width. R3
+       precedent, same number, same unit. */
+    margin: 0 0 0.75lh;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3. --bio-size / --bio-lh, the page's body tokens,
+     unchanged. NO max-width — span only. Two paragraphs, per COPY.md;
+     this section runs FULL because it has no other home. */
+  .ath-body{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+    /* BODY -> CLOSING LINE. Two body lines = 61.2px, from the body's
+       own tokens. It is the LARGEST internal gap in the section —
+       twice the head->lede gap and larger than the lede->body gap —
+       so the closing line reads as leaving the text block rather than
+       as a third paragraph. Educational Leader marks the same
+       relationship with a hairline rule; this section has no rule, by
+       design, so the gap carries it alone and has to be bigger. */
+    margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .ath-body p{ margin: 0; }
+  .ath-body p + p{ margin-top: 1.5em; }
+
+  /* ---- THE CLOSING LINE ------------------------------------------
+     Tier 2 of 3, the same coda register About and Educational Leader
+     use: Fraunces at opsz 96 / SOFT 35 / wght 400, all four axes
+     stated so none is left to Fraunces' defaults of wght 900 / WONK 1
+     / SOFT 100. 1.86x the body and 0.58x the lede at 1440 — clearly a
+     third tier, subordinate to the lede and distinct from the body. */
+  .ath-close{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- THE CAPTION -----------------------------------------------
+     .plate-caption carries the whole register — Montserrat 10.5px,
+     0.22em tracking, uppercase, Smoked Slate at 0.82, set on the
+     --baseline line-height with a --baseline top margin. It is the
+     page's caption primitive and this is the page's first caption, so
+     it is used rather than re-declared.
+
+     0.82 rather than a lighter knock-down is measured, not chosen:
+     Slate on Porcelain is 7.54:1 at full strength, 4.45:1 at 0.78 —
+     under the floor — and 4.90:1 at 0.82.
+
+     IT SNAPS TO A BODY BASELINE, NOT TO THE FRAME'S BOTTOM. The
+     primitive's margin-top is one --baseline unit (28px) and its
+     line-height is the same unit, so its baseline lands on the page's
+     28px lattice rather than flush against the photograph above it.
+     CONTEXT.md: margin content snaps to body baselines, never to
+     container tops.
+
+     THE TRACKED UPPERCASE LINE MUST NOT WRAP. A tracked uppercase
+     label that wraps is not a label — the finding that moved R4's
+     margin from two columns to three. This caption is 42 characters,
+     which is far more than a 3-column window holds at 10.5px, so the
+     size is derived from the window instead of fixed: the caption is
+     an inline-size container and the text is sized in cqw, capped at
+     the primitive's own 10.5px. See the arithmetic on .ath-caption
+     below. The measured ink width against the window at every band is
+     in the R6 report, and so is the recommendation that follows from
+     it. */
+  .ath-caption{
+    /* The element that DECLARES container-type is not itself
+       queryable — cqw resolves against the nearest ancestor container
+       — so the tracked line is a child span and the query unit is
+       written on the span, not here. */
+    container-type: inline-size;
+  }
+
+  /* THE SIZE IS DERIVED FROM THE WINDOW, WITH NO BREAKPOINT.
+
+     The caption is 42 characters and, with the tracking written in
+     `em` so it scales with the size, the line's ink width is linear
+     in font-size — so one measurement fixes the ratio for every size.
+     MEASURED, not estimated: rendered in Montserrat 400 at 0.22em
+     with the trailing letter-space removed, the line is 362.86px at
+     10.5px and 414.70px at 12px, which is 34.558 ink-px per px of
+     font-size at both sizes. A line that must fit its container
+     therefore wants
+
+         font-size <= container-width / 34.558  =  2.894cqw
+
+     and it must never grow past the caption register's own 10.5px, so
+
+         font-size: min(10.5px, 2.87cqw)
+
+     2.87 rather than 2.894, so the line lands INSIDE the window
+     rather than exactly on it — a line that measures its container to
+     the last hundredth of a pixel wraps the moment a font falls back.
+
+     THE FIRST BUILD OF THIS RULE USED AN ESTIMATED 32.75 AND WRAPPED
+     AT 1440. 32.75 was a per-character guess rather than a
+     measurement, and the 5% error was enough to put the line over its
+     window and onto a second line. Same lesson as the 750px collapse
+     threshold: measure it, do not calculate it.
+
+     This is a derived measurement rather than a swept band — it
+     re-resolves at every width in every band from the container's own
+     width, with no media query and nothing to go stale if the window
+     changes. WHAT IT CANNOT DO is make the line legible at a size the
+     window will not carry. At 1440 the window is 311.1px and the line
+     renders at 8.93px; at 751 the window is 239.1px and it renders at
+     6.86px. The rendered size at every band, and the recommendation
+     that follows from it, are in the R6 report. */
+  .ath-caption-line{
+    font-size: min(10.5px, 2.87cqw);
+    /* THE TRACKING IS RE-DECLARED HERE AND THAT IS NOT REDUNDANT.
+       .plate-caption sets 0.22em on the <p>, where it resolves once
+       against the paragraph's 10.5px and INHERITS AS AN ABSOLUTE
+       2.31px. A span at 8.93px would then carry 10.5px worth of
+       tracking — measured, that is what put the first build of this
+       line onto two lines at 1440 even after the ratio was corrected.
+       Re-declaring it in `em` makes it resolve against this element's
+       own size, which is what the linear ink model above assumes. */
+    letter-spacing: 0.22em;
+  }
+
+  /* ---- THE DETAIL AND THE OVERLAP --------------------------------
+
+     THE DEPTH IS DERIVED FROM THE TYPE, NOT SET IN PIXELS.
+
+         --ath-lap = 4 x the body's line-height = 122.4px
+
+     and the threshold it has to clear is measured, not estimated.
+     CONTEXT.md's overlap floor is that an overlap is unambiguous or
+     it is absent: the Cover's 54px version read as a text-overflow
+     bug and was removed. The measurable form of "unambiguous" used
+     here is THE OVERLAP MUST BE AT LEAST TWICE THE SECTION'S LARGEST
+     INTERNAL VERTICAL GAP, because anything at or below that size can
+     be read as a spacing accident rather than as a composition. This
+     section's largest internal gap is body -> closing line, two body
+     lines, 61.2px. Twice it is 122.4px, and --ath-lap is exactly
+     that.
+
+     Both terms come off --bio-size and --bio-lh, which are fixed at
+     every band by design, so the lap is 122.4px at every width and
+     the threshold moves with it if either token ever changes. The
+     depth ACTUALLY ACHIEVED at each band is a different question —
+     it depends on the frame clearing the type column — and it is
+     measured per band in the report.
+
+     GRID PLACEMENT AND A NEGATIVE MARGIN, never position:absolute
+     with a hard offset. The detail is a grid item in row 5, whose top
+     edge is the frame's bottom edge; a negative top margin of
+     --ath-lap lifts it that far onto the frame. It survives a resize
+     because it is expressed against a row boundary that moves with
+     the layout.
+
+     PAINT ORDER IS DOCUMENT ORDER. Both frames are position:relative
+     via .plate-img and neither carries a z-index, so the later
+     sibling paints over the earlier one. The detail is authored after
+     the frame; nothing else is needed and no stacking context is
+     invented. */
+  .ath{
+    --ath-lap: calc(4 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .ath-detail{
+    margin: 0;
+    margin-top: calc(var(--ath-lap) * -1);
+  }
+
+  /* THE DETAIL'S CROP.
+
+     athletics-detail.jpg is 2633x3942 with no EXIF orientation, so
+     the buffer and the presentation agree: native 0.66794.
+
+     0.70 AGAINST THE BLEED FRAME'S 0.95. CONTEXT.md: aspect ratio is
+     a separate lever from width and no two photographs on the page
+     share a crop. These two touch each other, so the difference has
+     to be legible rather than nominal — a 0.25 spread reads as two
+     shapes, and 0.05 would read as one shape rendered twice.
+
+     THE MECHANISM IS AN OVERSIZED BOX, NOT A TRANSFORM, because this
+     crop is horizontal as well as vertical. Measured in R1: a static
+     transform: scale() on the <img> takes the treated backdrop back
+     to the raw source colour, because the transformed image
+     composites into its own layer and .plate-img::before can no
+     longer blend against it. So: a width greater than 100% with a
+     matching negative left, both percentages, clipped by
+     .plate-img's overflow: hidden.
+
+     The wanted source window is x [0.14, 0.86], y [0.180, 0.867]:
+
+         --crop-w   1 / 0.72              = 138.89%
+         --crop-l   -(0.14 x 138.89)      = -19.44%
+         box aspect  0.70 x 1.38889       =   0.9722
+         visible y   0.66794 / 0.9722     =   0.687
+         --crop-y    0.180 / (1 - 0.687)  =  57.5%
+
+     The box aspect stays comfortably wider than the file's native
+     0.66794, so object-fit spreads the full source width across the
+     box and the horizontal identity holds. Both horizontal terms are
+     percentages of the detail's OWN width, so its width cancels out
+     of the source window entirely and the crop is identical at every
+     viewport width in every band.
+
+     What the window holds: the goal net at the top, both legs from
+     mid-calf, the gold heel resting on the football at 51-68% of the
+     frame's height, and turf below it. It cuts the goalposts, which
+     is what makes it a detail rather than a second establishing
+     shot, and it carries NO face — CONTEXT.md prefers detail crops
+     with no face over another portrait, and this is the strongest
+     single image in the set. */
+  .ath-detail-frame{
+    aspect-ratio: 0.70;
+    --crop-w: 138.89%;
+    --crop-l: -19.44%;
+    --crop-y: 57.5%;
+  }
+
+  /* max-width: none is not optional. Tailwind's preflight sets
+     `img { max-width: 100% }`, which clamps the oversized box back to
+     the frame width and produces no horizontal crop at all. */
+  .ath-detail-frame :global(img){
+    position: absolute;
+    top: 0;
+    left: var(--crop-l);
+    width: var(--crop-w);
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% var(--crop-y);
+  }
+
+  /* ---- THE STACK · <= 1145 ---------------------------------------
+     ATHLETIC'S OWN CROSSOVER, measured and swept at 1px. The rule,
+     the sweep and the reasoning are in global.css; it fires where the
+     frame's rendered aspect falls below the source file's own
+     presented aspect — the width at which the spread stops trimming
+     sky off the photograph and starts cutting its sides.
+
+     ONE STACKED ARRANGEMENT FROM 1145 ALL THE WAY DOWN, with only the
+     column windows stepping by band. There is no separate phone
+     treatment: the primitives already narrow the measure at 1023 and
+     again at 900 and collapse it at 750, and everything a span cannot
+     express is the same in all of them.
+
+     The row track list comes off. There are no longer four rows for
+     the frame to span, so `auto auto auto 1fr auto` would hand row 4
+     a flex factor for nothing and open dead ground under the closing
+     line. */
+  @media (max-width: 1145px){
+    .ath{ grid-template-rows: none; }
+
+    /* THE LEFT BLEED SURVIVES THE STACK. The frame is above the type
+       here rather than beside it, but it still runs off the left page
+       trim, and that is the section — the broken gutter is what makes
+       this Athletic Management rather than a photograph with a
+       caption. Only band 4 goes to both trims, where a single column
+       has no spread left to break. The inline-start margin is
+       unchanged from the spread; what changes is the span, which the
+       primitives handle. */
+    .ath-bleed{
+      /* The frame is no longer beside the type, so it needs a gap
+         under it. Two body lines, from the body's own tokens — the
+         same value and the same reasoning R4 uses in its own stacked
+         bands. */
+      margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh));
+    }
+
+    /* NOTHING NEEDS TO CHANGE ABOUT THE FRAME'S HEIGHT HERE, and that
+       is a consequence of putting the ratio on the figure. Stacked,
+       the figure is alone in its row, so the row is sized by the
+       figure's own ratio-derived height and `height: 100%` on the
+       frame resolves against it exactly as it does in the spread.
+       R4.2's plate needs a stacked override because its ratio sits on
+       the inner element; this one does not. */
+
+    /* THE OVERLAP IS DROPPED, NOT SHRUNK. There is nothing left for
+       it to lap onto — the frame runs to both trims, so an inset over
+       it is a collage rather than a spread, and the two frames have
+       no shared right edge to interlock on any more. CONTEXT.md's
+       floor is explicit for exactly this case: an overlap is
+       unambiguous or it is absent, and the Cover's 54px version is
+       the precedent for removing rather than shipping it.
+
+       62% of the measure, gutter-aligned — the same left edge every
+       other block in the stack sits on, so the column reads as one
+       measure with a photograph inset into it rather than as two
+       photographs of different widths. The gap above it is the body's
+       two lines again, matching the frame's. */
+    .ath-detail{
+      width: 62%;
+      margin-top: calc(2.0 * var(--bio-size) * var(--bio-lh));
+    }
+
+    /* THE CAPTION FALLS INLINE IN READING ORDER and takes ordinary
+       rhythm rather than the baseline snap — a 28px lattice
+       correction against a full-measure column reads as a stray line
+       rather than as marginalia. Same treatment and same reasoning as
+       Educational Leader's district link and Premier's topics list.
+
+       IT NEEDS NO SIZE OVERRIDE. The full measure is wide enough to
+       carry the line at the register's own 10.5px from 751 up, so the
+       cap in min(10.5px, 2.87cqw) takes over on its own with nothing
+       to switch off. Below about 590px of measure the derived term
+       binds again and the line shrinks rather than wrapping, which is
+       the behaviour the rule exists for. */
+    .ath-caption{
+      margin-top: var(--s4);
+    }
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     THE FRAME GOES TO BOTH TRIMS, and only here. A one-sided bleed on
+     a single-column page has no facing page and no gutter to break
+     away from, so it would read as a misaligned photograph rather
+     than as a composition. Both trims, or neither.
+
+     Written against --gutter so it follows the token's phone clamp
+     with nothing to re-measure. `body` already carries
+     overflow-x: hidden, so it cannot open a horizontal scrollbar.
+
+     THE FRAME'S ASPECT DOES NOT CHANGE HERE, AND THAT IS DELIBERATE.
+     At full bleed a 0.95 box is 395px tall on a 375px phone and 789px
+     on a 750px tablet — taller than it is wide, which is the point.
+     The obvious way to shorten it is to crop it wider, and that is
+     exactly what CONTEXT.md refuses at spec time rather than solving
+     by cropping: all client photography is vertical and a wide crop
+     of a vertical photograph is not available at any band. The frame
+     stays 0.95 and the section is simply tall on a phone, as every
+     section is. */
+  @media (max-width: 750px){
+    .ath-bleed{ margin-inline: calc(var(--gutter) * -1); }
+  }
+</style>

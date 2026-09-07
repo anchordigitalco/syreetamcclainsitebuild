@@ -902,6 +902,189 @@ a{ color: inherit; }
 .win-legends-body  { grid-column: 4 / 9;  }
 .win-legends-margin{ grid-column: 10 / 13; align-self: start; }
 
+/* ============================================================
+   R6 — ATHLETIC MANAGEMENT.  Entrance D, THE SPREAD.
+
+   THE PAGE'S ONLY BROKEN GUTTER, AND ITS ONLY SECTION WITH TWO
+   PHOTOGRAPHS. The bleed frame runs off the LEFT page trim before any
+   type — past --gutter, to the viewport edge — and a second frame,
+   the detail crop, overlaps upward onto it. Everything else on the
+   page sits inside the two gutters; this does not, and that is the
+   single spread moment CONTEXT.md's image-tier table reserves for it.
+
+   IT ALSO MIRRORS THE PAGE. Every other section on the page runs type
+   at the left and marginalia at the right, on a right-hand margin
+   edge that has held at x=1066 since About. Athletic inverts it:
+   photograph left, type right, and — because text at 8-12 leaves no
+   room on the right for a margin — ITS MARGIN MIRRORS TOO. The
+   caption hangs at columns 1-3 on the sheet's left trim. That breaks
+   the About -> R3 -> R4 -> R5 right-margin continuity deliberately,
+   and the break is what makes the inversion read as an inversion
+   rather than as an accident. It is not to be "restored".
+
+   NO SECTION NUMERAL. The Composition table's original row read
+   "numeral + caption"; CONTEXT.md's R6 note supersedes it with
+   "caption only". No shipped section carries a numeral, and a lone
+   numeral on a page whose Index runs 01-05 in a DIFFERENT order is
+   precisely the confusion the decorative-marks rule exists to
+   prevent — flagged four times.
+
+   THE TYPE'S LEFT EDGE IS COLUMN 8, AND IT IS NOT A FOURTH LEFT EDGE,
+   on exactly the basis R4.1 added to CONTEXT.md: where type is set
+   beside a photographic frame its left edge is a function of the
+   frame's right trim plus one gap, permitted ONLY IF there is no
+   empty column between them. The frame runs to column 7 in full and
+   the type starts at column 8. Verified by measured x in every band,
+   not asserted.
+
+   ONE TYPE LEFT EDGE, NOT THREE. The staircase is a device for type
+   anchored to the sheet's own left trim; this section's type is
+   anchored to a photograph. Head, lede and body share one window and
+   one primitive, and the closing line differentiates on the RIGHT
+   edge instead — one column in, which is R3's lede 4-11 / closing 4-9
+   relationship transposed. A second type left edge here would be the
+   fourth edge R3.1 removed.
+
+   COLLAPSE CONTRACTS, ALL FOUR BANDS, WRITTEN BEFORE THE
+   IMPLEMENTATION.
+
+   ---- .win-ath-bleed — the bleed frame ------------------------
+   `bleed-left` tier — mcclain-bleachers.jpg. The negative inline
+   margin that takes it off the trim lives in the component, because
+   it is a margin and not a span; the primitive carries only the
+   columns and the row span.
+
+   ITS TOP EDGE IS THE SECTION'S TOP PADDING LINE, via the row span
+   and the default `stretch` — the same structural device R4.2's plate
+   uses one section above. Its LEFT edge is the viewport edge. Its
+   RIGHT trim is column 7's, which the type is measured from.
+
+   AND ITS BOTTOM EDGE IS ROW 5'S TOP, WHICH IS WHAT THE OVERLAP IS
+   MEASURED FROM. This is why the frame stretches rather than sitting
+   at `align-self: start`: the detail's lap is a negative margin
+   against row 5's top edge, so unless the frame's bottom edge IS that
+   edge, the lap is spent on empty ground and the overlap onto the
+   photograph is smaller than it is declared to be. MEASURED, before
+   the stretch: at 1440 the type column ran 915.42px against a frame
+   of 862.44px, so row 5 started 52.98px below the frame and a 122.4px
+   declared lap rendered as 69.41px of actual overlap — a third of it
+   gone, and gone in the direction of the Cover's 54px failure.
+
+   Stretching makes the frame at least its declared aspect and grows
+   it to the type column when the type is taller, so the two columns
+   end on the same line and the overlap is exactly its declared depth
+   in every band. The component's `height: 100%` is the other half of
+   it; see .ath-frame.
+
+     >= 1280    columns 1-7, ROWS 1-4, off the left trim. The row span
+                is structural rather than a measurement: the type
+                column is authored in exactly four blocks — head,
+                lede, body, closing line — so the frame spans from the
+                first to the last. Nothing about it goes stale when
+                the copy rewraps.
+     1024-1279  columns 1-6, rows 1-4, off the left trim. One column
+                narrower, and the type takes the column it gives up.
+     751-1023   columns 1-4 OF 8, rows 1-4, off the left trim. The
+                spread survives into the 8-column band because it IS
+                the section — a stacked Athletic is not Athletic. What
+                does not survive is the measure; see the crossover.
+     <= 750     1 / -1, row auto, FULL BLEED TO BOTH TRIMS. The single
+                column has no spread to break, so a one-sided bleed
+                would read as a misaligned image rather than as a
+                broken gutter. A tall portrait at full viewport width
+                is not a wide crop.
+
+   ---- .win-ath-text — head + subtitle, lede, body -------------
+   ONE PRIMITIVE FOR ALL THREE, because the Composition windows are
+   identical in all four bands. Three primitives holding the same span
+   is three things to keep in step for no gain. Same reasoning as
+   R4's shared head/lede primitive.
+     >= 1280    columns 8-12. Five columns, 532.7px at 1440.
+     1024-1279  columns 7-12. Six columns. The frame gives up a column
+                and the type takes it — the measure WIDENS as the
+                viewport narrows, which is the same move .win-body and
+                .win-about-body already make at this boundary and for
+                the same reason: as absolute width goes away, columns
+                are given back to the measure.
+     751-1023   columns 5-8 of 8.
+     <= 750     1 / -1.
+
+   ---- .win-ath-close — the closing line -----------------------
+   ONE COLUMN IN FROM THE BODY'S RIGHT EDGE, ON THE SAME LEFT EDGE.
+     >= 1280    columns 8-11.
+     1024-1279  columns 7-11.
+     751-1023   columns 5-7 of 8.
+     <= 750     1 / -1. The step-in is a multi-column device; on a
+                phone measure a line held short of the right edge
+                reads as a rag, not as a coda.
+
+   ---- .win-ath-caption — the section's one caption ------------
+   THE PHOTOGRAPHY RULE GIVES EVERY PHOTOGRAPH IN A SECTION A CAPTION
+   HUNG IN THE MARGIN. R6's ruling: ONE caption for the section,
+   belonging to the bleed frame. The detail is the same subject matter
+   in the same frame and does not take a second — two captions on two
+   photographs of one subject is file metadata with line breaks.
+
+   It seats in the row BELOW the frame by document order alone —
+   authored after the closing line and before the detail, so grid's
+   sparse cursor, sitting past column 11 at the end of the type
+   column, drops it to a new row at column 1 and leaves the cursor at
+   column 4 exactly where the detail asks to start. No row number
+   appears anywhere in this section and nothing counts a line.
+     >= 1280    columns 1-3, on the sheet's left trim, beside the
+                detail. NOT on the bleed's left edge: the caption is
+                marginalia and belongs to the page's structure, while
+                the frame is the thing that breaks it.
+     1024-1279  columns 1-3, UNCHANGED.
+     751-1023   columns 1-3 of 8.
+     <= 750     1 / -1, inline in reading order. Never display:none.
+
+   ---- .win-ath-detail — the overlapping detail crop -----------
+   `inset` tier — athletics-detail.jpg. CONTEXT.md counts this crop as
+   one of the two SPENT overlaps; R6 implements a budgeted overlap and
+   does not spend the third. Nothing else in this section overlaps
+   anything.
+
+   THE TWO FRAMES SHARE A RIGHT EDGE IN EVERY BAND THAT CARRIES THE
+   OVERLAP, and that shared edge is what makes the pair read as
+   interlocking rather than as two photographs that happen to be near
+   each other. It is expressed as a shared GRID LINE — the frame ends
+   on line 8 and the detail ends on line 8 — so it cannot drift.
+     >= 1280    columns 4-7. Right edge on line 8, the frame's.
+     1024-1279  columns 3-6. Right edge on line 7, the frame's.
+     751-1023   columns 2-4 of 8. Right edge on line 5, the frame's.
+     <= 750     1 / -1 as a span, but the component holds it to ~62%
+                of the column, gutter-aligned, stacked below the frame
+                with NO overlap. There is nothing to overlap onto: the
+                frame is full-bleed here and an inset lapping a
+                full-width photograph is a collage, not a spread.
+
+   THE PLACEMENT WALK, BAND 1. No line count anywhere, no hardcoded
+   offset, and one row span:
+
+     bleed    definite at 1-7 / rows 1-4, before the auto pass
+     head     wants col 8 · row 1 free      -> row 1, cursor -> col 13
+     lede     wants col 8, BEHIND cursor    -> row 2, cursor -> col 13
+     body     wants col 8, behind cursor    -> row 3, cursor -> col 13
+     closing  wants col 8, behind cursor    -> row 4, cursor -> col 12
+     caption  wants col 1, behind cursor    -> row 5, cursor -> col 4
+     detail   wants col 4, AT the cursor    -> row 5, BESIDE THE
+                                              CAPTION, lapped upward
+                                              onto the frame by a
+                                              negative margin
+
+   Row 5 is the photographic footer: caption at the left trim, detail
+   at the frame's right trim, and the frame's bottom edge running
+   between them. The same walk holds in all three multi-column bands
+   with the column numbers substituted.
+   ============================================================ */
+
+.win-ath-bleed     { grid-column: 1 / 8;  grid-row: 1 / 5; }
+.win-ath-text      { grid-column: 8 / 13; }
+.win-ath-close     { grid-column: 8 / 12; }
+.win-ath-caption   { grid-column: 1 / 4;  align-self: start; }
+.win-ath-detail    { grid-column: 4 / 8;  }
+
 /* --- BAND 2 · 1024-1279 -----------------------------------------
    THE LIVE MARGIN IS NO LONGER SUPPRESSED HERE. R1 turned it off
    across this band and returned its columns to the measure, on
@@ -975,6 +1158,151 @@ a{ color: inherit; }
      widens into column 9 and the margin steps to 11-12. */
   .win-legends-body   { grid-column: 4 / 10; }
   .win-legends-margin { grid-column: 11 / 13; }
+
+  /* R6 — Athletic Management. THE FRAME GIVES UP A COLUMN AND THE
+     TYPE TAKES IT. This is the one section on the page whose type
+     measure is a REMAINDER rather than a choice, so the only way to
+     widen the measure is to narrow the photograph, and at this
+     boundary the measure needs widening: five columns of twelve at
+     1279 is 443.5px against six columns' 563.5px. The frame is still
+     the section's ground at six columns, and it still bleeds.
+
+     The two frames' shared right edge MOVES WITH THEM, from line 8 to
+     line 7, because it is written as a grid line rather than as a
+     width. THE CAPTION DOES NOT MOVE: it holds columns 1-3 on the
+     sheet's left trim in both 12-column bands, and it is absent from
+     this block for that reason rather than by omission.
+
+     THE DETAIL IS 4-6 HERE, NOT THE 3-6 THE R6 SPEC TABLE GIVES, AND
+     THAT IS A GEOMETRIC CORRECTION RATHER THAN A PREFERENCE. The
+     caption holds columns 1-3 and the detail sits beside it in the
+     same row; a detail starting at column 3 asks for a column the
+     caption already occupies. Grid does not overlap them — it drops
+     the detail to a row of its own, which measured out as the caption
+     and the detail on two separate rows, the detail's lap landing on
+     empty ground and rendering 38.4px instead of 122.4px.
+
+     Only the detail's LEFT edge moves. Everything the spec makes
+     load-bearing is preserved: the SHARED RIGHT EDGE stays on line 7
+     with the frame, the caption stays at 1-3 on the sheet's left
+     trim, and the frame stays at 1-6 off the left trim. The two
+     blocks under the frame end up the same width here — 269.75px each
+     at 1279 — which reads as a deliberate pair rather than as a
+     near-miss. Reported for Jackson; the spec table's 3-6 cannot be
+     built as written. */
+  .win-ath-bleed  { grid-column: 1 / 7;  }
+  .win-ath-text   { grid-column: 7 / 13; }
+  .win-ath-close  { grid-column: 7 / 12; }
+  .win-ath-detail { grid-column: 4 / 7;  }
+}
+
+/* ============================================================
+   ATHLETIC'S STACKING CROSSOVER · <= 1145 — R6 ONLY.  (R6)
+
+   R6 IS THE SECOND SECTION ON THE PAGE THAT STACKS EARLY, and for a
+   reason that belongs to the photograph rather than to the type. R4
+   stacks at 1121 because the empty ground under its plate grows
+   taller than the plate. R6 stacks at 1145 because THE FRAME STOPS
+   BEING ABLE TO HOLD THE PHOTOGRAPH.
+
+   THE RULE: the widest viewport at which the frame's RENDERED ASPECT
+   falls below the source file's own presented aspect. Above it the
+   frame is wider than the picture and object-fit trims sky off the
+   top and bottom, which is what the crop is designed to do. Below it
+   the frame is NARROWER than the picture and object-fit begins
+   cutting the sides — so the spread has started squeezing the
+   photograph rather than presenting it, and it keeps squeezing, hard:
+
+       vw 1146   frame 561.0 x 833.6   aspect 0.6730   > native
+       vw 1145   frame 560.5 x 867.4   aspect 0.6462   < native  <-
+       vw 1024   frame 500.0 x 898.0   aspect 0.5568   16% of the
+                                                       width cut
+       vw  900   frame 440.0 x 993.2   aspect 0.4430   34% cut
+       vw  751   frame 365.5 x 1149.5  aspect 0.3180   52% cut
+
+   mcclain-bleachers.jpg is presented 1984x2976, so native is
+   0.666667 — see the EXIF note in the component; the buffer is
+   2976x1984 and `sips` reports the buffer. At 751 the side-by-side
+   frame would be a 365x1150 sliver holding less than half the
+   picture: no helmet, no bleachers, no composition. Swept at 1px
+   across 751-1279; the crossing at 1145 is clean.
+
+   IT SUBSUMES THE MEASURE CONSTRAINT TOO, which is why there is one
+   crossover here and not two. The type window in band 3 is four of
+   eight columns, and the body's longest rendered line falls under the
+   45-character floor at 816 (46 characters at 817, 41 at 816). 816 is
+   below 1145, so the aspect rule fires first and the floor is never
+   reached in the side-by-side arrangement. Both sweeps are in the
+   report.
+
+   IT ALSO RESOLVES A COLLISION THE SPEC TABLE COULD NOT. In band 3
+   the spec gives the caption columns 1-3 and the detail columns 2-4
+   of eight — windows that overlap in two of the three columns they
+   share. There is no 8-column arrangement in which a 3-column caption
+   sits beside a detail that must end on the frame's right trim: the
+   only column left is the fourth, one track wide. Stacking removes
+   the question rather than answering it badly.
+
+   WHAT THE STACK IS. One arrangement from 1145 all the way down,
+   with only the column windows stepping by band — there is no second
+   shape to keep in step:
+
+     frame    STILL OFF THE LEFT TRIM, row auto, aspect 0.95 — nine
+              of twelve columns plus the bleed, six of eight below
+              1024. It is ABOVE the type here rather than beside it,
+              but it still breaks the gutter, and that matters: the
+              broken gutter is the section, and a stacked Athletic
+              that also gave up the bleed would be a photograph with
+              a caption. Only band 4 goes to both trims, because a
+              single column has no spread left to break.
+     type     the band's own body measure, left-anchored on the gutter
+     closing  one column narrower on the right, as it is in the spread
+     caption  full measure, inline in reading order, at the register's
+              own 10.5px — the derived size's cap takes over on its
+              own here because the window is finally wide enough
+     detail   62% of the measure, gutter-aligned, NO OVERLAP
+
+   NINE OF TWELVE, NOT THE FULL SHEET, AND THAT IS MEASURED. R4.1's
+   finding applies here unchanged: a full-width stacked frame is
+   discontinuous at the crossover and discontinuous in the WRONG
+   DIRECTION. Built full-bleed, this frame measured 1145 x 1205 at
+   1145 against 561 x 834 at 1146 — it doubled across one pixel of
+   viewport and took the section from 1269px to 2874px with it. At
+   nine columns plus the bleed it is 821.5 x 864.7 at 1145 against
+   561 x 834 at 1146: the height barely moves, which is what a
+   crossover should look like.
+
+       vw 1146   frame  561.0 x  833.6   side by side
+       vw 1145   frame  821.5 x  864.7   stacked, 9 of 12 + bleed
+       vw 1024   frame  730.0 x  768.4   stacked, 9 of 12 + bleed
+       vw 1023   frame  742.3 x  781.3   stacked, 6 of 8  + bleed
+       vw  751   frame  538.3 x  566.6   stacked, 6 of 8  + bleed
+       vw  750   frame  750.0 x  789.5   band 4, both trims
+
+   The one remaining step is at 750, where the frame goes to both
+   trims and grows from 538 to 750. That step is the same shape and
+   the same magnitude as R4's own 751/750 step (498 -> 670) and it is
+   accepted on the same basis: band 4 is a different composition, not
+   a narrower version of this one.
+
+   THE OVERLAP IS DROPPED, not shrunk. The frame runs the full width
+   of the stack, so an inset lapping it is a collage rather than a
+   spread, and the two frames have no shared right edge to interlock
+   on once the detail is 62% of a measure the frame overhangs on both
+   sides. CONTEXT.md's floor is explicit that an ambiguous overlap
+   comes out rather than ships — the Cover's 54px version is the
+   precedent.
+
+   THE PLACEMENT WALK IS UNCHANGED, because every window is
+   left-anchored and each block simply falls to the next row:
+   frame, head, lede, body, closing, caption, detail.
+   ============================================================ */
+@media (max-width: 1145px){
+  .win-ath-bleed   { grid-column: 1 / 10; grid-row: auto; }
+  .win-ath-text    { grid-column: 1 / 8;  }
+  .win-ath-close   { grid-column: 1 / 7;  }
+  .win-ath-caption { grid-column: 1 / 8;  }
+  .win-ath-detail  { grid-column: 1 / 8;  }
 }
 
 /* ============================================================
@@ -1155,6 +1483,24 @@ a{ color: inherit; }
   .win-legends-lede   { grid-column: 1 / 6; }
   .win-legends-body   { grid-column: 1 / 6; }
   .win-legends-margin { grid-column: 7 / 9; }
+
+  /* R6 — Athletic Management. ALREADY STACKED by the 1145 crossover
+     above; this band only narrows the sheet to 8 tracks and moves the
+     windows onto it. The frame takes six of eight plus the bleed —
+     742.3px at 1023 against 730.0px at 1024 in the sub-band above, so
+     the 1024/1023 boundary is nearly seamless, which is the same
+     property R4's stacked plate is sized for.
+
+     Five of eight columns for the measure rather than the shell's
+     .win-body, because this section's blocks are declared rather than
+     borrowed and it takes the shell's 900 crossover in its own block
+     below. 581.9px at 1023 and 505.6px at 901 — 68 and 59 characters,
+     inside the 45-78 window at both ends. */
+  .win-ath-bleed   { grid-column: 1 / 7; }
+  .win-ath-text    { grid-column: 1 / 6; }
+  .win-ath-close   { grid-column: 1 / 5; }
+  .win-ath-caption { grid-column: 1 / 6; }
+  .win-ath-detail  { grid-column: 1 / 6; }
 }
 
 /* --- The crossover, at 900px. -----------------------------------
@@ -1184,6 +1530,17 @@ a{ color: inherit; }
   .win-legends-head { grid-column: 1 / 7; }
   .win-legends-lede { grid-column: 1 / 7; }
   .win-legends-body { grid-column: 1 / 7; }
+
+  /* R6 follows the shell's crossover too. Five columns at 751 is
+     411.9px and 48 characters — clear of the floor but the narrowest
+     measure in the band — so the sixth column is taken here exactly
+     as About, Educational Leader, Premier and Everyday Legends take
+     it. The closing line keeps its one-column step-in on the right,
+     which is this section's only internal differentiation. */
+  .win-ath-text    { grid-column: 1 / 7; }
+  .win-ath-close   { grid-column: 1 / 6; }
+  .win-ath-caption { grid-column: 1 / 7; }
+  .win-ath-detail  { grid-column: 1 / 7; }
 }
 
 /* ============================================================
@@ -1245,7 +1602,12 @@ a{ color: inherit; }
   .win-legends-head,
   .win-legends-lede,
   .win-legends-body,
-  .win-legends-margin{ grid-column: 1 / -1; grid-row: auto; }
+  .win-legends-margin,
+  .win-ath-bleed,
+  .win-ath-text,
+  .win-ath-close,
+  .win-ath-caption,
+  .win-ath-detail{ grid-column: 1 / -1; grid-row: auto; }
 }
 
 /* ============================================================
