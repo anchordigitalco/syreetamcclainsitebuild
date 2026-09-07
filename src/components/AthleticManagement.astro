@@ -9,7 +9,7 @@
  *                 above opens on a display-scale mark hung in columns
  *                 1-2 with no photograph at all; this opens on a
  *                 frame that runs off the sheet. That is the turn.
- *   Column window frame 1-7 off the left trim · detail 4-7 ·
+ *   Column window frame 1-7 off the left trim · detail 4-6 ·
  *                 lede 8-12 · body 8-12 · closing 8-11 · caption 1-3
  *   Image         `bleed-left` — mcclain-bleachers.jpg
  *                 PLUS `inset` — athletics-detail.jpg, lapped upward
@@ -70,13 +70,31 @@
  * 1024-1279 / 751-1023 / <=750) is written out in full above the
  * implementation in global.css, before the implementation.
  *
- * ONE grid-row IS SET, on .win-ath-bleed, and it is STRUCTURAL rather
- * than a measurement: the type column is authored in exactly four
- * blocks — head, lede, body, closing line — so the frame spans from
- * the first to the last. It is not a line count and it does not go
- * stale when the copy rewraps. The CAPTION and the DETAIL are seated
- * in the row below it by DOCUMENT ORDER alone, with no row number and
- * no offset.
+ * THE SECTION IS TWO NAMED ROWS. (R6.3.) Row 1 is THE SPREAD — the
+ * bleed frame on the left, the type column on the right. Row 2 is THE
+ * CLOSING BAND — caption at the left trim, detail lapping upward onto
+ * the frame, closing line at the right. Every primitive names its row
+ * outright. That is a row IDENTITY, not a measurement and not a line
+ * count: there is nothing in it to sweep and nothing that goes stale
+ * when the copy rewraps.
+ *
+ * R6 seated the caption and the detail by DOCUMENT ORDER instead, via
+ * a seven-step walk of grid's sparse auto-placement cursor. It worked,
+ * and it made the composition depend on the order of five siblings in
+ * a way no reader of either file could verify without re-running the
+ * walk by hand. Two rows carry the same result and can be read off the
+ * declarations. Document order is still the tool for a placement that
+ * would otherwise need a MEASUREMENT — R3's district link — which is
+ * what CONTEXT.md's rule is actually about.
+ *
+ * THE CLOSING LINE IS ONE HORIZONTAL AND IT IS THE SECTION'S CLOSE.
+ * (R6.3.) Three things land on it, left to right across the sheet:
+ * the caption's baseline at columns 1-3, the detail's bottom trim at
+ * columns 4-6, and the closing line's last baseline at columns 8-11.
+ * They resolve to ONE y by `align-self: last baseline` — grid's own
+ * baseline-sharing group, which reads the real rendered metrics of
+ * each item rather than an em constant. Measured delta between all
+ * three: 0.00px at every width the spread runs. See global.css.
  *
  * ONE TYPE LEFT EDGE, NOT THREE. CONTEXT.md's staircase is a device
  * for type anchored to the sheet's own left trim. This section's type
@@ -120,29 +138,25 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
 
 <section class="sheet ath" id="sec-athletics">
   <!--
-    SOURCE ORDER IS STRUCTURAL. frame -> head -> lede -> body ->
-    closing -> caption -> detail is what makes grid's sparse cursor
-    put the caption and the detail in ONE row below the frame: the
-    cursor sits past column 11 at the end of the type column, so the
-    caption's column 1 is behind it and drops to a new row, leaving
-    the cursor at column 4 exactly where the detail asks to start.
-    Reordering these siblings changes the composition. See global.css.
+    SOURCE ORDER IS READING ORDER NOW, NOT PLACEMENT. (R6.3.) Every
+    primitive names its own row, so this order is free to be the one
+    that reads best when the section stacks below 1145 and when a
+    screen reader walks it: photograph, name, subtitle, opening
+    statement, the two paragraphs, THE CLOSING LINE, the caption, the
+    detail. The coda closes the prose; the two photographic elements
+    follow it.
 
-    THE CAPTION IS AUTHORED BEFORE THE DETAIL AND THAT IS THE WHOLE
-    MECHANISM. Authored after it, the cursor would sit past column 7
-    and the caption's column 1 would be behind it again — a second row
-    drop, putting the caption UNDER the detail instead of beside it,
-    and needing a hardcoded grid-row to get it back. Document order
-    makes the placement cancel instead, which is what CONTEXT.md asks
-    for and what R3, R4 and R5 all already do.
+    That ordering is also what keeps the body-to-coda gap inside its
+    ceiling in the stacked bands — the coda is the block immediately
+    after the body there, as it is in the spread. Authoring the
+    caption and the detail between them would have put a whole
+    photograph inside a gap that CONTEXT.md bounds at eight body
+    lines.
 
-    It is also a defensible stacked reading order below 750:
-    photograph, name, subtitle, opening statement, the two paragraphs,
-    the closing line, the caption, then the detail. The caption
-    reading as an introduction to the frame below it is ordinary
-    editorial behaviour — captions sit above photographs as often as
-    below them — and the B5 ruling makes it the SECTION's one caption
-    rather than either photograph's.
+    The caption reading as an introduction to the detail below it in
+    the stack is ordinary editorial behaviour — captions sit above
+    photographs as often as below them — and the B5 ruling makes it
+    the SECTION's one caption rather than either photograph's.
   -->
   <figure class="win-ath-bleed ath-bleed" aria-labelledby="ath-caption">
     <!--
@@ -197,34 +211,54 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     </div>
   </figure>
 
-  <div class="win-ath-text ath-head">
-    <!--
-      THE <h2> IS THE SECTION NAME. CONTEXT.md's locked heading
-      structure: each section's <h2> is the element whose text names
-      the section, and that string equals the folio label. Verified
-      against src/data/sections.ts — { id: 'sec-athletics', n: '06',
-      label: 'Athletic Management' } — not assumed.
+  <!--
+    THE TYPE COLUMN IS ONE GRID ITEM NOW, NOT THREE. (R6.3.)
 
-      The head sits at the top of the type block on the type block's
-      own left edge, in the established .role register. Everyday
-      Legends directly above uses the same register, and that is
-      correct: CONTEXT.md makes the SUBTITLE a shared device across
-      the pillars and the ENTRANCE the thing that must differ. R5
-      opens on a display-scale mark hung outside its type; this opens
-      on a photograph that leaves the page.
-    -->
-    <h2 class="role ath-name">Athletic Management</h2>
-    <!-- Set verbatim from COPY.md, middle dots and all. Sentence case
-         against the uppercase name above it, so the head has two
-         registers rather than two identical-looking lines. -->
-    <p class="ath-subtitle">Momager &middot; Athletic Manager to the McClain Brothers</p>
-  </div>
+    R6 authored head, lede and body as three separate grid items in
+    three rows, which is why this section carried a five-row track
+    list and a seven-step placement walk. R6.3 needs the type column
+    to BOTTOM-ALIGN against the frame — see the note on .ath-type —
+    and a block that bottom-aligns as a unit has to BE a unit. One
+    wrapper carrying the section's one type window replaces three
+    items carrying the same window three times, the row track list is
+    gone, and the three internal gaps are ordinary flow margins
+    resolving from the type exactly as they did before.
 
-  <p class="win-ath-text ath-lede">Long before NIL, there were early mornings, long drives, and decisions no one else saw.</p>
+    Grid items establish independent formatting contexts, so the
+    body's bottom margin does not collapse out through the wrapper —
+    the wrapper's box bottom is the body's box bottom plus that
+    margin, which is the edge the frame's foot lands on.
+  -->
+  <div class="win-ath-text ath-type">
+    <div class="ath-head">
+      <!--
+        THE <h2> IS THE SECTION NAME. CONTEXT.md's locked heading
+        structure: each section's <h2> is the element whose text names
+        the section, and that string equals the folio label. Verified
+        against src/data/sections.ts — { id: 'sec-athletics', n: '06',
+        label: 'Athletic Management' } — not assumed.
 
-  <div class="win-ath-text ath-body">
-    <p>As the mother of three football players moving through the high school and Division I levels, Dr. McClain&rsquo;s role grew organically from motherhood into strategy.</p>
-    <p>Her approach is intentionally bigger than the game. Opportunities and contracts matter, but so do character, financial literacy, reputation, and preparation for life after football.</p>
+        The head sits at the top of the type block on the type block's
+        own left edge, in the established .role register. Everyday
+        Legends directly above uses the same register, and that is
+        correct: CONTEXT.md makes the SUBTITLE a shared device across
+        the pillars and the ENTRANCE the thing that must differ. R5
+        opens on a display-scale mark hung outside its type; this opens
+        on a photograph that leaves the page.
+      -->
+      <h2 class="role ath-name">Athletic Management</h2>
+      <!-- Set verbatim from COPY.md, middle dots and all. Sentence case
+           against the uppercase name above it, so the head has two
+           registers rather than two identical-looking lines. -->
+      <p class="ath-subtitle">Momager &middot; Athletic Manager to the McClain Brothers</p>
+    </div>
+
+    <p class="ath-lede">Long before NIL, there were early mornings, long drives, and decisions no one else saw.</p>
+
+    <div class="ath-body">
+      <p>As the mother of three football players moving through the high school and Division I levels, Dr. McClain&rsquo;s role grew organically from motherhood into strategy.</p>
+      <p>Her approach is intentionally bigger than the game. Opportunities and contracts matter, but so do character, financial literacy, reputation, and preparation for life after football.</p>
+    </div>
   </div>
 
   <!--
@@ -240,6 +274,17 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     entrance and repeating it here would make two of the page's three
     coda-bearing sections open their codas identically. The gap does
     the work instead — see .ath-body's derived bottom margin.
+
+    IT LIVES IN THE CLOSING BAND, NOT IN THE TYPE COLUMN. (R6.3.) It
+    is the one type element outside .ath-type, because it is the one
+    that has to land on the section's closing horizontal rather than
+    at the foot of the prose. Its last baseline, the detail's bottom
+    trim and the caption's baseline resolve to one y; see global.css.
+    It is also what SIZES that band — the detail contributes nothing
+    to it and the caption is one small line — so the depth the detail
+    overhangs the frame by IS this element's own block height, which
+    is the cap the R6.3 ruling asks for, met by construction rather
+    than by a number that has to be checked.
   -->
   <p class="win-ath-close ath-close">The goal was never simply to develop successful athletes. It is to raise young men who understand what their name is worth.</p>
 
@@ -281,30 +326,39 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
       THE DETAIL CROP. `inset` tier — the only one on the page, and
       already counted by CONTEXT.md as one of the two SPENT overlaps.
 
-      IT LAPS UPWARD ONTO THE BLEED FRAME BY A DERIVED AMOUNT, NOT A
-      PIXEL. See --ath-lap below. Grid placement plus a negative
-      margin, never position:absolute with a hard offset — the overlap
-      has to survive a resize, and an absolutely positioned inset
-      would need a new offset at every width.
+      ITS BOTTOM TRIM IS THE SECTION'S CLOSING LINE, AND THE LAP IS
+      WHAT FALLS OUT ABOVE IT. Grid placement plus a negative margin,
+      never position:absolute with a hard offset — the overlap has to
+      survive a resize, and an absolutely positioned inset would need
+      a new offset at every width. See .ath-detail below.
 
-      WHAT IT COVERS, AND WHAT IT MUST NOT. It sits at the frame's
-      bottom-right and covers a strip of bleachers and her lower legs.
-      It does NOT cover her face, which the crop puts at 21-31% of the
-      frame's height, and it does NOT cover the football, which the
-      crop puts at 61-77% of the frame's height and left of the
-      detail's own left edge. Both verified from the render, not
-      asserted.
+      WHAT IT COVERS, AND WHAT IT MUST NOT. It sits over the frame's
+      lower middle and covers bleacher slats, the bench and her lower
+      legs. The lap is deep — 499px on a 1099px frame at 1920, its
+      worst case — so this was re-checked from the render rather than
+      carried over: it does NOT cover her face, which sits at 22-32%
+      of the frame's height; it does NOT cover the helmet, which is at
+      the frame's left; and it does NOT cover the football she is
+      holding, which sits left of this frame's own left edge at every
+      width in the spread. The frame keeps its sky, its full figure
+      and its bench edge at every verified width.
 
-      THE TWO FRAMES SHARE A RIGHT EDGE, expressed as a shared grid
-      line so it cannot drift: the frame ends on line 8 and the detail
-      ends on line 8, line 7 in band 2, line 5 in band 3. That shared
-      edge is what makes the pair read as interlocking rather than as
-      two photographs that happen to be near each other.
+      THE SHARED RIGHT EDGE IS GONE IN BAND 1, AND CONTEXT.md IS WHY.
+      R6 built this at columns 4-7 so that the detail and the frame
+      ended on one grid line, which read as interlocking. That is a
+      `grid-column: 4 / 8` where the Composition table says columns
+      4-6, and it is the same line-value-read-as-column-number slip
+      R4.1 corrected on Premier's plate. The table wins: columns 4-6,
+      `4 / 7`, and the frame keeps one column of its own trim to the
+      right of the detail in band 1. Band 2, where the frame is 1-6,
+      still shares the edge. What makes the pair read as interlocking
+      at every width is the LAP, which is deep — 244 to 499px — not
+      the coincidence of a right trim.
 
       A DIFFERENT CROP FROM EVERY OTHER FRAME ON THE PAGE. 0.70
-      against the bleed frame's 0.95 — CONTEXT.md: aspect ratio is a
-      separate lever from width, and no two photographs on the page
-      share a crop.
+      against a bleed frame that renders 0.766 to 1.000 —
+      CONTEXT.md: aspect ratio is a separate lever from width, and no
+      two photographs on the page share a crop.
 
       NO CAPTION OF ITS OWN. The B5 ruling: one caption for the
       section. The detail is the same subject matter in the same
@@ -313,27 +367,42 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     -->
     <div class="plate-img ath-detail-frame">
       <!--
-        `sizes` DESCRIBES THE <img> BOX, WHICH IS 138.9% OF THE
-        DETAIL, because that is how the horizontal crop is done
-        without a transform. Measured at the WIDER end of each band:
+        `sizes` DESCRIBES THE <img> BOX, WHICH IS 183.5% OF THE
+        DETAIL — not the detail — because that is how the horizontal
+        crop is done without a transform. (Standing rule, R4.1: a
+        `sizes` computed against the plate under-declares by exactly
+        the crop factor.) EVERY VALUE MOVED IN R6.3, for two reasons
+        at once: the box factor went from 138.9% to 183.5% with the
+        tighter window, and band 1's plate went from four columns to
+        three. Measured at the WIDER end of each band:
 
-          <=750    62% of 1 col,  x1.389    750 -> 77vw
-          <=900    62% of 6 of 8, x1.389    900 -> 59vw
-          <=1023   62% of 5 of 8, x1.389   1023 -> 49vw
-          <=1145   62% of 7 of 12,x1.389   1145 -> 44vw
-          <=1279   3t + 2g of 12, x1.389   1279 -> 30vw
-          else     4t + 3g of 12, x1.389   1440 -> 41vw
+                      OLD                     NEW
+          <=750       77vw    62% of 1 col          x1.835   102vw
+          <=900       59vw    62% of 6 of 8         x1.835    78vw
+          <=1023      49vw    62% of 5 of 8         x1.835    65vw
+          <=1145      44vw    62% of 7 of 12        x1.835    58vw
+          <=1279      30vw    3t + 2g of 12         x1.835    39vw
+          else        41vw    3t + 2g of 12         x1.835    41vw
 
-        The 1279 step is the smallest box on the page and the 1145
-        step is nearly half again as large, because the detail stops
-        being a 3-column inset and becomes 62% of a stacked measure at
-        that boundary. Both were computed at both ends of their band.
+        The band-4 figure is over 100vw and that is correct, not a
+        typo: the box is wider than the viewport and `overflow:
+        hidden` clips it, which is the whole mechanism.
+
+        The `else` value is computed at 1920 (41.1vw) rather than at
+        1440 (39.5vw). Band 1 has no upper bound and the box's share
+        of the viewport RISES with width — 38.7vw at 1280, 41.1 at
+        1920, 42.3 at 2560, toward 45.9 — so no single figure covers
+        the band. 1920 is the widest viewport this build is verified
+        at and the declaration is measured there; beyond it the
+        declaration under-states by up to 4.8vw, which is the same
+        trade the previous declaration made and is one srcset step at
+        most.
       -->
       <Image
         src={athleticsDetail}
         alt="A gold heel resting on a football on a turf field, goalposts out of focus behind."
         widths={[480, 720, 960, 1280, 1600]}
-        sizes="(max-width: 750px) 77vw, (max-width: 900px) 59vw, (max-width: 1023px) 49vw, (max-width: 1145px) 44vw, (max-width: 1279px) 30vw, 41vw"
+        sizes="(max-width: 750px) 102vw, (max-width: 900px) 78vw, (max-width: 1023px) 65vw, (max-width: 1145px) 58vw, (max-width: 1279px) 39vw, 41vw"
         loading="eager"
         decoding="sync"
       />
@@ -353,30 +422,39 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      followed: one declaration, no media query. Inventing a scale here
      would put R6 on a rule the three sections above it do not use.
 
-     THE ROW TRACK LIST. Five rows. Rows 1-4 are the type column's
-     four authored blocks; row 5 is the photographic footer — caption
-     at the left trim, detail at the frame's right trim.
+     THE SECTION IS TWO ROWS AND NEITHER IS A TRACK LIST. Row 1 is
+     THE SPREAD — bleed frame left, type column right. Row 2 is THE
+     CLOSING BAND — caption at the left trim, detail lapping upward
+     onto the frame, closing line at the right, all three landing on
+     one horizontal. Both are auto rows; nothing here declares a
+     height.
 
-     ROW 4 IS THE ONLY FLEXIBLE TRACK, and that is the same mechanism
-     R4.2 uses one section above, for the mirror-image reason. The
-     bleed frame spans rows 1-4 and is TALLER than the type column at
-     every width that carries the spread; without a flexible track,
-     grid would distribute that surplus across all four rows and
-     silently inflate the internal type gaps, which are derived from
-     the type tokens and MUST NOT be added to. With row 4 flexible,
-     grid sizes the frame in the step that distributes space only to
-     flexible tracks, so the whole surplus lands in one place — below
-     the closing line, where it is ordinary section space, and where
-     it also guarantees that row 5 starts exactly on the frame's
-     bottom edge. That guarantee is what the detail's negative margin
-     is measured from.
+     R6 DECLARED FIVE ROWS AND MADE ROW 4 FLEXIBLE, and that is the
+     R6.2 failure in one line. The bleed frame is taller than the
+     type column wherever its shape floor governs, and R6.2 sent that
+     surplus into a flexible track sitting between the body and the
+     closing line: 422px of it at 1920, which put the body-to-coda gap
+     at 13.39 body lines against CONTEXT.md's eight-line ceiling. The
+     tool was right — R4.2 uses a flexible track one section above for
+     the mirror-image reason — and the PLACE was wrong.
 
-     R4.2 needed a flexible track to stop a MARGIN inflating a row;
-     R6 needs one to stop a PHOTOGRAPH inflating four. Same tool, and
-     in both cases the alternative was a hardcoded height. */
+     R6.3 DELETES THE ROW TRACK LIST AND THE FLEXIBLE TRACK WITH IT.
+     The type column is one grid item now (see .ath-type), so the
+     section is TWO auto rows — the spread, and the closing band —
+     and there is nothing left for a flex factor to distribute. The
+     surplus the flexible track used to absorb is absorbed by
+     `align-self: end` on the type column instead, which puts it
+     ABOVE the head rather than between the body and the coda. That
+     move is the whole of the R6.3 correction; see .ath-type. */
   .ath{
     padding-block: 110px;
-    grid-template-rows: auto auto auto 1fr auto;
+
+    /* THE DETAIL'S SHAPE, DECLARED ONCE AND USED TWICE — as the
+       inner frame's `aspect-ratio`, and as the divisor in the
+       detail's negative top margin, which is exactly minus its own
+       height. If these two ever disagree the detail stops landing on
+       the closing line, so they read from one property. */
+    --det-aspect: 0.70;
   }
 
   /* ---- THE BLEED FRAME — entrance D ------------------------------ */
@@ -405,10 +483,10 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      `aspect-ratio`, AND THAT IS A CORRECTION WITH TWO MEASUREMENTS
      BEHIND IT.
 
-     What is wanted is "at least 0.95, and taller if the type column
+     What is wanted is "at least square, and taller if the type column
      is taller" — a MINIMUM shape, not a fixed one, because the
-     frame's bottom edge has to be row 5's top edge or the detail's
-     lap is spent on empty ground. `aspect-ratio` cannot express a
+     frame's bottom edge has to be the closing band's top edge or the
+     overhang is measured from nothing. `aspect-ratio` cannot express a
      minimum, and both ways of trying it failed differently:
 
        aspect-ratio + height:100%   the ratio computed the WIDTH from
@@ -444,9 +522,21 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      frame is bleacher slats and bench: the helmet, the football, her
      figure and the sky all sit above it, so it is the one place in
      the section where height can be removed at no cost to the
-     photograph. With the coda now anchored to the frame's bottom
-     edge, removing it shortens the frame, the gap above the coda and
-     the section together at every width where the floor governs.
+     photograph.
+
+     R6.3 — THE FLOOR NOW GOVERNS MORE OFTEN, AND WHERE ITS SURPLUS
+     GOES IS THE WHOLE OF THE R6.3 CORRECTION. The closing line moved
+     out of the type column into its own band, so the column the frame
+     is measured against is a coda shorter than it was and the square
+     floor binds from roughly 1300 up rather than only at the very
+     widest viewports. At 1920 it makes the frame 1099px against a
+     type column of 677px: 422px of surplus that has to be SOMEWHERE.
+     R6.2 put it in a flexible row between the body and the coda,
+     which is why the body-to-coda gap measured 13.39 body lines at
+     1920 against an eight-line ceiling. It goes above the head now —
+     see .ath-type — where it reads as air at the top of a spread
+     rather than as a hole in the middle of a text column. The frame's
+     own numbers are unchanged.
 
      1.00 IS THE HARD LIMIT AND IT IS NOT NEGOTIABLE UPWARD. Above it
      the frame would be wider than it is tall, which is a wide crop of
@@ -523,23 +613,23 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      below then shows the heel the frame just cut. That continuation
      is why the bottom trim is where it is.
 
-     0.95 IS A FLOOR ON THE SHAPE, NOT A FIXED SHAPE, and that is
-     deliberate. The figure is a stretched grid item spanning rows
-     1-4, so `height: 100%` fills whatever those rows resolve to; the
-     aspect-ratio is what the frame contributes to sizing them. So the
-     frame is 0.95 whenever it is the taller column and grows to match
-     the type column whenever the type is taller. Row 5's top is then
-     the frame's bottom edge in every band, which is what the detail's
-     lap is measured from — see .ath-detail.
+     THE FLOOR IS A FLOOR ON THE SHAPE, NOT A FIXED SHAPE, and that is
+     deliberate. The figure is a stretched grid item in row 1 — THE
+     SPREAD — so it fills whatever that row resolves to; the spacer is
+     what the frame contributes to sizing it. The frame is square
+     whenever it is the taller column and grows to match the type
+     column whenever the type is taller. The closing band's top edge
+     is therefore the frame's bottom edge in every band, which is what
+     the overhang is measured from — see .ath-detail.
 
      THE ALTERNATIVE WAS MEASURED AND REJECTED. With `align-self:
      start` and a fixed 0.95, the type column ran 915.42px at 1440
-     against a frame of 862.44px, so row 5 began 52.98px below the
-     frame and the declared 122.4px lap rendered as 69.41px of ACTUAL
-     overlap — nearer the Cover's failed 54px than its own declared
-     depth. Fixing that by choosing a taller aspect would be choosing
-     a number that holds at one width and drifts at every other;
-     stretching makes it hold everywhere with nothing swept.
+     against a frame of 862.44px, so the closing band began 52.98px
+     below the frame and the declared 122.4px lap rendered as 69.41px
+     of ACTUAL overlap — nearer the Cover's failed 54px than its own
+     declared depth. Fixing that by choosing a taller aspect would be
+     choosing a number that holds at one width and drifts at every
+     other; stretching makes it hold everywhere with nothing swept.
 
      THE FLOOR IS WHAT KEEPS IT PORTRAIT. A purely derived height
      could go landscape wherever the type column is shorter than the
@@ -554,8 +644,8 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      at mid-calf on the bottom trim, which is the property the window
      is chosen for.
 
-     0.95, AND EVERY SHAPE ABOVE IT, IS PORTRAIT AND UNIQUE ON THE
-     PAGE. CONTEXT.md: no two photographs share a crop, and all client
+     SQUARE, AND EVERY SHAPE TALLER THAN IT, IS PORTRAIT AND UNIQUE ON
+     THE PAGE. CONTEXT.md: no two photographs share a crop, and all client
      photography is vertical — no wide crop anywhere, at any band. */
   /* The frame is pinned to the figure by .ath-frame above; the crop
      numbers are all that is left here. */
@@ -563,6 +653,19 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
   /* :global() — <Image> emits its own <img>, which never receives
      Astro's data-astro-cid-*, so a scoped selector silently stops
      matching. This has bitten this project twice. */
+  /* R6.3 TESTED 20% AND KEPT 30%, WHICH IS A REFUSAL WITH A
+     SCREENSHOT BEHIND IT. The R6.3 brief asked for the window to be
+     biased upward so the trim comes off the bench structure at the
+     foot rather than the sky. Built at 20% the window moves to
+     [0.067, 0.733] and does exactly that — and the picture gets
+     worse in two ways at once. The bench she is sitting on loses its
+     front edge, so her figure sits on nothing; and the sky grows to
+     roughly two fifths of the frame, immediately beside a type
+     column that is already carrying the section's largest field of
+     empty Porcelain. The bench at the foot is structure that grounds
+     the subject; the sky it would be traded for is not. Kept at 30%,
+     window [0.100, 0.767], and reported as a deviation rather than
+     shipped worse to satisfy the instruction. */
   .ath-frame :global(img){
     object-position: 50% 30%;
   }
@@ -604,6 +707,42 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
   .ath-detail-frame::before{
     opacity: 0.44;
   }
+
+  /* ---- THE TYPE COLUMN -------------------------------------------
+
+     IT BOTTOM-ALIGNS TO THE FRAME'S FOOT, AND THAT IS WHERE THE
+     FRAME'S SURPLUS HEIGHT GOES. (R6.3.)
+
+     The bleed frame carries a shape floor and the type column does
+     not, so above roughly 1300 the frame is the taller of the two —
+     1099px against 677px at 1920. Something has to absorb that
+     difference, and there are exactly three places it can go:
+
+       between the body and the closing line   R6.2 put it here, via a
+                                               flexible row. It is what
+                                               made the gap 13.39 body
+                                               lines at 1920 against an
+                                               eight-line ceiling.
+       inside the type column's own gaps       Forbidden: those three
+                                               gaps are derived from the
+                                               type tokens and MUST NOT
+                                               be added to.
+       above the head                          `align-self: end` on the
+                                               primitive. This one.
+
+     Bottom-aligned, the type column's foot and the photograph's foot
+     close on the same edge and the surplus opens at the TOP of the
+     spread, next to the frame's sky. It grows smoothly — 0px at 1280,
+     41 at 1366, 69 at 1440, 152 at 1600, 422 at 1920 — with no
+     breakpoint and nothing swept. Below about 1300 the type is the
+     taller column, the surplus is zero, and `align-self: end` is a
+     no-op.
+
+     IT IS ONE GRID ITEM SO IT CAN BOTTOM-ALIGN AS ONE BLOCK. Head,
+     lede and body were three items in three rows in R6; a block that
+     aligns as a unit has to BE a unit. Their internal gaps are
+     ordinary flow margins now and resolve from the type exactly as
+     they did before. */
 
   /* ---- THE HEAD -------------------------------------------------- */
 
@@ -694,66 +833,61 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      / SOFT 100. 1.86x the body and 0.58x the lede at 1440 — clearly a
      third tier, subordinate to the lede and distinct from the body. */
   .ath-close{
-    /* THE LAST BASELINE SITS ON THE BLEED FRAME'S BOTTOM EDGE.
-       (R6.2, correcting R6.1's anchor.)
+    /* THE LAST BASELINE SITS ON THE SECTION'S CLOSING LINE, AND
+       NOTHING IN THIS FILE COMPUTES WHERE THAT IS. (R6.3, correcting
+       R6.2's anchor and deleting its arithmetic.)
 
-       `align-self: end` on the primitive puts this element's MARGIN
-       BOX bottom on the bottom edge of row 4 — the type column's last
-       row, which the frame also spans, so that edge IS the frame's
-       bottom edge. The last baseline sits above the box bottom by the
-       coda's own descender space, so the box is lifted by exactly
-       that much — a NEGATIVE margin-bottom, which pushes the box down
-       past the row edge until the baseline lands on it.
+       The primitive gives this element `align-self: last baseline` in
+       the closing band, and gives the caption and the detail the same.
+       Grid then puts all three in one baseline-sharing group and
+       aligns them on ONE y — the caption's last baseline, this
+       element's last baseline, and the detail's synthesised baseline,
+       which for a block box with no line boxes is its bottom margin
+       edge and therefore the photograph's bottom trim. Measured delta
+       across the three: 0.00px at 1920, 1600, 1440, 1366, 1280, 1279,
+       1200 and 1146.
 
-       Distance from a box bottom up to the last baseline is
-       `line-height - B`, where B is the first-baseline offset inside
-       a line box:
+       WHAT THAT REPLACES, AND WHY IT HAD TO GO. R6.2 wrote the offset
+       out by hand — `margin-bottom: 0.36029em - 0.5lh`, from Fraunces'
+       measured ascent - descent — and it was correct arithmetic
+       against the font's real metrics. It was still wrong on the page,
+       because Chrome ROUNDS a font's ascent and descent to whole
+       pixels at the rendered size, so the true distance from a box
+       bottom to its last baseline is not a fixed fraction of the em at
+       all. Measured on this element: the em formula was out by 0.02px
+       at 1440 and by 1.27px at 1146 — over the tolerance, at the width
+       nearest the crossover, from a constant that is right to five
+       decimal places. Baseline alignment reads the rounded metrics the
+       renderer actually used. NO em CONSTANT CAN TRACK A ROUNDED
+       METRIC; ask the layout engine instead of modelling it.
 
-           B  = lh/2 + (ascent - descent)/2 x font-size
+       WHY THE CLOSING LINE AND NOT THE FRAME'S FOOT. R6.2 anchored
+       this to the bleed frame's bottom edge, which closed the frame
+       and the coda level and left the detail hanging up to 479px
+       below both with columns 1-3 and 8-12 empty beside it. The frame
+       is not the section's last element; the detail is. Anchoring to
+       the detail's own bottom trim is what makes the foot ONE line
+       instead of a line and then a photograph.
 
-       so  lh - B = 0.5lh - 0.36029em
+       AND IT COSTS NOTHING IN THE GAP, WHICH IS THE THING R6.1 BROKE.
+       R6.1 anchored to the detail directly and added the whole
+       `detailH - lap` term to the body-to-coda gap: 16.24 body lines
+       at 1440, 37.06 at 1920, against an eight-line ceiling. Here the
+       term does not exist, because this element SIZES the closing band
+       rather than being positioned inside it — the detail contributes
+       zero to that band's height (see .ath-detail) and the caption is
+       one small line, so the band is exactly this element's own block
+       height and its top edge is the frame's foot. The gap collapses
+       to the body's own bottom margin plus two baseline offsets, and
+       it measures 3.13 to 3.36 body lines at every width in the
+       spread with nothing photographic in it.
 
-       using Fraunces' measured ascent - descent of 0.72058em — R2's
-       number, measured from rendered ink, reused rather than
-       re-derived, because this is the same face at the same coda
-       tier that About's closing line uses.
-
-       Hence margin-bottom = -(0.5lh - 0.36029em) = 0.36029em - 0.5lh,
-       which is -9.27px at 1440's 32px/1.3 and re-resolves at every
-       width from the element's own units. NOTHING HERE COUNTS A LINE
-       and nothing is a pixel measured at one width: the body's
-       rendered height cancels out of the arithmetic entirely because
-       the anchor is the row's END, which is R2's lesson and the third
-       time this project has applied it.
-
-       WHY AN IMAGE EDGE AND NOT A TEXT BASELINE. About aligns its
-       closing line to body paragraph 2's last baseline, so both terms
-       in its offset are line-height-minus-baseline and the expression
-       is a difference of two descender spaces. Here the target is a
-       photograph's trim, which has no baseline of its own, so only
-       this element's term survives and the expression is simpler by
-       one half. Same device, one fewer term.
-
-       WHY THE FRAME AND NOT THE DETAIL. R6.1 anchored to the detail
-       and the gap above this line went to 16.24 body lines at 1440
-       and 37.06 at 1920 against an eight-line ceiling, because
-       anchoring to the detail adds the whole `detailH - lap` term to
-       the gap and that term grows with the sheet while the type
-       column shrinks. Anchoring to the frame removes the term
-       outright: wherever the type column is taller than the frame's
-       own floor, the frame's bottom edge is this line's own row
-       bottom and the gap collapses to the body's margin plus this
-       element's descender space — 70.47px, 2.30 body lines, with the
-       frame's height cancelled out of it entirely.
-
-       The detail then hangs BELOW this line rather than ending level
-       with it, which is the intended reading: an inset running past a
-       text column that has properly ended. It only reads that way
-       because the caption joins this same baseline on the left, so
-       one closed horizontal runs across the section above the
-       overhang. See .ath-caption. */
-    align-self: end;
-    margin: 0 0 calc(0.36029em - 0.5lh);
+       THE OVERHANG CAP IS MET BY CONSTRUCTION, NOT BY A CHECK. The
+       depth the detail hangs below the frame IS the height of this
+       block, so it cannot exceed it at any width, at any copy length,
+       on any viewport. That is the R6.3 ruling expressed as a
+       structure rather than as a number to verify. */
+    margin: 0;
     font-family: var(--display);
     font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
     font-weight: 400;
@@ -775,73 +909,44 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      Slate on Porcelain is 7.54:1 at full strength, 4.45:1 at 0.78 —
      under the floor — and 4.90:1 at 0.82.
 
-     R6.2 — ITS BASELINE JOINS THE CLOSING LINE'S. The primitive's
-     `margin: var(--baseline) 0 0` put it 28px below the frame's
-     bottom edge, which was correct practice in isolation and became
-     wrong the moment the coda landed ON that edge: two lines of type
-     28px apart, neither of them aligned to the other, which is the
-     R3.1 near-alignment failure exactly. One horizontal now runs
-     across the section at the frame's bottom edge, carrying the
-     caption on the left and the coda on the right, and it is that
-     closed line which lets the detail hang below it as an overhang
-     rather than as a fragment.
+     R6.3 — ITS BASELINE IS ON THE CLOSING LINE, AND IT IS CLEAR OF
+     BOTH PHOTOGRAPHS. The primitive's `margin: var(--baseline) 0 0`
+     put it 28px below the frame's bottom edge, which was correct
+     practice in isolation and became wrong the moment R6.2 put the
+     coda on that edge: two lines of type a lattice unit apart with
+     nothing aligning them, the R3.1 near-alignment failure exactly.
 
-     IT IS THE CAPTION'S CAP-TOP ON THAT LINE, NOT ITS BASELINE, AND
-     THAT IS A DEVIATION FROM THE R6.2 BRIEF WITH THE RENDER BEHIND
-     IT. Built to the letter — caption baseline == coda last baseline
-     == the frame's bottom edge — the caption's ink lands ENTIRELY
-     INSIDE THE PHOTOGRAPH, because the frame spans columns 1-7 and
-     the caption sits at 1-3, so everything above the frame's bottom
-     edge on the left half of the section is bleacher slats. Captured
-     at 3x: Smoked Slate at 0.82 over a photograph whose bottom band
-     measures luminance 77.5, with the comma's descender clipped by
-     the frame's own trim. It reads as a printing fault. There is no
-     arrangement in which the caption's ink is above that line and
-     also on the page ground — the geometry forbids it.
+     R6.2's FIX PUT INK ON THE PHOTOGRAPH AND MUST NOT COME BACK. It
+     kept the line at the FRAME'S bottom trim and hung the caption's
+     cap-top from it, because the frame spans columns 1-7 and the
+     caption sits at 1-3, so everything above that trim on the left of
+     the sheet is bleacher slat. Built, the caption's cap-top landed
+     0.76px ABOVE the trim — about a tenth of the ink height of a
+     10.5px capital — so the frame's own edge ran THROUGH the
+     letterforms, dark grey type bisected by a hard photographic
+     boundary over a band measuring luminance 77.5. It reads as a
+     printing fault, and no attachment rule fixes it: with the line on
+     the frame's trim, the geometry gives the caption's ink nowhere to
+     sit that is not inside the photograph.
 
-     SO THE LINE IS SHARED AND THE ATTACHMENT DIFFERS. The frame's
-     bottom trim, the caption's CAP-TOP and the coda's LAST BASELINE
-     all sit on one horizontal, delta 0 between the three. The coda
-     sits on the line; the caption hangs from it. That is a hung
-     caption in the literal sense and it is not a near-alignment —
-     both elements resolve to the same y, they simply attach to it
-     from opposite sides, which is legible as a relationship in a way
-     that 28px of unexplained offset is not.
+     R6.3 MOVES THE LINE INSTEAD OF THE ATTACHMENT. The closing line
+     is the DETAIL's bottom trim now, which sits 92.6 to 156.8px below
+     the frame's foot at every width the spread runs, so the caption's
+     whole ink — cap-top to comma — is on Porcelain with the frame's
+     nearest edge a full coda-height away. The caption's BASELINE is on
+     the line, which is what the R6.3 brief asks for and what ordinary
+     editorial practice does. An explicit intersection test between the
+     caption's ink rect and both photograph rects returns FALSE at
+     every one of the eighteen verified widths; the numbers are in the
+     R6.3 report.
 
-     THE OFFSET IS DERIVED, NOT MEASURED AT ONE WIDTH.
-     `align-self: start` puts the margin-box top on row 5's top edge,
-     which is the frame's bottom edge. The first baseline sits below
-     that by
-
-         B = lh/2 + (ascent - descent)/2 x font-size
-
-     and the cap-top sits capHeight above the baseline, so
-
-         margin-top = capHeight - B = 0.70em - (0.5lh + 0.3585em)
-                    = 0.3415em - 0.5lh
-
-     Both constants are this project's own measured numbers rather
-     than published metrics taken on trust. Montserrat's
-     ascent - descent is 0.717 (published hhea 968/-251, cross-checked
-     at 0.716 from rendered ink in R2), giving the 0.3585 that
-     `.edu-margin`, `.prem-margin` and `.legends-margin` already use.
-     The cap ratio is 0.70000, re-measured for weight 400 with About's
-     own probe method — a flat-topped, flat-bottomed 'D' inside 60px
-     of its own white padding, clipped strictly inside it so no page
-     ground leaks into the scan — and it read 0.70000 at 1000px, 600,
-     300 and 120px, with the 59px sample landing at 0.69492, which is
-     41 whole pixels standing in for 41.3.
-
-     Written in the element's own `lh` and `em`, so it re-resolves
-     from the type at every width with nothing swept.
-
-     THE 28px OFFSET IS REPLACED, NOT SUPPLEMENTED. Keeping both would
-     put the caption a lattice unit below a line it is meant to be on,
-     which is the near-miss this correction exists to remove.
-
-     IT STILL SNAPS TO TYPE METRICS RATHER THAN TO A CONTAINER TOP,
-     which is what CONTEXT.md's rule asks for. What it snaps to is now
-     the coda's own line rather than the page's 28px lattice.
+     NO OFFSET IS COMPUTED HERE ANY MORE. `align-self: last baseline`
+     on the primitive puts this element in one baseline-sharing group
+     with the closing line and the detail, so the alignment comes off
+     the renderer's own metrics. The 0.3415em / 0.3585em constants
+     R6.2 needed are DELETED rather than kept — see the note on
+     .ath-close for why an em constant cannot track a metric the
+     browser rounds to whole pixels.
 
      THE TRACKED UPPERCASE LINE MUST NOT WRAP. A tracked uppercase
      label that wraps is not a label — the finding that moved R4's
@@ -866,12 +971,18 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      page, at the rendered size, with the trailing letter-space
      removed, and it is in the R6.1 report. */
   .ath-caption{
-    /* capHeight - B. Negative, so the box starts above row 5's top
-       edge; the INK does not — the cap-top lands exactly on it and
-       the only thing that crosses is transparent line-box leading.
-       The comma is the one glyph below the baseline and it clears the
-       frame's trim by the cap height. */
-    margin-top: calc(0.3415em - 0.5lh);
+    /* -(lh - B) = 0.3585em - 0.5lh, which is -10.24px at the
+       register's 10.5px on the 28px --baseline line-height. The
+       primitive's `align-self: end` puts the MARGIN box bottom on the
+       closing band's bottom edge; this pushes the box down by the
+       distance from a box bottom up to its last baseline, so the
+       BASELINE lands on that edge instead. Montserrat's
+       ascent - descent is 0.717 (published hhea 968/-251,
+       cross-checked at 0.716 from rendered ink in R2), which is the
+       0.3585 `.edu-margin`, `.prem-margin` and `.legends-margin`
+       already use. The primitive's own top margin is replaced, not
+       supplemented. */
+    margin: 0;
   }
 
   .ath-caption-line{
@@ -888,47 +999,69 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
 
   /* ---- THE DETAIL AND THE OVERLAP --------------------------------
 
-     THE DEPTH IS DERIVED FROM THE TYPE, NOT SET IN PIXELS.
+     THE DEPTH IS NOT DECLARED ANY MORE, AND THAT IS THE R6.3 FIX.
 
-         --ath-lap = 4 x the body's line-height = 122.4px
+     R6 declared a lap of `4 x the body's line-height` = 122.4px and
+     let the detail hang below the frame by whatever was left over —
+     detailH minus the lap, which at 1440 was 479.5px of photograph
+     dangling past the section's last line of type with columns 1-3
+     and 8-12 empty beside it for that whole depth. The declared
+     number was well derived; the thing it left undeclared was the
+     OVERHANG, and the overhang is what a reader sees.
 
-     and the threshold it has to clear is measured, not estimated.
-     CONTEXT.md's overlap floor is that an overlap is unambiguous or
-     it is absent: the Cover's 54px version read as a text-overflow
-     bug and was removed. The measurable form of "unambiguous" used
-     here is THE OVERLAP MUST BE AT LEAST TWICE THE SECTION'S LARGEST
-     INTERNAL VERTICAL GAP, because anything at or below that size can
-     be read as a spacing accident rather than as a composition. This
-     section's largest internal gap is body -> closing line, two body
-     lines, 61.2px. Twice it is 122.4px, and --ath-lap is exactly
-     that.
+     R6.3 DECLARES THE OVERHANG AND LETS THE LAP FALL OUT. The
+     negative top margin here is exactly MINUS THE DETAIL'S OWN
+     HEIGHT, so its margin box measures zero in the block axis and it
+     contributes nothing to the closing band's height. The band is
+     then sized by the closing line alone, the detail bottom-aligns to
+     it by baseline alignment, and:
 
-     Both terms come off --bio-size and --bio-lh, which are fixed at
-     every band by design, so the lap is 122.4px at every width and
-     the threshold moves with it if either token ever changes. The
-     depth ACTUALLY ACHIEVED at each band is a different question —
-     it depends on the frame clearing the type column — and it is
-     measured per band in the report.
+         overhang = the closing line's own block height
+         lap      = detailH - overhang
+
+     The R6.3 ruling — "the detail's overhang below the frame is
+     capped by the coda's own height" — is therefore a structural
+     identity rather than a constraint to check. It cannot be violated
+     by a viewport width, a copy length or a crop.
+
+     THE FLOOR STILL BINDS AND IS STILL THE SAME NUMBER. CONTEXT.md's
+     rule is that an overlap must be at least twice the section's
+     largest internal vertical gap or it reads as a spacing accident;
+     the Cover's 54px version was removed on exactly that basis. This
+     section's largest internal gap is unchanged at body -> closing
+     line, two body lines, 61.2px, so the floor is unchanged at
+     122.4px. What changed is that the lap is now VERIFIED against
+     that floor rather than declared to it. Measured across the
+     spread: 247.9px at 1280, 284.2 at 1279, 262.5 at 1200, 244.0 at
+     1146, 287.3 at 1440, 343.2 at 1600, 499.1 at 1920 — the shallowest
+     is exactly twice the floor. `--ath-lap` is DELETED rather than
+     left in place governing nothing, which is the same call R6.1 made
+     on the container query and R4.1 made on the sampled scrim: a
+     constant that no longer drives anything is a landmine for the
+     next pass, not a safety net.
 
      GRID PLACEMENT AND A NEGATIVE MARGIN, never position:absolute
-     with a hard offset. The detail is a grid item in row 5, whose top
-     edge is the frame's bottom edge; a negative top margin of
-     --ath-lap lifts it that far onto the frame. It survives a resize
-     because it is expressed against a row boundary that moves with
-     the layout.
+     with a hard offset. Both terms are percentages of the detail's
+     own grid area, so the whole expression re-resolves at every
+     width with nothing swept and nothing measured at one viewport.
 
      PAINT ORDER IS DOCUMENT ORDER. Both frames are position:relative
      via .plate-img and neither carries a z-index, so the later
      sibling paints over the earlier one. The detail is authored after
      the frame; nothing else is needed and no stacking context is
      invented. */
-  .ath{
-    --ath-lap: calc(4 * var(--bio-size) * var(--bio-lh));
-  }
-
   .ath-detail{
     margin: 0;
-    margin-top: calc(var(--ath-lap) * -1);
+    /* MINUS ITS OWN HEIGHT. A percentage margin on a grid item
+       resolves against the inline size of its GRID AREA, so
+       -100% / --det-aspect is exactly -(areaWidth / aspect), which
+       is exactly the rendered height of the frame inside. The
+       margin box therefore measures ZERO in the block axis and the
+       detail contributes nothing at all to the closing band's
+       height — the coda sizes that row, the detail hangs from its
+       bottom edge, and the lap is whatever the difference comes to.
+       Verified in the R6.3 report at all 18 widths. */
+    margin-top: calc(-100% / var(--det-aspect));
   }
 
   /* THE DETAIL'S CROP.
@@ -936,11 +1069,14 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      athletics-detail.jpg is 2633x3942 with no EXIF orientation, so
      the buffer and the presentation agree: native 0.66794.
 
-     0.70 AGAINST THE BLEED FRAME'S 0.95. CONTEXT.md: aspect ratio is
-     a separate lever from width and no two photographs on the page
-     share a crop. These two touch each other, so the difference has
-     to be legible rather than nominal — a 0.25 spread reads as two
-     shapes, and 0.05 would read as one shape rendered twice.
+     0.70, UNCHANGED, AND THE SHAPE IS DELIBERATELY NOT THE LEVER
+     R6.3 USES. CONTEXT.md: aspect ratio is a separate lever from
+     width and no two photographs on the page share a crop. The bleed
+     frame renders 0.766 to 1.000 across the spread, so a detail that
+     was flattened toward square to shorten it would have converged on
+     the very frame it sits on — 0.05 apart reads as one shape
+     rendered twice. The dead turf comes out of the WINDOW instead,
+     with the shape held: see below.
 
      THE MECHANISM IS AN OVERSIZED BOX, NOT A TRANSFORM, because this
      crop is horizontal as well as vertical. Measured in R1: a static
@@ -951,13 +1087,44 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      matching negative left, both percentages, clipped by
      .plate-img's overflow: hidden.
 
-     The wanted source window is x [0.14, 0.86], y [0.180, 0.867]:
+     R6.3 — THE WINDOW CLOSES BELOW THE FOOTBALL. R6 ran it to
+     y 0.867 of the source, and the football's bottom edge is at
+     y 0.642: a third of the rendered frame — 191px at 1440 — was
+     empty turf carrying nothing. The window now ends at y 0.700,
+     which leaves about a tenth of the frame's height of turf under
+     the ball, enough for it to sit on the ground rather than be cut
+     off by it.
+
+     THE HORIZONTAL WINDOW TIGHTENS IN STEP, BECAUSE THE SHAPE IS
+     HELD. Trimming only the bottom would have taken the plate from
+     0.700 to 0.946 — all but square, and within 0.05 of the bleed
+     frame's own rendered shape at three of the eight verified widths.
+     Both edges move together instead, so the crop is the same
+     RECTANGLE holding a tighter piece of the picture.
+
+     AND NARROWING THE PLATE FROM FOUR COLUMNS TO THREE DID NOT DO
+     ANY OF THIS. (Standing rule, R4.1, restated because this pass had
+     to act on it: --crop-w and --crop-l are percentages of the
+     plate's OWN width, so the plate's width cancels out of the source
+     window entirely. Three columns instead of four draws the same
+     source pixels SMALLER. It cannot remove turf, and the turf had to
+     be removed separately, here.)
+
+     Old window x [0.14, 0.86], y [0.180, 0.867]:
 
          --crop-w   1 / 0.72              = 138.89%
          --crop-l   -(0.14 x 138.89)      = -19.44%
          box aspect  0.70 x 1.38889       =   0.9722
          visible y   0.66794 / 0.9722     =   0.687
          --crop-y    0.180 / (1 - 0.687)  =  57.5%
+
+     New window x [0.2275, 0.7725], y [0.180, 0.700]:
+
+         --crop-w   1 / 0.545             = 183.486%
+         --crop-l   -(0.2275 x 183.486)   = -41.743%
+         box aspect  0.70 x 1.83486       =   1.2844
+         visible y   0.66794 / 1.2844     =   0.520
+         --crop-y    0.180 / (1 - 0.520)  =  37.5%
 
      The box aspect stays comfortably wider than the file's native
      0.66794, so object-fit spreads the full source width across the
@@ -966,18 +1133,18 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      of the source window entirely and the crop is identical at every
      viewport width in every band.
 
-     What the window holds: the goal net at the top, both legs from
-     mid-calf, the gold heel resting on the football at 51-68% of the
-     frame's height, and turf below it. It cuts the goalposts, which
-     is what makes it a detail rather than a second establishing
-     shot, and it carries NO face — CONTEXT.md prefers detail crops
-     with no face over another portrait, and this is the strongest
-     single image in the set. */
+     What the window holds now: the goal net at the top, both legs
+     from mid-shin, the gold heel resting on the football, and a band
+     of turf under the ball. It cuts the goalposts, which is what
+     makes it a detail rather than a second establishing shot, and it
+     carries NO face — CONTEXT.md prefers detail crops with no face
+     over another portrait, and this is the strongest single image in
+     the set. */
   .ath-detail-frame{
-    aspect-ratio: 0.70;
-    --crop-w: 138.89%;
-    --crop-l: -19.44%;
-    --crop-y: 57.5%;
+    aspect-ratio: var(--det-aspect);
+    --crop-w: 183.486%;
+    --crop-l: -41.743%;
+    --crop-y: 37.5%;
   }
 
   /* max-width: none is not optional. Tailwind's preflight sets
@@ -996,10 +1163,12 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
 
   /* ---- THE STACK · <= 1145 ---------------------------------------
      ATHLETIC'S OWN CROSSOVER, measured and swept at 1px. The rule,
-     the sweep and the reasoning are in global.css; it fires where the
-     frame's rendered aspect falls below the source file's own
-     presented aspect — the width at which the spread stops trimming
-     sky off the photograph and starts cutting its sides.
+     the full constraint enumeration and the sweep are in global.css.
+     R6.3 re-derived it against the new arrangement and the binding
+     constraint CHANGED HANDS — it is the caption's fit in its
+     three-column window now, at 1138, where R6.2's was the frame's
+     rendered aspect at 1145. 1145 still ships; see global.css for
+     why the seven pixels are kept.
 
      ONE STACKED ARRANGEMENT FROM 1145 ALL THE WAY DOWN, with only the
      column windows stepping by band. There is no separate phone
@@ -1007,13 +1176,10 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      again at 900 and collapse it at 750, and everything a span cannot
      express is the same in all of them.
 
-     The row track list comes off. There are no longer four rows for
-     the frame to span, so `auto auto auto 1fr auto` would hand row 4
-     a flex factor for nothing and open dead ground under the closing
-     line. */
+     The row identities come off with it — every primitive releases
+     grid-row and align-self here, so the section is one linear stack
+     in reading order. */
   @media (max-width: 1145px){
-    .ath{ grid-template-rows: none; }
-
     /* THE LEFT BLEED SURVIVES THE STACK. The frame is above the type
        here rather than beside it, but it still runs off the left page
        trim, and that is the section — the broken gutter is what makes
@@ -1053,6 +1219,7 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
        two lines again, matching the frame's. */
     .ath-detail{
       width: 62%;
+      /* The negative margin comes off with the lap. */
       margin-top: calc(2.0 * var(--bio-size) * var(--bio-lh));
     }
 
@@ -1073,17 +1240,21 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
        ordinary rhythm, exactly as Educational Leader's district link
        and Premier's topics list do in their own stacked bands. */
     .ath-caption{
-      margin-top: var(--s4);
+      /* The derived lift comes off with the closing line. */
+      margin: var(--s4) 0 0;
     }
 
-    /* THE BOTTOM ANCHOR IS RELEASED WITH THE SPREAD. Stacked, the
-       detail sits BELOW the closing line rather than beside it, so
-       there is no image edge at the line's level to align to — the
-       same reason About's snap gives way to ordinary rhythm in its
-       own stacked bands. The primitive releases the span and the
-       alignment; this releases the descender lift that went with
-       them. The gap above the line is the body's derived two lines,
-       unchanged from R6. */
+    /* THE CLOSING LINE DOES NOT EXIST BELOW THE CROSSOVER, AND WHAT
+       REPLACES IT IS A VERTICAL. Stacked, the caption, the detail and
+       this line are three blocks in reading order with no shared
+       horizontal available to any of them — the detail sits BELOW the
+       closing line rather than beside it. What they share instead is
+       their LEFT edge: all three sit on the measure's gutter, the
+       same edge the head, the lede and the body sit on, so the stack
+       closes on one vertical rather than on nothing. The primitive
+       releases the baseline alignment; this releases the margin that
+       went with it. The gap above this line is the body's derived two
+       lines, unchanged since R6. */
     .ath-close{
       align-self: auto;
       margin: 0;
