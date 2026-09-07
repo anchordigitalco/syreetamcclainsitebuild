@@ -17,6 +17,28 @@
  * entrance IS the numerals at display scale; an entrance device laid
  * over an entrance is two entrances.
  *
+ * ---- THE LEDE (R8.1) --------------------------------------------
+ * CONTEXT.md's lede rule is unconditional — "every content section
+ * pulls one sentence out and sets it in Fraunces at display scale. No
+ * exceptions." R8 shipped the Index as the one content section on the
+ * page without one, and a reader arriving off the pivot got five names
+ * and no statement of what the list is.
+ *
+ * IT IS NOT A KICKER AND MUST NOT BECOME ONE. Once R12 mounts the
+ * folio, "INDEX" prints down the left viewport edge for this section's
+ * whole height; a Montserrat INDEX kicker at column 1 would set the
+ * folio's own label a second time, two inches away, and would put a
+ * second entrance device above the numerals that ARE the entrance.
+ *
+ * IT SITS ON .idx-body — the same window, the same left edge, as the
+ * five names — so it heads the column it actually heads rather than
+ * introducing a fourth left edge. It takes the page's shared
+ * --lede-size, so it is the same size as every other lede on the page.
+ *
+ * THE STRING IS NEW COPY AND IS NOT IN COPY.md. It ships pending
+ * Jackson's sign-off, on the same footing as the "THREE SONS, THREE
+ * PROGRAMS" caption R6.3 flagged. COPY.md was NOT edited to add it.
+ *
  * IT IS THE FIRST SECTION AFTER THE PIVOT. Everything above the
  * Feature Quote is her own work; everything below it is this. The
  * Index is the page's navigation, and it is the only section flush to
@@ -87,11 +109,42 @@
  * no jersey graphic, no headshot, no class year beyond the one COPY.md
  * puts inside Cam's program string.
  *
- * ALL THREE DOMAINS ARE PLAIN TEXT, NOT LINKS. CONTEXT.md, Site
- * Structure: liveness is unconfirmed, and a dead click reads as a
- * broken site rather than as coming-soon while printed magazines are
- * driving traffic. Visual treatment is identical either way; only the
- * click is removed. They are NOT wrapped in <a>.
+ * TWO DOMAINS LINK, ONE DOES NOT, AND THAT IS A MEASUREMENT (R8.1).
+ * CONTEXT.md's standing rule conditions the click on LIVENESS, not on
+ * preference: "if an individual site is not live, render the domain as
+ * plain text, not as a link that goes nowhere." R8 shipped all three as
+ * plain text because liveness was unconfirmed. It was confirmed in R8.1
+ * by request, per domain:
+ *
+ *   jaylenmcclain.com  200, real site — nav reads About Jaylen / Family
+ *                      and Football / Jaylen in the Media / Jaylen's
+ *                      Locker Room; meta description "The website of
+ *                      Jaylen McClain".            -> LIVE, links
+ *   kjmcclain.com      200, real site — "KJ McClain", "2026 Early
+ *                      Enrollee - the University of Tennessee", "State
+ *                      Champ to the SEC", a full bio paragraph.
+ *                                                  -> LIVE, links
+ *   cammcclain.com     200, but the served page is a HOLDING PAGE:
+ *                      "Launching Soon" over an email-capture form. The
+ *                      string "Cam McClain" does not appear anywhere in
+ *                      the HTML.                   -> NOT LIVE, stays
+ *                                                     plain text
+ *
+ * A 200 IS NOT THE TEST. All three return 200 from the same GoDaddy
+ * host; two serve the athlete's site and one serves a coming-soon page,
+ * and a click that lands a reader on "Launching Soon" is exactly the
+ * dead click the rule exists to prevent while printed material is
+ * driving traffic. Cam's domain is NOT wrapped in <a>.
+ *
+ * VISUAL TREATMENT IS IDENTICAL EITHER WAY — same face, size, tracking,
+ * case, colour and alignment on all three. Only the click differs. When
+ * cammcclain.com ships real content, the fix is to wrap that one string
+ * and nothing else changes.
+ *
+ * THE DOMAIN STRING IS THE CLICK TARGET, not the brother's row and not
+ * the name. The expansion is inside a <summary>'s sibling, so a row-wide
+ * link would nest interactive content inside a disclosure and give a
+ * keyboard user two targets for one visual line.
  *
  * OSU INTERIM RULE, ALL THREE SCHOOLS. School names as plain text
  * only. No logos, no marks, no team photography, no school-keyed
@@ -136,6 +189,25 @@ const blogHref = `#${blog.id}`;
       are its numbering. The displayed numerals are authored text
       carrying aria-hidden="true": the list is ALREADY ordered, and
       "oh one" read before every name is noise. */}
+  {/* THE LEDE. On .idx-body, the names' own window and left edge — the
+      primitive is reused, nothing hand-sets grid-column. Authored
+      before the <ol>, so grid's sparse cursor seats it in its own row:
+      it takes columns 4-11 of row 1, leaving the cursor past column 11,
+      and the <ol> asks for column 1, which is behind the cursor and
+      therefore drops to row 2. No row number is declared anywhere. */}
+  <p class="idx-body idx-lede">Where the work continues.</p>
+
+  {/* An <ol>, because the entries are an ordered list and the numerals
+      are its numbering. The displayed numerals are authored text
+      carrying aria-hidden="true": the list is ALREADY ordered, and
+      "oh one" read before every name is noise.
+
+      THE LIST'S TOP EDGE IS THE <ol>'s OWN border-top (R8.1), not a
+      separate element. The <ol> already spans the section window
+      exactly, so the rule needs no new primitive and no new markup, and
+      the clearance BELOW it is entry 01's row padding-top — structurally
+      the same quantity that sits below every other rule in the section,
+      rather than a second value kept in agreement by hand. */}
   <ol class="idx-window idx-list">
     <li class="idx-item">
       <a
@@ -211,20 +283,33 @@ const blogHref = `#${blog.id}`;
             <li class="idx-bro">
               <span class="idx-bro-line">
                 <span class="idx-bro-name">Jaylen McClain</span>
-                <span class="idx-bro-site">jaylenmcclain.com</span>
+                {/* LIVE — verified R8.1. */}
+                <a
+                  class="idx-bro-site idx-bro-link"
+                  href="https://jaylenmcclain.com"
+                  target="_blank"
+                  rel="noopener">jaylenmcclain.com</a>
               </span>
               <span class="idx-bro-prog">Ohio State Football | #8</span>
             </li>
             <li class="idx-bro">
               <span class="idx-bro-line">
                 <span class="idx-bro-name">KJ McClain</span>
-                <span class="idx-bro-site">kjmcclain.com</span>
+                {/* LIVE — verified R8.1. */}
+                <a
+                  class="idx-bro-site idx-bro-link"
+                  href="https://kjmcclain.com"
+                  target="_blank"
+                  rel="noopener">kjmcclain.com</a>
               </span>
               <span class="idx-bro-prog">University of Tennessee Football | #40</span>
             </li>
             <li class="idx-bro">
               <span class="idx-bro-line">
                 <span class="idx-bro-name">Cam McClain</span>
+                {/* NOT LIVE — serves a "Launching Soon" holding page as
+                    of R8.1. Plain text, NOT an <a>. Wrap this one string
+                    when the site ships; nothing else changes. */}
                 <span class="idx-bro-site">cammcclain.com</span>
               </span>
               <span class="idx-bro-prog">Seton Hall Prep Football | #6 · Class of 2028</span>
@@ -305,12 +390,88 @@ const blogHref = `#${blog.id}`;
        from pixels. Fixed pixel gaps set from one width are a swept
        band by another name." */
     --idx-desc-line: calc(var(--idx-desc-size) * var(--idx-desc-lh));
+
+    /* The row's spacing BUDGET. It is spent, never exceeded: the two
+       row paddings below always sum to exactly 2x this, so the pitch is
+       identical before and after the R8.1 redistribution. */
+    --idx-pad: calc(1.15 * var(--idx-desc-line));
+
+    /* ---- INTERNAL LEADING, ONE FORMULA, THREE ROLES (R8.1) --------
+       A line box is taller than the cap band it carries, and the
+       leftover sits half above the cap and half below the baseline.
+       For a face whose cap-height is `c` ems at line-height `lh`, one
+       side of that leftover is `(lh - c) * size / 2`.
+
+       c IS 0.700 FOR BOTH FACES ON THIS PAGE. R2 measured Fraunces at
+       0.700 from rendered ink with the probe inside its own white
+       padding — NOT 0.699 and NOT 0.722, and it is not re-derived here.
+       Montserrat's capHeight is 700 per 1000 em, the same figure, so
+       one constant serves the numeral, the description and the lede. */
+    --idx-num-lead:  calc((var(--idx-num-lh)  - 0.700) * var(--idx-num-size)  / 2);
+    --idx-desc-lead: calc((var(--idx-desc-lh) - 0.700) * var(--idx-desc-size) / 2);
+    --idx-lede-lead: calc((var(--lede-lh)     - 0.700) * var(--lede-size)     / 2);
+
+    /* THE REDISTRIBUTION. Half the DIFFERENCE between the two leadings
+       that bracket a rule — the numeral's above its cap, the
+       description's below its baseline — moved from the top padding to
+       the bottom one. Half, because the shift closes the gap from both
+       ends at once. See the note on .idx-row. */
+    --idx-rule-shift: calc((var(--idx-num-lead) - var(--idx-desc-lead)) / 2);
   }
 
+  /* ---- THE LEDE ---------------------------------------------------
+     Fraunces at the page's shared --lede-size, clamp(52px, 3.8vw,
+     64px) — 54.72px at 1440, the same figure every other lede on the
+     page resolves to. EVERY AXIS IS ENUMERATED: opsz 96 · wght 300 ·
+     SOFT 30 · WONK 0. Fraunces defaults to wght 900, WONK on and SOFT
+     100 when an axis is left unstated, and `font-weight` restates the
+     wght axis in the property the browser uses for fallback selection.
+
+     WONK 0. WONK 1 is spent at the Feature Quote and nowhere else.
+
+     Obsidian, and NOT GOLD — the three saturated accents are spent
+     (Cover tagline, About drop cap, pull quote) and this is not one of
+     them.
+
+     ---- THE GAP TO THE RULE ---------------------------------------
+     A rule belongs to what it INTRODUCES, not to what precedes it
+     (R3.1, Educational Leader's coda rule: space above ~3.3x space
+     below). This rule is the list's top edge, so it bonds downward to
+     the numerals and separates upward from the lede — more air above
+     it than below it, or it reads as underlining the sentence instead
+     of opening the list.
+
+     0.62 of the lede's own line box, so it re-resolves across the whole
+     clamp with nothing swept: 40.02px at 1440, 38.06px at 1024, 30.06px
+     at the clamp floor. No fixed pixel gap. The clearance BELOW the
+     rule is not declared here at all — it is entry 01's row padding-top,
+     which is the same quantity sitting below all four row rules. */
+  .idx-lede {
+    margin: 0 0 calc(0.62 * var(--lede-size) * var(--lede-lh)) 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 300, 'SOFT' 30, 'WONK' 0;
+    font-weight: 300;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    color: var(--obsidian);
+  }
+
+  /* THE FIFTH RULE. R8 shipped four — between the five entries, none
+     above 01 and none under 05. The lede makes a fifth necessary: the
+     list needs a top edge to be a list rather than five names loose
+     under a sentence. Still NO rule under entry 05; the section closes
+     on air, which is what stops it reading as a boxed table.
+
+     Same 1px Smoked Slate as the row rules, and the same span — the
+     <ol> IS the section window, so the rule stops one column short of
+     the right trim exactly as the other four do. NO GOLD: the
+     hairline-gold bucket stays at 0 of 8 and is re-measured, not
+     assumed. */
   .idx-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    border-top: 1px solid var(--slate);
   }
 
   /* ---- THE ROW ----------------------------------------------------
@@ -331,10 +492,39 @@ const blogHref = `#${blog.id}`;
      VERTICAL PADDING IS DERIVED FROM THE DESCRIPTION'S LINE BOX, at
      1.15 of it. It is a calc() over the type tokens above, so moving
      the description's size or leading re-resolves every row's rhythm
-     with nothing swept and no breakpoint band. */
+     with nothing swept and no breakpoint band.
+
+     ---- THE RULES ARE EQUALIZED ON INK, NOT ON BOXES (R8.1) --------
+     R8 set the two paddings equal, which made the two BOX gaps around
+     each rule equal and the two INK gaps unequal. A rule has a
+     description's line box above it and a numeral's line box below it,
+     and neither line box is filled by its glyphs: the description's
+     leaves leading under its baseline, the numeral's leaves leading
+     above its cap, and the numeral's is the larger because the numeral
+     is the larger type. Measured at 1440 with the numeral at wght 400:
+     23.63px of ink clearance above each rule against 29.03px below it —
+     a 5.40px asymmetry that reads as the rules sitting low. The gap
+     grows with the numeral's size, so it is worst at the widest
+     viewports and it got worse when the numeral went to wght 400.
+
+     THE CORRECTION IS HALF THE DIFFERENCE OF THE TWO LEADINGS, moved
+     from the top padding to the bottom. Half, because moving `d` from
+     one side to the other closes the asymmetry by `2d`. Both leadings
+     come from the one formula above; nothing here is a swept pixel and
+     nothing is measured at one width and frozen.
+
+     THE PITCH DOES NOT CHANGE. The two paddings still sum to
+     2 x --idx-pad at every width, so the redistribution spends none of
+     the budget it redistributes.
+
+     R6.3 APPLIES AND THE RESULT IS REPORTED, NOT ASSUMED. A modelled em
+     offset cannot reliably track a rounded font metric, so the residual
+     is measured rather than declared closed; see the pass report for
+     the per-rule figures against the 2px window. */
   .idx-row {
     align-items: baseline;
-    padding-block: calc(1.15 * var(--idx-desc-line));
+    padding-top:    calc(var(--idx-pad) - var(--idx-rule-shift));
+    padding-bottom: calc(var(--idx-pad) + var(--idx-rule-shift));
     color: inherit;
     text-decoration: none;
     /* Only opacity transitions anywhere in this section. Never
@@ -363,6 +553,21 @@ const blogHref = `#${blog.id}`;
      NOT closed by shrinking the window, which would put the text block
      on a fourth left edge.
 
+     wght 400, RAISED FROM R8's 300 (R8.1). THE COMPOSITION TABLE
+     SAYS THE NUMERALS ARE THIS SECTION'S ENTRANCE, and at wght 300
+     they were the quietest element in their own row: opsz swaps
+     STRUCTURAL DETAIL, not merely size, so the name's low opsz 24
+     thickens its strokes while the numeral's opsz 96 goes sharp and
+     high-contrast. A 28px name at wght 400 / opsz 24 therefore put
+     more ink on the page than a 56px numeral at wght 300 / opsz 96,
+     which inverts the hierarchy the table specifies — visible in the
+     screenshot before any measurement. At equal weight the numeral is
+     twice the name's size and reads as the entrance.
+
+     THE SIZE IS UNCHANGED and is not relitigated: the 1.023x parity
+     with the largest lede at 1440 is the correct relationship and
+     weight does not enter that ratio.
+
      SCALE IS RELATIONAL, NOT ABSOLUTE. clamp(36px, 3.9vw, 56px)
      resolves to 56px at 1440 against a largest rendered lede of
      54.72px — a ratio of 1.02, inside the 0.90-1.15 window. The Index
@@ -377,8 +582,8 @@ const blogHref = `#${blog.id}`;
      edges. */
   .idx-num {
     font-family: var(--display);
-    font-variation-settings: 'opsz' 96, 'wght' 300, 'SOFT' 30, 'WONK' 0;
-    font-weight: 300;
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 30, 'WONK' 0;
+    font-weight: 400;
     font-size: var(--idx-num-size);
     line-height: var(--idx-num-lh);
     font-variant-numeric: tabular-nums lining-nums;
@@ -487,14 +692,35 @@ const blogHref = `#${blog.id}`;
   }
 
   /* ---- THE INDICATOR ----------------------------------------------
-     Montserrat + at description scale, Smoked Slate, right-aligned to
-     the text block's right edge, becoming − (U+2212, the true minus,
-     not a hyphen) under [open].
+     Montserrat, AT THE NAME'S SIZE AND WEIGHT (R8.1), Smoked Slate,
+     right-aligned to the text block's right edge, becoming − (U+2212,
+     the true minus, not a hyphen) under [open].
+
+     R8 SET IT AT DESCRIPTION SCALE AND THAT WAS TOO SMALL TO FUNCTION.
+     An 11px glyph rendered 6.41px wide at 1440 and sat 866px from the
+     name it belongs to: at that size and that distance it reads as a
+     speck on the page rather than as the control for the one row whose
+     behaviour differs. The right-alignment itself is correct and is
+     kept — it is the section's one sanctioned right alignment, and its
+     job is to mark the row that is not a link.
+
+     THE FIX IS SIZE, NOT POSITION. At the name's own clamp and weight
+     the glyph is a peer of the thing it modifies rather than a mark
+     beside it, and it needs no colour change, no box, no rule and no
+     motion to be found. It stays Smoked Slate — one value quieter than
+     the Obsidian name — so it announces itself without competing.
+
+     IT SHARES THE NAME'S BASELINE THROUGH THE EXISTING GROUP, not
+     through an offset. `.idx-line` is `align-items: baseline`, so the
+     glyph and the name are in one flex baseline group and the layout
+     engine answers the alignment. Per R6.3 an em constant cannot track
+     a rounded font metric, and both now run the same clamp from 20px
+     to 28px, so a modelled offset would be wrong at most widths.
 
      NO ROTATION, NO TRANSITION, NO TRANSFORM. A rotating + is a
      component convention; this page is a printed spread and a printed
      spread's glyphs do not spin. The swap is a content change on a
-     pseudo-element, which is why it needs no script.
+     pseudo-element, which is why it needs no script. NOT GOLD.
 
      `flex-shrink: 0` so a long name never squeezes the glyph, and the
      span is aria-hidden — <details> already exposes aria-expanded and
@@ -502,9 +728,9 @@ const blogHref = `#${blog.id}`;
   .idx-sign {
     flex: 0 0 auto;
     font-family: var(--sans);
-    font-weight: 500;
-    font-size: var(--idx-desc-size);
-    line-height: var(--idx-desc-lh);
+    font-weight: 400;
+    font-size: var(--idx-name-size);
+    line-height: var(--idx-name-lh);
     color: var(--slate);
   }
   .idx-sign::before {
@@ -533,11 +759,14 @@ const blogHref = `#${blog.id}`;
      slightly loose gap. Derived from the description's line box like
      every other gap in this section; nothing swept, no line count.
 
-     The bottom gap stays at 1.15 lines, so the entry's rule closes the
-     expansion at the same rhythm a closed row's rule closes it. */
+     The bottom gap TRACKS THE ROW'S BOTTOM PADDING rather than the raw
+     budget (R8.1), so entry 04's rule closes the expansion on exactly
+     the ink clearance it closes a shut row on. Its "above the rule"
+     element is a brother's program line, which is the description's
+     size and leading, so the same equalization applies unchanged. */
   .idx-expand {
     padding-top: calc(0.62 * var(--idx-desc-line));
-    padding-bottom: calc(1.15 * var(--idx-desc-line));
+    padding-bottom: calc(var(--idx-pad) + var(--idx-rule-shift));
   }
 
   .idx-bros {
@@ -573,10 +802,13 @@ const blogHref = `#${blog.id}`;
     color: var(--obsidian);
   }
 
-  /* PLAIN TEXT, NOT A LINK, and not wrapped in an <a>. Liveness is
-     unconfirmed and a dead click reads as a broken site. The visual
-     treatment is what it would have been either way; only the click is
-     removed. */
+  /* ONE RULE FOR ALL THREE DOMAINS, LINKED OR NOT (R8.1). This is the
+     whole visual treatment and it is applied by `.idx-bro-site`, which
+     both the two <a>s and Cam's <span> carry. Face, size, tracking,
+     case, colour and right-alignment are therefore identical by
+     construction rather than by two rules kept in agreement by hand —
+     the failure mode CONTEXT.md flags when two elements are declared
+     separately and expected to render the same. */
   .idx-bro-site {
     flex: 0 0 auto;
     font-family: var(--sans);
@@ -586,6 +818,33 @@ const blogHref = `#${blog.id}`;
     letter-spacing: 0.04em;
     text-transform: lowercase;
     color: var(--slate);
+  }
+
+  /* THE LINKED ONES, AND ONLY THE LINKED ONES. `.idx-bro-link` carries
+     no visual property at rest beyond removing the UA underline — it
+     exists solely to hold the interactive states, so a domain that goes
+     from plain text to a link changes nothing a reader sees until they
+     point at it.
+
+     States match the index rows exactly: hover a 1px underline, instant;
+     focus-visible a 2px Smoked Slate outline at 4px offset; active
+     opacity 0.7. transition on OPACITY ONLY — never transition-all and
+     never a colour transition. */
+  .idx-bro-link {
+    text-decoration: none;
+    transition: opacity 140ms var(--ease);
+  }
+  .idx-bro-link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .idx-bro-link:focus-visible {
+    outline: 2px solid var(--slate);
+    outline-offset: 4px;
+  }
+  .idx-bro-link:active {
+    opacity: 0.7;
   }
 
   /* Line 2: the program. School names as plain text — the OSU interim
