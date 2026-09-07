@@ -437,13 +437,28 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      A percentage padding-top resolves against the element's own
      WIDTH and only ever contributes a minimum in-flow height, so it
      cannot compute a width from anything and cannot stop the stretch.
-     105.263% is 1 / 0.95. The frame itself is taken out of flow and
-     pinned to the figure's box, so the spacer governs nothing but the
-     floor. */
+     The frame itself is taken out of flow and pinned to the figure's
+     box, so the spacer governs nothing but the floor.
+
+     R6.2 — THE FLOOR IS SQUARE, RAISED FROM 0.95. The bottom of this
+     frame is bleacher slats and bench: the helmet, the football, her
+     figure and the sky all sit above it, so it is the one place in
+     the section where height can be removed at no cost to the
+     photograph. With the coda now anchored to the frame's bottom
+     edge, removing it shortens the frame, the gap above the coda and
+     the section together at every width where the floor governs.
+
+     1.00 IS THE HARD LIMIT AND IT IS NOT NEGOTIABLE UPWARD. Above it
+     the frame would be wider than it is tall, which is a wide crop of
+     a vertical source, and CONTEXT.md refuses that at spec time
+     rather than trading it against a shorter section. Square is the
+     furthest this can go, and the floor is only ever a MINIMUM — the
+     frame is taller than square at every width where the type column
+     is. */
   .ath-bleed::before{
     content: "";
     display: block;
-    padding-top: 105.263%;   /* 1 / 0.95 */
+    padding-top: 100%;   /* 1 / 1.00 — square is the hard limit */
   }
 
   .ath-frame{
@@ -472,8 +487,17 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
 
          window top = Y x (1 - 0.7018) = Y x 0.29825
 
-     0.10 of the source height is where the window is wanted, so
-     Y = 0.10 / 0.29825 = 33.5%, giving the window [0.100, 0.802].
+     0.10 of the source height is where the window is wanted.
+
+     R6.2 — Y IS 30%, NOT 33.5%, AND THE TRIM COMES OFF THE BOTTOM.
+     Raising the floor to square narrows the visible vertical fraction
+     from 0.70175 to 0.66667, and object-position decides which end
+     pays for that. Holding the window TOP at 0.100 is what makes the
+     bottom pay: Y = 0.100 / (1 - 0.66667) = 30%, giving the window
+     [0.100, 0.767] at the floor. Left at 33.5% the narrowing would
+     have come off both ends and taken sky with it, and the sky is
+     doing real work in this composition — it is most of what makes
+     the frame read as an establishing shot rather than a portrait.
      The whole expression is in percentages of the source, so there is
      no breakpoint and nothing to sweep. The HORIZONTAL window is
      identical at every viewport width in every band — it is the full
@@ -481,12 +505,16 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      aspect; see the note on .ath-frame below.
 
      WHAT THAT WINDOW HOLDS, measured off the source rather than
-     eyeballed. Source fractions, then where they land in the frame:
+     eyeballed. Source fractions, then where they land in the frame at
+     the square floor:
 
-         face        y 0.248-0.314   ->  frame y 0.21-0.31
-         helmet      y 0.405-0.510   ->  frame y 0.43-0.58
-         football    y 0.524-0.638   ->  frame y 0.60-0.77
+         sky         y 0.100-0.224   ->  frame y 0.00-0.19
+         face        y 0.248-0.314   ->  frame y 0.22-0.32
+         helmet      y 0.405-0.510   ->  frame y 0.46-0.62
+         football    y 0.524-0.638   ->  frame y 0.64-0.81
          her figure  y 0.224-0.862   ->  crosses the bottom trim
+         bleacher slats below her    ->  TRIMMED, and that is the
+                                         whole point of R6.2 §3
 
      It cuts sky off the top, which is the part of this frame that
      fights the palette hardest, and it cuts her at mid-calf on the
@@ -536,7 +564,7 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      Astro's data-astro-cid-*, so a scoped selector silently stops
      matching. This has bitten this project twice. */
   .ath-frame :global(img){
-    object-position: 50% 33.5%;
+    object-position: 50% 30%;
   }
 
   /* ---- THE TREATMENT --------------------------------------------
@@ -666,15 +694,16 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      / SOFT 100. 1.86x the body and 0.58x the lede at 1440 — clearly a
      third tier, subordinate to the lede and distinct from the body. */
   .ath-close{
-    /* THE LAST BASELINE SITS ON THE DETAIL PHOTOGRAPH'S BOTTOM EDGE.
-       (R6.1.)
+    /* THE LAST BASELINE SITS ON THE BLEED FRAME'S BOTTOM EDGE.
+       (R6.2, correcting R6.1's anchor.)
 
        `align-self: end` on the primitive puts this element's MARGIN
-       BOX bottom on the bottom edge of its two-row span, which is the
-       detail's bottom edge. The last baseline sits above that box
-       bottom by the coda's own descender space, so the box is lifted
-       by exactly that much — a NEGATIVE margin-bottom, which pushes
-       the box down past the row edge until the baseline lands on it.
+       BOX bottom on the bottom edge of row 4 — the type column's last
+       row, which the frame also spans, so that edge IS the frame's
+       bottom edge. The last baseline sits above the box bottom by the
+       coda's own descender space, so the box is lifted by exactly
+       that much — a NEGATIVE margin-bottom, which pushes the box down
+       past the row edge until the baseline lands on it.
 
        Distance from a box bottom up to the last baseline is
        `line-height - B`, where B is the first-baseline offset inside
@@ -705,10 +734,24 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
        this element's term survives and the expression is simpler by
        one half. Same device, one fewer term.
 
-       The R6 build put this line at the top of row 4 with roughly
-       900px of Porcelain under it at 1440. It now closes the section
-       on one level line with the detail, which is the same thing
-       About does at the top of the page. */
+       WHY THE FRAME AND NOT THE DETAIL. R6.1 anchored to the detail
+       and the gap above this line went to 16.24 body lines at 1440
+       and 37.06 at 1920 against an eight-line ceiling, because
+       anchoring to the detail adds the whole `detailH - lap` term to
+       the gap and that term grows with the sheet while the type
+       column shrinks. Anchoring to the frame removes the term
+       outright: wherever the type column is taller than the frame's
+       own floor, the frame's bottom edge is this line's own row
+       bottom and the gap collapses to the body's margin plus this
+       element's descender space — 70.47px, 2.30 body lines, with the
+       frame's height cancelled out of it entirely.
+
+       The detail then hangs BELOW this line rather than ending level
+       with it, which is the intended reading: an inset running past a
+       text column that has properly ended. It only reads that way
+       because the caption joins this same baseline on the left, so
+       one closed horizontal runs across the section above the
+       overhang. See .ath-caption. */
     align-self: end;
     margin: 0 0 calc(0.36029em - 0.5lh);
     font-family: var(--display);
@@ -732,12 +775,73 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      Slate on Porcelain is 7.54:1 at full strength, 4.45:1 at 0.78 —
      under the floor — and 4.90:1 at 0.82.
 
-     IT SNAPS TO A BODY BASELINE, NOT TO THE FRAME'S BOTTOM. The
-     primitive's margin-top is one --baseline unit (28px) and its
-     line-height is the same unit, so its baseline lands on the page's
-     28px lattice rather than flush against the photograph above it.
-     CONTEXT.md: margin content snaps to body baselines, never to
-     container tops.
+     R6.2 — ITS BASELINE JOINS THE CLOSING LINE'S. The primitive's
+     `margin: var(--baseline) 0 0` put it 28px below the frame's
+     bottom edge, which was correct practice in isolation and became
+     wrong the moment the coda landed ON that edge: two lines of type
+     28px apart, neither of them aligned to the other, which is the
+     R3.1 near-alignment failure exactly. One horizontal now runs
+     across the section at the frame's bottom edge, carrying the
+     caption on the left and the coda on the right, and it is that
+     closed line which lets the detail hang below it as an overhang
+     rather than as a fragment.
+
+     IT IS THE CAPTION'S CAP-TOP ON THAT LINE, NOT ITS BASELINE, AND
+     THAT IS A DEVIATION FROM THE R6.2 BRIEF WITH THE RENDER BEHIND
+     IT. Built to the letter — caption baseline == coda last baseline
+     == the frame's bottom edge — the caption's ink lands ENTIRELY
+     INSIDE THE PHOTOGRAPH, because the frame spans columns 1-7 and
+     the caption sits at 1-3, so everything above the frame's bottom
+     edge on the left half of the section is bleacher slats. Captured
+     at 3x: Smoked Slate at 0.82 over a photograph whose bottom band
+     measures luminance 77.5, with the comma's descender clipped by
+     the frame's own trim. It reads as a printing fault. There is no
+     arrangement in which the caption's ink is above that line and
+     also on the page ground — the geometry forbids it.
+
+     SO THE LINE IS SHARED AND THE ATTACHMENT DIFFERS. The frame's
+     bottom trim, the caption's CAP-TOP and the coda's LAST BASELINE
+     all sit on one horizontal, delta 0 between the three. The coda
+     sits on the line; the caption hangs from it. That is a hung
+     caption in the literal sense and it is not a near-alignment —
+     both elements resolve to the same y, they simply attach to it
+     from opposite sides, which is legible as a relationship in a way
+     that 28px of unexplained offset is not.
+
+     THE OFFSET IS DERIVED, NOT MEASURED AT ONE WIDTH.
+     `align-self: start` puts the margin-box top on row 5's top edge,
+     which is the frame's bottom edge. The first baseline sits below
+     that by
+
+         B = lh/2 + (ascent - descent)/2 x font-size
+
+     and the cap-top sits capHeight above the baseline, so
+
+         margin-top = capHeight - B = 0.70em - (0.5lh + 0.3585em)
+                    = 0.3415em - 0.5lh
+
+     Both constants are this project's own measured numbers rather
+     than published metrics taken on trust. Montserrat's
+     ascent - descent is 0.717 (published hhea 968/-251, cross-checked
+     at 0.716 from rendered ink in R2), giving the 0.3585 that
+     `.edu-margin`, `.prem-margin` and `.legends-margin` already use.
+     The cap ratio is 0.70000, re-measured for weight 400 with About's
+     own probe method — a flat-topped, flat-bottomed 'D' inside 60px
+     of its own white padding, clipped strictly inside it so no page
+     ground leaks into the scan — and it read 0.70000 at 1000px, 600,
+     300 and 120px, with the 59px sample landing at 0.69492, which is
+     41 whole pixels standing in for 41.3.
+
+     Written in the element's own `lh` and `em`, so it re-resolves
+     from the type at every width with nothing swept.
+
+     THE 28px OFFSET IS REPLACED, NOT SUPPLEMENTED. Keeping both would
+     put the caption a lattice unit below a line it is meant to be on,
+     which is the near-miss this correction exists to remove.
+
+     IT STILL SNAPS TO TYPE METRICS RATHER THAN TO A CONTAINER TOP,
+     which is what CONTEXT.md's rule asks for. What it snaps to is now
+     the coda's own line rather than the page's 28px lattice.
 
      THE TRACKED UPPERCASE LINE MUST NOT WRAP. A tracked uppercase
      label that wraps is not a label — the finding that moved R4's
@@ -761,6 +865,15 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
      width per width is measured with a nowrap probe in the rendered
      page, at the rendered size, with the trailing letter-space
      removed, and it is in the R6.1 report. */
+  .ath-caption{
+    /* capHeight - B. Negative, so the box starts above row 5's top
+       edge; the INK does not — the cap-top lands exactly on it and
+       the only thing that crosses is transparent line-box leading.
+       The comma is the one glyph below the baseline and it clears the
+       frame's trim by the cap height. */
+    margin-top: calc(0.3415em - 0.5lh);
+  }
+
   .ath-caption-line{
     /* THE TRACKING IS DECLARED HERE AND THAT IS NOT REDUNDANT.
        .plate-caption sets 0.22em on the <p>, where it resolves once
@@ -953,6 +1066,12 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
        width on the page, and the stacked measure is wider than the
        spread's 3-column window at every width in this band, so if it
        fits in the spread it fits here. */
+    /* The caption keeps its R6 position here. Stacked, there is no
+       coda baseline at the frame's bottom edge to join — the closing
+       line is a whole block above, in reading order — so the baseline
+       alignment is released with the spread and this falls inline on
+       ordinary rhythm, exactly as Educational Leader's district link
+       and Premier's topics list do in their own stacked bands. */
     .ath-caption{
       margin-top: var(--s4);
     }

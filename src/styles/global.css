@@ -1011,56 +1011,70 @@ a{ color: inherit; }
 
    ---- .win-ath-close — the closing line -----------------------
    ONE COLUMN IN FROM THE BODY'S RIGHT EDGE, ON THE SAME LEFT EDGE.
-     >= 1280    columns 8-11, SPANNING TWO ROWS AND ANCHORED TO THE
-                BOTTOM OF THEM.
-     1024-1279  columns 7-11, same span and anchor.
-     751-1023   columns 5-7 of 8, span and anchor released.
+     >= 1280    columns 8-11, in row 4, ANCHORED TO THE BOTTOM OF IT.
+     1024-1279  columns 7-11, same row and anchor.
+     751-1023   columns 5-7 of 8, anchor released.
      <= 750     1 / -1. The step-in is a multi-column device; on a
                 phone measure a line held short of the right edge
                 reads as a rag, not as a coda.
 
-   IT BOTTOM-ALIGNS TO THE DETAIL PHOTOGRAPH'S BOTTOM EDGE. (R6.1.)
-   R6 shipped it at the top of row 4, which put roughly 900px of
+   IT BOTTOM-ALIGNS TO THE BLEED FRAME'S BOTTOM EDGE. (R6.2.)
+
+   R6 shipped it at the TOP of row 4, which put roughly 900px of
    Porcelain under it at 1440 with the detail floating in that field
-   and nothing at its level on either side. It did not read as an
-   image running past a text column; it read as a column that stopped
-   early.
+   and nothing at its level on either side. It read as a column that
+   stopped early.
 
-   THE MECHANISM IS ABOUT'S, APPLIED TO AN IMAGE EDGE INSTEAD OF A
-   TEXT BASELINE. `span 2` puts the closing line in the type column's
-   last row AND the photographic footer row beneath it; `align-self:
-   end` puts its margin-box bottom on the bottom edge of that pair,
-   which is row 5's bottom edge, which is the detail's bottom edge —
-   the detail is the tallest thing in row 5 by a wide margin (479.5px
-   of outer height against the caption's 56px at 1440, and the ratio
-   never inverts because the caption is one line at every width).
-   The component then lifts the box by the coda's own descender space
-   so the LAST BASELINE lands on that edge rather than the box bottom.
+   R6.1 anchored it to the DETAIL's bottom edge, which fixed the
+   reading and broke the arithmetic. The body-to-coda gap is bounded
+   at eight body lines, and anchoring to the detail adds the whole
+   `detailH - lap` term to that gap: measured 10.71 body lines at
+   1280, 16.24 at 1440 and 37.06 at 1920, diverging as the viewport
+   widened because everything photographic scales with the sheet while
+   the type column SHRINKS as its measure widens. The lever that was
+   supposed to close it — the detail's aspect — could not: it would
+   have needed a landscape 1.205 at 1440 and a NEGATIVE height at
+   1920. Both doors shut, which leaves the third.
 
-   IT IS A SPAN, NOT A ROW NUMBER, and nothing counts a line. R2
-   deleted a five-band `--p1-lines` lookup by re-anchoring its closing
-   line from its row's END; this is the same move, and it cancels the
-   body's rendered height out of the arithmetic in the same way. There
-   is nothing here to re-sweep and nothing to go stale when the copy
-   rewraps.
+   R6.2 ANCHORS IT TO THE FRAME, WHICH REMOVES THE `detailH - lap`
+   TERM ENTIRELY. The closing line spans ONE row again — row 4, the
+   type column's last — and `align-self: end` puts its margin-box
+   bottom on that row's bottom edge, which IS the frame's bottom edge,
+   because the frame spans rows 1-4. The component lifts the box by
+   the coda's own descender space so the LAST BASELINE lands on the
+   edge rather than the box bottom.
 
-   THE PLACEMENT WALK IS UNCHANGED BY THE SPAN. After the closing line
-   is placed in rows 4-5 at columns 8-11, grid's cursor sits at row 4
-   column 12. The caption asks for columns 1-3: row 4's columns 1-3
-   are occupied by the frame, so it drops to row 5 and leaves the
-   cursor at column 4, exactly where the detail asks to start. The
-   caption and the detail still share row 5 and neither moves.
+   THE GAP IS THEN A CONSTANT WHEREVER THE FRAME IS TYPE-DRIVEN, and
+   that is the property worth having rather than any particular
+   number. With the closing line back in row 4, row 4 is sized by
+   `max(closing line, frame floor - rows 1-3)`, so wherever the type
+   column is the taller of the two the frame's bottom edge IS the
+   closing line's own row bottom, and the gap reduces to
 
-   ROW 4 STOPS BEING SIZED BY THE CLOSING LINE, and that is a real
-   consequence rather than a side effect to hide. Row 4 is the
-   flexible track, so an item spanning it is sized in the step that
-   distributes space only to flexible tracks; with the closing line
-   now also spanning row 5, its contribution to row 4 goes to zero and
-   the frame's own floor becomes what sets the row. The frame is
-   therefore exactly its declared 0.95 wherever the type column no
-   longer forces it taller. Measured at 1440: 862.44px rather than
-   915.42px. The lap is unaffected — it is measured from row 5's top
-   edge, which is still the frame's bottom edge.
+       body margin-bottom + the coda's descender space
+
+   — 61.2 + 9.27 = 70.47px, 2.30 body lines, with the frame's height
+   cancelled out of it completely. It cannot drift with the copy, the
+   viewport or the photograph.
+
+   IT IS STILL A ROW-END ANCHOR AND NOTHING COUNTS A LINE. R2 deleted
+   a five-band `--p1-lines` lookup by re-anchoring its closing line
+   from its row's END; this is the same move, and the body's rendered
+   height cancels the same way. What changed between R6.1 and R6.2 is
+   WHICH row's end, not the mechanism.
+
+   THE PLACEMENT WALK IS UNCHANGED. The closing line takes row 4 at
+   columns 8-11 and leaves grid's cursor at row 4 column 12. The
+   caption asks for columns 1-3: row 4's columns 1-3 are occupied by
+   the frame, so it drops to row 5 and leaves the cursor at column 4,
+   exactly where the detail asks to start. The caption and the detail
+   still share row 5.
+
+   WHAT IT DELIBERATELY PRODUCES: the detail hangs BELOW the closing
+   line, with the coda and the frame closing level above it. That is
+   an inset running past a text column that has properly ended, and it
+   only reads that way because there is a closed horizontal line above
+   it — which the caption joins; see .win-ath-caption.
 
    ---- .win-ath-caption — the section's one caption ------------
    THE PHOTOGRAPHY RULE GIVES EVERY PHOTOGRAPH IN A SECTION A CAPTION
@@ -1080,6 +1094,26 @@ a{ color: inherit; }
                 marginalia and belongs to the page's structure, while
                 the frame is the thing that breaks it.
      1024-1279  columns 1-3, UNCHANGED.
+
+   R6.2 — IT JOINS THE CODA'S LINE. The `var(--baseline)` offset that
+   put it 28px under the frame was correct in isolation and became
+   wrong the moment the coda landed ON the frame's bottom edge: two
+   lines of type a lattice unit apart with nothing aligning them,
+   which is the R3.1 near-alignment failure. One horizontal now runs
+   across the section at the frame's bottom trim, carrying the caption
+   on the left and the coda on the right, and it is that closed line
+   which lets the detail hang beneath it as an overhang rather than as
+   a fragment.
+
+   IT IS THE CAPTION'S CAP-TOP ON THE LINE, NOT ITS BASELINE, AND THAT
+   IS A MEASURED DEVIATION FROM THE BRIEF. The frame spans columns 1-7
+   and the caption sits at 1-3, so everything above that line on the
+   left half of the section is photograph: built with the baselines
+   equal, the caption's ink lands entirely inside the frame, over a
+   band measuring luminance 77.5, with the comma clipped by the trim.
+   The line is shared instead — trim, cap-top and coda baseline all on
+   one y — and the two elements attach to it from opposite sides. The
+   arithmetic is on `.ath-caption` in the component.
      751-1023   columns 1-3 of 8.
      <= 750     1 / -1, inline in reading order. Never display:none.
 
@@ -1125,7 +1159,7 @@ a{ color: inherit; }
 
 .win-ath-bleed     { grid-column: 1 / 8;  grid-row: 1 / 5; }
 .win-ath-text      { grid-column: 8 / 13; }
-.win-ath-close     { grid-column: 8 / 12; grid-row: span 2; align-self: end; }
+.win-ath-close     { grid-column: 8 / 12; align-self: end; }
 .win-ath-caption   { grid-column: 1 / 4;  align-self: start; }
 .win-ath-detail    { grid-column: 4 / 8;  }
 
@@ -1243,49 +1277,78 @@ a{ color: inherit; }
 /* ============================================================
    ATHLETIC'S STACKING CROSSOVER · <= 1145 — R6 ONLY.  (R6)
 
-   R6 IS THE SECOND SECTION ON THE PAGE THAT STACKS EARLY, and for a
-   reason that belongs to the photograph rather than to the type. R4
-   stacks at 1121 because the empty ground under its plate grows
-   taller than the plate. R6 stacks at 1145 because THE FRAME STOPS
-   BEING ABLE TO HOLD THE PHOTOGRAPH.
+   R6 IS THE SECOND SECTION ON THE PAGE THAT STACKS EARLY. R4 stacks
+   at 1121 because the empty ground under its plate grows taller than
+   the plate. R6 stacks at 1145 because THE SECTION RUNS OUT OF ROOM
+   TO BE A SPREAD — and R6.2 restates the rule, because the R6 version
+   named only one element and went stale the moment something else
+   moved it.
 
-   THE RULE: the widest viewport at which the frame's RENDERED ASPECT
-   falls below the source file's own presented aspect. Above it the
-   frame is wider than the picture and object-fit trims sky off the
-   top and bottom, which is what the crop is designed to do. Below it
-   the frame is NARROWER than the picture and object-fit begins
-   cutting the sides — so the spread has started squeezing the
-   photograph rather than presenting it, and it keeps squeezing, hard:
+   ---- THE RULE (R6.2) ----------------------------------------------
+   THE CROSSOVER IS THE WIDEST VIEWPORT AT WHICH **ANY** OF THIS
+   SECTION'S OWN CONSTRAINTS FAILS.
 
-       vw 1146   frame 561.0 x 833.6   aspect 0.6730   > native
-       vw 1145   frame 560.5 x 867.4   aspect 0.6462   < native  <-
-       vw 1024   frame 500.0 x 898.0   aspect 0.5568   16% of the
-                                                       width cut
-       vw  900   frame 440.0 x 993.2   aspect 0.4430   34% cut
-       vw  751   frame 365.5 x 1149.5  aspect 0.3180   52% cut
+   It measures the ARRANGEMENT, not one element in it. R4.1 had to
+   learn this once already: a crossover keyed to the lede's line count
+   selected nothing across all 256 widths once the window widened,
+   while the arrangement still visibly failed. R6 then repeated it
+   here — its rule named the frame's aspect alone, and when R6.1 moved
+   the closing line out of row 4 the frame got shorter, the aspect
+   stayed above native ~100px further down, and the rule that had
+   produced 1145 would have selected 1041. The number was right and
+   its justification had quietly stopped being true.
 
-   mcclain-bleachers.jpg is presented 1984x2976, so native is
-   0.666667 — see the EXIF note in the component; the buffer is
-   2976x1984 and `sips` reports the buffer. At 751 the side-by-side
-   frame would be a 365x1150 sliver holding less than half the
-   picture: no helmet, no bleachers, no composition. Swept at 1px
-   across 751-1279; the crossing at 1145 is clean.
+   ---- THE FULL ENUMERATION -----------------------------------------
+   Swept at 1px across 1024-1279 with the spread FORCED to keep
+   running, against R6.2 geometry. Every constraint this section has,
+   and the widest viewport at which each first fails:
 
-   IT SUBSUMES THE MEASURE CONSTRAINT TOO, which is why there is one
-   crossover here and not two. The type window in band 3 is four of
-   eight columns, and the body's longest rendered line falls under the
-   45-character floor at 816 (46 characters at 817, 41 at 816). 816 is
-   below 1145, so the aspect rule fires first and the floor is never
-   reached in the side-by-side arrangement. Both sweeps are in the
-   report.
+     1145  FRAME ASPECT < THE SOURCE'S OWN PRESENTED ASPECT (0.666667)
+           Above it the frame is wider than the picture and object-fit
+           trims sky off the top and bottom, which is what the crop is
+           designed to do. Below it the frame is NARROWER than the
+           picture and object-fit starts cutting the SIDES — the
+           spread has begun squeezing the photograph rather than
+           presenting it, and it keeps squeezing:
+               vw 1146   561.0 x  833.6   0.6730   > native
+               vw 1145   560.5 x  867.4   0.6462   < native   <- BINDS
+               vw 1024   500.0 x  898.0   0.5568   16% of width cut
+               vw  900   440.0 x  993.2   0.4430   34% cut
+               vw  751   365.5 x 1149.5   0.3180   52% cut
+           At 751 it would be a 365x1150 sliver holding less than half
+           the picture: no helmet, no bleachers, no composition.
 
-   IT ALSO RESOLVES A COLLISION THE SPEC TABLE COULD NOT. In band 3
-   the spec gives the caption columns 1-3 and the detail columns 2-4
-   of eight — windows that overlap in two of the three columns they
-   share. There is no 8-column arrangement in which a 3-column caption
-   sits beside a detail that must end on the frame's right trim: the
-   only column left is the fourth, one track wide. Stacking removes
-   the question rather than answering it badly.
+     1134  CAPTION INK >= ITS 3-COLUMN WINDOW
+           234.71px of ink at the fixed 10.5px register against a
+           window of 234.64px. Eleven pixels of viewport behind the
+           binding constraint, which is thinner headroom than anyone
+           chose — see the R6.2 report.
+
+     1023  CAPTION / DETAIL COLUMN COLLISION
+           An 8-track property, so it cannot fire inside this range.
+           The spec gives the caption columns 1-3 and the detail 2-4
+           of eight, overlapping in two of the three columns they
+           share, and no 8-column arrangement fixes it: a detail that
+           must end on the frame's right trim has only the fourth
+           column left, one track wide.
+
+     none  BODY MEASURE < 45 CHARACTERS
+           Never fails in 1024-1279 (minimum 50). It fails at 816 in
+           the 8-track band, far below the binding constraint.
+
+     none  CODA GAP > 8 BODY LINES
+           Never fails in 1024-1279. Since R6.2 anchored the coda to
+           the frame, the gap is a flat 2.00 body lines everywhere the
+           frame is type-driven, which is the whole of this range.
+
+   THE WIDEST IS 1145, WHICH IS THE VALUE ALREADY SHIPPED — the
+   re-derivation moved it 0px. mcclain-bleachers.jpg is presented
+   1984x2976, so native is 0.666667; see the EXIF note in the
+   component, and note that `sips` reports the 2976x1984 buffer and is
+   wrong on this file.
+
+   IF A LATER PASS MOVES ANY OF THE FIVE, RE-RUN ALL FIVE. That is
+   what this list is for.
 
    WHAT THE STACK IS. One arrangement from 1145 all the way down,
    with only the column windows stepping by band — there is no second
@@ -1344,12 +1407,12 @@ a{ color: inherit; }
 @media (max-width: 1145px){
   .win-ath-bleed   { grid-column: 1 / 10; grid-row: auto; }
   .win-ath-text    { grid-column: 1 / 8;  }
-  /* The two-row span and the bottom anchor are released with the
-     spread. Stacked, the detail is BELOW the closing line rather than
-     beside it, so there is no image edge to align to — exactly the
-     reason About's own snap gives way to ordinary rhythm below 1024.
-     The component resets the negative margin to match. */
-  .win-ath-close   { grid-column: 1 / 7;  grid-row: auto; align-self: auto; }
+  /* The bottom anchor is released with the spread. Stacked, the frame
+     is ABOVE the closing line rather than beside it, so there is no
+     image edge at the line's level to align to — exactly the reason
+     About's own snap gives way to ordinary rhythm below 1024. The
+     component resets the descender lift to match. */
+  .win-ath-close   { grid-column: 1 / 7;  align-self: auto; }
   .win-ath-caption { grid-column: 1 / 8;  }
   .win-ath-detail  { grid-column: 1 / 8;  }
 }
