@@ -1174,6 +1174,57 @@ a{ color: inherit; }
 .win-ath-caption   { grid-column: 1 / 4;  grid-row: 2; align-self: last baseline; }
 .win-ath-detail    { grid-column: 4 / 7;  grid-row: 2; align-self: last baseline; }
 
+/* ============================================================
+   R7 — FEATURE QUOTE.  The pivot.
+
+   THE ENTRANCE IS THE PIVOT ITSELF. No kicker, no subtitle, no
+   rule, no numeral, no decorative mark, no button, no photograph.
+   One element, one edge — the second of CONTEXT.md's two sanctioned
+   exceptions to the three-left-edges staircase (the blog coda is the
+   other), and the only element on the page whose left edge is neither
+   the page trim nor an outdent from it.
+
+   ---- .win-quote — the whole section ---------------------------
+     >= 1280    columns 2-10.  `grid-column: 2 / 11`.
+     1024-1279  columns 2-10.  IDENTICAL. The 1280 boundary governs
+                the live margin and the folio, and this section has
+                neither: it is the one section CONTEXT.md deliberately
+                omits from src/data/sections.ts, so the folio goes
+                quiet over it, and it holds nothing in the margin. A
+                band-2 override would be a difference with no cause.
+     751-1023   columns 2-7 of 8.  `grid-column: 2 / 8`.
+                STATED AND JUSTIFIED, because 2-10 of 12 does not
+                transcribe onto 8 tracks by arithmetic. Two properties
+                of the 12-track window are load-bearing and both are
+                kept: ONE TRACK OF INSET AT THE LEFT — the inset is
+                the whole reason the band reads as a turned page
+                rather than as a stripe, since every other section on
+                the page starts at column 1 or outdents left of it —
+                and AIR AT THE RIGHT, so the line never runs trim to
+                trim. Columns 2-7 is the only 8-track window that
+                holds both: one track in at the left, one track of
+                open ground at the right. It is also six columns,
+                which is `.win-body`'s own lower sub-window in this
+                band, so the pivot's measure sits on a width the shell
+                has already measured — 702.25px at 1023, 498.25px at
+                751.
+                NO 900 CROSSOVER. `.win-body` takes a sixth column at
+                900 to keep BODY COPY off the 45-character floor. This
+                is display type at four to six times body size; the
+                45-78 character window does not apply to it and its
+                rendered line lengths are reported per width instead.
+                Adding a crossover here would move the pivot's left
+                edge for a reason that is not its own.
+     <= 750     1 / -1 — the single collapsed column. The inset goes
+                with the grid, as every other window's does: there is
+                one track and nothing to be inset from.
+
+   NO ROW IS DECLARED. The section holds exactly one grid item, so
+   auto-placement has nothing to resolve and a row number would be a
+   reservation a later slice could contradict.
+   ============================================================ */
+.win-quote         { grid-column: 2 / 11; }
+
 /* --- BAND 2 · 1024-1279 -----------------------------------------
    THE LIVE MARGIN IS NO LONGER SUPPRESSED HERE. R1 turned it off
    across this band and returned its columns to the measure, on
@@ -1644,6 +1695,12 @@ a{ color: inherit; }
   .win-ath-close   { grid-column: 1 / 5; }
   .win-ath-caption { grid-column: 1 / 6; }
   .win-ath-detail  { grid-column: 1 / 6; }
+
+  /* R7 — Feature Quote. Columns 2-7 of 8: one track of inset at the
+     left, one of air at the right. See the walk above the primitive
+     for why 2-10 of 12 cannot be transcribed by arithmetic, and why
+     this window does NOT take the shell's 900 crossover. */
+  .win-quote       { grid-column: 2 / 8; }
 }
 
 /* --- The crossover, at 900px. -----------------------------------
@@ -1750,7 +1807,8 @@ a{ color: inherit; }
   .win-ath-text,
   .win-ath-close,
   .win-ath-caption,
-  .win-ath-detail{ grid-column: 1 / -1; grid-row: auto; }
+  .win-ath-detail,
+  .win-quote{ grid-column: 1 / -1; grid-row: auto; }
 }
 
 /* ============================================================

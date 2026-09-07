@@ -1,0 +1,296 @@
+---
+/**
+ * FEATURE QUOTE — slice R7. THE PIVOT.
+ *
+ * CONTEXT.md Section Composition table, row "Feature Quote":
+ *
+ *   Entrance      the pivot itself
+ *   Column window 2-10
+ *   Image         NONE — type on Obsidian
+ *   Rhythm        LARGEST ON THE PAGE
+ *   Margin holds  the folio goes quiet
+ *   Length        pull quote only
+ *
+ * THIS IS NOT A CONTENT SECTION AND IS NOT BUILT LIKE ONE. Everything
+ * above it is her own work; everything below it is the funnel index.
+ * The entrance IS the pivot: no kicker, no subtitle, no rule, no
+ * numeral, no decorative mark, no button, no photograph. One element,
+ * one edge — the second of CONTEXT.md's two sanctioned exceptions to
+ * the three-left-edges staircase.
+ *
+ * THE FAILURE MODE IS "THIN DARK STRIPE", AND IT IS A SCALE-AND-SPACE
+ * PROBLEM, NOT A STYLING ONE. The band's height is 150px of padding
+ * top and bottom plus the type, and the type is the largest on the
+ * page outside the Cover's own name. Nothing else is needed and
+ * nothing else is added — see the texture note in the stylesheet.
+ *
+ * COPY. Verbatim from COPY.md, "Site-wide → Pull quote (Feature
+ * Quote)". One line, nothing else in the section. No attribution, no
+ * source, no name, no dash, no second sentence.
+ *
+ * QUOTATION MARKS ARE NOT SET, AND THIS IS A SETTING DECISION RATHER
+ * THAN A REWORDING — the string is untouched. COPY.md's marks are the
+ * deck's notation for "this is the quote", the same way its other
+ * entries are blockquoted. Two reasons they do not ship:
+ *
+ *   1. THE SECTION IS THE QUOTE. A full-bleed Obsidian band holding
+ *      one italic line at display scale, with the page's own work
+ *      above it and the index below, is already unambiguous. Marks at
+ *      112px are redundant punctuation at the loudest point on the
+ *      page.
+ *   2. THEY BREAK THE LEFT EDGE. The one thing this section's
+ *      composition rests on is a single hard left edge inset one
+ *      column from the page trim. An opening quote mark either sits
+ *      inside that edge — in which case the whole block reads as
+ *      indented — or hangs outside it on a negative text-indent, in
+ *      which case the section's only edge is carried by a punctuation
+ *      mark. The old build did the second (`text-indent: -0.42em`, a
+ *      measured advance for one face at one tier) and it is a
+ *      swept constant of exactly the kind CONTEXT.md's standing rules
+ *      keep deleting: it goes stale the moment the size, the axis
+ *      settings or the face change.
+ *
+ * FLAGGED FOR JACKSON'S CONFIRMATION in the R7 report.
+ *
+ * THE <h2> IS THE PULL QUOTE. CONTEXT.md's locked heading structure
+ * makes this explicit: "the chapter break's <h2> carries the pull
+ * quote, so a screen-reader user jumping by heading lands on the
+ * page's thesis at the structural pivot." Not a <blockquote> wrapper
+ * with a hidden heading beside it, and not a <p>. The <blockquote> is
+ * kept for semantics — it is a quotation — and the <h2> sits inside
+ * it carrying the text, so the two agree instead of duplicating.
+ *
+ * No `cite` attribute and no <footer>: there is no attributed source.
+ * The line is her own, on her own page, and COPY.md forbids adding an
+ * attribution line.
+ *
+ * GOLD — 3 of 3. "Legacy" sets in Antique Gold, the rest of the line
+ * in Porcelain. CONTEXT.md's pinned budget names the pull quote as
+ * one of the three saturated gold type accents at rest, so this is
+ * the budgeted use and not an addition; the count is unchanged from
+ * the spec. It rhymes with the Cover's "Where Leadership Meets
+ * Legacy", where the same word is the page's first gold. The whole
+ * line is NOT gold — that would spend the accent as a fill, which the
+ * palette forbids in as many words — and no other gold enters this
+ * section: no rule, no mark, no hairline.
+ *
+ * NO PHOTOGRAPH. This section previously carried athletics-detail.jpg
+ * as a full bleed. That image is Athletic Management's `inset` now
+ * and is referenced in exactly one place in the codebase.
+ *
+ * NO HEIGHT FLOOR. R1.4 is a standing rule: the Cover is the only
+ * section on this page with a height constraint. The band is padding
+ * plus type and that is the whole of it.
+ *
+ * NO MOTION. No IntersectionObserver, no opacity: 0 initial state, no
+ * transition of any kind. There is nothing interactive in the section
+ * to have a state.
+ *
+ * NO HAND-SET grid-column ANYWHERE IN THIS FILE. The single placement
+ * is `.win-quote` in global.css, whose behaviour in all four bands is
+ * written out above the implementation there.
+ */
+---
+
+<section class="sheet quote" id="sec-quote">
+  <blockquote class="win-quote quote-block">
+    <h2 class="quote-line">Every decision is viewed through a larger lens: <em
+        class="legacy">Legacy</em>.</h2>
+  </blockquote>
+</section>
+
+<style>
+  /* ---- THE GROUND ------------------------------------------------
+     Full-bleed Obsidian, edge to edge of the viewport. `.quote` is a
+     top-level section and no ancestor of a section carries a
+     max-width, a centring margin-inline or a container wrapper, so
+     the background is the viewport width by construction — there is
+     no 100vw and no `margin-left: calc(50% - 50vw)` here, both of
+     which measure the viewport INCLUDING the scrollbar and would ship
+     horizontal overflow. Porcelain page ground above and below.
+
+     FLAT #1A1613. NO TEXTURE, and this is the constraint that has to
+     survive the next pass as much as this one.
+
+     The old build's PullQuote.astro layered two radial gradients over
+     this ground — an 88%x72% gold wash at 78% 10% and a 70%x60% slate
+     wash at 6% 94%. Both are gone and neither is to come back. Three
+     rules converge on it:
+
+       - CONTEXT.md, Design Direction: "Drama comes from type scale
+         and negative space, never from colour volume." A wash IS
+         colour volume, and it is spent on the one section that has
+         nothing but scale and space to work with.
+       - CONTEXT.md, R1.1 standing rule: "If a treatment must be
+         uniform across a frame, use a flat colour, not a ramp" — and
+         the measured failure behind it, that a gradient's corner
+         renders as its first stop whatever the stop positions. The
+         gold wash above was anchored at the top-right corner of a
+         full-viewport band; at 1920 that corner is the brightest
+         thing in the section and it is not on the type.
+       - The gold budget. A 0.13-opacity gold radial over a
+         full-viewport band is not a type accent and is not a
+         hairline, so it is a use the pinned budget has no bucket for.
+
+     The frontend-design skill says never default to a solid
+     background and to reach for gradient meshes, noise and grain.
+     CONTEXT.md overrides it here and CONTEXT.md wins — its own words,
+     against its own measurement. The page's grain sheet in
+     BaseLayout.astro is a fixed sibling of the whole document and
+     already crosses this band; it is the page's texture, not this
+     section's, and nothing is added on top of it.
+
+     NO gradient. NO mesh. NO noise or grain overlay of its own. NO
+     vignette. NO radial wash. NO border. NO rule. Do not improve it.
+
+     ---- THE VALUE STEP -------------------------------------------
+     Both boundaries are hard and stay hard. CONTEXT.md's 35-50
+     luminance-step window governs where a PHOTOGRAPH meets the page
+     ground — it exists because a contained rectangle of studio
+     seamless reads as pasted on. This is a designed colour band, not
+     a frame, and its ~200-unit step against Porcelain is the entire
+     mechanism of the page turn. Nothing here is softened, feathered
+     or transitioned.
+
+     ---- PADDING ---------------------------------------------------
+     150px top and bottom, the largest on the page, per CONTEXT.md's
+     per-section table: Cover 64 · About 96 · Educational Leader 110 ·
+     Premier 80 · Everyday Legends 70 · Athletic 110 · FEATURE QUOTE
+     150 · Index 110 · Blog 110/40 · Contact 96. Sections MUST NOT
+     share a padding token, so the value is set here and nowhere else.
+
+     NO min-height, NO svh, NO viewport-height floor of any kind.
+     ---------------------------------------------------------------- */
+  .quote{
+    background-color: #1A1613;
+    padding-block: 150px;
+  }
+
+  /* The <blockquote> is a semantic wrapper only. Every browser gives
+     it a 40px inline margin by default, which would put the type on a
+     fourth left edge one arbitrary distance in from its own column —
+     the exact failure CONTEXT.md's three-edges rule is written
+     against. Zeroed, so the grid area IS the text block. */
+  .quote-block{
+    margin: 0;
+  }
+
+  /* ---- THE TYPE --------------------------------------------------
+     Fraunces, ITALIC, quote tier. EVERY AXIS IS ENUMERATED, in the
+     rule and in the font request in BaseLayout.astro, for both the
+     roman and the italic face: `--fx-quote` is
+     `'opsz' 96, 'wght' 340, 'SOFT' 40, 'WONK' 1`, which is
+     CONTEXT.md's optical table for this role exactly. Fraunces
+     defaults to wght 900, WONK on and SOFT 100 when an axis is left
+     unstated, and a Google Fonts URL requesting only ital,opsz,wght
+     ships full roundness silently — so nothing here is left to the
+     face to decide.
+
+     WONK 1 is the point of the tier, and it is spent here and nowhere
+     else. In italic it swaps in the flagged ball terminals on b d h k
+     l v and w — this line has all of b, d, h, l and w in it. The
+     Cover's own gold "Legacy" is deliberately set at WONK 0 for
+     exactly this reason: the flourish belongs to the pivot.
+
+     `font-weight: 340` restates the wght axis in the property the
+     browser uses for fallback selection, so a Montserrat-less,
+     Fraunces-less render is not 900-weight. It agrees with the axis
+     rather than overriding it.
+
+     ---- SCALE -----------------------------------------------------
+     THE LARGEST TYPE ON THE PAGE AFTER THE COVER'S OWN NAME, and by a
+     long way over everything it is actually measured against. The
+     page's ledes all resolve from `--lede-size`,
+     `clamp(52px, 3.8vw, 64px)` — 54.72px at 1440 — and this is
+     112.3px there, 2.05x the largest lede on the page and 6.6x the
+     17px body. CONTEXT.md's lede-to-body floor is 3x; this clears it
+     against the LEDES.
+
+     7.8vw between a 44px floor and a 128px ceiling:
+       1920  128.0  (ceiling; 7.8vw would be 149.8)
+       1640  127.9  (the ceiling engages here)
+       1440  112.3
+       1280   99.8
+       1024   79.9
+        751   58.6
+        390   44.0  (floor; 7.8vw would be 30.4)
+
+     The ceiling exists because the line is a fixed number of
+     characters: past about 1640 the type stops needing to grow to
+     dominate and starts running out of column instead. The floor
+     exists because the phone measure is 340px at 390 and a smaller
+     size buys nothing — it is already the largest type on the page
+     there too.
+
+     `line-height: 1.02` — display type sets solid. `text-wrap:
+     balance` so the rag is even rather than leaving "Legacy." alone
+     on a line; the final word is the gold one and an orphan of it
+     would read as a caption. */
+  .quote-line{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-quote);
+    font-style: italic;
+    font-weight: 340;
+    font-size: clamp(44px, 7.8vw, 128px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--porcelain);
+    text-wrap: balance;
+  }
+
+  /* GOLD, 3 of 3 — the last of CONTEXT.md's pinned saturated type
+     accents at rest, and the only colour in this section other than
+     the Porcelain it sits in.
+
+     Measured on the rendered pair: Antique Gold #AF8C5C on Obsidian
+     #1A1613 is 5.76:1 and Porcelain #E7E2DD on Obsidian is 13.97:1.
+     Both clear AA for normal text, let alone at 44-128px, at every
+     band. Gold on Porcelain is 2.4:1 and on Cashmere 1.9:1 — under
+     even the 3:1 large-text floor — so the dark ground is what lets
+     this be the page's loudest gold moment at all.
+
+     Only the colour changes. Same face, same axes, same size, same
+     slope as the words around it, because the word is the end of the
+     sentence and not a link. */
+  .quote-line .legacy{
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ---- COLLAPSE, stated before implementing ----------------------
+     The column window's four bands are written out above `.win-quote`
+     in global.css. What the BAND itself does:
+
+     >= 1280    Full-bleed Obsidian. Type at columns 2-10, 112-128px,
+                three lines at 1440 and 1920.
+     1024-1279  Identical in kind. Same window, same padding, type
+                scaling with the viewport. The folio hides at 1280 for
+                its own reason and this section is the one the folio
+                is already quiet over, so the boundary is invisible
+                here.
+     751-1023   8 tracks. Type at columns 2-7, one track in from the
+                left trim and one of air at the right. Padding takes
+                the clamp below.
+     <= 750     One column, full measure, no inset — there is one
+                track to be inset from. Padding at its floor.
+
+     PADDING IN BANDS 3 AND 4. `clamp(116px, 14.67vw, 150px)`:
+     150.07px at 1023, so the clamp's ceiling holds the 1024/1023
+     boundary seamless to the flat value above it, and the taper
+     starts at 1022. It reaches the 116px floor at 791 and holds it
+     from there down through the whole phone band.
+
+     116 IS NOT A ROUND NUMBER, IT IS A CONSTRAINT. Every other
+     section on the page sets a FLAT pixel padding with no band
+     override anywhere — Educational Leader and Athletic Management
+     are 110 at every width from 1920 to 360. This section must stay
+     the largest on the page at EVERY width, so its floor cannot go
+     below 110; 116 keeps six pixels of headroom over the two tallest
+     sections while still scaling the band down by a fifth on a phone.
+     If a future pass gives any section a padding above 116, this
+     floor moves with it. */
+  @media (max-width: 1023px){
+    .quote{ padding-block: clamp(116px, 14.67vw, 150px); }
+  }
+</style>

@@ -11,11 +11,11 @@
  *   R4       Premier Leadership  <- THIS SLICE (batched with R5)
  *   R5       Everyday Legends    <- shipped
  *   R4.2     Premier corrections <- shipped
- *   R6       Athletic Management <- THIS SLICE
+ *   R6       Athletic Management <- shipped
+ *   R7       Feature Quote       <- THIS SLICE
  *
- *   R7  Feature Quote        R10  Contact + footer (form is PORTED)
- *   R8  Index                R11  /privacy
- *   R9  Charging It to the Game
+ *   R8  Index                R10  Contact + footer (form is PORTED)
+ *   R9  Charging It to the Game    R11  /privacy
  *
  * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
  * built to rhyme and the failure mode of a rhyme is a repeat, so they
@@ -44,6 +44,7 @@ import EducationalLeader from '../components/EducationalLeader.astro';
 import PremierLeadership from '../components/PremierLeadership.astro';
 import EverydayLegends from '../components/EverydayLegends.astro';
 import AthleticManagement from '../components/AthleticManagement.astro';
+import FeatureQuote from '../components/FeatureQuote.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -54,5 +55,6 @@ import AthleticManagement from '../components/AthleticManagement.astro';
     <PremierLeadership />
     <EverydayLegends />
     <AthleticManagement />
+    <FeatureQuote />
   </main>
 </BaseLayout>
