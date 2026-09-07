@@ -371,12 +371,28 @@ const blogHref = `#${blog.id}`;
      numeral is a display-scale FIGURE, which wants opsz 96's sharp
      high-contrast register at wght 300 and SOFT 30, and the row name
      is a small-display role at opsz 24 / wght 400 / SOFT 60 — softer
-     and more open than any existing tier, because it is read at 28px
-     beside a 56px figure rather than seen alone. Declared locally so
-     no other section inherits them.
+     and more open than any existing tier, because it is read beside a
+     figure roughly twice its size rather than seen alone. Declared
+     locally so no other section inherits them.
      ---------------------------------------------------------------- */
   .index {
-    --idx-num-size: clamp(36px, 3.9vw, 56px);
+    /* R8.2 — DECLARED AGAINST THE LEDE, NOT SWEPT ALONGSIDE IT.
+       This was clamp(36px, 3.9vw, 56px) through R8 and R8.1. That
+       clamp and the page's --lede-size were two independently swept
+       values on different schedules with different floors: --lede-size
+       bottoms out at 1368 while the numeral kept falling on 3.9vw down
+       to 923. Above 1368 they tracked closely enough to read as
+       related; below it they did not, and the measured ratio fell from
+       1.023 at 1440 to 0.768 at 1024 and 0.692 at 901 and below —
+       outside the 0.90-1.15 window at every width in band 2's lower
+       half and all of bands 3 and 4. The relationship was a
+       COINCIDENCE OF TWO SCHEDULES that happened to agree in one
+       range, not a declaration.
+
+       This project has removed that exact shape three times already —
+       --p1-lines, the R4.1 crossover keyed to one element, R6.3's lap
+       as a constant. A relationship that must hold is DECLARED. */
+    --idx-num-size: calc(var(--lede-size) * 1.02);
     --idx-num-lh: 1;
 
     --idx-name-size: clamp(20px, 1.95vw, 28px);
@@ -564,17 +580,33 @@ const blogHref = `#${blog.id}`;
      screenshot before any measurement. At equal weight the numeral is
      twice the name's size and reads as the entrance.
 
-     THE SIZE IS UNCHANGED and is not relitigated: the 1.023x parity
-     with the largest lede at 1440 is the correct relationship and
-     weight does not enter that ratio.
+     WEIGHT DOES NOT ENTER THE SIZE RATIO, so R8.1's change to it left
+     the numeral's relationship to the lede exactly where R8 put it.
 
-     SCALE IS RELATIONAL, NOT ABSOLUTE. clamp(36px, 3.9vw, 56px)
-     resolves to 56px at 1440 against a largest rendered lede of
-     54.72px — a ratio of 1.02, inside the 0.90-1.15 window. The Index
-     is the page's NAVIGATION; numerals set larger than the sections'
-     own opening statements would invert the hierarchy. Against the row
-     name it is 2.00x at 1440 and never falls below 1.80x at any width
-     the page renders, both ends of the clamp included.
+     SCALE IS RELATIONAL, AND SINCE R8.2 IT IS DECLARED RATHER THAN
+     MEASURED. --idx-num-size is calc(var(--lede-size) * 1.02), so the
+     numeral is 1.02x the page's lede at EVERY width by construction —
+     there is no width at which the ratio can drift, because there is
+     no second schedule for it to drift against. See the token.
+
+     WHY 1.02 AND NOT 1.00 OR 1.15. The Index is the page's NAVIGATION.
+     Numerals set larger than the sections' own opening statements
+     would invert the hierarchy, so the ceiling is real; numerals set
+     smaller than the lede sitting three inches above them stop being
+     the entrance the Composition table says they are, so the floor is
+     real too. 1.02 is parity with a hair of authority — the figure R8
+     arrived at by measurement at 1440, now held everywhere instead of
+     at one width.
+
+     AGAINST THE ROW NAME the numeral is 1.99x at 1440 and RISES as the
+     viewport narrows — 2.65x from 1024 down — because the name keeps
+     its own clamp while the numeral now follows the lede's. The 1.80
+     floor is cleared at every width by a wider margin than before.
+
+     `font-variant-numeric: tabular-nums` so 01-05 occupy identical
+     advance widths — a contents column whose figures shift left and
+     right by the width of a 1 is a contents column with five left
+     edges.
 
      `font-variant-numeric: tabular-nums` so 01-05 occupy identical
      advance widths — a contents column whose figures shift left and
