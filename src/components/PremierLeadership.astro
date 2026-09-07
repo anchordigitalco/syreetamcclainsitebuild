@@ -1,0 +1,685 @@
+---
+/**
+ * PREMIER LEADERSHIP — slice R4.
+ *
+ * CONTEXT.md Section Composition table, row "Premier Leadership":
+ *
+ *   Entrance      C — IMAGE-FIRST. The photograph opens the section,
+ *                 before any type, in document order AND in reading
+ *                 order. Educational Leader directly above is
+ *                 deliberately photo-free and opens on an outdented
+ *                 kicker capped by a rule; this opens on a plate and
+ *                 has no kicker and no rule at all. That contrast is
+ *                 the turn between the two spreads.
+ *   Column window photo 1-4, type 5-11 (band 1)
+ *   Image         `column` tier — portrait-seated.jpg
+ *   Rhythm        80px. Educational Leader above is 110, Everyday
+ *                 Legends below is 70. Sections MUST NOT share a
+ *                 padding token.
+ *   Margin holds  the four speaking topics.
+ *   Length        ABRIDGED — opening statement + one body paragraph +
+ *                 topics + button. It has its own site.
+ *
+ * THE ABRIDGEMENT IS THE SPEC, NOT AN OVERSIGHT. COPY.md's note on
+ * length is explicit: the word budget runs ~20 to ~110 words across
+ * the page, a roughly 5:1 spread the composition depends on being
+ * VISIBLE AS SECTION HEIGHT. Nothing here is lengthened to fill space
+ * and nothing is restored from Appendix A1. If the section reads
+ * thin, that is a composition problem and is solved in the layout.
+ *
+ * NAMING. The display name is "Premier Leadership" — no LLC suffix
+ * anywhere in this section. COPY.md puts the legal form in exactly
+ * one place on the whole site, the About paragraph, where the client
+ * wrote it herself; it is not propagated here.
+ *
+ * NO EMAIL ADDRESS APPEARS IN THIS FILE, in markup or in a comment.
+ * The address carried in the source copy is superseded per COPY.md
+ * and MUST NOT be published; the Premier Leadership address that did
+ * replace it belongs to the contact form (Phase F), not to this
+ * section. The WEBSITE is the section's only outbound destination and
+ * it is carried by the button.
+ *
+ * NO HEIGHT CONSTRAINT. No min-height, no svh floor. CONTEXT.md's
+ * R1.4 standing rule: the Cover is the only section on this page with
+ * one. This section is content-height, and R4.2 inverted which content
+ * sets it: the plate used to be the tallest thing in the section and
+ * now it is the shortest of the three columns, taking its height from
+ * the type beside it.
+ *
+ * NO grid-column IS SET IN THIS FILE. Four collapse-aware primitives
+ * carry every placement — .win-prem-plate, -head, -body, -margin —
+ * and each one's behaviour in all four bands (>=1280 / 1024-1279 /
+ * 751-1023 / <=750) is written out in full above the implementation
+ * in global.css, before the implementation.
+ *
+ * ONE grid-row IS SET, on .win-prem-plate, and it is STRUCTURAL
+ * rather than a measurement: the type column is authored in exactly
+ * four blocks, so the plate spans from the first to the last. It is
+ * not a line count, it does not go stale when the copy rewraps, and
+ * it is released to `auto` the moment the section stacks at 1121.
+ * The TOPICS are seated by document order alone — authored
+ * immediately after the body — with no offset and no line count.
+ *
+ * R4.2 — THE PLATE'S BOTTOM EDGE IS THE BUTTON'S BOTTOM EDGE, and it
+ * is solved structurally rather than with a number. The plate no
+ * longer carries `align-self: start` or an aspect ratio in the
+ * side-by-side band; it stretches across its four-row span, and the
+ * track list on `.prem` below makes the fourth of those rows exactly
+ * one button tall by giving the topics list a fifth, FLEXIBLE row to
+ * spill into. Grid sizes items spanning a flexible track in a step
+ * that distributes space only to flexible tracks, so the topics can
+ * no longer inflate the button's row — which, measured, they were
+ * doing at every width in both 12-column bands.
+ *
+ * R4.2 — THE SCRIM IS DELETED, with no replacement. See the plate
+ * comment in the markup.
+ *
+ * NO TRANSFORM ON THE PHOTOGRAPH, EVER. The crop is done by
+ * oversizing the <img> box inside overflow:hidden. A static
+ * transform: scale() on the <img> silently kills the
+ * mix-blend-mode treatment — measured in R1, the treated backdrop
+ * reverted to the raw source colour — because the transformed image
+ * composites into its own layer.
+ *
+ * GOLD: ZERO NEW. Both budgets are spent. The plate carries the
+ * Cover's already-shipped flat Gold multiply at 0.24 from
+ * .plate-img::before, which is reuse of the page's one photograph
+ * treatment — the budget counts type accents and hairline rule
+ * contexts, and this is neither. No rule exists in this section, so
+ * it adds 0 of the 8 rule contexts, and no type is gold.
+ *
+ * OVERLAP: ZERO. Two of the three page overlaps are spent (the Cover
+ * name, the Athletic detail crop) and the third is reserved for R6.
+ * Nothing in this section overlaps anything.
+ */
+import { Image } from 'astro:assets';
+import portraitSeated from '../assets/portrait-seated.jpg';
+---
+
+<section class="sheet prem" id="sec-pillar">
+  <!--
+    SOURCE ORDER IS STRUCTURAL. plate -> head -> lede -> body ->
+    topics -> button is what makes grid's sparse cursor seat the
+    topics list in the BODY's row rather than the lede's, which is the
+    whole mechanism by which it clears the lede — which overruns into
+    the margin's columns — at every width and every line count, with
+    nothing counted. Reordering these siblings changes the
+    composition. See global.css.
+
+    It is also the right stacked reading order below 750: photograph,
+    name, subtitle, opening statement, body, the four topics, then the
+    button. The button stays the last thing in the section, which is
+    why it is a grid item of its own rather than a child of the body.
+  -->
+  <figure class="win-prem-plate prem-plate">
+    <!--
+      THE PLATE. `column` tier — half the page or less, inside the
+      body window. It CANNOT bleed: the bleed-left tier is spent on
+      Athletic Management, which is the page's single spread moment
+      and the only place the page gutter is broken.
+
+      Two things stop it reading as pasted on here, and R4.2 removed
+      a third that never worked:
+
+      (a) THE CROP. Her figure crosses the plate's bottom edge and
+          both side edges — at the shoulder line and below, the
+          blazer is cut by the left and right trims, so the backdrop
+          never terminates against a vertical edge inside the frame.
+          Measured off the source, not eyeballed; the numbers are on
+          .prem-frame below.
+      (b) THREE SHARED EDGES. The plate's top edge sits on the
+          section's top padding line, its left edge on the sheet's
+          left trim, and — R4.2 — its bottom edge on the button's
+          bottom edge. A rectangle sharing three edges with the page's
+          own structure reads as an aperture; one sharing none reads
+          as a card.
+
+      THE SCRIM IS GONE AND MUST NOT COME BACK IN ANY FORM. R4.1
+      shipped a page-ground gradient across the top of this plate to
+      dissolve its top edge. The mechanism cannot work on this frame:
+      her hair enters at 11.41% of the plate's height, so any scrim
+      that clears her hair is confined to the top 11%, and 11% of a
+      frame cannot dissolve its edge. What shipped was one soft edge
+      against three hard ones, which reads as a light leak rather than
+      as a device. It is also no longer needed — at 421.3px wide the
+      plate reads as a portrait plate rather than as a card, which is
+      R4.1's own finding. No gradient, no mask, no feathered edge
+      replaces it. CONTEXT.md carries the general rule: measure where
+      the subject enters the frame before specifying a scrim at all.
+
+      THE PLATE CARRIES THE COVER'S FLAT GOLD AT 0.24 FROM
+      .plate-img::before, AND NOTHING ELSE.
+
+      No border, no border-radius, no shadow — CONTEXT.md's standing
+      rule for every photograph on the page.
+
+      Eager + sync decode: a photograph that resolves late is absent
+      from full-page captures and from any PDF the client generates.
+    -->
+    <div class="plate-img prem-frame">
+      <!--
+        `sizes` DESCRIBES THE <img> BOX, WHICH IS 161.6% OF THE PLATE.
+        The box is oversized on purpose — that is how the crop is done
+        without a transform — so the browser must be told the box's
+        width, not the plate's, or it picks a rendition sized for the
+        visible window and upsamples it by 1.6x.
+
+        Recomputed for the 1-4 plate. Measured, per band:
+          <=750    plate is the full sheet   box 1083px at 750  = 144vw
+          <=1023   plate is 6 of 8           box 1135px at 1023 = 111vw
+          <=1121   plate is 9 of 12, stacked box 1194px at 1121 = 107vw
+          else     plate is 4 of 12          box  681px at 1440 =  47vw
+        48vw carries the side-by-side band with a little headroom. The
+        previous 60vw was computed against the 1-5 plate and was left
+        over-declared by the narrowing in this pass — safe, but it
+        fetches a larger file than the layout needs.
+      -->
+      <Image
+        src={portraitSeated}
+        alt="Dr. Syreeta McClain seated in a leopard-print blazer against a warm tan studio backdrop."
+        widths={[640, 960, 1280, 1720]}
+        sizes="(max-width: 750px) 144vw, (max-width: 1023px) 111vw, (max-width: 1121px) 107vw, 48vw"
+        loading="eager"
+        decoding="sync"
+      />
+    </div>
+  </figure>
+
+  <div class="win-prem-head prem-head">
+    <!--
+      THE <h2> IS THE SECTION NAME. CONTEXT.md's locked heading
+      structure: each section's <h2> is the element whose text names
+      the section, and that string equals the folio label. Verified
+      against src/data/sections.ts — { id: 'sec-pillar', n: '04',
+      label: 'Premier Leadership' } — not assumed. No LLC suffix.
+
+      NO OUTDENT AND NO RULE ABOVE IT. Educational Leader owns that
+      entrance and repeating it here would make two adjacent sections
+      open the same way, which CONTEXT.md names as the failure mode.
+      The head sits at the top of the type block, on the type block's
+      own left edge.
+    -->
+    <h2 class="role prem-name">Premier Leadership</h2>
+    <p class="prem-subtitle">Founder &amp; CEO</p>
+  </div>
+
+  <p class="win-prem-head prem-lede">Leadership is not a position. It is the responsibility to move people, ideas, and organizations forward.</p>
+
+  <div class="win-prem-body prem-body">
+    <p>Twenty years of leading schools, building programs, and navigating complex systems. Premier Leadership brings that experience beyond the schoolhouse to help others turn vision into action.</p>
+  </div>
+
+  <!--
+    THE LIVE MARGIN — the four speaking and workshop topics. Authored
+    HERE, directly after the body and before the button, so
+    auto-placement seats it in the body's row and baseline-locks it to
+    the body's FIRST line. Moving it to the end of the section would
+    drop it into the button's row and empty the margin for the
+    section's whole upper half, which is the void condition R-shell
+    flagged and R3 closed.
+
+    A <ul>, because four topics are a list. NO bullets, no numerals,
+    no rules between items — a numeral here would be countable and
+    would collide with the Index's own 01-05 numbering, which is the
+    bug CONTEXT.md has had flagged four times.
+
+    THE LABEL IS NEW. R4 shipped this column with no label at all
+    while Everyday Legends below it carried INSTAGRAM, so two sections
+    built to rhyme had margins that did not: R5's read as marginalia
+    and R4's read as a second column of body copy. The label is set in
+    R5's treatment exactly — same size, weight, tracking, case, colour
+    and knock-down, and the same 2px gap to the content under it.
+  -->
+  <div class="win-prem-margin prem-margin">
+    <p class="prem-margin-label">Speaking topics</p>
+    <ul class="prem-topics">
+      <li>Building schools that adapt to students, not the reverse</li>
+      <li>Alternative education and student engagement</li>
+      <li>Leadership development for educators and administrators</li>
+      <li>Raising and managing student-athletes in the NIL era</li>
+    </ul>
+  </div>
+
+  <!--
+    Website only. The button IS the link — COPY.md gives this section
+    one destination and one button, and printing the bare domain as
+    well would be the redundancy that was removed from Everyday
+    Legends for the same reason. rel="noopener", not
+    "noopener noreferrer": noreferrer strips the Referer header and
+    costs Anchor referral attribution from every client site it ships.
+  -->
+  <p class="win-prem-body prem-cta">
+    <a class="btn-solid" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Explore Premier Leadership</a>
+  </p>
+</section>
+
+<style>
+  /* CONTEXT.md's per-section padding table gives Premier Leadership
+     80. Educational Leader above is 110 and Everyday Legends below is
+     70; sections MUST NOT share a padding token, so the value is
+     declared here and nowhere else.
+
+     FLAT AT EVERY BAND, which is R3's scaling pattern read off the
+     build rather than invented: EducationalLeader.astro declares
+     `padding-block: 110px` once with no band override anywhere in the
+     file, so its 110 is the same 110 at 1440 and at 375. This section
+     follows it exactly — one declaration, no media query. Inventing a
+     scale here would put R4 on a rule R3 does not use.
+
+     THE ROW TRACK LIST. FIVE rows, and only the fifth is flexible.
+     Rows 1-4 are the type column's four authored blocks — head, lede,
+     body, button. Row 5 holds nothing of its own.
+
+     R4 shipped four rows with the LAST one 1fr, because the plate was
+     then the tallest thing in the section and its surplus had to land
+     somewhere other than the internal type gaps, which are derived
+     from the type tokens and must not be added to.
+
+     R4.2 INVERTS THAT. The plate is no longer taller than the type —
+     it stretches to the type — so the surplus it used to shed no
+     longer exists. What does exist, and what R4.1 did not measure, is
+     the TOPICS LIST: spanning the body's row and the button's row, it
+     was taller than both together at every width in both 12-column
+     bands, and it was setting the button's row height. Row 4 rendered
+     82.86px at 1440 against a 48.5px button, 137.42px at 1279 and
+     173.80px at 1122. Nothing looked wrong, because a grid row grows
+     downward and the button never moved — but the row's BOTTOM edge
+     was the list's, not the button's, and R4.2 needs that edge.
+
+     SO ROW 5 IS THE SPILL ROW AND IT IS THE ONLY FLEXIBLE TRACK.
+     CSS Grid sizes items that span a flexible track in a separate
+     step from items that do not, and that step distributes space ONLY
+     to the flexible tracks in the span. The topics list spans rows
+     3-5, so it contributes NOTHING to the body's row or the button's
+     row and all of its surplus lands in row 5, below the button,
+     where it is ordinary section space — the same place R4 was
+     putting the plate's surplus, for a different reason.
+
+     Row 5 collapses to zero at any width where the list is shorter
+     than the body and the button together. Nothing here is a
+     measurement and nothing goes stale when the copy rewraps. */
+  .prem{
+    padding-block: 80px;
+    grid-template-rows: auto auto auto auto 1fr;
+  }
+
+  /* ---- THE PLATE — entrance C ------------------------------------ */
+
+  .prem-plate{ margin: 0; }
+
+  /* 4:5. CONTEXT.md: no two photographs on the page share a crop, and
+     aspect ratio is a separate lever from width. The Cover's plate is
+     a full-height column-tall bleed; this one is a fixed 4:5
+     rectangle.
+
+     THE CROP, measured off the source rather than eyeballed.
+     portrait-seated.jpg is 4267x6198, EXIF orientation 1. Her figure
+     was swept row by row against the backdrop to find, at each source
+     row, the leftmost and rightmost pixel that is NOT backdrop:
+
+         source row    subject spans
+             2299      1249 - 3498     hair and the near shoulder
+             2499       809 - 3538     THE SHOULDER LINE, her widest
+             3199       710 - 3677
+             3799       620 - 3767
+             4299       560 - 3757     widest point of the sleeves
+             4699       779 - 3388     hands and lap
+
+     The visible window is [840, 3480] x [150, 3450] of the source.
+     Its left and right trims sit INSIDE her shoulder span at every
+     row from 2499 down, so she is cut by both side edges rather than
+     sitting inside the rectangle; and its bottom trim at 3450 is
+     mid-blazer, so she crosses that too. Backdrop survives only above
+     the shoulder line, beside her head — an organic termination, not
+     a straight edge inside the frame.
+
+     THE MECHANISM IS AN OVERSIZED BOX, NOT A TRANSFORM. Measured in
+     R1: a static transform: scale() on the <img> takes the treated
+     backdrop from #a5a29d back to the raw #b3b4b4, because the
+     transformed image composites into its own layer and
+     .plate-img::before can no longer blend against it. The reasoning
+     that a transform is safe "because it is on a sibling of ::before,
+     not an ancestor" is wrong in practice.
+
+     So: a width greater than 100% with a matching negative left, both
+     percentages, clipped by .plate-img's overflow: hidden.
+
+         --crop-w   4267 / 2640            = 161.6%
+         --crop-l   -(840 x 1.6163 / 4267) = -31.82%
+         --crop-y    150 / 2864.5          = 5.18%
+
+     Both horizontal terms are percentages of the plate's own width,
+     so plate width cancels out of the source window entirely and the
+     crop is IDENTICAL at every viewport width in every band — no
+     drift, no breakpoint, nothing to re-measure. The box aspect is
+     1.29 against the file's native 0.688, comfortably wider, so
+     object-fit spreads the full source width across the box at every
+     width and the identity holds. */
+  /* R4.2 — THE HEIGHT COMES FROM THE GRID, NOT FROM AN ASPECT RATIO.
+     `height: 100%` against the stretched figure, which is stretched
+     across rows 1-4, whose bottom is the button's bottom. The 4:5 that
+     used to live here is restored in the <=1121 block, where the
+     section stacks and the plate is alone in its row — there,
+     stretching it to its row would be stretching it to itself, so it
+     needs an intrinsic height again.
+
+     THE CROP IS UNAFFECTED HORIZONTALLY. Both horizontal terms are
+     percentages of the plate's own width, so the source window's left
+     and right trims are identical before and after this change. The
+     box aspect at 1440 goes from 1.29 to 1.25, still comfortably wider
+     than the file's native 0.688, so object-fit still spreads the full
+     source width across the box and the identity holds. What changes
+     is vertical: a taller box at the same width means she crosses the
+     bottom trim harder, which is the intended consequence. */
+  .prem-frame{
+    height: 100%;
+    --crop-w: 161.6%;
+    --crop-l: -31.82%;
+    --crop-y: 5.18%;
+  }
+
+  /* :global() — <Image> emits its own <img>, which never receives
+     Astro's data-astro-cid-*, so a scoped selector silently stops
+     matching. This has bitten this project twice.
+
+     max-width: none is not optional. Tailwind's preflight sets
+     `img { max-width: 100% }`, which clamps the oversized box back to
+     the plate width and produces no crop at all. */
+  .prem-frame :global(img){
+    position: absolute;
+    top: 0;
+    left: var(--crop-l);
+    width: var(--crop-w);
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% var(--crop-y);
+  }
+
+  /* ---- THE HEAD -------------------------------------------------
+     No kicker outdent and no rule. The head sits at the top of the
+     type block on the type block's own left edge, in the established
+     .role register — 500 weight, uppercase, 0.14em, Obsidian — which
+     is a HEAVIER and DARKER register than Educational Leader's 10.5px
+     Slate kicker directly above it. Two adjacent sections must not
+     announce themselves the same way. */
+  .prem-head{
+    /* HEAD -> LEDE. One body line, via the body's own tokens rather
+       than a pixel: calc(1.0 x 17px x 1.8) = 30.6px. It re-resolves
+       from the type at every width with no breakpoint. A fixed pixel
+       gap set from one width is a swept band by another name. */
+    margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .prem-name{
+    margin: 0;
+    margin-left: -0.07em;   /* half of .role's 0.14em tracking */
+  }
+
+  /* The deck. SENTENCE CASE, deliberately: the name above it is
+     uppercase and letterspaced, so setting the subtitle the same way
+     would give the head two identical-looking lines and no hierarchy.
+     Case is the differentiator, not size alone. Same reasoning and
+     same register as Educational Leader's subtitle, which is the
+     point — the SUBTITLE is a shared device across the pillars; the
+     entrance is not. Set verbatim from COPY.md. */
+  .prem-subtitle{
+    margin: 2px 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3, on the shared --lede-size token so R5's decorative
+     mark can derive its own size from the same number. Same face,
+     same four axes, same line-height and letterfit as Educational
+     Leader's and About's ledes — CONTEXT.md's lede rule. The section
+     differs from its neighbours in ENTRANCE, WINDOW and RHYTHM, which
+     is where the difference belongs; re-scaling the lede would break
+     the page's one display tier into two that mean nothing.
+
+     3.22x the 17px body at 1440, inside CONTEXT.md's 3-4x band.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else. */
+  .prem-lede{
+    /* LEDE -> BODY. 0.75 of the lede's OWN line-height via `lh`, so
+       it re-resolves from the type rather than from a width. R3
+       precedent, same number, same unit. */
+    margin: 0 0 0.75lh;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3. --bio-size / --bio-lh, the page's body tokens,
+     unchanged. NO max-width — span only. One paragraph, per COPY.md.
+     Nothing is restored from Appendix A1. */
+  .prem-body{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+    /* BODY -> BUTTON. calc(1.75 x 17px x 1.8) = 53.55px, again from
+       the body's own tokens. Larger than the head->lede gap and
+       larger than the lede->body gap, so the button reads as leaving
+       the text block rather than as its fourth paragraph. */
+    margin-bottom: calc(1.75 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .prem-body p{ margin: 0; }
+
+  /* The margin-bottom above belongs to the paragraph block; the CTA
+     shares the same primitive and must not repeat it.
+
+     R4.2 — `display: flex` SO THE PARAGRAPH BOX IS EXACTLY THE BUTTON.
+     The button is an inline-block, so as a line box the paragraph
+     carried the strut's descent below it: 57.8px of paragraph against
+     48.5px of button at 1440. That difference is invisible on its own
+     — nothing is drawn in it — but the plate's bottom edge is now this
+     row's bottom edge, so a paragraph taller than its button would put
+     the plate ~9px below the button and reproduce the near-miss R4.2
+     exists to remove. One flex item, no strut, so the box is the
+     button's height exactly. The button's TOP does not move: it was
+     already the line box's top, the inline-block being taller than the
+     strut's ascent. Nothing about the button's own appearance changes
+     — it keeps its intrinsic width, its left alignment and every
+     interactive state. */
+  .prem-cta{ margin: 0; display: flex; }
+
+  /* ---- THE LIVE MARGIN — the four speaking topics ----------------
+     THE REGISTER IS R3's, NOT THE BODY's. R4 shipped these at 13px in
+     Smoked Slate with no label, beside a 17px body in the same Smoked
+     Slate, and the column read as a second measure of body copy
+     rather than as marginalia. Everyday Legends directly below got
+     this right and R4 did not, which is the worst outcome for two
+     sections built to rhyme.
+
+     The block now takes `.edu-margin`'s exact shape — the one
+     Educational Leader's district link uses, and the one Everyday
+     Legends' Instagram handle reuses: a 10.5px tracked uppercase
+     label set on the BODY's line-height, with the content 2px under
+     it at 13px. Three sections, one margin register.
+
+     BASELINE-LOCKED TO THE BODY'S FIRST LINE, and the arithmetic
+     CANCELS rather than being swept. A first baseline sits at
+     half-leading plus ascent, which reduces to
+
+         B = lh/2 + (asc - desc)/2 x font-size
+
+     Montserrat's asc - desc is 0.717 (published hhea 968/-251; R2
+     cross-checked it at 0.716 from rendered ink), so the constant is
+     0.3585. Giving this block the BODY's line-height makes the lh/2
+     term identical on both sides and the whole expression collapses
+     to the difference in font size alone:
+
+         B_body - B_margin = 0.3585 x (17px - 10.5px) = 2.33px
+
+     R4 previously carried the LONG form of this expression, because
+     it gave the block its own tighter leading and could not collapse
+     the lh/2 terms. Adopting R3's register retires that: the long
+     form is gone and this is now byte-identical to `.edu-margin` and
+     `.legends-margin`. Written with `1em` so it re-resolves off this
+     block's own font-size. Nothing here is a swept pixel boundary and
+     no line count appears in it.
+
+     The two-row span, the document-order seating and the lock all
+     stay exactly as they were. */
+  .prem-margin{
+    font-size: 10.5px;
+    line-height: calc(var(--bio-size) * var(--bio-lh));
+    margin-top: calc(0.3585 * (var(--bio-size) - 1em));
+  }
+
+  /* IDENTICAL to .legends-margin-label — same size, weight, tracking,
+     case, colour and knock-down, and the same optical half-tracking
+     pullback so the S lands on the column line rather than on the
+     tracking space after it.
+
+     Slate at 0.82, not a lighter knock-down. Measured in R1: Slate on
+     Porcelain is 7.54:1 at full strength; at 0.78 the composite falls
+     to 4.45:1, under the floor. 0.82 composites to 4.90:1 and
+     passes. */
+  .prem-margin-label{
+    margin: 0;
+    margin-left: -0.11em;           /* half of 0.22em tracking */
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+    opacity: 0.82;
+  }
+
+  /* The topics themselves, in `.edu-link`'s metrics — 13px, weight
+     400, line-height 1.4, 0.01em — and the same RENDERED gap under
+     the label, so this column and Everyday Legends' sit on the same
+     lattice.
+
+     4px HERE AGAINST THE 2px `.edu-link` AND `.legends-link` DECLARE,
+     and that is what makes the two match rather than what breaks it.
+     Those two are `display: inline-block`, so their 2px margin sits
+     on top of the half-leading of the parent's 30.6px strut and the
+     gap RENDERS at 4px. This is a block-level <ul> with no strut
+     above it, so 2px rendered 2px — measured, R4 2px against R5 4px,
+     which is the one thing that did not match on first build. The
+     declared numbers differ so the rendered ones do not.
+
+     SMOKED SLATE AT FULL STRENGTH, not Obsidian and not knocked down.
+     `.edu-link` is Obsidian because it is a LINK and needs the
+     affordance; these are four sentences of marginal content, so
+     CONTEXT.md routes them to Slate. Full strength rather than the
+     label's 0.82 because there are four sentences to read here and
+     7.54:1 is worth having — the demotion is carried by size, leading
+     and the label above, which is enough.
+
+     NO bullets, no numerals, no rules between items, no gold.
+
+     ITEM-TO-ITEM GAP is 1.4 of this list's own line-height via `lh`,
+     not a pixel value, so it tracks the type. Comfortably larger than
+     the leading inside a wrapped item, which is what makes four
+     two-line items read as four items rather than eight lines. */
+  .prem-topics{
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  .prem-topics li + li{ margin-top: 1.4lh; }
+
+  /* ---- BAND 2's STACKING CROSSOVER · <= 1121 --------------------
+     THE SECTION STACKS EARLY. See the measured 1121 and the rule that
+     produced it in global.css; the primitives there move every window
+     and what is left here is the two things a span cannot express.
+
+     The row track list comes off: there are no longer four rows for
+     the plate to span, so `auto auto auto 1fr` would hand the last
+     row a flex factor for nothing and open dead ground under the
+     button.
+
+     The plate takes a block gap under it rather than sitting beside
+     type. Two body lines — from the body's own tokens, not a pixel —
+     the same value band 3 uses, because it is the same relationship
+     in the same stacked arrangement. */
+  @media (max-width: 1121px){
+    .prem{ grid-template-rows: none; }
+    .prem-plate{ margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh)); }
+
+    /* R4.2 — THE 4:5 COMES BACK, and it has to. Stacked, the plate is
+       alone in its row, so `height: 100%` resolves against a row whose
+       height is the plate's own — a circular definition that renders
+       as zero. The aspect ratio is the plate's intrinsic height in
+       every stacked band, exactly as it was before R4.2, and the crop
+       percentages are unchanged, so this band renders identically to
+       the shipped R4.1 build. The bottom-edge alignment does not exist
+       here and cannot: the photograph is ABOVE the type, not beside
+       it, so there are no two horizontal edges near each other at the
+       foot of the section for it to fix. */
+    .prem-frame{ aspect-ratio: 4 / 5; height: auto; }
+  }
+
+  /* ---- BAND 3 · 751-1023 -----------------------------------------
+     Already stacked by the block above; band 3 only narrows the sheet
+     to 8 tracks and moves the windows. Nothing here needs restating —
+     the rules above hold through both bands, which is the point of
+     keeping this file's cascade one-directional. */
+  @media (max-width: 1023px){
+
+    /* The plate runs 6 of 8 columns here — 702.3px at 1023, against
+       666px at 1024 in the sub-band above, so the boundary is nearly
+       seamless. It keeps its 4:5 crop unchanged; the crop is
+       expressed in percentages of the plate's own width and is
+       identical at every width in every band. */
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     One stacked column. The topics fall inline under the body in
+     reading order, so the 7.3px baseline correction would read as a
+     fifth line of the paragraph rather than as a marginal note. It
+     takes ordinary rhythm instead — --s4, because it has to read as a
+     block change and not as a paragraph break. Same treatment, same
+     reasoning, as Educational Leader's district link. */
+  @media (max-width: 750px){
+    .prem-margin{ margin-top: var(--s4); }
+
+    /* THE BODY -> BUTTON GAP MOVES ONTO THE BUTTON. In every other
+       band the topics sit BESIDE the body and the button follows it
+       directly, so the derived gap belongs to the body. Here the
+       topics fall INLINE BETWEEN them, and leaving the gap on the
+       body put 93.55px above the list and ZERO below it — the button
+       sat flush against the last topic and read as a fifth item.
+
+       The two gaps are now the right way round: --s4 under the body,
+       because a block change is what separates the paragraph from the
+       list, and the derived calc(1.75 x body line) under the list,
+       because that is the gap that says the button is leaving the
+       text block. Same tokens, same arithmetic, applied to the pair
+       of elements the stack actually puts either side of it. */
+    .prem-body{ margin-bottom: var(--s4); }
+    .prem-cta{ margin-top: calc(1.75 * var(--bio-size) * var(--bio-lh)); }
+  }
+</style>

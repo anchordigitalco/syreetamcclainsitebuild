@@ -1,0 +1,563 @@
+---
+/**
+ * COVER — slice R1.
+ *
+ * Composition is the approved wireframe (Variant A), CONTEXT.md
+ * Section Composition table, row "Cover":
+ *
+ *   credit line / name / tagline / roles / button   columns 1-7
+ *   portrait, column-tall, full-height tall crop    columns 8-12
+ *   vertical padding: flush at the top, 64px at the bottom
+ *
+ * The Cover is a cover, not a section entrance: no kicker rule, no
+ * section numeral, no folio. It is also outside the ten-<h2> heading
+ * structure — it carries the page's single <h1>.
+ *
+ * AUTHORED IN THREE BLOCKS ON PURPOSE. head / portrait / foot is what
+ * makes the mobile stack fall out of source order — head, portrait,
+ * roles+button — with no `order` property and no re-sequencing. A
+ * two-block Cover (all text, then portrait) would drop the portrait
+ * below the button on a phone, which is not a cover.
+ *
+ * NO grid-column or grid-row is set in this file. Every placement is a
+ * collapse-aware primitive from global.css: .win-cover-head,
+ * .win-cover-foot, .win-cover-portrait. Their collapse behaviour above
+ * 1280, between 1024 and 1280, and below 1024 is stated in full in that
+ * file, above the implementation.
+ *
+ * PHOTOGRAPH. `src/assets/portrait-hero.jpg` is byte-identical
+ * (SHA-256 905825ac…) to `brand_assets/KNOW shoot 1.jpg` — black
+ * blouse, white pants, grey seamless, clean negative space both sides.
+ * That resolves CONTEXT.md's open filename item for this frame: the
+ * working name is real and already on disk under src/assets. Nothing
+ * was renamed. 3925×5887, EXIF orientation 1 (verified with
+ * sharp().metadata(), not sips).
+ *
+ * GOLD. One saturated gold type accent is spent here: the word
+ * "Legacy" in the tagline. CONTEXT.md's pinned budget names it
+ * explicitly as one of the three ("the 'Legacy' tagline"), so this is a
+ * budgeted use, not an addition. Zero hairline-gold rule contexts on
+ * this slice.
+ */
+import { Image } from 'astro:assets';
+import portraitHero from '../assets/portrait-hero.jpg';
+---
+
+<section class="sheet cover" aria-label="Dr. Syreeta McClain">
+  <div class="win-cover-head">
+    <p class="kicker cover-credit">KNOW Women: 50 Under 50 Women to Know in NJ, 2026</p>
+
+    <h1 class="cover-name">Dr. Syreeta McClain</h1>
+
+    <p class="cover-tagline">Where Leadership Meets <em class="legacy">Legacy</em></p>
+  </div>
+
+  <!--
+    column-tall. Full-height tall crop: the plate stretches to the
+    section's own height, so the crop is TALLER than the file's native
+    2:3 and never wider. No border, no shadow, no rounded corners.
+    Eager + sync decode — a photograph that resolves late is absent
+    from full-page captures and from any PDF the client generates.
+
+    `<Image>` emits its own <img>, which never receives Astro's
+    data-astro-cid-*, so the rule that sizes it is :global().
+  -->
+  <!-- No <figcaption>. CONTEXT.md's Photography section makes the Cover an
+       explicit caption exception: the name is the caption, and the Cover
+       takes no folio, kicker or section numeral either. The plate takes the
+       height the caption used to occupy, so it now ends on exactly the same
+       bottom trim as the button rather than 56px above it. -->
+  <figure class="win-cover-portrait cover-portrait">
+    <div class="plate-img cover-plate">
+      <Image
+        src={portraitHero}
+        alt="Dr. Syreeta McClain in a black blouse and white trousers against a grey seamless backdrop."
+        widths={[560, 840, 1120]}
+        sizes="(max-width: 1023px) 92vw, 38vw"
+        loading="eager"
+        decoding="sync"
+      />
+    </div>
+  </figure>
+
+  <div class="win-cover-foot">
+    <!--
+      THE RULE, now the top edge of the foot cluster rather than the
+      closing line of the name block. Smoked Slate hairline spanning the
+      text window, columns 1-7. Zero gold.
+
+      R1.2 put it low with nothing beneath it; R1.3 put it high, where it
+      terminated the type and then the page stopped for half a screen.
+      Both failed the same way — a rule needs something to belong to. As
+      the lid of rule / roles / button it belongs to the cluster, and the
+      open ground collects in exactly one place: between the tagline and
+      the rule, bounded above by type and below by a line.
+
+      Same element in the stacked layout, where it sits under the
+      photograph and above the roles. One rule, both layouts.
+    -->
+    <hr class="cover-rule" />
+
+    <!--
+      NBSP binds each separator to the word BEFORE it. Without it,
+      `text-wrap: balance` broke at the space in front of a middot and
+      line 2 opened with a leading "· MOMAGER" — worse than the orphan
+      it was fixing. With the bind, the only break opportunities are
+      after a middot, so a wrapped line ends on the separator, which is
+      the ordinary printed form of a run-in list. Copy is unchanged:
+      same four words, same three separators, same order.
+    -->
+    <p class="role cover-roles">Educator&nbsp;· Consultant&nbsp;· Momager&nbsp;· Founder</p>
+
+    <p class="cover-cta">
+      <a class="btn-solid" href="#contact">Work With Dr. McClain</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* Flush at the top, 64px at the bottom — CONTEXT.md's per-section
+     padding table gives the Cover 64. Sections MUST NOT share a single
+     padding token, so this value is set here and nowhere else.
+
+     The head row takes the slack (1fr) so the head sits flush to the
+     top trim and the foot sits on the bottom trim. The portrait spans
+     both rows, which is what makes the button and the caption land on
+     the same bottom trim line. */
+  .cover{
+    /* One token for the bottom trim, because the portrait's bleed has to
+       escape it by EXACTLY this amount. Two literal 64s would drift the
+       first time one of them was edited. */
+    --cover-trim: 64px;
+
+    grid-template-rows: 1fr auto;
+    row-gap: var(--s5);
+    /* 80svh, not 100. A full-viewport floor plus a button pinned to the
+       bottom trim plus ~324px of head content GUARANTEED a ~400px gap at
+       any type size or arrangement — three passes redistributed the same
+       space because the constraint, not the layout, was producing it.
+       80 lands the remaining gap near 200px, which is a breath rather
+       than a field, and it puts the next section's top edge just below
+       the fold so the page has a reason to scroll. 78 was tested and
+       reads slightly cramped under the tagline; 82 starts to re-open the
+       hole. The plate still bleeds off the bottom trim — the section is
+       simply shorter. */
+    min-height: 80svh;
+    padding-block: 0 var(--cover-trim);
+  }
+
+  /* ---- Head ------------------------------------------------------ */
+
+  /* THE OVERLAP LIVES HERE. The head is raised above the portrait so the
+     name's overrun paints ON the photograph rather than under it. The
+     portrait is later in source order and would otherwise win.
+
+     position: relative with NO offsets, purely to make z-index apply.
+     CONTEXT.md's ban is on `position: absolute` with hard pixel offsets,
+     which cannot survive a resize; this has no offsets to break.
+
+     The z-index has to sit on the GRID ITEM, not on the <h1>. A z-index
+     on the name alone would not lift it past a later sibling of its own
+     ancestor — it would still paint inside an unraised .win-cover-head.
+     This is a scoped rule on the element, not an edit to the primitive
+     in global.css, which is untouched.
+
+     Centred rather than top-aligned: see the void note below. */
+  .win-cover-head{
+    position: relative;
+    z-index: 1;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    /* Top-aligned, NOT centred. R1.1 centred this to split one 270px hole
+       into two 220px holes, which did not change what it read as. The head
+       goes back to the top for a second reason as well, and it is the one
+       that matters: it puts the name beside her HEAD rather than beside her
+       sleeve, and that is where the clean backdrop is. See .cover-name. */
+    justify-content: flex-start;
+  }
+
+  /* THE VOID, resolved. R1 pinned this block to the top of a 655px row
+     with 245px of content in it, which put the whole 270px remainder in
+     one lump between the tagline and the roles — a hole with nothing on
+     either side of it to measure against.
+
+     Centring splits that remainder into two gaps instead of one, and the
+     overlap above does the rest: once the name physically crosses onto
+     the photograph the left column stops reading as a separate empty
+     panel and the space between the two clusters becomes the cover's
+     negative space rather than a gap in a list.
+
+     Space was redistributed; nothing was invented to fill it, and the
+     button stays on the bottom trim as CONTEXT.md's composition table
+     requires. The small inset below keeps the credit line off the trim
+     the way a cover line is inset from the head margin in print. */
+  .cover-credit{ padding-block-start: var(--s5); }
+
+  /* The largest type on the page, and unambiguously so: 132px against a
+     33px tagline is 4x, and against 16px body copy 8.25x. CONTEXT.md's
+     lede-to-body floor is 3x; the failure it was written against was
+     ~1.8x, where the eye reads two tiers as one.
+
+     opsz 144 with wght 300 and SOFT 15 — sharp, high-contrast, near-
+     Didot. All four axes stated; none is left to Fraunces' defaults of
+     wght 900 / WONK 1 / SOFT 100. */
+  .cover-name{
+    margin: var(--s4) 0 0;
+    /* Optical hang, measured not guessed. Round 1 put this at -0.055em,
+       which set the box left edge to 57.2px at 1440 against a 64px trim
+       and a 62.6px credit line — the D's stem then sat LEFT of every
+       other left edge in the column. The correct value is the D's own
+       left sidebearing, which was MEASURED off the rendered face rather
+       than estimated: canvas TextMetrics.actualBoundingBoxLeft for "D"
+       in Fraunces wght 300 at 123.84px is -4.663px = 0.0377em. At
+       -0.038em the D's ink lands on 64.0px; the credit line's K lands on
+       63.8px and the roles and button sit at 64. Four elements, one
+       optical left edge. */
+    margin-left: -0.038em;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-hero);
+    font-weight: 300;
+    /* 9.79vw, up from 8.6vw. This is a size change to a face whose four
+       variation axes and optical hang are unchanged and stay unchanged:
+       opsz 144, wght 300, SOFT 15, WONK 0, -0.038em.
+
+       R1.2 asked for a 150-250px overrun without resizing, on the model
+       that the box width was the limit. It was, at R1.1 — widening the box
+       took the name from two lines to one. It is not any more: the box is
+       already wider than the string, so widening it further does nothing.
+       "Dr. Syreeta McClain" is a FIXED 6.762 x font-size wide, it starts at
+       the page trim, and the plate begins at a fixed column line, so the
+       overrun is determined by exactly one variable:
+           overrun = 6.762 x font-size - 779.3   (at 1440)
+       58px at 123.84px. 150px needs 137.4px of type; 174px needs 141px.
+       There is no other lever, so either the type grows or the overlap goes.
+       CONTEXT.md's Composition table now specifies the overrun and its
+       Overlap rule requires it to be unambiguous, so the type grows.
+
+       9.79vw gives 141px and a 174px overrun at 1440 — 33% of the plate. */
+    font-size: clamp(58px, 9.79vw, 152px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--obsidian);
+    text-wrap: balance;
+    /* THE OVERRUN. The box is widened 34% past its 7-column window so
+       "Dr. Syreeta McClain" sets on ONE line instead of wrapping, and the
+       line is long enough to break the seam on its own — no type-size
+       change was needed and none was made. Measured in the rendered face:
+       the full string is 837.4px at 123.84px/-0.03em, the head window
+       ends at 819.3px and the plate begins at 843.3px, so the line lands
+       58px inside the photograph at 1440 and 61px at 1280 — a consistent
+       ~11-13% of the plate across the band.
+
+       A percentage margin resolves against the grid area's inline size,
+       so the overrun stays proportional at every width in the band and
+       there is no pixel offset to break on resize.
+
+       Overridden back to 0 below 1280; see the collapse note. */
+    margin-right: -40%;
+  }
+
+  /* Roman, not italic. Italic with WONK 1 is the pull quote's device
+     and the pivot loses its force if the Cover has already spent it. */
+  .cover-tagline{
+    margin: var(--s3) 0 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-display);
+    font-weight: 340;
+    /* Held against the name at 3x or better across the whole range,
+       which is CONTEXT.md's floor: 123.8/33 = 3.75x at 1440,
+       110/29.4 = 3.74x at 1280, 88/23.5 = 3.74x at 1024, and
+       58/19 = 3.05x at 390 and 360. The round-1 values fell to 2.6x on
+       a phone, inside the band where the eye stops reading two tiers. */
+    font-size: clamp(19px, 2.3vw, 33px);
+    line-height: 1.24;
+    letter-spacing: -0.005em;
+    color: var(--slate);
+  }
+
+  /* 1 of 3 saturated gold type accents, budgeted by name in CONTEXT.md.
+     Colour alone was not a typographic device — one recoloured word at
+     the same size and weight as its neighbours reads as an anchor tag.
+     Committed to instead: italic, a step up in size, and a loosened
+     letterfit, so it reads as an editorial flourish that happens to be
+     gold rather than as a link.
+
+     WONK 0, deliberately. Italic Fraunces with WONK 1 gives the flagged
+     ball terminals that are the Feature Quote's signature; spending that
+     here would cost the pivot its own device. Same opsz and SOFT as the
+     roman around it, so only the slope and the scale change. */
+  .cover-tagline .legacy{
+    font-style: italic;
+    font-variation-settings: 'opsz' 96, 'wght' 340, 'SOFT' 32, 'WONK' 0;
+    font-size: 1.14em;
+    letter-spacing: 0.004em;
+    color: var(--gold);
+  }
+
+  /* THE RULE. 1px, Smoked Slate, spanning the text window. `margin-top:
+     auto` in the stretched flex column drops it to the foot of row 1; the
+     s5 bottom margin then lifts it back off the foot cluster.
+
+     Its position is chosen, not defaulted to the midpoint. At 1440 that
+     leaves ~276px of space above it and ~128px below (its own 64 plus the
+     64 row-gap) — roughly 2:1. The larger share sits with the name block
+     above, so the space reads as belonging to the name rather than being
+     divided evenly between two clusters, and the rule reads as the line the
+     roles and button sit under.
+
+     `border: 0` and an explicit height because Tailwind's preflight styles
+     <hr> as a zero-height element with a top border. */
+  .cover-rule{
+    width: 100%;
+    height: 1px;
+    /* Tight to the cluster it caps: s3 down to the roles, s3 again from
+       the roles to the button. Three elements at 24px read as one group;
+       at s5 they read as three stranded things, which is what the last
+       two passes shipped. */
+    margin: 0 0 var(--s3);
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* ---- Foot ------------------------------------------------------ */
+
+  /* balance, so the phone break is 2 + 2 rather than 3 + 1. At 390px the
+     line is ~370px against a 340px column and must wrap; without this it
+     wraps after "MOMAGER ·" and leaves "FOUNDER" alone on a line. The
+     type size is not reduced to force one line — 12px is already the
+     floor of the .role clamp. */
+  .cover-roles{ color: var(--slate); text-wrap: balance; }
+
+  .cover-cta{ margin: var(--s3) 0 0; }
+
+  /* ---- Portrait --------------------------------------------------- */
+
+  /* A column of its own so the plate can take the slack height and the
+     caption can sit under it on the bottom trim, level with the button. */
+  /* ---- THE BLEED -------------------------------------------------
+     The plate runs off the right edge of the viewport and off the bottom
+     edge of the section. A contained rectangle of studio backdrop sitting
+     inside a page margin reads as an inserted element; running it off the
+     trim is what a printed cover does.
+
+     LEFT AND TOP EDGES DO NOT MOVE. The left edge is the seam the name
+     crosses and the whole overlap depends on it being hard and where it
+     is; it is not softened, feathered or faded.
+
+     Escaped with negative margins sized to the exact values being
+     escaped — var(--gutter) is literally the section's padding-inline and
+     var(--cover-trim) is literally its padding-block-end, so the two can
+     never disagree. NOT `width: 100vw` and NOT `margin-left: calc(50% -
+     50vw)`: both measure the viewport INCLUDING the scrollbar and put the
+     element past the content edge, which is horizontal overflow. The
+     grid item is stretch-sized in both axes, so a negative margin simply
+     grows the border box past its grid area.
+
+     COLLAPSE, stated before implementing:
+       >= 1024  right and bottom bleed, as above. Left and top hold.
+       < 1024   the portrait is mid-stack, so there is no bottom trim to
+                escape and the bottom bleed comes off. It bleeds to BOTH
+                side edges instead — full viewport width, no gutter either
+                side. It is the only element on the page that does this.
+     ---------------------------------------------------------------- */
+  .cover-portrait{
+    margin: 0;
+    margin-right: calc(var(--gutter) * -1);
+    margin-bottom: calc(var(--cover-trim) * -1);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;      /* or the flex child refuses to shrink */
+  }
+
+  /* flex-basis 0, not auto. With `auto` the plate's base size is the
+     <img>'s intrinsic height — 532.7px of column width at 3925x5887 is
+     799px — and that intrinsic contribution reached the grid as the
+     spanning item's min-content height, forcing row 1 to 674.5px and
+     the section to 919px against a 900px viewport. Measured, not
+     guessed: docH was 919 at 1440 and exactly 900 at every width below
+     it, because only at 1440 was the column wide enough for the
+     intrinsic height to exceed the slack. */
+  /* ---- THE CROP -------------------------------------------------
+     Measured off the source, not eyeballed. The subject's bounding box
+     is x 650 -> 3050 of 3925 (2400px wide), leaving 650px of dead studio
+     ground on the left and 875px on the right, and she sits centred at
+     47.1%. Untreated backdrop is a flat #B6B6B7 across the full width —
+     the "lighter strip at the right edge" is not in the file, it was
+     being produced by the treatment ramp; see global.css.
+
+     Two jobs: cut the right-hand dead ground, and seat her right of
+     centre so clean backdrop opens on the LEFT, which is where the name
+     crosses in. The crop and the overlap are one move, not two — the air
+     the name needs is the air the crop creates.
+
+     MECHANISM, and this is the load-bearing part. The first attempt used
+     `transform: scale()` on the <img> and it SILENTLY KILLED the
+     mix-blend-mode treatment. Measured on the rendered pixels: the
+     treated backdrop went from #a5a29d (R-B 8, luminance 162) to
+     #b3b4b4 (R-B -1, luminance 180) — which is the raw source colour.
+     The reasoning that the transform was safe "because it is on a
+     sibling of ::before, not an ancestor" is wrong in practice: the
+     transformed <img> is composited into its own layer and ::before can
+     no longer blend against it. CONTEXT.md's gotcha is broader than the
+     word "ancestor" suggests. NO TRANSFORM GOES ON A PHOTOGRAPH ON THIS
+     PAGE.
+
+     So the crop is done by OVERSIZING THE IMG BOX instead — a width
+     greater than 100% with a matching negative left, both percentages,
+     clipped by .plate-img's overflow: hidden. No transform, no hard
+     pixel offset, nothing to break on resize, and the blend survives.
+
+     It also behaves better. While the box stays wider than the file's
+     native 0.667 aspect, object-fit spreads the full source width across
+     the box, so the visible source window is
+         start = (|left| / width) x 3925      width = 3925 / width
+     — plate width cancels out entirely, and the crop is IDENTICAL at
+     every viewport width in the band instead of drifting with it.
+     ---------------------------------------------------------------- */
+  .cover-plate{
+    flex: 1 1 0;
+    min-height: 0;
+    /* ONE crop for the whole desktop range, 1024 and up. 130% / -6.4%
+       puts the source window at [194, 3213]: 456px of clean ground to
+       her left, 163px to her right, and the entire right-hand dead zone
+       cut away. She fills 80% of the frame instead of 61%.
+
+       The window is constant down to about 1122px, where the box aspect
+       (1.30 x plate width / plate height) finally drops under the file's
+       native 0.667 and object-fit begins cropping inside the box as
+       well. Below that it tightens CONTINUOUSLY to [374, 3085] at 1024 —
+       so there is no crop jump anywhere in the range, including at the
+       1280 boundary, and she is never clipped. An earlier version of
+       this pass ran separate values above and below 1280 and stepped
+       visibly at that 1px boundary; a single pair does the same job
+       without the seam.
+
+       Clearance for the overlap is what sets --crop-l, and the binding
+       case is 1280, not 1440: the overrun is a LARGER fraction of a
+       narrower plate there (13.1% against 10.9%), so the type reaches
+       further into the frame at the low end of the band. At -6.4% that
+       left 60 source px of clearance — 9 rendered px — which is a gap
+       you can see closing. -5.5% buys 88 source px (13.6 rendered) at
+       1280 and 164 at 1440, at the cost of 28 source px of air on her
+       right. Worth it: black type meeting a black sleeve is a collision,
+       a slightly tighter right trim is a crop. */
+    --crop-w: 130%;
+    --crop-l: -5.5%;
+    --crop-y: 18%;
+  }
+
+  /* The <img> is taken out of flow so it contributes NO intrinsic height
+     to the flex column or, through it, to the grid row — that was R1's
+     919px-against-900px overflow and the fix has to survive this pass.
+
+     Oversized box, no transform. --crop-w > 100% with a matching
+     negative --crop-l crops horizontally; .plate-img's overflow: hidden
+     clips it. X stays at 50% and does nothing: while the box is wider
+     than the file's native aspect, object-fit lays the full source width
+     across it, so all horizontal placement is --crop-l / --crop-w and
+     the visible source window is identical at every width in the band.
+
+     :global() — <Image> writes its own <img>, which carries no
+     data-astro-cid-*, so a scoped selector silently stops matching.
+     This has bitten this project twice. */
+  .cover-plate :global(img){
+    position: absolute;
+    top: 0;
+    left: var(--crop-l);
+    width: var(--crop-w);
+    /* Tailwind's preflight sets `img { max-width: 100% }`, which silently
+       clamped the oversized box back to the plate width and produced no
+       crop at all — the computed width read 532.672px against a declared
+       121%. Released explicitly. */
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% var(--crop-y);
+  }
+
+  /* ---- Collapse ---------------------------------------------------
+     Stated before implementation, for the overlap and the crop both.
+
+     >= 1280   Full composition. Name on one line, overrunning 58-61px
+               onto the photograph. Crop zoomed 1.19 and seated right.
+
+     1024-79   THE OVERLAP STAYS ON. R1.2 cut it at 1280 because the
+               overrun landed on her sleeve by 1152. R1.3's bleed widened
+               the plate by a full gutter, so each plate pixel now covers
+               fewer source pixels and the same overrun reaches less far
+               into the frame. Re-measured across the band at 1279, 1200,
+               1152, 1100 and 1024 — clearances in the R1.4 report. The
+               wrap to two lines now happens at the same boundary the grid
+               collapses, so the Cover has one breakpoint instead of two.
+     < 1024    One stacked column, head -> portrait -> foot from source
+               order. No overlap — there is no seam left to break, the
+               photograph is below the type rather than beside it. The
+               crop re-zooms because the capped 4:5 plate is wider than
+               native again, and she is centred rather than pushed right:
+               with no type crossing it, air on the left has no job.
+               min-height goes to auto; a 100svh floor on a stacked cover
+               adds dead ground under the button.
+     --------------------------------------------------------------- */
+
+  /* No 1279px block any more. The overlap used to come off here; it now
+     runs the whole 12-column range and stops where the grid collapses.
+     See the collapse note above for the measured clearances. */
+
+  @media (max-width: 1023px){
+    .cover{
+      grid-template-rows: auto;
+      row-gap: var(--s5);
+      min-height: auto;
+      padding-block: 0 var(--cover-trim);
+    }
+
+    /* Both side edges, no bottom bleed — the portrait is mid-stack here
+       and the roles and button follow it. */
+    .cover-portrait{
+      margin-inline: calc(var(--gutter) * -1);
+      margin-bottom: 0;
+    }
+
+    .cover-credit{ padding-block-start: var(--s5); }
+    .cover-name{ margin-top: var(--s3); margin-right: 0; }
+
+    /* Nothing to raise above: the photograph is no longer beside the
+       type, so the stacking and the flex centring both come off and the
+       head is an ordinary block in the stack again. */
+    .win-cover-head{
+      position: static;
+      display: block;
+      align-self: auto;
+    }
+
+    /* Bleeds to both side edges. The 460px width cap that R1 added is
+       gone with it, so the height needs a new guard: at 1023px a full-bleed
+       4:5 plate would be 1279px tall, which is the 1.3-viewports-of-
+       photograph problem R1 fixed by capping the width.
+
+         height: min(125vw, max(100vw, 118svh))
+           125vw  the 4:5 portrait ratio, which governs on phones
+                  (390 -> 488, 360 -> 450)
+           118svh caps it near 1.2 viewport heights on wide stacked
+                  viewports (1023x900 -> 1062 rather than 1279)
+           100vw  the floor that makes the whole expression portrait-SAFE:
+                  height can never fall below width, so no viewport shape
+                  can crop this vertical frame landscape. At 1023x768,
+                  where 118svh would be 906 against a 1023 width, the
+                  floor takes over and holds it square.
+       aspect-ratio comes off because an explicit height supersedes it. */
+    .cover-plate{
+      flex: 0 0 auto;
+      height: min(125vw, max(100vw, 118svh));
+      /* 4:5 is 0.80 against the file's 0.667, so the box is comfortably
+         wider than native and one pair of values holds at every phone
+         width. Window [364, 3337] — centred, not seated right: no type
+         crosses this plate, so air on the left has no job to do. */
+      --crop-w: 132%;
+      --crop-l: -12.2%;
+      --crop-y: 12%;
+    }
+  }
+</style>

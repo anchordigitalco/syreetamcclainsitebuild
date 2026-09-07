@@ -1,0 +1,418 @@
+---
+/**
+ * EDUCATIONAL LEADER — slice R3.
+ *
+ * CONTEXT.md Section Composition table, row "Educational Leader":
+ *
+ *   Entrance      A — HAIRLINE HEAD. Kicker + subtitle outdented to
+ *                 columns 1-3, capped by a hairline rule. This is the
+ *                 page's FIRST outdented kicker, and the staircase it
+ *                 makes is the whole contrast against About's drop-cap
+ *                 entrance directly above it. About opens with a cap
+ *                 and no kicker and no rule; this opens with a rule and
+ *                 a kicker and no cap.
+ *   Column window body 4-11 (band 1)
+ *   Image         NONE, and deliberately so. About into Educational
+ *                 Leader is the page's longest text-only stretch, ~175
+ *                 words. A full-width photographic band was considered
+ *                 as a break and REJECTED: all client photography is
+ *                 vertical and a wide crop would mean cropping a tall
+ *                 portrait into a shape it does not have. The mitigation
+ *                 is typographic — the display-scale opening statements
+ *                 on both sections carry it. Do not solve this with an
+ *                 image.
+ *   Rhythm        110px. About is 96px. Sections MUST NOT share a
+ *                 padding token.
+ *   Margin holds  the district link.
+ *   Length        full; coda set apart.
+ *
+ * NO HEIGHT CONSTRAINT. No min-height, no svh floor. CONTEXT.md's R1.4
+ * standing rule: the Cover is the ONLY section on this page with one.
+ * This section is content-height.
+ *
+ * COPY is set verbatim from COPY.md Part 1 -> Educational Leader.
+ * Five strings: kicker, subtitle, opening statement, two body
+ * paragraphs, closing line. Nothing reworded, nothing added, and
+ * nothing restored from the Appendix.
+ *
+ * THE DISTRICT EMAIL IS NOT PUBLISHED AND DOES NOT APPEAR IN THIS
+ * FILE, including in a comment. It is her public-school-district
+ * employer address; publishing it on a commercial consulting site is
+ * an appearance-of-conflict and district-IT-policy problem. COPY.md
+ * records the decision as final. The district WEBSITE link is retained
+ * — that is public credential information.
+ *
+ * NO grid-column OR grid-row IS SET IN THIS FILE. Six collapse-aware
+ * primitives carry every placement — .win-edu-head, -lede, -body,
+ * -rule, -close, -margin — and each one's behaviour in all four bands
+ * (>=1280 / 1024-1279 / 751-1023 / <=750) is written out in full above
+ * the implementation in global.css, before the implementation.
+ *
+ * NO ROW IS DECLARED EITHER, and that is load-bearing. See the
+ * "WHY THE LINK NEVER SHARES A BAND WITH THE LEDE'S LAST LINE" note in
+ * global.css: the link clears the lede because grid seats it in a later
+ * ROW, not because anything counted the lede's lines. There is no
+ * swept pixel boundary and no line-count lookup in this component.
+ *
+ * NO PHOTOGRAPH, so no treatment layer and no blend to protect; the
+ * section carries no transform of any kind either way.
+ *
+ * GOLD: ZERO. Both budgets are spent and this slice adds to neither.
+ * The 3 saturated type accents (Legacy tagline, About drop cap, pull
+ * quote) are untouched, and this section adds 0 of the 8 hairline-gold
+ * rule contexts — BOTH of its rules are Smoked Slate at 0.38, the same
+ * treatment as the Cover's foot rule.
+ */
+---
+
+<section class="sheet edu" id="sec-education">
+  <!--
+    SOURCE ORDER IS STRUCTURAL, not cosmetic. head -> lede -> body ->
+    margin -> rule -> closing is what makes grid's sparse cursor seat
+    the district link in the BODY's row rather than the lede's, which
+    is the whole mechanism by which it clears the lede with no line
+    count. Reordering these siblings changes the composition. See
+    global.css.
+
+    It also gives the right stacked reading order below 750: kicker,
+    subtitle, lede, body, district link, rule, closing line — the coda
+    stays the last word of the section, and the link reads as the
+    credential aside it is.
+  -->
+  <div class="win-edu-head edu-head">
+    <!-- The head's hairline. A CHILD of the head rather than a grid
+         item of its own, so it spans exactly the head's columns in
+         every band without a second primitive to keep in step.
+         `border: 0` + explicit height because Tailwind's preflight
+         styles <hr> as a zero-height element with a top border. -->
+    <hr class="edu-head-rule" />
+
+    <!--
+      THE <h2> IS THE KICKER. CONTEXT.md's locked heading structure:
+      each section's <h2> is the element whose text names the section,
+      and that string must equal the folio label. Verified against
+      src/data/sections.ts line 29 — { id: 'sec-education', n: '03',
+      label: 'Educational Leader' } — not assumed. The outdent moves
+      where the heading sits; it does not change what it says.
+    -->
+    <h2 class="edu-kicker">Educational Leader</h2>
+    <p class="edu-subtitle">Alternative Education High School Principal</p>
+  </div>
+
+  <p class="win-edu-lede edu-lede">Education should not require students to fit into systems. Strong systems evolve to fit the students.</p>
+
+  <div class="win-edu-body edu-body">
+    <p>For more than two decades, Dr. McClain has built her career around students whose potential does not show up in traditional measures.</p>
+    <p>Her work in customized programming, alternative education, and student engagement creates pathways for students navigating complex academic and personal circumstances, built on innovation, collaboration, and unwavering advocacy.</p>
+  </div>
+
+  <!--
+    THE LIVE MARGIN. Authored here — directly after the body and before
+    the rule — so auto-placement seats it beside the body. Moving it to
+    the end of the section would drop it into the closing line's row and
+    empty the margin for the section's whole upper two thirds, which is
+    the void condition the R-shell pass flagged and this slice exists to
+    test against real content.
+  -->
+  <div class="win-edu-margin edu-margin">
+    <p class="edu-margin-label">District</p>
+    <a class="edu-link" href="https://www.ucvts.org" target="_blank" rel="noopener">ucvts.org</a>
+  </div>
+
+  <!-- The 38% rule. Its own grid item and its own primitive, because it
+       sits on the BODY's left edge while the closing line below steps
+       back out to the LEDE's — the two cannot share a placement. -->
+  <hr class="win-edu-rule edu-rule" />
+
+  <p class="win-edu-close edu-coda">Meet students where they are, without losing sight of where they can go.</p>
+</section>
+
+<style>
+  /* CONTEXT.md's per-section padding table gives Educational Leader a
+     flat 110 and About directly above it 96. Sections MUST NOT share a
+     padding token, so the value is declared here and nowhere else —
+     there is deliberately no --vr-* token in this rule.
+
+     SYMMETRIC, unlike About's. About carries an asymmetric top
+     (max(96px, 20svh + 12px)) for one reason only: it follows the
+     Cover, which is 80svh, so the distance from the fold down to
+     About's lede scales with viewport height and a fixed value cannot
+     satisfy it. This section follows a CONTENT-HEIGHT neighbour, so
+     that argument does not apply and a flat 110 is correct on both
+     edges. Copying About's svh term here would be cargo-culting a fix
+     for a problem this section does not have. */
+  .edu{
+    padding-block: 110px;
+  }
+
+  /* ---- THE HEAD — entrance A ------------------------------------
+     Outdented to columns 1-3 and top-aligned in its row, so the rule
+     sits on the section's top content edge and the kicker hangs to the
+     LEFT of the lede rather than above it. That is the staircase. */
+
+  /* Smoked Slate at 0.38 — the same hairline treatment as the Cover's
+     foot rule, so the page has one rule, not two. NOT GOLD: the 8
+     hairline-gold rule contexts are spent and CONTEXT.md routes every
+     new rule to Slate. */
+  .edu-head-rule{
+    width: 100%;
+    height: 1px;
+    margin: 0 0 var(--s2);
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* The kicker is an <h2>; the browser's heading margins and weight
+     are reset here rather than inherited. Treatment matches the
+     global .kicker primitive — 10.5px Montserrat, 0.26em tracking,
+     uppercase, Smoked Slate — with the optical half-tracking pullback
+     so the K's stem lands on the column line rather than the tracking
+     space after it. */
+  .edu-kicker{
+    margin: 0;
+    margin-left: -0.13em;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    line-height: var(--baseline);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* The deck. SENTENCE CASE, deliberately: the kicker above it is
+     uppercase and letterspaced, so setting the subtitle the same way
+     would give the head two identical-looking lines and no hierarchy.
+     Case is the differentiator, not size alone. Set verbatim from
+     COPY.md. */
+  .edu-subtitle{
+    margin: 2px 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3, REUSED FROM R2 RATHER THAN REINVENTED. Same face,
+     same four axes via --fx-lede, same weight, same clamp, same
+     line-height, same letterfit as About's lede — which in turn came
+     from PillarPremier per CONTEXT.md's lede rule. Measured at 1440:
+     3.8vw = 54.72px, which is 3.22x the 17px body and inside the
+     3-4x target band.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else. */
+  .edu-lede{
+    /* LEDE -> BODY. 0.75 of the lede's OWN line-height, via the `lh`
+       unit, so it re-resolves from the type rather than from a width:
+       the lede is clamp(52px, 3.8vw, 64px) at line-height 1.18, so the
+       gap is 0.75 x 64.57 = 48.4px at 1440 and 0.75 x 61.4 = 46.0px at
+       390, tracking the lede at every width with no breakpoint.
+
+       Was clamp(44px, 4.4vw, 72px) = 63.4px at 1440. Tightened so the
+       body reads as issuing from the lede rather than as the next of
+       four evenly spaced blocks. Under one full lede line, so the two
+       are closer to each other than either is to anything else. */
+    margin: 0 0 0.75lh;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(52px, 3.8vw, 64px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    /* balance, not pretty — the right tool for a 2-4 line block of
+       display type. Progressive enhancement: an engine without it
+       wraps normally and the lede is merely unbalanced, never
+       broken. The body keeps `pretty`. */
+    text-wrap: balance;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3. --bio-size / --bio-lh, the page's body tokens,
+     unchanged. NO max-width — span only. */
+  .edu-body{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .edu-body p{ margin: 0; }
+  .edu-body p + p{ margin-top: 1.5em; }
+
+  /* ---- THE LIVE MARGIN — the district link ----------------------
+     BASELINE-SNAPPED, and the arithmetic CANCELS rather than being
+     swept. CONTEXT.md: margin content snaps to body baselines, not to
+     container tops.
+
+     A first baseline sits at half-leading plus ascent, which reduces
+     to  B = lh/2 + (ascent - descent)/2 x font-size.  Giving this
+     block the BODY's own line-height makes the lh/2 term identical on
+     both sides, so the whole expression collapses to the difference in
+     font size alone:
+
+         B_body - B_margin = (asc - desc)/2 x (17px - 10.5px)
+
+     Montserrat's ascent - descent is 0.717 (published hhea 968/-251,
+     and R2 cross-checked it at 0.716 from rendered ink), so the
+     constant is 0.3585 and the offset is 0.3585 x 6.5px = 2.33px.
+
+     Written with `1em` for the second term so it re-resolves off this
+     block's own font-size, and with var(--bio-size) for the first, so
+     a change to either tier moves the snap automatically. NOTHING here
+     is a swept pixel boundary and no line count appears in it. */
+  .edu-margin{
+    font-size: 10.5px;
+    line-height: calc(var(--bio-size) * var(--bio-lh));
+    margin-top: calc(0.3585 * (var(--bio-size) - 1em));
+  }
+
+  /* THE SNAP APPLIES WHEREVER THE MARGIN IS A COLUMN, WHICH IS NOW
+     EVERY WIDTH FROM 751 UP. The previous version needed three
+     overrides because the margin was a column, then inline, then a
+     column again; deleting the 1024-1279 suppression collapsed that
+     to one contiguous range, so two of the three are gone:
+
+       >= 1280    column at 10-12  -> baseline snap (the rule above)
+       1024-1279  column at 11-12  -> baseline snap, same rule
+       751-1023   column at 7-8    -> baseline snap, same rule
+       <= 750     inline           -> rhythm gap, below
+
+     Below 750 the block falls inline under the body and a 2.33px
+     baseline correction would read as a fourth line of the paragraph
+     rather than as a marginal note, so it takes ordinary rhythm
+     instead. --s4, because it has to read as a block change and not
+     as a paragraph break. */
+  @media (max-width: 750px){
+    .edu-margin{ margin-top: var(--s4); }
+  }
+
+  /* Slate at 0.82, not a lighter knock-down. Measured in R1: Slate on
+     Porcelain is 7.54:1 at full strength; at 0.78 the composite falls
+     to 4.45:1, under the floor. 0.82 composites to 4.90:1 and passes. */
+  .edu-margin-label{
+    margin: 0;
+    margin-left: -0.11em;           /* half of 0.22em tracking */
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+    opacity: 0.82;
+  }
+
+  /* Lowercase, so the URL reads as a URL. Underline offset rather than
+     a border so the descenders in "g" are not struck through.
+     Transform and opacity only — never transition-all. */
+  .edu-link{
+    display: inline-block;
+    margin-top: 2px;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+    transition:
+      transform 260ms var(--ease),
+      opacity   260ms var(--ease);
+  }
+
+  .edu-link:hover{ transform: translateY(-1px); opacity: 0.7; }
+  .edu-link:active{ transform: translateY(0); opacity: 1; }
+  .edu-link:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* ---- THE 38% RULE ---------------------------------------------
+     Sits on the BODY's left edge. The closing line below it steps back
+     out one column to the LEDE's edge, so the rule visibly overhangs
+     the coda's left — that offset is what marks the coda as set apart
+     rather than as a fourth paragraph.
+
+     Same Slate hairline as the head's rule. Zero gold. */
+  .edu-rule{
+    width: 100%;
+    height: 1px;
+    /* BODY -> RULE -> CODA, both derived from the BODY's line-height
+       (var(--bio-size) x var(--bio-lh) = 30.6px), which is the reading
+       rhythm the paragraphs above already sit on:
+
+         body -> rule   2.5 body lines = 76.5px   (separates groups)
+         rule -> coda   0.75 body line = 22.95px  (binds the lid on)
+
+       A 3.3:1 ratio. The rule was previously 80.6px above and 40px
+       below, which at 2:1 still read as a third free-floating element
+       between two blocks. It now sits with the coda: the gap under it
+       is the smallest in the section and the gap above it is the
+       largest, so the eye groups rule+coda and reads the space above
+       them as the section's one internal division.
+
+       Both terms are multiples of a token, not pixels measured at one
+       width. --bio-size is a fixed 17px at every band by design, so
+       these hold across all four without a breakpoint — the reading
+       rhythm does not change when the grid does. */
+    margin:
+      calc(2.5 * var(--bio-size) * var(--bio-lh)) 0
+      calc(0.75 * var(--bio-size) * var(--bio-lh));
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* ---- CODA ------------------------------------------------------
+     Tier 2 of 3, REUSED FROM R2. Fraunces at opsz 96 / SOFT 35 /
+     wght 400 — all four axes stated, none left to Fraunces' defaults
+     of wght 900 / WONK 1 / SOFT 100. These are NOT --fx-coda (opsz 48
+     / SOFT 45 / wght 360); the Phase B optical system is preserved
+     untouched and this tier states its own coordinates locally, the
+     same way About's coda and the Cover's .legacy do.
+
+     Measured at 1440: 2.2vw = 31.68px, which is 1.86x the 17px body
+     and 0.58x the lede — clearly a third tier, subordinate to the
+     lede and distinct from the body. */
+  .edu-coda{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     One stacked column. The primitives in global.css already return
+     every block to 1 / -1; what is left here is the two things a span
+     cannot express.
+
+     THE RULES DO NOT BECOME FULL-WIDTH DIVIDERS. Both hairlines are
+     editorial marks, not separators, and a 1 / -1 rule across a phone
+     measure reads as a horizontal line breaking the page in half. The
+     head's rule keeps a fixed short length and the coda's rule keeps
+     the same ~38% proportion it holds in every other band. */
+  @media (max-width: 750px){
+    .edu-head-rule{ width: 96px; }
+    .edu-rule{ width: 38%; }
+  }
+</style>

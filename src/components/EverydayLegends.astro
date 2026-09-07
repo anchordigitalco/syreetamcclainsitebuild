@@ -1,0 +1,426 @@
+---
+/**
+ * EVERYDAY LEGENDS FOUNDATION — slice R5.
+ *
+ * CONTEXT.md Section Composition table, row "Everyday Legends":
+ *
+ *   Entrance      B — DECORATIVE MARK OPENER. Display mark hung at
+ *                 columns 1-2, no kicker, no rule, NO PHOTOGRAPH.
+ *   Column window body 4-8, lede 4-9 (band 1)
+ *   Image         none
+ *   Rhythm        70px. Premier Leadership above is 80, Educational
+ *                 Leader above that is 110. Sections MUST NOT share a
+ *                 padding token.
+ *   Margin holds  the Instagram handle.
+ *   Length        ABRIDGED — opening statement + one body paragraph +
+ *                 button. It has its own site.
+ *
+ * THIS SECTION AND PREMIER LEADERSHIP ARE BUILT TO RHYME, AND THE
+ * FAILURE MODE OF A RHYME IS A REPEAT. The differences are
+ * deliberate and load-bearing, not incidental:
+ *
+ *     R4  type anchored RIGHT of a plate at column 6 · 4-column
+ *         measure · 80px rhythm · image-first entrance · topics list
+ *     R5  type anchored LEFT at column 4 with a mark hung outside it
+ *         · 5-column measure · 70px rhythm · mark entrance · one
+ *         handle in the margin · materially shorter
+ *
+ * Column 4 is not a new left edge. It is Educational Leader's lede
+ * edge, already established two sections above.
+ *
+ * THE MARK IS NOT A NUMBER. CONTEXT.md has this flagged four times:
+ * the Index carries its own numbering 01-05 in a different order from
+ * page order, the two devices are unrelated, and they MUST NOT be
+ * made to agree. An asterisk cannot be counted and it has editorial
+ * pedigree as a dinkus. It is not a numeral, not a Roman numeral, not
+ * a two-character form, not a bullet, not a lozenge — and not a rule
+ * or anything a rule-shaped glyph could be mistaken for, which is why
+ * a display-scale em-dash is out: this section is specified as having
+ * no rule and an em-dash at that size reads as one.
+ *
+ * COPY is set verbatim from COPY.md Part 1 -> Everyday Legends
+ * Foundation. Nothing is restored from Appendix A2. The text link
+ * everydaylegend.com is DROPPED — the button goes to the same place
+ * and printing both is redundant. Instagram stays because it is a
+ * different destination.
+ *
+ * NO EMAIL ADDRESS APPEARS IN THIS FILE, in markup or in a comment.
+ *
+ * NO HEIGHT CONSTRAINT. No min-height, no svh floor. CONTEXT.md's
+ * R1.4 standing rule: the Cover is the only section on this page with
+ * one. This section is content-height, and it is meant to be the
+ * shortest on the page to date — COPY.md's word budget runs ~20 to
+ * ~110 words and the composition depends on that spread being visible
+ * as section height.
+ *
+ * NO grid-column AND NO grid-row IS SET IN THIS FILE. Five
+ * collapse-aware primitives carry every placement —
+ * .win-legends-mark, -head, -lede, -body, -margin — and each one's
+ * behaviour in all four bands (>=1280 / 1024-1279 / 751-1023 /
+ * <=750) is written out in full above the implementation in
+ * global.css, before the implementation.
+ *
+ * THE MARK IS AUTHORED BETWEEN THE HEAD AND THE LEDE. That is the
+ * whole mechanism by which it lands in the LEDE's grid row rather
+ * than the head's, with no offset and no line count: authored first
+ * it would seat in row 1 beside the head, and pushing it down to the
+ * lede would need the head's rendered height. Document order makes
+ * the measurement cancel. The same order gives it its own row above
+ * the lede once the section stacks. The INSTAGRAM HANDLE is seated
+ * the same way, authored immediately after the body.
+ *
+ * GOLD: ZERO. Both budgets are spent. The mark, the subtitle and the
+ * margin are all Smoked Slate. No rule exists in this section, so it
+ * adds 0 of the 8 hairline-gold rule contexts.
+ *
+ * OVERLAP: ZERO. Two of three are spent and the third is reserved
+ * for R6.
+ */
+---
+
+<section class="sheet legends" id="sec-legends">
+  <!--
+    SOURCE ORDER IS STRUCTURAL: head -> mark -> lede -> body+button ->
+    handle. See the placement walk in global.css. Reordering these
+    siblings changes the composition.
+
+    It is also the right stacked reading order below 750: name,
+    subtitle, mark, opening statement, body, button, Instagram.
+  -->
+  <div class="win-legends-head legends-head">
+    <!--
+      THE <h2> IS THE SECTION NAME, and it equals the folio label —
+      src/data/sections.ts { id: 'sec-legends', n: '05', label:
+      'Everyday Legends Foundation' }. The label was 'Everyday
+      Legends' and was brought into line with COPY.md's section name
+      by this slice, because CONTEXT.md's heading structure is locked
+      on the two strings being identical and the organisation's name
+      is the organisation's name.
+    -->
+    <h2 class="role legends-name">Everyday Legends Foundation</h2>
+    <p class="legends-subtitle">Co-Founder &amp; Executive Director</p>
+  </div>
+
+  <!--
+    THE MARK. Decorative, and carries no information a reader loses,
+    so it is hidden from the accessibility tree rather than read out
+    as a stray asterisk between the subtitle and the opening
+    statement.
+  -->
+  <div class="win-legends-mark legends-mark" aria-hidden="true">*</div>
+
+  <p class="win-legends-lede legends-lede">Some of the most extraordinary people will never become household names.</p>
+
+  <div class="win-legends-body legends-body">
+    <p>The educators, coaches, mentors, and parents who quietly show up and open doors. Everyday Legends was created to honor them, and to continue their work through scholarships, mentorship, and community partnership.</p>
+
+    <!-- rel="noopener", not "noopener noreferrer": noreferrer strips
+         the Referer header and costs Anchor referral attribution from
+         every client site it ships. -->
+    <p class="legends-cta">
+      <a class="btn-solid" href="https://www.everydaylegend.com" target="_blank" rel="noopener">Visit the Foundation</a>
+    </p>
+  </div>
+
+  <!--
+    THE LIVE MARGIN. Authored directly after the body so
+    auto-placement seats it in the body's row and baseline-locks it to
+    the body's FIRST line. This is the second of the two tests of
+    whether band 3's margin reads as a filled column rather than an
+    established-but-empty one.
+  -->
+  <div class="win-legends-margin legends-margin">
+    <p class="legends-margin-label">Instagram</p>
+    <!--
+      <wbr /> — a break OPPORTUNITY, not a break. The handle is 26
+      characters and sets ~175px at 13px; the live margin is 171.8px
+      wide at 1279 and 129.3px at 1024, so with no break opportunity
+      in the string it overran the margin and, at 1024, the right page
+      trim. It breaks at the one place a reader would break it —
+      between "legends" and "foundation" — and <wbr /> leaves no
+      hyphen and no character in the copied text, unlike a soft hyphen
+      or a zero-width space. Above 1280 and in bands 3 and 4 the
+      column is wide enough and it never fires.
+    -->
+    <a class="legends-link" href="https://instagram.com/everydaylegendsfoundation" target="_blank" rel="noopener">@everydaylegends<wbr />foundation</a>
+  </div>
+</section>
+
+<style>
+  /* CONTEXT.md's per-section padding table gives Everyday Legends 70.
+     Premier Leadership above is 80. Sections MUST NOT share a padding
+     token, so the value is declared here and nowhere else.
+
+     FLAT AT EVERY BAND, which is R3's scaling pattern read off the
+     build rather than invented: EducationalLeader.astro declares
+     `padding-block: 110px` once with no band override anywhere in the
+     file. This section follows it exactly — one declaration, no media
+     query. */
+  .legends{
+    padding-block: 70px;
+  }
+
+  /* ---- THE HEAD -------------------------------------------------
+     Same register as Premier Leadership's head — the .role primitive
+     with a sentence-case deck under it. The SUBTITLE is deliberately
+     a shared device across the pillars; the ENTRANCE is not, and that
+     is where the two sections separate. */
+  .legends-head{
+    /* HEAD -> MARK/LEDE. One body line, from the body's own tokens:
+       calc(1.0 x 17px x 1.8) = 30.6px. Same gap as Premier
+       Leadership's head, because it is the same relationship. */
+    margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+  }
+
+  .legends-name{
+    margin: 0;
+    margin-left: -0.07em;   /* half of .role's 0.14em tracking */
+  }
+
+  .legends-subtitle{
+    margin: 2px 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- THE MARK — entrance B -------------------------------------
+     A display-scale asterisk in Fraunces, Smoked Slate, hung at
+     columns 1-2 with column 3 left empty. THE GAP IS THE HANG and it
+     is intentional — but it only reads as intentional if the mark is
+     genuinely display-scale. A small mark with an empty column beside
+     it reads as stranded, and that is a fail, not a near-miss.
+
+     SIZE IS DERIVED, NOT HARDCODED: 1.6 x the lede. That is why
+     --lede-size exists as a token at all — R3 set the same clamp
+     inline and the mark cannot be written against an inline value.
+
+     THE 1.6 IS APPLIED TO THE INK, NOT TO THE EM BOX, AND THAT IS A
+     CORRECTION THE FIRST BUILD NEEDED. Fraunces' asterisk fills less
+     than half its em: measured on the rendered face at font-size
+     87.552px, canvas TextMetrics gives an ink box of 42.81 x 44.52px
+     — an ink ratio of 0.489 — and the glyph floats high, its ink
+     running from 67.00px above the baseline down to 24.18px above it.
+     Set naively at `--lede-size * 1.6` the mark's ink came out 42.8px
+     against a lede cap height of 38.3px, which is 1.12x a lede
+     capital. That is a footnote marker, not a display mark, and the
+     spec's own fail condition is explicit: a mark that looks small
+     reads as stranded and the empty column beside it stops reading as
+     a hang.
+
+     So the ratio is divided back out. The 1.6 stays exactly where the
+     spec puts it and stays multiplied by the type token; the measured
+     ink ratio sits beside it as its own named value, so the intent
+     ("1.6 times the lede") is still legible in the code and the
+     glyph's own geometry is not silently baked into a magic number.
+     87.5px of ink at 1440 against a 38.3px lede cap.
+
+     All four Fraunces axes stated, none left to the font's defaults
+     of wght 900 / WONK 1 / SOFT 100. opsz 144 is the hero tier, which
+     is where a glyph at this size belongs; wght 400 and SOFT 20 sit
+     at the heavy, crisp end of CONTEXT.md's hero band (wght 300-400,
+     SOFT 10-25) because a thin asterisk at display scale reads as a
+     speck rather than as a mark.
+
+     SLATE, NOT GOLD. Both gold budgets are spent and CONTEXT.md
+     routes every new mark, subtitle, numeral and margin to Smoked
+     Slate.
+
+     VERTICAL POSITION. The mark's optical centre sits on the lede's
+     first-line CAP HEIGHT centre — not on its baseline, and not on
+     its box top. Fraunces' asterisk sits HIGH in the em box: its ink
+     runs from 0.765em above its own baseline down to 0.276em above
+     it, so it never touches the baseline at all and any metric
+     alignment is visibly wrong. Left on baselines the mark floated
+     48px high.
+
+     MEASURED OFF THE RENDERED INK, not off font metrics. Ink box from
+     canvas TextMetrics on the live face, lede baseline and mark
+     baseline from a zero-height inline-block baseline probe inserted
+     into each rendered element:
+
+         1440   mark ink centre 3419.42   lede cap centre 3371.07
+         1280   mark ink centre 3515.11   lede cap centre 3469.08
+         1024   mark ink centre 3984.89   lede cap centre 3938.86
+
+     The correction is -0.2701em at 1440 and -0.2705em at both 1280
+     and 1024 — the same number to within four ten-thousandths of an
+     em, which is what confirms it is a property of the glyph rather
+     than of a viewport. Expressed in `em` of the mark's own size, so
+     it re-resolves with the type at every width. Nothing here is a
+     pixel offset swept from one viewport. */
+  .legends-mark{
+    /* Measured, not assumed: canvas TextMetrics on the rendered face,
+       ink height / font-size for '*' in Fraunces at these four axes. */
+    --mark-ink-ratio: 0.489;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 20, 'WONK' 0;
+    font-weight: 400;
+    font-size: calc(var(--lede-size) * 1.6 / var(--mark-ink-ratio));
+    line-height: 1;
+    color: var(--slate);
+    margin-top: -0.1553em;   /* 0.115 optical - 0.2703 measured */
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3, on the shared --lede-size token — the same face,
+     axes, weight, line-height and letterfit as Premier Leadership's
+     and Educational Leader's ledes. CONTEXT.md's lede rule: the page
+     has ONE display tier and the sections differ in entrance, window
+     and rhythm rather than in type size.
+
+     NO max-width. Measure is controlled by the column span alone. */
+  .legends-lede{
+    /* LEDE -> BODY. 0.75 of the lede's own line-height via `lh`. R3
+       precedent, same number, same unit. */
+    margin: 0 0 0.75lh;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3. One paragraph, per COPY.md; nothing is restored from
+     Appendix A2. NO max-width — span only. */
+  .legends-body{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .legends-body p{ margin: 0; }
+
+  /* BODY -> BUTTON. calc(1.75 x 17px x 1.8) = 53.55px, from the
+     body's own tokens. The same relationship as Premier Leadership's,
+     and the same number, because it is the same relationship — the
+     two sections differ in composition, not in reading rhythm.
+
+     SELECTOR, NOT DECORATION: `.legends-body .legends-cta` rather
+     than `.legends-cta`. The button is a <p> inside .legends-body, so
+     a bare class selector (0,1,0) loses on specificity to the
+     `.legends-body p` reset above it (0,1,1) and the gap silently
+     rendered as ZERO — measured, the block was 170.9px where the
+     arithmetic says 224.5. Premier Leadership does not have the bug
+     because its button is a grid item of its own, outside the body. */
+  .legends-body .legends-cta{
+    margin-top: calc(1.75 * var(--bio-size) * var(--bio-lh));
+  }
+
+  /* ---- THE LIVE MARGIN — the Instagram handle --------------------
+     BASELINE-LOCKED TO THE BODY'S FIRST LINE, arithmetic cancelling
+     rather than swept, exactly as Educational Leader's district link
+     does. A first baseline sits at half-leading plus ascent, which
+     reduces to  B = lh/2 + (asc - desc)/2 x font-size;  Montserrat's
+     asc - desc is 0.717, so the constant is 0.3585 and the correction
+     is the difference of the two expressions. Giving this block the
+     BODY's line-height collapses the lh/2 terms and leaves the
+     font-size term alone — R3's exact form, reused because this block
+     is R3's exact shape: a small tracked label over a link. */
+  .legends-margin{
+    font-size: 10.5px;
+    line-height: calc(var(--bio-size) * var(--bio-lh));
+    margin-top: calc(0.3585 * (var(--bio-size) - 1em));
+  }
+
+  /* Slate at 0.82, not a lighter knock-down. Measured in R1: Slate on
+     Porcelain is 7.54:1 at full strength; at 0.78 the composite falls
+     to 4.45:1, under the floor. 0.82 composites to 4.90:1 and
+     passes. */
+  .legends-margin-label{
+    margin: 0;
+    margin-left: -0.11em;           /* half of 0.22em tracking */
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+    opacity: 0.82;
+  }
+
+  /* Lowercase, so the handle reads as a handle. Underline offset
+     rather than a border so descenders are not struck through.
+     Transform and opacity only — never transition-all. */
+  .legends-link{
+    display: inline-block;
+    margin-top: 2px;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+    transition:
+      transform 260ms var(--ease),
+      opacity   260ms var(--ease);
+  }
+
+  .legends-link:hover{ transform: translateY(-1px); opacity: 0.7; }
+  .legends-link:active{ transform: translateY(0); opacity: 1; }
+  .legends-link:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* ---- BAND 3 · 751-1023 -----------------------------------------
+     THE HANG COLLAPSES. The mark takes a row of its own above the
+     lede — which the authored order already produces, with nothing
+     re-sequenced — so the optical correction that seated it on the
+     lede's cap height no longer has anything to align to. It is
+     replaced by ordinary rhythm above and below, derived from the
+     body's tokens rather than set in pixels.
+
+     The mark keeps its display scale. Shrinking it here would make it
+     read as an ornament rather than as the section's entrance, and
+     the entrance is the one thing that must survive every band. */
+  @media (max-width: 1023px){
+    /* THE BOX IS TRIMMED TO THE INK. With the mark beside the lede the
+       dead space in its em box did not matter, because the block was
+       positioned by its ink; stacked, it does — measured on the
+       rendered glyph, the box carries 0.0936em of empty space above
+       the ink and 0.4205em below it, which at 170px is 16px and 71px.
+       Left alone the rhythm below the mark rendered at 86.8px against
+       the 30.6px the body tokens ask for, and the mark read as
+       stranded above the lede rather than as its opener.
+
+       Both trims are `em` of the mark's own size and both offsets
+       were MEASURED off the rendered ink, so they hold at every width
+       in these two bands — verified identical at 1023, 750 and 375.
+       The rhythm terms are the body's tokens, as everywhere else. */
+    .legends-mark{
+      margin-top: -0.0936em;
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh) - 0.4205em);
+    }
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     One stacked column. The handle falls inline under the button in
+     reading order, so the 2.33px baseline correction would read as a
+     stray line of the paragraph rather than as a marginal note. It
+     takes ordinary rhythm instead — --s4, because it has to read as a
+     block change and not as a paragraph break. Same treatment and
+     same reasoning as Educational Leader's district link. */
+  @media (max-width: 750px){
+    .legends-margin{ margin-top: var(--s4); }
+  }
+</style>

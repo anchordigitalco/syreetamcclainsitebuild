@@ -18,7 +18,10 @@ import { sections } from '../data/sections';
 const first = sections[0];
 ---
 
-<div class="folio hidden lg:block fixed left-0 top-1/2 z-40 pointer-events-none" aria-hidden="true">
+<!-- xl:, not lg:. The folio hides at the same 1280px threshold the live
+     margin does (raised from 1024 in E.8): below it there is no margin
+     column for a marginal element to belong to, and the folio is one. -->
+<div class="folio hidden xl:block fixed left-0 top-1/2 z-40 pointer-events-none" aria-hidden="true">
   <div class="folio-inner" id="folio"><span class="folio-num">{first.n}</span><span id="folio-label">{first.label}</span></div>
 </div>
 

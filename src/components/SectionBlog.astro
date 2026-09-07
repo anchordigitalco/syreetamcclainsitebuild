@@ -1,45 +1,69 @@
 ---
 // PILLAR — Charging It to the Game. Follows the index; followed by the contact
-// section, which was added in Phase F and is now the page's last content.
+// section, which is the page's last content.
 //
-// SECTION OPENING: the EYEBROW leads into a display-scale heading. The index
-// above it opens on a gold hairline and a hung display numeral, so the two do
-// not match.
+// ENTRANCE — this section is one of the two SANCTIONED EXCEPTIONS to the
+// three-edge staircase, the other being the chapter break. Its eyebrow, its
+// display heading, its lede, its body and its coda all hang on ONE edge,
+// column 3, and that single unbroken edge is what makes it read differently
+// from the five sections above it. Applying the staircase here as well would
+// make the staircase its own kind of sameness, which is the failure mode
+// CONTEXT.md names first.
+//
+// The index above opens on a gold hairline and hung display numerals and
+// Contact below opens on a hairline head, so neither neighbour is matched.
+//
+// COLUMN WINDOW — A, the page default: columns 3-8. RHYTHM — open.
+//
+// IMAGE — promoted from `inset` to `column`, which is what CONTEXT.md's
+// composition table specifies for this section. It was rendering at 330px in
+// the margin alongside two other 330px insets, which is how the page ended up
+// with three photographs at one width and no tier distinction at all. One
+// inset now exists on the page, in Premier Leadership.
+//
+// NO OVERLAP HERE — TRIED, MEASURED, MOVED. The numeral was hung off the
+// photograph's top-right corner, half on the picture and half on the page
+// ground. Measured against the RENDERED pixels rather than the frame's
+// average tone: Obsidian's worst contrast inside that box was 1.58:1, and no
+// single colour can clear 4.5:1 against both Porcelain (needs a dark fill)
+// and the frame's dark passages (needs a light one) — the two requirements
+// are arithmetically exclusive. A probe of the whole frame on an 8x6 grid
+// found no cell where the worst pixel cleared 4.5:1 against Obsidian, so it
+// was not a matter of nudging it. CONTEXT.md's rule is that a numeral over a
+// region it cannot hold moves, so it moved: it now hangs in the margin at the
+// outer trim with the caption, like every other section numeral on the page.
+// The page's third overlap went to the Everyday Legends lede instead.
 //
 // NO post index, NO fabricated posts, NO "coming soon". There are no articles
-// and no blog URL. The copy is a manifesto and stands as one; a fake post list
-// reads worse than no post list.
+// and no blog URL. The copy is a manifesto and stands as one.
 //
 // The section element carries id="charging-it-to-the-game" so funnel index
-// entry 05 — currently href="#" — has a real anchor available to be repointed
-// at. That repointing is NOT done here: it is Jackson's call and the index is
-// not this pass's scope.
+// entry 05 has a real anchor available to be repointed at. That repointing is
+// Jackson's call and is not this pass's scope.
 //
 // PHOTOGRAPH. Canonical source is brand_assets/SHP SHoot 7.jpg — the
-// red-blazer downtown-street frame. CONTEXT.md records it as
-// brand_assets/photography/lifestyle-street.jpg; that path and that directory
-// do not exist on disk. Verified 2832x4240 with sharp().metadata(), no EXIF
-// orientation flag, so the stored buffer is also the presented frame. It is a
-// VERTICAL frame and is not cropped wide. Inset crop cut from a figure-centred
-// window:
-//   extract left 700, top 980, 1500 x 2100   (5:7, three-quarter length —
-//   head at ~12% from the top, the street receding on both sides)
-// 5:7 is used nowhere else on the page: the other frames run 3:4, 4:5 and 2:3,
-// so this one differs in proportion and not only in size.
+// red-blazer downtown-street frame. Verified 2832x4240 with
+// sharp().metadata(), no EXIF orientation flag, so the stored buffer is also
+// the presented frame. VERTICAL, and not cropped wide. Inset crop cut from a
+// figure-centred window:
+//   extract left 700, top 980, 1500 x 2100   (5:7, three-quarter length)
+// 5:7 is used nowhere else: the other frames run 3:4, 2:3 and 4:5.
+//
+// NO HAND-SET grid-column ANYWHERE IN THIS FILE.
 import { Image } from 'astro:assets';
 import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
 ---
 
 <section class="blog spread" id="charging-it-to-the-game">
-  <div class="blog-head">
-    <p class="pillar-kicker">The Blog</p>
+  <div class="blog-head col-body row-1">
+    <p class="kicker">The Blog</p>
     <h2 class="blog-title">Charging It to the Game</h2>
   </div>
 
-  <!-- Columns 2-10, the break every lede on this page takes. -->
-  <p class="pillar-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
+  <p class="lede col-body row-2">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
 
-  <div class="pillar-body">
+  <!-- .col-body, NOT .col-indent: the single edge is the point here. -->
+  <div class="body-copy col-body row-3">
     <p>Charging It to the Game is where sports, family, leadership, and life meet&mdash;and where the experiences behind the accomplishments get a voice.</p>
     <p>Through personal stories, candid reflections, lessons learned, sacrifices made, wins celebrated, and losses absorbed, Dr.&nbsp;McClain shares the journey behind raising athletes while simultaneously navigating motherhood, marriage, education, leadership, business, and life.</p>
 
@@ -52,25 +76,29 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     <p>For parents, athletes, educators, coaches, leaders, and anyone navigating a journey that does not come with a perfect playbook, Charging It to the Game creates space to tell the truth about the process, find meaning in the experience, and keep moving forward.</p>
   </div>
 
-  <!-- Inset tier: columns 9-11, hung in the live margin and dropped down the
-       measure so its top edge does not line up with the paragraph beside it. -->
-  <figure class="blog-inset plate-img">
+  <figure class="blog-figure col-body row-4 plate-img">
     <Image
       src={lifestyleStreet}
       alt="Dr. Syreeta McClain in a red blazer and jeans, standing on a downtown street"
-      widths={[320, 480, 750, 1500]}
-      sizes="(max-width: 1024px) 100vw, 22vw"
+      widths={[480, 720, 1000, 1500]}
+      sizes="(max-width: 1024px) 100vw, 48vw"
       quality={80}
       loading="eager"
       decoding="sync"
     />
   </figure>
 
+  <!-- Live margin: the numeral, then the photograph's caption. Last in source
+       order for this row, so both fall inline after the picture at 1280. -->
+  <div class="blog-margin col-margin row-4">
+    <span class="section-numeral section-numeral--head" aria-hidden="true">08</span>
+    <p class="plate-caption">Red blazer, downtown street</p>
+  </div>
+
   <!-- THE CODA. Three lines, typeset as three blocks. The line breaks are the
        design: they can wrap on a narrow screen but they can never run together
-       into a sentence. Left-aligned, no rules between them. Last in source
-       order — the last thing said on the page before the footer. -->
-  <p class="blog-coda">
+       into a sentence. Left-aligned, no rules between them. -->
+  <p class="blog-coda col-coda row-5">
     <span class="coda-line">Because some things are wins.</span>
     <span class="coda-line">Some things are lessons.</span>
     <span class="coda-line">And some things you simply have to charge to the game.</span>
@@ -78,43 +106,14 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
 </section>
 
 <style>
-  .blog{ padding-top: var(--vr-standard); }
-
-  .blog-head    { grid-column: 3 / 9;  grid-row: 1; }
-  .pillar-lede  { grid-column: 2 / 11; grid-row: 2; }
-  .pillar-body  { grid-column: 3 / 9;  grid-row: 3; }
-  .blog-inset   { grid-column: 9 / 12; grid-row: 3; }
-  /* Columns 3-10, not the body's 3-8. At 3-8 the third line wrapped at
-     1440 and the cadence broke at the widest breakpoint, where it is
-     least excusable. The coda keeps the body's LEFT edge and is given
-     the room the closing lines need. */
-  .blog-coda    { grid-column: 3 / 11; grid-row: 4; }
+  /* RHYTHM: open. */
+  .blog{ padding-top: var(--vr-open); }
 
   .blog-head{ margin-bottom: clamp(40px, 5vw, 72px); }
 
-  .pillar-kicker{
-    margin: 0 0 var(--s3);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: 1.8;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--slate);
-  }
-
-  .pillar-kicker::before{
-    content: "";
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: clamp(24px, 3vw, 40px);
-  }
-
   /* Section-heading tier — opsz 96, wght 340, SOFT 32, WONK 0. Smaller than
-     the lede below, for the same reason as PillarLegends: the lede is the
-     section's display anchor and the title is the label on it. */
+     the lede below it: the lede is the section's display anchor and the title
+     is the label on it, which is the rule everywhere on this page. */
   .blog-title{
     margin: 0;
     font-family: var(--display);
@@ -127,55 +126,18 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     text-wrap: balance;
   }
 
-  /* Type treatment copied from PillarPremier's .pillar-lede verbatim. */
-  .pillar-lede{
-    margin: 0 0 var(--vr-tight);
-    font-family: var(--display);
-    /* Lede tier — opsz 72, wght 350, SOFT 35, WONK 0. */
-    font-variation-settings: var(--fx-lede);
-    font-weight: 350;
-    font-size: clamp(27px, 3.6vw, 52px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-    color: var(--obsidian);
-    text-wrap: pretty;
-  }
-
-  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
-  .pillar-body{
-    margin: 0;
-    max-width: 62ch;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.75;
-    letter-spacing: 0.004em;
-    color: var(--slate);
-    text-wrap: pretty;
-  }
-
-  .pillar-body p{ margin: 0; }
-  .pillar-body p + p{ margin-top: 1.5em; }
-
-  .body-beat{
-    color: var(--obsidian);
-    font-weight: 400;
-  }
-  .pillar-body p + .body-beat{ margin-top: var(--vr-tight); }
-  /* Qualified with .pillar-body: the bare `.body-beat + p` selector is
-     less specific than `.pillar-body p + p` and lost to it, so the beat
-     had air above it and none below and read as a lead-in. */
-  .pillar-body .body-beat + p{ margin-top: var(--vr-tight); }
-
-  /* --- The inset photograph -------------------------------------- */
-  .blog-inset{
-    margin-top: clamp(88px, 11vw, 190px);
+  /* --- The column photograph --------------------------------------- */
+  .blog-figure{
+    /* Three baselines, not --vr-tight: the clamp lands on 96px at 1440 and
+       96 is not a multiple of 28, so the figure and the margin block beside
+       it would both start 12px off the lattice and the caption could not be
+       snapped to the copy above. */
+    margin-top: calc(3 * var(--baseline));
     /* 5:7 — a proportion used nowhere else on the page. */
     aspect-ratio: 5 / 7;
-    align-self: start;
   }
 
-  .blog-inset :global(img){
+  .blog-figure :global(img){
     object-position: 50% 40%;
     /* The red blazer is the most saturated area anywhere in the usable set and
        red sits outside the five locked hexes. Graded down hard so it lands as
@@ -188,10 +150,10 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      edge because their out-of-palette areas are at an edge — track underfoot,
      sky overhead. This frame's problem area is the RED BLAZER, which sits in
      the middle of the picture, so an edge-weighted wash misses it entirely and
-     instead lands its gold on the sky, which is where the sepia cast came
+     lands its gold on the sky instead, which is where the sepia cast came
      from. Gold is carried across the middle band and Cashmere closes both
      ends. Every stop is a locked palette value. */
-  .blog-inset::before{
+  .blog-figure::before{
     background: linear-gradient(to bottom,
       var(--cashmere)  0%,
       var(--gold)     52%,
@@ -202,13 +164,30 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   /* Lighter than the shared default. The blazer is already the darkest thing
      in the frame and crushing it further pushes its relative saturation back
      UP, which is the opposite of what the grade above is for. */
-  .blog-inset::after{
+  .blog-figure::after{
     background:
       linear-gradient(to top, rgba(26,22,19,0.22) 0%, rgba(26,22,19,0) 40%),
       linear-gradient(90deg,  rgba(209,199,189,0.30) 0%, rgba(209,199,189,0) 26%);
   }
 
-  /* --- The coda ---------------------------------------------------- */
+  /* --- Live margin: numeral, then caption --------------------------- */
+  .blog-margin{
+    align-self: start;
+    /* Snapped: the figure starts three baselines below the body and the
+       margin block two further in, so the caption's baseline lands on a body
+       baseline rather than on the figure's top. */
+    margin-top: calc(5 * var(--baseline));
+  }
+
+  .blog-margin .section-numeral{ text-align: right; }
+
+  .blog-margin .plate-caption{
+    text-align: right;
+    margin-top: var(--baseline);
+    margin-left: 0;
+  }
+
+  /* --- The coda ----------------------------------------------------- */
   /* The OPEN step above. As with the education coda, the chapter break spends
      this step twice over, so it remains the page's largest gap. */
   .blog-coda{
@@ -237,21 +216,11 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      single stanza. */
   .coda-line + .coda-line{ margin-top: 0.34em; }
 
-  /* ---- One stacked column. ---- */
-  @media (max-width: 1024px){
-    .blog-head,
-    .pillar-lede,
-    .pillar-body,
-    .blog-inset,
-    .blog-coda{ grid-column: 1 / -1; grid-row: auto; }
-
-    .pillar-body{ max-width: none; }
-
-    /* The inset becomes a full-measure column image. */
-    .blog-inset{
-      margin-top: var(--vr-tight);
-      aspect-ratio: 4 / 5;
-    }
+  /* Inline in the measure: both go flush left again. */
+  @media (max-width: 1279px){
+    .blog-margin{ margin-top: var(--vr-tight); }
+    .blog-margin .section-numeral,
+    .blog-margin .plate-caption{ text-align: left; }
   }
 
   @media (max-width: 560px){

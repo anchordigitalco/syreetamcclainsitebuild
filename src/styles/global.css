@@ -3,8 +3,26 @@
 /* ============================================================
    THE SPREAD — Dr. Syreeta McClain
    A printed magazine feature translated to screen.
-   Editorial refinement pass: the femininity is carried by
-   typographic contrast and negative space, not by colour.
+
+   PHASE R — REBUILD. This file was rewritten for slice R1.
+   The old grid system lived here and carried the bug the rebuild
+   exists to fix: `.spread` set `max-width: var(--grid-max)` plus
+   `margin-inline: auto`, which is an ancestor-level container on
+   every section on the page. Its column windows also encoded the
+   OLD composition (body 3-8, live margin 9-12), which is not the
+   approved wireframe (body 1-9, live margin 10-12). Both are gone
+   rather than patched — a wrong window left in the file is a
+   landmine for the next slice.
+
+   Removed with it, because they existed only to serve that
+   container and would otherwise be live grid reservations for a
+   deleted system:
+     --grid-max   --grid-w   --grid-left   --grid-pad
+     .spread  .bleed  .col-* (19 windows)  .section-head*
+     .section-numeral*  .margin-block  .margin-label
+     .margin-link  .margin-note  @keyframes settle  .row-1..5
+   Slices R2-R11 rebuild what they need. Nothing on the page
+   references any of them today.
    ============================================================ */
 
 /* Client brand — exact values, no substitutions. These five are the whole
@@ -31,16 +49,15 @@
   --hair:        rgba(26, 22, 19, 0.16);
   --hair-strong: rgba(26, 22, 19, 0.30);
   --hair-light:  rgba(231, 226, 221, 0.22);
-  /* Gold hairlines — accent weight only, never a fill */
-  --hair-gold:        rgba(175, 140, 92, 0.44);
-  --hair-gold-faint:  rgba(175, 140, 92, 0.26);
 
   /* Type */
   --display: var(--font-display);
   --sans:    var(--font-sans);
 
   /* ----------------------------------------------------------
-     OPTICAL SYSTEM
+     OPTICAL SYSTEM  (Phase B — preserved unchanged, per CONTEXT.md
+     "Preserved from the old build, do not rebuild")
+
      Fraunces' opsz axis swaps structural detail, it does not merely
      scale: high opsz goes sharp and high-contrast, low opsz thickens
      strokes and opens spacing for legibility. SOFT rounds the
@@ -52,16 +69,15 @@
      Soft and warm where the type is READ.
 
      Fraunces' own defaults are wght 900, WONK 1, SOFT 100. Every
-     tier below states all four axes so no default ever applies.
+     tier below states all four axes so no default ever applies, and
+     the font request in BaseLayout.astro enumerates all five
+     coordinates (ital, opsz, wght, SOFT, WONK) for the same reason.
      ---------------------------------------------------------- */
   --fx-hero:    'opsz' 144, 'wght' 300, 'SOFT' 15, 'WONK' 0;
   --fx-display: 'opsz' 96,  'wght' 340, 'SOFT' 32, 'WONK' 0;
   --fx-quote:   'opsz' 96,  'wght' 340, 'SOFT' 40, 'WONK' 1;
   --fx-dropcap: 'opsz' 144, 'wght' 380, 'SOFT' 20, 'WONK' 0;
   --fx-lede:    'opsz' 72,  'wght' 350, 'SOFT' 35, 'WONK' 0;
-  /* Coda tier — the intermediate step between lede and body, for a section's
-     closing line. Sits between --fx-lede and --fx-small on every axis, so it
-     reads as display type being READ rather than SEEN. All four axes stated. */
   --fx-coda:    'opsz' 48,  'wght' 360, 'SOFT' 45, 'WONK' 0;
   --fx-numeral: 'opsz' 48,  'wght' 400, 'SOFT' 40, 'WONK' 0;
   --fx-small:   'opsz' 24,  'wght' 420, 'SOFT' 70, 'WONK' 0;
@@ -71,40 +87,103 @@
   --s5: 64px;  --s6: 96px;  --s7: 144px; --s8: 200px;
 
   /* ----------------------------------------------------------
-     THE GRID — 12 columns, 1440px trim, 24px gutters, centred.
-     Body text sits in 3-8, deliberately left of the page's middle.
-     Columns 9-12 are the LIVE MARGIN: not empty space, but the
-     strip that carries insets, section numerals and the running
-     head, exactly as the outer margin of a printed page does.
+     THE GRID  (R1, re-banded in R3)
+
+     THREE TRACK STATES, NOT TWO. R1 shipped two — 12 columns above
+     1024 and one column below it — and the step between them was
+     the whole bug this pass exists to fix. At 1024 About's body
+     measured 512.66px; at 1023 the sheet collapsed to a single
+     full-bleed column and the same paragraph measured 943px, an
+     84% jump across one pixel of viewport, carrying the longest
+     rendered line from 60 characters to 109. Everything from 1023
+     down to roughly 750 was a phone layout being rendered at
+     tablet width.
+
+       >= 1024   12 columns · 64px page gutters · 24px gap
+                 Body 1-9, live margin 10-12. UNCHANGED by R3, not
+                 one pixel — this band was measured before and after
+                 and is byte-identical.
+
+       751-1023  8 columns · 40px page gutters · 20px gap
+                 Body 1-5 above 900 and 1-6 at 900 and below (see
+                 the crossover note on .win-body). Live margin 7-8,
+                 a real column again.
+
+       <= 750    one column. The phone stack, moved down from 1023.
+                 750 is MEASURED, not estimated: at 750 the single
+                 column's longest rendered line is 77 characters and
+                 at 751 it is 80. See the breakpoint note below.
+
+     There is NO page width and NO centring token here, deliberately.
+     The grid is declared on each <section> (.sheet below) and the
+     tracks are whatever the viewport gives, less the two gutters.
+     Nothing above a section constrains or centres it. If a future
+     pass needs a page width, that is a change to this comment first.
+
+     THE GUTTER STEP AND THE TRACK COLLAPSE ARE NOW SEPARATE JOBS.
+     R1 had the single `@media (max-width: 1023px)` doing both at
+     once, which is why they could not be moved independently. They
+     are now split across the two thresholds. The VALUES are chosen
+     so no width renders a different gutter than it did before this
+     pass: R1's `clamp(24px, 6.4vw, 40px)` resolves to a flat 40px
+     for every viewport at or above 625px, so band 2's flat 40px is
+     the same number R1 was already producing across 751-1023, and
+     below 750 the clamp itself is carried over unchanged. The
+     gutter is byte-identical to the pre-R3 build at every width.
+     Only the track count and the spans move.
      ---------------------------------------------------------- */
-  --grid-max: 1440px;
-  --grid-pad: 24px;
+  --gutter:   64px;
   --grid-gap: 24px;
-  --grid-w:    min(100vw, var(--grid-max));
-  --col-w:     calc((var(--grid-w) - (2 * var(--grid-pad)) - (11 * var(--grid-gap))) / 12);
-  --grid-left: calc((100vw - var(--grid-w)) / 2);
 
   /* ----------------------------------------------------------
      VERTICAL RHYTHM — three values, never one.
-     The page is supposed to cluster and then breathe. A single
-     repeating gap is what made the old build read flat.
        tight    — things that belong to each other
        standard — ordinary section change
        open     — the chapter break, and nothing else
+     Per-section padding is assigned in the Composition table and
+     set by the section, not by a shared token. The Cover is 64px
+     at the bottom and flush at the top.
      ---------------------------------------------------------- */
   --vr-tight:    clamp(56px, 7vw, 96px);
   --vr-standard: clamp(104px, 13vw, 190px);
   --vr-open:     clamp(168px, 23vw, 330px);
 
-  /* Negative space is the material. The trim gutter is generous; the
-     "wide" gutter is the deliberately wasteful side that breaks the
-     page off its centre axis. */
-  --gutter:      clamp(26px, 7vw, 128px);
-  --gutter-wide: clamp(26px, 16vw, 340px);
-
-  /* Body metrics — the drop cap solve keys off these */
+  /* Body metrics — the drop cap solve (R2) keys off these */
   --bio-size: 17px;
   --bio-lh:   1.8;
+
+  /* THE LEDE SIZE, PROMOTED TO A TOKEN (R4/R5).
+
+     R3 set this clamp inline on `.edu-lede`. R5's decorative mark is
+     specified as `calc(var(--lede-size) * 1.6)` — a size DERIVED from
+     the lede rather than a hardcoded pixel value — so the lede's size
+     has to be readable as a custom property before the mark can be
+     written at all.
+
+     THE VALUE IS R3's, BYTE-FOR-BYTE: clamp(52px, 3.8vw, 64px). R3's
+     own declaration is deliberately left inline and untouched, so this
+     slice cannot move a shipped section by one pixel. R4 and R5 consume
+     the token; Educational Leader does not, and its rendered lede is
+     identical before and after this pass.
+
+     Floor check, CONTEXT.md's lede-to-body ratio: 3x minimum, 3-4x
+     target, against a 17px body. 52px is 3.06x at the clamp floor and
+     54.72px is 3.22x at 1440 — inside the band at every width. */
+  --lede-size: clamp(52px, 3.8vw, 64px);
+  --lede-lh:   1.18;
+
+  /* ----------------------------------------------------------
+     BASELINE
+     16px body at 1.75 line-height = a 28px line box. That is the
+     page's baseline unit. Margin content — captions, links, notes —
+     is set on multiples of it so its baselines land on body
+     baselines rather than on container tops. Display type is exempt
+     and sits optically.
+     ---------------------------------------------------------- */
+  --baseline: 28px;
+
+  --body-size: 16px;
+  --body-lh:   1.75;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -133,18 +212,16 @@ body{
 
 /* Print-stock grain. Fixed sheet over the whole page.
    NOTE: this is a sibling of the content, never an ancestor, so it cannot
-   trap the hero submark's mix-blend-mode. */
+   trap a descendant's mix-blend-mode. */
 .grain{
   opacity: 0.42;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
 }
 
-/* Visually hidden, but still in the accessibility tree. Used for the two
-   section headings the design carries no visible title for — About and the
-   index. Never display:none or visibility:hidden, which would remove them
-   from the tree and defeat the purpose. Absolutely positioned so it creates
-   no grid row in .spread. */
+/* Visually hidden, but still in the accessibility tree. Never display:none
+   or visibility:hidden, which would remove it from the tree and defeat the
+   purpose. Absolutely positioned so it creates no grid row in .sheet. */
 .vh{
   position: absolute;
   width: 1px;
@@ -161,17 +238,9 @@ body{
 
 a{ color: inherit; }
 
-/* ------------------------------------------------------------
-   Motion — transform only. Nothing on the page ever starts invisible.
-   A printed spread does not animate. The only orchestrated motion is a short
-   transform-only settle on the hero block; no opacity is involved, so every
-   element renders at full opacity on load and in captures.
-   ------------------------------------------------------------ */
-@keyframes settle{
-  from{ transform: translateY(12px); }
-  to{   transform: none; }
-}
-
+/* Nothing on the page ever starts invisible, and no scroll-reveals exist —
+   below-fold content rendered blank in full-page captures. Motion is
+   transform/opacity only and is confined to interactive states. */
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{
     animation-duration: 0.001ms !important;
@@ -180,66 +249,1018 @@ a{ color: inherit; }
   }
 }
 
-/* Body metrics step down on small screens; the drop cap solve is re-run
-   against these values at this breakpoint in About.astro. */
-@media (max-width: 560px){
-  :root{
-    --bio-size: 16px;
-    --bio-lh: 1.74;
-  }
-}
-
 /* ============================================================
-   GRID PRIMITIVES
-   Reusable tiers, defined once. No section invents its own
-   width — that repetition of one identical measure down the
-   whole scroll is the thing this pass exists to remove.
-   ============================================================ */
+   THE SHEET — the section-level grid.
 
-/* The trim. Everything that is not a bleed lives inside this. */
-.spread{
-  max-width: var(--grid-max);
-  margin-inline: auto;
-  padding-inline: var(--grid-pad);
+   One <section> is one spread. The grid is declared HERE, on the
+   section itself. No ancestor of a .sheet carries a max-width, a
+   centring margin-inline, or a container wrapper. That is the whole
+   point of this file.
+   ============================================================ */
+.sheet{
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gap);
+  padding-inline: var(--gutter);
 }
 
-/* --- The three image tiers, plus the text measure they answer to --- */
+/* ============================================================
+   COLUMN WINDOWS — collapse-aware primitives.
 
-/* Body text and the default photograph width: columns 3-8.
-   Left of the page's middle, never centred on it. */
-.col-body{ grid-column: 3 / 9; }
+   NOTHING hand-sets grid-column or grid-row in a component. A
+   hand-set span does not carry its own collapse; a primitive does.
+   The Phase F failure, exactly: a hand-set `grid-column: 2 / 11`
+   survived into a band whose sheet had fewer tracks, grid invented
+   the missing column lines as implicit auto-width tracks, and every
+   sibling spanning `1 / -1` was squeezed into a ~62px first column.
 
-/* The live margin: columns 9-11 for insets, 9-12 for marginalia. */
-.col-inset { grid-column: 9 / 12; }
-.col-margin{ grid-column: 9 / 13; }
+   COLLAPSE BEHAVIOUR, STATED BEFORE IMPLEMENTATION, FOR EVERY
+   PRIMITIVE IN THIS FILE, IN FOUR BANDS. R3 added band 2, so these
+   contracts are REWRITTEN rather than extended — a three-band
+   comment sitting above a four-band implementation is worse than
+   no comment.
 
-/* A pull quote must not share both edges with the paragraphs it
-   interrupts, so it starts a column earlier and ends two later. */
-.col-break{ grid-column: 2 / 11; }
+     band 1   >= 1280      12 cols · 64px gutters · 24px gap
+     band 2   1024-1279    12 cols · 64px gutters · 24px gap
+                           (same tracks as band 1; only the live
+                           margin's suppression separates them)
+     band 3   751-1023     8 cols · 40px gutters · 20px gap   NEW
+     band 4   <= 750       one column
 
-/* Full-viewport bleed. Used exactly twice on the page.
-   No transform is involved: a transform here would open a stacking
-   context and change how the photo treatment layers composite. */
-.bleed{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  max-width: none;
+   Bands 1 and 2 are UNTOUCHED by R3 and were re-measured after the
+   change to prove it. Everything R3 does happens at 1023 and below.
+
+   ---- .win-body — the generic body window ----------------------
+     >= 1280    columns 1-9. The live margin exists beside it.
+     1024-1279  columns 1-10. The live margin holds 11-12 here; it is
+                no longer suppressed, so its columns are no longer
+                returned to the measure.
+     751-1023   columns 1-5 above 900px, columns 1-6 at 900 and
+                below. TWO SUB-WINDOWS, because no single span holds
+                the measure across the whole band — see the
+                crossover note below.
+     <= 750     1 / -1 — the single collapsed column.
+
+   THE CROSSOVER, AND WHY THERE ARE TWO SUB-WINDOWS.
+   In the 8-column band a span of n columns measures
+   `n·t + (n-1)·20` where `t = (vw - 80 - 140) / 8`. That gives, at
+   the two ends of the band:
+
+                    at 1023      at 751
+       6 columns    702.25px     498.25px
+       5 columns    581.88px     411.88px
+
+   Six columns at the top of the band is 702px, which renders at
+   roughly 83 characters — over the 78 ceiling. Five columns at the
+   bottom of the band is 412px, which renders under the 45 floor.
+   Neither span holds both ends, so the band carries two.
+
+   The crossover is set at 900px. It is not the only workable
+   value — the two constraints leave the range roughly 764-970
+   open — and it was chosen inside that range because it keeps the
+   measure furthest from BOTH limits: five columns at 901 is
+   505.6px and six columns at 900 is 610px, so the seam moves
+   between about 59 and 71 characters with real headroom either
+   side, rather than clearing a limit by a character or two. Pushing
+   the crossover higher runs the six-column top toward 78; pushing
+   it lower runs the five-column bottom toward 45.
+
+   The window WIDENS as the viewport narrows, which looks backwards
+   and is not. It is the same move `.win-about-body` already makes
+   at 1280, and for the same reason: as absolute width goes away,
+   columns are given back to the measure to keep it comfortable.
+
+   ---- .win-margin — the live margin, marginalia only -----------
+     >= 1280    columns 10-12, beside the body.
+     1024-1279  columns 11-12, beside the body. TWO columns, because
+                the 12-column body windows in this band run to column
+                10; see the band-2 block for why three would force a
+                row drop rather than an overlap.
+     751-1023   columns 7-8 of 8, beside the body.
+     <= 750     1 / -1, inline in reading order. Margin content is
+                authored last within its own section for exactly this
+                reason. Never display:none.
+
+   THE MARGIN IS A REAL COLUMN AT EVERY WIDTH FROM 751 UP. It used to
+   blink — column, suppressed, column — across the 1024-1279 band.
+   That is gone. The one remaining discontinuity is its WIDTH, which
+   steps 3 -> 2 -> 2-of-8 as the grid narrows, and a width step at a
+   band boundary is ordinary responsive behaviour rather than an
+   element leaving and re-entering the composition.
+
+   ---- .win-cover-head / -foot / -portrait ----------------------
+     >= 1280    head row 1 top-aligned, foot row 2 bottom-aligned,
+                portrait spanning rows 1-3 at the right, cols 8-12.
+     1024-1279  IDENTICAL. The 1280 breakpoint governs the live
+                margin, and the Cover has no live-margin content —
+                its columns 10-12 hold the portrait, not marginalia.
+     751-1023   1 / -1, all three. The Cover stacks here exactly as
+                it did before R3. It does NOT take an 8-column
+                composition: Cover.astro's own `max-width: 1023px`
+                block turns off the min-height, the bottom bleed and
+                the overlap at this width, and re-composing the
+                Cover into the new band would be redesigning R1
+                inside a slice scoped to the measure. Renders
+                pixel-identical to the pre-R3 build at every width
+                in this band — verified, not assumed.
+     <= 750     1 / -1, unchanged again.
+
+   ---- R2, ABOUT ------------------------------------------------
+   About is the only section whose right edge moves between its own
+   blocks: the lede runs the full body width, the body paragraphs
+   are held short of it, and the closing line is jogged right into
+   the space the body vacates. That right-edge variance IS the
+   composition — there is no kicker, no rule, no numeral and no
+   photograph to carry it.
+
+   .win-about-lede    the opening statement.
+     >= 1280    columns 1-9. Full body width. Its RIGHT edge is
+                load-bearing: the closing line hangs off it from
+                columns 10-12.
+     1024-1279  columns 1-9, UNCHANGED. This is why .win-body could
+                not be reused: .win-body returns the margin's four
+                columns to the measure at this width and the lede
+                must not take them — they are the closing line's
+                window.
+     751-1023   columns 1-6. The full body width of the 8-column
+                band, stopping at the live margin's edge. Display
+                type, so no measure ceiling applies to it.
+     <= 750     1 / -1.
+
+   .win-about-body    body paragraphs 1 and 2, and the drop cap.
+     >= 1280    columns 1-6. Held three columns short of the lede's
+                right edge, sharing its LEFT edge — CONTEXT.md's
+                three-left-edges staircase describes sections that
+                open with an outdented kicker, and About has none,
+                so the variance lives in the right edge instead.
+     1024-1279  columns 1-7. The body widens by one column: six
+                columns at 1024 measures ~44 characters, below a
+                comfortable measure and a visibly choppy rag.
+     751-1023   columns 1-5 above 900, columns 1-6 at 900 and below
+                — the same crossover as .win-body and for the same
+                reason. THE JOG SURVIVES ONLY IN THE UPPER
+                SUB-BAND: above 900 the lede holds 1-6 and the body
+                1-5, so the right-edge variance is intact; at 900
+                and below both hold 1-6 and the variance is spent
+                to keep the measure off the 45-character floor. That
+                is a deliberate trade at the narrow end of the band,
+                not an oversight. The measure wins.
+     <= 750     1 / -1.
+
+   .win-about-close   the closing line.
+     >= 1280    columns 10-12, in the SAME GRID ROW as the body and
+                bottom-aligned within it by a computed baseline snap
+                in About.astro, so its last baseline sits on body
+                paragraph 2's last baseline.
+     1024-1279  columns 10-12, IDENTICAL. It is anchored to the
+                lede's right edge, and the lede holds 1-9 at both
+                desktop widths.
+     751-1023   1 / -1. IT IS NOT PROMOTED INTO THE NEW LIVE MARGIN,
+                and that is a decision rather than an omission. It
+                collapses inline in reading order here exactly as it
+                did before R3, so About.astro's own
+                `max-width: 1023px` rule — which resets align-self
+                and swaps the computed baseline snap for ordinary
+                rhythm — still covers it unchanged across the whole
+                of the new band. Promoting it would put a jogged
+                three-word line back into a column at tablet width
+                and would drag the baseline-snap arithmetic into a
+                band it was never solved for.
+     <= 750     1 / -1. Its OWN BLOCK in reading order — the
+                paragraph break is what makes it a coda — but never
+                held right. A three-word line pushed to the right
+                edge of a phone measure reads as a caption or as an
+                alignment bug.
+
+   ROWS ARE NOT DECLARED FOR ANY OF THE THREE ABOUT WINDOWS above
+   1024. Auto-placement already produces the wireframe, without a
+   row number a later slice could contradict: the lede takes row 1
+   columns 1-9 and leaves the cursor at row 1 column 10; the body
+   wants column 1, behind the cursor, so it drops to row 2; the
+   closing wants column 10, ahead of the cursor and free, so it
+   lands in row 2 beside the body. In bands 3 and 4 all three span
+   the full width, none fits beside another, and they fall into
+   three auto rows in source order.
+
+   The visually hidden <h2> is position:absolute, so it is not a
+   grid item for placement purposes and does not move the cursor.
+   ============================================================ */
+
+.win-body          { grid-column: 1 / 10; }
+.win-margin        { grid-column: 10 / 13; }
+
+.win-cover-head    { grid-column: 1 / 8;  grid-row: 1; align-self: start; }
+.win-cover-foot    { grid-column: 1 / 8;  grid-row: 2; align-self: end; }
+.win-cover-portrait{ grid-column: 8 / 13; grid-row: 1 / 3; }
+
+/* R2 — About. Columns only; rows come from auto-placement, which is
+   what seats the closing line in the body's row. See the walk above. */
+.win-about-lede    { grid-column: 1 / 10; }
+.win-about-body    { grid-column: 1 / 7;  }
+.win-about-close   { grid-column: 10 / 13; }
+
+/* ============================================================
+   R3 — EDUCATIONAL LEADER.  Entrance A, the hairline head.
+
+   The page's FIRST OUTDENTED KICKER. About directly above it opens
+   on a drop cap with no kicker and no rule; this section opens on a
+   rule and a kicker hung three columns left of its own lede. That
+   contrast is the entire point of the entrance, and it is why the
+   head is a primitive rather than a margin on a heading.
+
+   THREE LEFT EDGES, per CONTEXT.md's staircase table, visible in
+   band 1 only:
+       column 1   kicker + subtitle   (outdented)
+       column 4   lede AND closing line
+       column 5   body paragraphs     (one column in from the lede)
+
+   The closing line steps BACK OUT to the lede's edge rather than
+   staying on the body's. That is what makes it read as a closing
+   statement and not as a fourth paragraph.
+
+   COLLAPSE CONTRACTS, ALL FOUR BANDS, WRITTEN BEFORE THE
+   IMPLEMENTATION.
+
+   ---- .win-edu-head — kicker + subtitle + the head's own rule ----
+     >= 1280    columns 1-3. Outdented, sharing row 1 with the lede,
+                which starts at column 4. The hairline rule is a
+                child of this block rather than a grid item of its
+                own, so it spans exactly 1-3 at every width without
+                a second primitive to keep in step.
+     1024-1279  columns 1-3, UNCHANGED. The outdent is a 12-column
+                device and both 12-column bands keep it.
+     751-1023   columns 1-3 OF 8. The outdent is GONE — the body
+                also starts at column 1 in band 3, so the kicker
+                shares the body's left edge and the staircase
+                collapses to a single edge. That is CONTEXT.md's
+                band-3 body window, not a choice available here: the
+                shell's sub-windows start at column 1. The head keeps
+                a 3-column WIDTH so its rule stays a short mark
+                rather than becoming a full-measure divider; the
+                subtitle wraps to two lines and that is normal deck
+                behaviour.
+     <= 750     1 / -1. Full measure, first in the stack.
+
+   ---- .win-edu-lede — the opening statement --------------------
+     >= 1280    columns 4-11. Runs the full body window and OVERRUNS
+                into margin territory at 10-11 by design — that is
+                the Composition table's spec and it stands. Only
+                column 12 stays clear.
+     1024-1279  columns 4-11, UNCHANGED. The margin is suppressed in
+                this band and its columns return to the measure, but
+                the lede does NOT take them: extending it to 12 would
+                put display type flush to the right trim and change
+                the composition rather than preserve it.
+     751-1023   columns 1-6 of 8. The full band-3 body window,
+                stopping at the live margin's edge. It does NOT
+                overrun into 7-8 here: the district link holds those
+                columns in this band and a display-scale lede
+                crossing them would collide with it.
+     <= 750     1 / -1.
+
+   ---- .win-edu-body — the two body paragraphs ------------------
+     >= 1280    columns 5-9. One column in from the lede.
+     1024-1279  columns 5-10. Widens by one column as the margin's
+                columns come back: five columns at 1024 measures
+                ~359px, about 42 characters, under the floor.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below. The shell's two sub-windows, unchanged — this
+                section does not get its own crossover.
+     <= 750     1 / -1.
+
+   ---- .win-edu-rule — the hairline above the closing line ------
+     IT IS THE CODA'S RULE, NOT THE BODY'S, so it starts on the
+     CLOSING LINE'S left edge at every width — never the body's.
+     Built at 5-7 it started on the body edge while the closing line
+     started a column further left, so the coda hung ~110px out to
+     the left of its own lid and read as misaligned rather than as
+     stepped out. The two left edges are now the same edge in every
+     band, verified by measured x.
+     >= 1280    columns 4-6. Three of the section window's eight
+                columns, 37.5% — CONTEXT.md's "~38% of the body
+                window", where the window is the 4-11 span and not
+                the paragraph measure.
+     1024-1279  columns 4-6, UNCHANGED. The closing line also starts
+                at column 4 in this band, so one declaration serves
+                both 12-column bands.
+     751-1023   columns 1-2 of 8. The closing line starts at column 1
+                here, so the rule does too. Two of the window's five
+                or six columns — 40% above the crossover, 33% below
+                it, averaging the same ~38%.
+     <= 750     1 / -1 as a span, but the rule does not become a
+                full-width divider: .edu-rule caps its own width in
+                the component. Left edge is the page gutter, which is
+                also the closing line's, so the anchoring holds.
+
+   ---- .win-edu-close — the closing line ------------------------
+     >= 1280    columns 4-9. NOT 5-9. It steps back out to the
+                lede's left edge, one column left of the body, which
+                is the third of the three left edges.
+     1024-1279  columns 4-10, tracking the body's widening so the
+                one-column step-out is preserved on both edges.
+     751-1023   columns 1-7 of 8 — the full window. Above the
+                crossover the body holds 1-5, so the closing line is
+                one column WIDER on the right and the step-out
+                survives as a right-edge relationship even though
+                the left edges have merged. At 900 and below the
+                body is 1-6 and the two differ by one column still.
+     <= 750     1 / -1.
+
+   ---- .win-edu-margin — the district link ----------------------
+     THE PAGE'S FIRST REAL BAND-3 MARGINALIA. The R-shell pass built
+     the 7-8 column and flagged that it could not be evaluated,
+     because neither the Cover nor About has anything to put in it.
+     This is that content.
+     >= 1280    columns 10-12. Auto-placed into the BODY's row, not
+                the lede's, and top-aligned within it.
+     1024-1279  columns 11-12. A REAL COLUMN, still in the body's
+                row. Two columns rather than three because the body
+                window runs to column 10 in this band; three would
+                put the margin behind grid's cursor and drop it a
+                row. See the band-2 block.
+     751-1023   columns 7-8 of 8. A REAL COLUMN, still in the body's
+                row.
+     <= 750     1 / -1, inline in reading order, below the body.
+
+   WHY THE LINK NEVER SHARES A BAND WITH THE LEDE'S LAST LINE, WITH
+   NO LINE COUNT ANYWHERE. The lede overruns into columns 10-11, so
+   a link placed in the lede's own row would collide with it, and
+   the obvious fix — push the link down by the lede's height — needs
+   the lede's rendered line count, which is exactly the hardcoded
+   shape R2 and the R-shell pass removed and which this slice is
+   forbidden to re-create.
+
+   It is not needed. The link is authored immediately after the body
+   block, so grid's sparse cursor seats it in the BODY's row: the
+   lede takes row 1 and leaves the cursor past column 11; the body
+   wants column 5, behind the cursor, so it drops to row 2; the link
+   wants column 10, which is ahead of the cursor and free, so it
+   lands in row 2 beside the body. A grid row is a horizontal band by
+   definition, so being in a LATER ROW than the lede is a structural
+   guarantee of clearing its last line at every width and every line
+   count. The measurement cancels instead of being hardcoded, which
+   is what CONTEXT.md asks for. No grid-row is declared anywhere in
+   this section.
+
+   The same walk holds in band 3: head row 1, lede row 2, body row 3
+   with the link beside it at 7-8, rule row 4, closing row 5.
+   ============================================================ */
+
+.win-edu-head      { grid-column: 1 / 4;  align-self: start; }
+.win-edu-lede      { grid-column: 4 / 12; }
+.win-edu-body      { grid-column: 5 / 10; }
+.win-edu-rule      { grid-column: 4 / 7;  }
+.win-edu-close     { grid-column: 4 / 10; }
+.win-edu-margin    { grid-column: 10 / 13; align-self: start; }
+
+/* ============================================================
+   R4 — PREMIER LEADERSHIP.  Entrance C, image-first.
+
+   THE PHOTOGRAPH OPENS THE SECTION, before any type, in document
+   order and in reading order. Educational Leader directly above it
+   is deliberately photo-free and opens on an outdented kicker and a
+   rule; this opens on a plate and has no kicker and no rule at all.
+   That is the turn between the two spreads.
+
+   THE TYPE'S LEFT EDGE IS COLUMN 5, AND IT IS NOT A FOURTH LEFT
+   EDGE. CONTEXT.md's rule — kicker at 1, lede and coda at 4, body at
+   5, nothing on a fourth — governs type anchored to the SHEET's left
+   trim. R4's type is set beside a plate, so its left edge is a
+   function of the plate's right trim plus one gap, not an
+   independent choice.
+
+   THE CONDITION THAT MAKES IT PERMITTED: the plate occupies columns
+   1-4 IN FULL, and there is NO empty column between the plate's
+   right trim and the type's left edge. An empty column would make
+   this edge a free choice and therefore a fourth edge, and a fourth
+   edge one column off an existing one reads as a mistake rather than
+   as a step-out — exactly the failure R3.1 corrected. Column 5
+   follows column 4; it is not chosen.
+
+   (R4.2 note: this block previously read "columns 1-5" and "column
+   6". Those were the line values transcribed as column numbers — the
+   same off-by-one CONTEXT.md corrected in the Composition table at
+   R4.1. The CSS below has been 1 / 5 and 5 / 12 since R4.1; only the
+   prose was stale. Corrected here rather than left as a landmine.)
+
+   ---- .win-prem-plate — the photograph -------------------------
+   ITS TOP EDGE IS THE SECTION'S TOP PADDING LINE, ITS LEFT EDGE IS
+   THE SHEET'S LEFT TRIM, AND ITS BOTTOM EDGE IS THE BUTTON'S BOTTOM
+   EDGE. All three are structural, not cosmetic: a contained
+   rectangle sharing three edges with the page's own structure reads
+   as an aperture, and one sharing none reads as a card.
+
+   THE BOTTOM EDGE IS R4.2. The plate used to carry `align-self:
+   start` and take its height from a 4:5 aspect-ratio, so it stopped
+   wherever that arithmetic landed — 18.5px above the button at 1440,
+   134.5px above it at 1280 and 260.4px above it at 1122. Two heavy
+   horizontal edges that near each other at the foot of a two-column
+   section read as a mistake rather than as a step; it is the R3.1
+   failure in a different section. `align-self` is now unset, so the
+   plate STRETCHES across its row span, and the row track list below
+   is what makes the last of those rows end on the button. Nothing is
+   measured and nothing is hardcoded: the alignment re-resolves at
+   every width in every band.
+
+     >= 1280    columns 1-4, ROWS 1-4, STRETCHED. The row span is the
+                only grid-row declared in this slice and it is
+                structural, not a measurement: the type column is
+                authored in exactly four blocks — head, lede, body,
+                button — so the plate spans from the first to the
+                last. It is not a line count and nothing about it goes
+                stale when the copy rewraps.
+     1024-1279  columns 1-4, rows 1-4, stretched. UNCHANGED — the
+                plate's window does not move between the two
+                12-column bands; only the type beside it narrows by a
+                column.
+     751-1023   columns 1-6 OF 8, grid-row auto. THE SECTION STACKS.
+                Side-by-side dies at 8 tracks: the plate would leave
+                2 or 3 columns for the type and a 3-column measure is
+                not a measure. The plate goes wide at the top of the
+                stack and the type sits below it.
+     <= 750     1 / -1, first in the stack.
+
+   ---- .win-prem-head — head + subtitle AND the lede ------------
+   ONE PRIMITIVE FOR BOTH, because the Composition windows are
+   identical in all four bands. Two primitives holding the same span
+   is two things to keep in step for no gain.
+     >= 1280    columns 6-11. Six columns, 644px at 1440.
+     1024-1279  columns 6-10. One column narrower, because the live
+                margin takes 11-12 in this band.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below. The shell's two sub-windows — this section
+                does not get its own crossover.
+     <= 750     1 / -1.
+
+   ---- .win-prem-body — the body paragraph AND the button -------
+   ONE PRIMITIVE, one window, per the Composition table. They are two
+   grid ITEMS rather than one so the topics list can be authored
+   between them and still seat in the body's row; see the walk below.
+     >= 1280    columns 6-9. Four columns, held two short of the
+                head's right edge. That right-edge variance is this
+                section's internal composition, the same device About
+                uses, and it is what stops the head, the lede and the
+                body reading as three blocks in one bin.
+     1024-1279  columns 6-10. Widens to five as the head does, so the
+                two-column hold becomes a one-column hold rather than
+                inverting.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below.
+     <= 750     1 / -1.
+
+   ---- .win-prem-margin — the four speaking topics --------------
+   THE SECOND PIECE OF LIVE BAND-3 MARGINALIA ON THE PAGE, and one of
+   the two tests of whether that column reads as filled rather than
+   as established-but-empty.
+
+   IT SPANS THREE ROWS IN THE SIDE-BY-SIDE BAND — THE BODY'S, THE
+   BUTTON'S, AND THE SPILL ROW UNDER THEM — AND EACH HALF OF THAT IS
+   A SEPARATE CORRECTION.
+
+   R4 built it spanning ONE row and the topics list PUSHED THE BUTTON
+   DOWN wherever it was taller than the body: a grid row is as tall as
+   its tallest item, so at 1024, where the margin is two columns of
+   129px and the four topics wrap to sixteen lines, the body-to-button
+   gap rendered at ~210px against the 53.55px the type tokens ask for.
+   The gap is derived from the body's line-height and MUST NOT be
+   inflated by an unrelated item in the same row.
+
+   R4.1 answered that with `span 2`, which halved the problem rather
+   than removing it. MEASURED, at the shipped R4.1 build: the topics
+   list is TALLER THAN THE BODY'S ROW PLUS THE BUTTON'S ROW AT EVERY
+   WIDTH IN BOTH 12-COLUMN BANDS, so it was setting the last row's
+   height everywhere — row 4 rendered 82.86px at 1440 against a 48.5px
+   button, 137.42px at 1279 and 173.80px at 1122. The button never
+   moved, because the row grows DOWNWARD from the button's top, so
+   nothing was visibly wrong and it was invisible until R4.2 needed
+   the row's bottom edge to mean something.
+
+   R4.2 NEEDS THAT ROW'S BOTTOM TO BE THE BUTTON'S BOTTOM, because the
+   plate now stretches to it. So the margin is given a THIRD row to
+   spill into, and `.prem`'s track list makes that third row the only
+   FLEXIBLE one. That is not decoration — it is the mechanism. CSS
+   Grid sizes items that span a flexible track in a separate step from
+   items that do not, and that step distributes space ONLY to the
+   flexible tracks in the span. The topics list therefore contributes
+   NOTHING to the body's row or to the button's row; all of its
+   surplus lands in the spill row below the button, where it is
+   ordinary section space. The body's derived gap is safe, the
+   button's row is exactly one button tall, and the plate's bottom
+   edge is the button's bottom edge by construction.
+
+   It is still a span, not a row number — nothing here says WHICH
+   rows, so document order still places it and there is nothing to go
+   stale. AND IT IS STILL `span 2` BELOW 1121, where the section
+   stacks: there is no track list there, so there is no flexible row
+   to spill into, and R4.1's two-row distribution is the shipped,
+   reviewed behaviour for the stacked arrangement. See the crossover
+   block.
+     >= 1280    columns 10-12, seated in the BODY's row and
+                top-aligned in it.
+     1024-1279  columns 11-12. TWO columns, not three, for the same
+                forced reason as R3's district link: the 12-column
+                body windows run to column 10 in this band, so a
+                margin asking for column 10 asks for a column behind
+                grid's sparse cursor and drops to a row of its own.
+     751-1023   columns 7-8 of 8, still in the body's row.
+     <= 750     1 / -1, inline in reading order, between the body and
+                the button — which is why the button is a separate
+                grid item.
+
+   THE PLACEMENT WALK, BAND 1. No line count anywhere, and no
+   hardcoded offset:
+
+     plate   definite at 1-4 / rows 1-4, placed before the auto pass
+     head    wants col 5 · row 1 free      -> row 1, cursor -> col 12
+     lede    wants col 5, BEHIND cursor    -> row 2, cursor -> col 12
+     body    wants col 5, behind cursor    -> row 3, cursor -> col 10
+     topics  wants col 10, AT the cursor   -> row 3, BESIDE THE BODY,
+                                              spanning rows 3-5
+     button  wants col 5, behind cursor    -> row 4
+
+   Row 5 holds nothing of its own. It exists so the topics list has a
+   flexible track to spill into, and it collapses to zero at any width
+   where the list is shorter than the body and button together.
+
+   The topics land in the body's row because of DOCUMENT ORDER — they
+   are authored immediately after the body — and a grid row is a
+   horizontal band by definition, so their clearance against the lede
+   is structurally true at every width and every rendered line count.
+   Nothing counts the lede's lines and nothing hardcodes a top offset.
+
+   The same walk holds in band 3 with the plate stacked: plate row 1,
+   head row 2, lede row 3, body row 4 with the topics beside it at
+   7-8, button row 5.
+   ============================================================ */
+
+.win-prem-plate    { grid-column: 1 / 5;  grid-row: 1 / 5; }
+.win-prem-head     { grid-column: 5 / 12; }
+.win-prem-body     { grid-column: 5 / 10; }
+.win-prem-margin   { grid-column: 10 / 13; grid-row: span 3; align-self: start; }
+
+/* ============================================================
+   R5 — EVERYDAY LEGENDS FOUNDATION.  Entrance B, decorative mark.
+
+   NO PHOTOGRAPH, no kicker outdented to column 1, no rule. R4
+   directly above it opens on a plate at column 1; this opens on a
+   display-scale mark hung at columns 1-2 with column 3 left empty.
+   The two are BUILT TO RHYME and the failure mode of a rhyme is a
+   repeat, so the differences are load-bearing: R4 anchors its type
+   to the RIGHT of a plate at column 6 on a 4-column measure; R5
+   anchors LEFT at column 4 on a 5-column measure with the mark hung
+   outside it. R5 has no fourth-left-edge exemption to claim and does
+   not need one — column 4 is R3's lede edge, already established.
+
+   ---- .win-legends-mark — the asterisk -------------------------
+   IT IS NOT A NUMBER AND CANNOT BE READ AS ONE. The Index carries
+   independent numbering 01-05 in a different order from page order;
+   the two devices are unrelated and must never be made to agree.
+   An asterisk cannot be counted, and it has editorial pedigree as a
+   dinkus. Not a numeral, not a Roman numeral, not a two-character
+   form, not a bullet, not a lozenge — and not a rule or anything a
+   rule-shaped glyph could be mistaken for, which is why an em-dash
+   at display scale is out: this section is specified as having no
+   rule and a display-scale em-dash reads as one.
+
+     >= 1280    columns 1-2, with COLUMN 3 DELIBERATELY EMPTY. The
+                gap is the hang. It only reads as intentional if the
+                mark is genuinely display-scale; a small mark with an
+                empty column beside it reads as stranded.
+     1024-1279  columns 1-2, UNCHANGED.
+     751-1023   column 1 ONLY, in a row of its own above the type.
+                THE HANG COLLAPSES HERE and that is forced, not
+                chosen: band 3's type window is left-anchored at
+                column 1, so the mark cannot occupy the same column
+                as the body's left edge in the same row.
+     <= 750     1 / -1, above the type, left-aligned on the gutter.
+
+   ---- .win-legends-head — head + subtitle ----------------------
+     >= 1280    columns 4-8.
+     1024-1279  columns 4-8, UNCHANGED.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below.
+     <= 750     1 / -1.
+
+   ---- .win-legends-lede — the opening statement ----------------
+   A SEPARATE PRIMITIVE FROM THE HEAD, unlike R4's. R4's head and
+   lede hold identical windows in every band and share one primitive;
+   R5's do not — the lede runs one column past the head at 4-9 in
+   both 12-column bands. That one column IS the composition here: it
+   gives the section the right-edge variance R4 gets from holding its
+   body short, without repeating R4's device.
+     >= 1280    columns 4-9.
+     1024-1279  columns 4-9, UNCHANGED.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below.
+     <= 750     1 / -1.
+
+   ---- .win-legends-body — the body paragraph AND the button ----
+     >= 1280    columns 4-8. Five columns — one wider than R4's body,
+                which is four. The measures are deliberately not the
+                same number.
+     1024-1279  columns 4-9. Widens by one as the margin drops to two
+                columns.
+     751-1023   columns 1-5 of 8 above 900, columns 1-6 at 900 and
+                below.
+     <= 750     1 / -1.
+
+   ---- .win-legends-margin — the Instagram handle ---------------
+   Instagram stays in this section — and the text link
+   everydaylegend.com is dropped — because the button already goes to
+   everydaylegend.com and printing both is redundant, while Instagram
+   is a different destination.
+     >= 1280    columns 10-12, seated in the BODY's row.
+     1024-1279  columns 11-12. Two columns, same forced reason as R4.
+     751-1023   columns 7-8 of 8, still in the body's row.
+     <= 750     1 / -1, inline in reading order.
+
+   THE PLACEMENT WALK, BAND 1:
+
+     head    wants col 4 · row 1 free      -> row 1, cursor -> col 9
+     mark    wants col 1, BEHIND cursor    -> row 2, cursor -> col 3
+     lede    wants col 4, ahead and free   -> row 2, BESIDE THE MARK
+     body    wants col 4, behind cursor    -> row 3, cursor -> col 9
+     margin  wants col 10, ahead and free  -> row 3, BESIDE THE BODY
+
+   THE MARK IS AUTHORED BETWEEN THE HEAD AND THE LEDE, not first, and
+   that is the whole mechanism by which it lands in the LEDE's row
+   rather than the head's. Its optical centre has to sit on the
+   lede's first-line cap height; authored first it would seat in row
+   1 beside the head, and pushing it down to the lede would need the
+   head's rendered height — a hardcoded offset, which is the shape
+   this project has removed three times. Document order makes the
+   measurement cancel instead.
+
+   In band 3 the same order gives the mark a row of its own directly
+   above the lede: head row 1, mark row 2, lede row 3, body row 4
+   with the handle beside it at 7-8.
+   ============================================================ */
+
+.win-legends-mark  { grid-column: 1 / 3;  align-self: start; }
+.win-legends-head  { grid-column: 4 / 9;  }
+.win-legends-lede  { grid-column: 4 / 10; }
+.win-legends-body  { grid-column: 4 / 9;  }
+.win-legends-margin{ grid-column: 10 / 13; align-self: start; }
+
+/* --- BAND 2 · 1024-1279 -----------------------------------------
+   THE LIVE MARGIN IS NO LONGER SUPPRESSED HERE. R1 turned it off
+   across this band and returned its columns to the measure, on
+   CONTEXT.md's note that below 1280 the margin cannot hold a ~200px
+   note without crowding. R3 put live content in the margin for the
+   first time and the suppression showed what it actually costs: the
+   district link left columns 10-12 at 1280 and reappeared at x=64,
+   a row lower, in the empty outdent column beneath the kicker —
+   travelling right-to-left across the whole page as the viewport got
+   SMALLER. It did not read as a margin collapsing. It read as a
+   fragment that had fallen out of the layout.
+
+   The margin is now a real column at every width from 751 up. The
+   blink CONTEXT.md's Layout System recorded as open is closed, and
+   that entry is amended.
+
+   THE MARGIN IS TWO COLUMNS HERE, NOT THREE, AND THAT IS FORCED.
+   Educational Leader's body window in this band is 5-10 and MUST NOT
+   change. A margin at 10-12 would claim column 10 twice: grid's
+   sparse cursor sits at column 11 after the body, so a margin asking
+   for column 10 is asking for a column behind the cursor and drops to
+   a row of its own — which is the row-drop half of the same bug. At
+   11-12 the cursor is exactly where the margin starts, so it seats
+   BESIDE the body, and the link's only movement across the 1280
+   boundary is one column to the right. It never reaches the left
+   edge and it never changes row.
+
+   The folio is unaffected. It hides below 1280 for its own reason —
+   it is fixed to the viewport edge, not a grid item — and that
+   threshold does not move. */
+@media (max-width: 1279px){
+  /* .win-body loses a column because the margin took it back. This
+     pairing is the whole point: the body was only ever 1-12 here
+     BECAUSE the margin was off, and the comment that widened it said
+     so. Removing the suppression removes its consequence too, or the
+     two primitives overlap in column 10 for whichever slice reaches
+     for them first. Nothing on the page uses either today. */
+  .win-body  { grid-column: 1 / 11; }
+  .win-margin{ grid-column: 11 / 13; }
+
+  /* About: the lede, the body AND the closing line are all unchanged
+     by R3. The closing line already held 10-12 in this band — it is
+     absent from this block and always was, because R2 anchored it to
+     the lede's right edge rather than to the body's. No line count
+     was needed to keep it there and none was introduced. */
+  .win-about-body { grid-column: 1 / 8; }
+
+  /* R3 — Educational Leader. The HEAD, the LEDE, the RULE, the BODY
+     and the CLOSING LINE are all unchanged from band 1's values or
+     from their own band-2 values; only the margin moves, to the two
+     columns the body does not occupy. */
+  .win-edu-body   { grid-column: 5 / 11; }
+  .win-edu-close  { grid-column: 4 / 11; }
+  .win-edu-margin { grid-column: 11 / 13; }
+
+  /* R4 — Premier Leadership. THE PLATE DOES NOT MOVE: it holds 1-5
+     and rows 1-4 in both 12-column bands, so it is absent from this
+     block by design rather than by omission. Everything to the right
+     of it gives up column 11 to the live margin, which is two columns
+     here for the same forced reason as R3's district link — the body
+     window runs to column 10, so a margin asking for column 10 sits
+     behind grid's sparse cursor and drops a row. */
+  .win-prem-body   { grid-column: 5 / 11; }
+  .win-prem-margin { grid-column: 11 / 13; }
+
+  /* R5 — Everyday Legends. THE MARK, THE HEAD AND THE LEDE ARE ALL
+     UNCHANGED from band 1 and are absent here for that reason: the
+     hang is a 12-column device and both 12-column bands keep it, and
+     the head/lede one-column offset at 4-8 / 4-9 is the section's
+     composition, not a function of the margin's width. Only the body
+     widens into column 9 and the margin steps to 11-12. */
+  .win-legends-body   { grid-column: 4 / 10; }
+  .win-legends-margin { grid-column: 11 / 13; }
 }
 
-/* --- Photograph treatment, shared by every tier ----------------
+/* ============================================================
+   BAND 2's STACKING CROSSOVER · <= 1121 — R4 ONLY.  (R4.1)
+
+   R4 IS THE ONLY SECTION ON THE PAGE THAT STACKS INSIDE BAND 2, and
+   it is the only one that needs to: it is the only section carrying a
+   photograph BESIDE its type, so it is the only one whose type window
+   is a remainder rather than a choice. Nothing else is touched by this
+   block — About, Educational Leader and Everyday Legends do not
+   appear in it and are byte-identical either side of 1121.
+
+   1121 IS MEASURED, NOT ESTIMATED, and swept at 1px across the whole
+   of 1024-1279. THE RULE: the widest viewport at which the empty
+   ground under the plate is TALLER THAN THE PLATE ITSELF. Past that
+   point the photograph has stopped anchoring the left column and is
+   floating in it — the plate is a function of its column width, the
+   type beside it is not, and the two diverge as the sheet narrows.
+
+       vw 1122   plate 394.2   void 385.0   void < plate
+       vw 1121   plate 393.8   void 403.6   void > plate   <- crossover
+       vw 1024   plate 353.3   void 511.0
+
+   THE RULE THE R4.1 PROMPT SPECIFIED — the widest viewport at which
+   the side-by-side lede exceeds five lines or orphans its last line —
+   SELECTS NOTHING. Swept at 1px across 1024-1279 against the new 5-11
+   window, the lede runs 4 lines down to 1143 and 5 lines from 1142 to
+   1024, and its last line is "organizations forward." at every one of
+   those 256 widths. Widening the window from 6-10 to 5-11 fixed the
+   lede outright. It did not fix the arrangement, which is what the
+   rule above measures instead. Both sweeps are in the report.
+
+   BELOW THE CROSSOVER: the plate goes above the type, the type
+   left-anchors at column 1, and the plate's row span is released —
+   the four-row span is a side-by-side device and does not survive a
+   stack.
+
+   THE PLATE IS 9 OF 12, NOT THE FULL SHEET WIDTH. At 4:5 a full-sheet
+   plate is 993 x 1241px at 1121 and 896 x 1120 at 1024 — more than a
+   viewport of photograph, and outside CONTEXT.md's `column` tier,
+   which is "half the page or less, inside the body window." Nine
+   columns is 738.8 x 923.4 at 1121 and 666 x 832.5 at 1024, which
+   lands within 46px of band 3's own plate at 1023 (702.3 x 877.8) and
+   makes the 1024/1023 boundary nearly seamless. A full-width plate
+   would have grown to 1120px at 1024 and then DROPPED to 878 at 1023
+   — discontinuous, and in the wrong direction.
+
+   THE MARGIN IS 10-12 HERE, NOT 11-12, AND THAT IS FORCED BY A
+   MEASUREMENT. The body vacates column 10 in this sub-band (it runs
+   1-8), so column 10 is free and sits AHEAD of grid's sparse cursor —
+   the row-drop that forces 11-12 in the side-by-side band does not
+   exist here. And 11-12 does not fit the content: the SPEAKING TOPICS
+   label's ink is 130.03px with its trailing letter-space removed,
+   against a two-column margin of 131.16px at 1035 and 129.34px at
+   1024, so the label WRAPS TO TWO LINES from 1035 down. A tracked
+   uppercase label that wraps is not a label. Three columns is 206px
+   at 1024 and holds it with room.
+
+   THE MARGIN GOES BACK TO `span 2` HERE, AND THE PLATE GOES BACK TO
+   ITS OWN ASPECT RATIO. (R4.2.) Both belong to the side-by-side
+   arrangement and neither survives the stack. There is no track list
+   below this crossover — `.prem` releases `grid-template-rows` — so
+   there is no flexible spill row for a three-row span to reach, and
+   `span 3` would simply distribute the topics list across three
+   intrinsic rows and push the button down, which is the R4.1 bug
+   restored. And a stretched plate in a stacked row is a plate with no
+   height at all: it is alone in its row, so stretching it to the row
+   is stretching it to itself. The component gives it `aspect-ratio:
+   4 / 5` back in the same media query, which is where the plate's
+   height comes from in every stacked band.
+
+   THE PLATE-BOTTOM-TO-BUTTON-BOTTOM ALIGNMENT DOES NOT EXIST BELOW
+   1121, AND CANNOT. The photograph is ABOVE the type here, not beside
+   it, so there are no two heavy horizontal edges near each other at
+   the foot of the section — which is the condition R4.2 exists to
+   remove. Measuring the delta in this band measures the height of the
+   whole type column, not an alignment.
+
+   THE PLACEMENT WALK:
+     plate   1-9,  auto row              -> row 1, cursor -> col 10
+     head    wants col 1, behind cursor  -> row 2, cursor -> col 10
+     lede    wants col 1, behind cursor  -> row 3, cursor -> col 10
+     body    wants col 1, behind cursor  -> row 4, cursor -> col 9
+     margin  wants col 10, AHEAD, free   -> rows 4-5, BESIDE THE BODY
+     button  wants col 1, behind cursor  -> row 5
+   ============================================================ */
+@media (max-width: 1121px){
+  .win-prem-plate  { grid-column: 1 / 10; grid-row: auto; }
+  .win-prem-head   { grid-column: 1 / 10; }
+  .win-prem-body   { grid-column: 1 / 9;  }
+  .win-prem-margin { grid-column: 10 / 13; grid-row: span 2; }
+}
+
+/* ============================================================
+   BAND 3 · 751-1023 — EIGHT COLUMNS.  (R3)
+
+   The band that did not exist before this pass. 40px page gutters,
+   20px column gap, 8 tracks. Body 1-5 (or 1-6 below the crossover),
+   live margin 7-8.
+
+   This block is keyed on `max-width: 1023px` and is bounded from
+   below by the `max-width: 750px` block, not by a min-width. Two
+   reasons. It keeps the cascade one-directional — each narrower
+   band overrides the one above it — which is how the rest of this
+   file already reads. And a `min-width: 751px` here would mean any
+   primitive added later without a matching phone rule would render
+   with NO rule at all below 750 rather than inheriting this one;
+   the un-bounded form degrades toward the wider layout, which is
+   wrong but visible, instead of toward an unstyled one.
+
+   EVERY primitive declared above appears below, in this block or in
+   the phone block. A primitive missing from both is the Phase F bug
+   waiting to happen — it would keep demanding column lines that no
+   longer exist and grid would invent them as implicit tracks.
+   ============================================================ */
+@media (max-width: 1023px){
+  :root{
+    /* Flat 40px, not R1's clamp. Identical output across the whole
+       of this band: `clamp(24px, 6.4vw, 40px)` resolves to 40px for
+       every viewport at or above 625px, so nothing moves. The clamp
+       itself survives, in the phone block, where it does real work. */
+    --gutter:   40px;
+    --grid-gap: 20px;
+  }
+
+  .sheet{
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .win-body        { grid-column: 1 / 6; }
+  .win-margin      { grid-column: 7 / 9; }
+
+  /* The Cover does not re-compose into this band; it stacks exactly
+     as it did before R3. Its own component rules take over here. */
+  .win-cover-head,
+  .win-cover-foot,
+  .win-cover-portrait{ grid-column: 1 / -1; grid-row: auto; }
+
+  .win-about-lede  { grid-column: 1 / 7; }
+  .win-about-body  { grid-column: 1 / 6; }
+
+  /* R3 — Educational Leader. The outdent is gone: the head shares
+     the body's column-1 edge and keeps only its 3-column width, so
+     its rule stays a short mark. The margin becomes a real column
+     at 7-8 and holds the district link — the first live content in
+     band 3's margin on this page. */
+  .win-edu-head    { grid-column: 1 / 4; }
+  .win-edu-lede    { grid-column: 1 / 7; }
+  .win-edu-body    { grid-column: 1 / 6; }
+  .win-edu-rule    { grid-column: 1 / 3; }
+  .win-edu-close   { grid-column: 1 / 7; }
+  .win-edu-margin  { grid-column: 7 / 9; }
+
+  /* NOT promoted into the margin. Inline in reading order, its own
+     block, full width — unchanged from the pre-R3 build. */
+  .win-about-close { grid-column: 1 / -1; grid-row: auto; }
+
+  /* R4 — Premier Leadership. THE SECTION STACKS. Side-by-side dies at
+     8 tracks: a 5-column plate would leave the type 2 or 3 columns,
+     and a 3-column measure is not a measure. The plate goes wide at
+     1-6 and the type falls below it, so `grid-row` is released back
+     to auto — the four-row span is a 12-column arrangement and does
+     not survive into a stack. The margin becomes a real column at 7-8
+     and holds the four topics. */
+  .win-prem-plate  { grid-column: 1 / 7; grid-row: auto; }
+  .win-prem-head   { grid-column: 1 / 6; }
+  .win-prem-body   { grid-column: 1 / 6; }
+  .win-prem-margin { grid-column: 7 / 9; }
+
+  /* R5 — Everyday Legends. THE HANG COLLAPSES, and it is forced: the
+     band-3 type window is left-anchored at column 1, so the mark
+     cannot hold a column the body's left edge already holds in the
+     same row. It keeps column 1 and takes a row of its own directly
+     above the lede — which is what the authored order between the
+     head and the lede already produces, with nothing re-sequenced. */
+  .win-legends-mark   { grid-column: 1 / 2; }
+  .win-legends-head   { grid-column: 1 / 6; }
+  .win-legends-lede   { grid-column: 1 / 6; }
+  .win-legends-body   { grid-column: 1 / 6; }
+  .win-legends-margin { grid-column: 7 / 9; }
+}
+
+/* --- The crossover, at 900px. -----------------------------------
+   Five columns cannot hold the measure to the bottom of the band,
+   so the body takes a sixth here and the live margin stays where it
+   is at 7-8. Above this width column 6 is an open channel between
+   the body and the margin; at and below it the channel closes and
+   the two are a gutter apart. The reasoning and the arithmetic are
+   on .win-body above. */
+@media (max-width: 900px){
+  .win-body       { grid-column: 1 / 7; }
+  .win-about-body { grid-column: 1 / 7; }
+
+  /* R3 follows the shell's crossover rather than inventing its own.
+     The closing line already holds the full 1-7 window above this
+     width, so it is absent here — only the body moves. */
+  .win-edu-body   { grid-column: 1 / 7; }
+
+  /* R4 and R5 follow the shell's crossover too. Every block that sits
+     ON the band-3 body window takes the sixth column here; the plate
+     already holds 1-6 above this width and the two margins already
+     hold 7-8, so both are absent rather than restated. The channel at
+     column 6 closes and the body and the margin become a gutter
+     apart, exactly as it does for About and Educational Leader. */
+  .win-prem-head    { grid-column: 1 / 7; }
+  .win-prem-body    { grid-column: 1 / 7; }
+  .win-legends-head { grid-column: 1 / 7; }
+  .win-legends-lede { grid-column: 1 / 7; }
+  .win-legends-body { grid-column: 1 / 7; }
+}
+
+/* ============================================================
+   BAND 4 · <= 750 — MOBILE. One column.
+   The multi-column composition is a desktop- and tablet-space
+   treatment and does not exist on phones.
+
+   750 IS MEASURED, NOT ESTIMATED. The threshold is defined as the
+   widest viewport at which the collapsed single column still holds
+   the longest RENDERED line to 78 characters or fewer. Swept at 1px
+   against About's body paragraph 2, per-character client rects,
+   drop cap excluded:
+
+       750   box 670px   longest rendered line 77 characters
+       751   box 671px   longest rendered line 80 characters
+
+   The step is 3 characters wide because a rag moves in whole words,
+   not in pixels — which is exactly why this had to be measured and
+   could not be divided out. An 8.5px-per-character estimate put the
+   same threshold at 743 and would have shipped seven pixels of
+   viewport rendering at 80 characters.
+
+   Everything about this band is carried over from R1 unchanged: the
+   clamped gutter, the single track, the zero gap. Only the width it
+   starts at has moved, from 1023 down to 750.
+   ============================================================ */
+@media (max-width: 750px){
+  :root{
+    /* 64px gutters on a 390px viewport leave a 262px measure. The
+       page gutter is a desktop-space value; it steps down here. */
+    --gutter:   clamp(24px, 6.4vw, 40px);
+    --grid-gap: 0px;
+  }
+
+  .sheet{
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+  }
+
+  .win-body,
+  .win-margin,
+  .win-cover-head,
+  .win-cover-foot,
+  .win-cover-portrait,
+  .win-about-lede,
+  .win-about-body,
+  .win-about-close,
+  .win-edu-head,
+  .win-edu-lede,
+  .win-edu-body,
+  .win-edu-rule,
+  .win-edu-close,
+  .win-edu-margin,
+  .win-prem-plate,
+  .win-prem-head,
+  .win-prem-body,
+  .win-prem-margin,
+  .win-legends-mark,
+  .win-legends-head,
+  .win-legends-lede,
+  .win-legends-body,
+  .win-legends-margin{ grid-column: 1 / -1; grid-row: auto; }
+}
+
+/* ============================================================
+   PHOTOGRAPH TREATMENT, shared by every tier.
+
    Every photograph on the page is loaded eagerly and decoded
-   synchronously. CONTEXT.md's build notes require all content to be
-   visible on load, because anything that resolves late is missing
-   from full-page captures and from any PDF the client generates.
-   Lazy loading and async decode both reproduce that failure: the
-   plate's ground paints and the photograph arrives after the
-   capture. */
-/* Gradient overlay + a warm Cashmere-toned multiply layer. Applied
-   per the frontend-design skill; pushed warm rather than neutral
-   grey so it agrees with the page's existing ground tones. */
+   synchronously. CONTEXT.md requires all content visible on load,
+   because anything that resolves late is missing from full-page
+   captures and from any PDF the client generates.
+
+   Gradient overlay + a mix-blend-multiply colour-treatment layer,
+   pushed warm toward Cashmere rather than neutral grey so the
+   photograph agrees with the page's ground tones. No border, no
+   shadow, no rounded corners on any photograph, ever.
+   ============================================================ */
 .plate-img{
   position: relative;
   margin: 0;
@@ -255,45 +1276,176 @@ a{ color: inherit; }
   object-fit: cover;
 }
 
+/* The warm colour-treatment layer.
+
+   R1 ramped this Cashmere -> Gold at 0.38 and reported R-B rising from
+   ~5 at the head of the frame to ~22 at the foot. Both numbers were
+   right and the frame still read cool, because the warmth was almost
+   entirely in the bottom third. Measured on the rendered pixels, R1's
+   treated backdrop was #a5a29d: R-B of 8, luminance 162. The eye reads
+   the top two thirds of the frame, and that part of the ramp was doing
+   almost nothing.
+
+   This layer is now FLAT GOLD rather than a Cashmere -> Gold ramp, for
+   two measured reasons.
+
+   Warmth: multiplying the backdrop by Cashmere shifts R-B by about 4
+   units, which is below the threshold at which anyone sees a hue — that
+   is why R1's numbers said warm and the screen said grey. Flat Gold at
+   0.38 composites to #9f978a: R-B of 21, luminance 152, against a
+   Porcelain ground at 227. It reads as the warm taupe that agrees with
+   Cashmere, and Obsidian type still measures 6.2:1 on it.
+
+   OPACITY, and the tradeoff behind it (R1.3). The brief asked for the
+   luminance step at the plate's left seam to land at 35-50 units rather
+   than ~77. NO OPACITY SATISFIES THAT AND KEEPS THE FRAME WARM, because
+   most of the step is not this layer's doing. The untreated backdrop is
+   luminance 183 against a Porcelain ground at ~227: a 44-unit step exists
+   in the photograph, before any treatment. The arithmetic, with the
+   ground taken at 227:
+
+       backdrop luminance = 182.1 - 79.3a        step = 44.9 + 79.3a
+       R-B                = 59.9a - 1
+
+       a      lum    step    R-B
+       0.38   152     75     21.8    <- R1.2
+       0.30   158     69     17.0
+       0.24   163     64     13.4    <- shipped
+       0.20   166     61     11.0
+       0.15   170     57      8.0    <- R1.1 measured 8 and read as grey
+       0.06   177     50      2.6    <- step in range, warmth gone
+       0.00   182     45     -1.0    <- no treatment at all
+
+   The 35-50 window is only reachable by removing the treatment. 0.24 was
+   chosen instead: it takes the step down by about a sixth while keeping
+   R-B at 13.4, comfortably above the 8 that measured warm and read grey.
+   The dominant fix for "reads as pasted" is the bleed, not this number —
+   two of the frame's four edges no longer exist, and the third is crossed
+   by the name.
+
+   The corner artifact: THE LIGHTER VERTICAL STRIP AT THE RIGHT EDGE OF
+   THE FRAME WAS NOT IN THE PHOTOGRAPH. Backdrop luminance across the
+   source by vertical decile measures 183.0 183.4 183.0 177.5 [her hair]
+   179.8 183.0 183.4 183.1 — flat to within half a unit. The strip was
+   this layer. A 196deg ramp is anchored to the top-RIGHT corner, so
+   whatever the stop positions, that corner renders pure Cashmere: with
+   Gold moved to 22% it still measured 10.5 luminance brighter and 12
+   R-B cooler than the rest of the frame. No stop position fixes a
+   corner anchor, so the ramp is gone. Depth is the ::after overlay's
+   job; hue is this layer's, and it does it evenly.
+
+   DO NOT PUT A TRANSFORM ON THE <img> UNDER THIS LAYER. A static
+   `transform: scale()` on the photograph — even though the img is a
+   sibling of this pseudo-element and not an ancestor of it — silently
+   killed the multiply: the treated backdrop measured #b3b4b4, R-B of -1,
+   luminance 180, which is the raw source colour. The transformed image
+   composites into its own layer and this rule can no longer blend
+   against it. CONTEXT.md's gotcha is broader than the word "ancestor"
+   suggests. Crops are done by oversizing the img box, not by scaling. */
 .plate-img::before{
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(196deg, var(--porcelain) 0%, var(--cashmere) 50%, var(--gold) 100%);
+  background: var(--gold);
   mix-blend-mode: multiply;
-  opacity: 0.34;
+  opacity: 0.24;
 }
 
+/* The gradient overlay, seating the frame onto its bottom trim.
+   0.26 rather than 0.34: the ::before ramp now ends on Gold at the foot
+   of the frame, so the bottom of every photograph is being darkened
+   twice. At 0.34 the foot of the Cover portrait went muddy — visible on
+   the 390px capture, where a 4:5 crop puts the subject inside the
+   overlay's 40% band rather than below it. */
 .plate-img::after{
   content: "";
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(to top, rgba(26,22,19,0.34) 0%, rgba(26,22,19,0) 44%);
+  background: linear-gradient(to top, rgba(26,22,19,0.26) 0%, rgba(26,22,19,0) 40%);
 }
 
 /* ============================================================
-   MOBILE — the 12-column grid collapses to one column.
-   Bleeds stay bleeds; they already read correctly at phone width.
+   TYPE PRIMITIVES
    ============================================================ */
-@media (max-width: 1024px){
-  .spread{
-    grid-template-columns: minmax(0, 1fr);
-    padding-inline: var(--gutter);
-    column-gap: 0;
-  }
 
-  /* Every tier becomes full column width. */
-  .col-body,
-  .col-inset,
-  .col-margin,
-  .col-break{ grid-column: 1 / -1; }
+/* --- Kicker / credit line. Montserrat, small, letterspaced,
+   uppercase, Smoked Slate. ----------------------------------- */
+.kicker{
+  margin: 0;
+  margin-left: -0.13em;           /* half of 0.26em tracking */
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 10.5px;
+  line-height: var(--baseline);   /* on the baseline lattice */
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
 
-  /* The bleed has to undo the parent's gutter padding as well as
-     centre itself, or it stops short of both edges. */
-  .bleed{
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-  }
+/* --- Role line. --------------------------------------------- */
+.role{
+  margin: 0;
+  margin-left: -0.07em;           /* half of 0.14em tracking */
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(12px, 1.1vw, 14px);
+  line-height: var(--baseline);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--obsidian);
+}
+
+/* --- Photograph caption, hung in the margin. Montserrat, small,
+   letterspaced, uppercase, Smoked Slate at reduced opacity.
+   NO GOLD RULE — the budget is spent.
+
+   0.82 rather than a lighter knock-down is measured, not chosen:
+   Slate on Porcelain is 7.54:1 at full strength; at 0.78 the
+   composite is 4.45:1, under the floor. 0.82 composites to 4.90:1
+   and passes. ------------------------------------------------- */
+.plate-caption{
+  margin: var(--baseline) 0 0;
+  margin-left: -0.11em;           /* half of 0.22em tracking */
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 10.5px;
+  line-height: var(--baseline);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--slate);
+  opacity: 0.82;
+}
+
+/* ============================================================
+   BUTTON — solid fill, high contrast. Never a ghost or an outline.
+   Square corners: pill buttons were ruled out permanently as
+   fighting the hard-edged editorial premise.
+   Transform and opacity only. Never transition-all.
+   ============================================================ */
+.btn-solid{
+  display: inline-block;
+  padding: 18px 34px;
+  border: 0;
+  background: var(--obsidian);
+  color: var(--porcelain);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(11px, 1vw, 12.5px);
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 260ms var(--ease),
+    opacity   260ms var(--ease);
+}
+
+.btn-solid:hover{ transform: translateY(-2px); opacity: 0.88; }
+.btn-solid:active{ transform: translateY(0);   opacity: 1; }
+.btn-solid:focus-visible{
+  outline: 1px solid var(--obsidian);
+  outline-offset: 5px;
 }

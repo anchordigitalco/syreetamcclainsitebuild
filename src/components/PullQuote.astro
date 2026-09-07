@@ -1,18 +1,35 @@
 ---
-// 6. THE CHAPTER BREAK — bleed 2 of 2.
-// This is the page's structural pivot: everything above it is her own work,
-// everything below it is the index. It carries the OPEN rhythm step, which is
-// spent here and nowhere else, so it reads as a deliberate pause rather than
-// one more block in the stack.
+// THE CHAPTER BREAK — the page's single structural pivot. Everything above it
+// is her own work; everything below it is the index. It carries the OPEN
+// rhythm step twice over — once as margin, once as padding — which is why it
+// stays the largest gap on the page by roughly 2x and why nothing else on the
+// page competes with it.
+//
+// ENTRANCE — the pivot is its own entrance, and it is the second of the two
+// SANCTIONED EXCEPTIONS to the three-edge staircase. One element, one edge.
+//
+// FULL INTERRUPTION (E.8, step 12). It used to sit at .col-body — the exact
+// measure of the paragraphs above and below it — so it read as one more block
+// in the column rather than as a break in it. It now takes .col-break, a
+// column earlier and two later, sharing neither edge with anything it
+// interrupts.
+//
+// HANGING PUNCTUATION. The opening quotation mark hangs LEFT of the text
+// edge, so the E of "Every" is what measures flush and what the eye reads as
+// the block's left edge. A quote mark sitting inside the measure makes the
+// whole block look indented. text-indent, not hanging-punctuation: the
+// property is Safari-only and would double-apply there on top of this.
 //
 // Obsidian ground. Gold on Obsidian is 5.8:1; gold on Porcelain is 2.4:1 and
 // on Cashmere 1.9:1, both of which fail even the 3:1 large-text floor, so the
 // dark ground is what lets this stay the page's loudest gold moment.
+//
+// NO HAND-SET grid-column ANYWHERE IN THIS FILE.
 ---
 
 <section class="pullquote" id="sec-quote">
   <div class="spread">
-    <h2 class="col-body">&ldquo;Every decision is viewed through a larger lens: <em>Legacy</em>.&rdquo;</h2>
+    <h2 class="col-break">&ldquo;Every decision is viewed through a larger lens: <em>Legacy</em>.&rdquo;</h2>
   </div>
 </section>
 
@@ -28,15 +45,20 @@
       radial-gradient(70% 60% at 6% 94%,  rgba(71,68,64,0.58) 0%, rgba(71,68,64,0) 62%);
   }
 
-  /* GOLD — the page's largest accent. Quote tier: opsz 96, SOFT 40, WONK 1.
-     WONK 1 in italic swaps in the flagged ball terminals on b, d, h, k, l,
-     v and w. That flourish is the whole reason this tier exists. Axes
+  /* GOLD 3 of 3 — the page's largest accent. Quote tier: opsz 96, SOFT 40,
+     WONK 1. WONK 1 in italic swaps in the flagged ball terminals on b, d, h,
+     k, l, v and w. That flourish is the whole reason this tier exists. Axes
      unchanged by this pass. */
   .pullquote h2{
-    /* Narrow inside its column: the void to its right is what makes the block
-       read as hung rather than centred. */
+    /* Narrow inside a wide column: the void to its right is what makes the
+       block read as hung rather than centred, and .col-break gives it more
+       void than .col-body did. */
     max-width: 12ch;
     margin: 0;
+    /* Hanging punctuation. -0.42em is the measured advance of U+201C in
+       Fraunces italic at this tier, so the line starts a quote-width left and
+       the first letter lands exactly on the text edge. */
+    text-indent: -0.42em;
     font-family: var(--display);
     font-variation-settings: var(--fx-quote);
     font-style: italic;

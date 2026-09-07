@@ -1,49 +1,233 @@
 ---
-// 3. ABOUT — body text in columns 3-8, with the five-line drop cap.
-// The cleats/football detail shot now hangs in the live margin (9-11) beside
-// this copy rather than occupying a section of its own: it is a detail, and
-// details belong in the margin.
-import { Image } from 'astro:assets';
-import athleticsDetail from '../assets/athletics-detail.jpg';
+/**
+ * ABOUT — slice R2.
+ *
+ * CONTEXT.md Section Composition table, row "About":
+ *
+ *   Entrance      the drop cap. No kicker, no rule, no numeral, no
+ *                 decorative mark, no visible title.
+ *   Column window lede 1-9 · body 1-6 · closing held 10-12
+ *   Image         NONE. Deliberately photo-free — the Cover portrait is
+ *                 one scroll above it, and CONTEXT.md's "photography does
+ *                 not sit in adjacent sections" rule is the reason.
+ *   Rhythm        standard
+ *   Margin holds  THE CLOSING LINE. CONTEXT.md's table originally read
+ *                 "deliberately empty — the page's first breath" for this
+ *                 row. That was written before the section could be seen.
+ *                 What an empty margin produced here was a hollow right
+ *                 half for the section's whole height, not a breath, and
+ *                 a closing line with no edge to hang off. The table has
+ *                 been updated rather than worked around.
+ *   Length        full
+ *
+ * NO HEIGHT CONSTRAINT. No min-height, no svh floor. CONTEXT.md's R1.4
+ * standing rule: the Cover is the ONLY section on this page with one,
+ * and every other section is content-height. About is content-height.
+ *
+ * COPY is set verbatim from COPY.md Part 1 -> About. Four strings:
+ * opening statement, two body paragraphs, closing line. Nothing is
+ * reworded, nothing is added, nothing is cut.
+ *
+ * NO grid-column OR grid-row IS SET IN THIS FILE. Every placement is a
+ * collapse-aware primitive from global.css — .win-about-lede,
+ * .win-about-body, .win-about-close — and the behaviour of each is
+ * written out in full above its implementation there, before the
+ * implementation, in FOUR bands since R3 re-banded the sheet:
+ * >=1280 / 1024-1279 / 751-1023 / <=750.
+ *
+ * R3 TOUCHED THIS FILE IN EXACTLY TWO PLACES, both below 1024 and
+ * both consequences of the sheet re-banding rather than changes to
+ * About's composition: the drop cap's two media-query bands are
+ * deleted (N is now 3 at every width, so they are unnecessary), and
+ * the comments are rewritten to four bands. Nothing at 1440, 1280,
+ * 1279 or 1024 moved — verified by measurement, not by inspection.
+ *
+ * NO PHOTOGRAPH, so no treatment layer and no blend to protect; the
+ * section carries no transform of any kind either way.
+ *
+ * GOLD. One saturated gold type accent is spent here: the drop cap.
+ * CONTEXT.md's pinned budget names it explicitly as one of the three
+ * ("the Legacy tagline, the About drop cap, the pull quote"), so this
+ * is a budgeted use and not an addition. ZERO hairline-gold rule
+ * contexts on this slice — there is no rule in this section at all.
+ */
 ---
 
-<section class="about spread" id="sec-about">
-  <!-- No visible title by design. The heading exists for the document outline
-       and for screen-reader navigation only; .vh removes it from view without
-       removing it from the accessibility tree. -->
+<section class="sheet about" id="sec-about">
+  <!--
+    About has no visible title, so the heading exists for the document
+    outline and for screen-reader navigation only. .vh clips it with
+    clip-path and keeps it in the accessibility tree; it is never
+    display:none.
+
+    The string is "About" because that is the `label` on the sec-about
+    entry in src/data/sections.ts, and CONTEXT.md's locked heading
+    structure requires the <h2> text and the folio label to be the same
+    string. Verified against that file, not assumed.
+  -->
   <h2 class="vh">About</h2>
-  <div class="about-body col-body">
-    <p><span class="dropcap">D</span>r. Syreeta McClain is an accomplished educational leader, high school principal, consultant, speaker, and nonprofit co-founder with more than two decades of experience transforming the lives of young people and the systems that serve them. She specializes in customized high school programming, alternative education, student engagement, leadership development, and creating innovative pathways for student success. As the CEO of Premier Leadership, LLC, she provides leadership coaching, professional development, workshops, program development, and keynote presentations for educators, schools, organizations, parents, and community leaders.</p>
-    <p>She is also the co-founder of the Everyday Legends Foundation, a nonprofit committed to strengthening communities grounded in their three pillars: education, athletics, and service. Drawing from her unique experience as an educator, executive leader, and nonprofit founder, Dr.&nbsp;McClain now bridges her skillsets with the evolving landscape of sports and NIL, as athletic manager to her sons, while empowering individuals and families to maximize their impact.</p>
+
+  <p class="win-about-lede about-lede">Two decades of seeing possibility in young people, and rebuilding the systems that serve them.</p>
+
+  <div class="win-about-body about-body">
+    <p><span class="dropcap">D</span>r. Syreeta McClain is a high school principal, an educational consultant, and the co-founder of a foundation built to honor the people who show up when no one is watching.</p>
+    <p>Today that work extends into college athletics, where she manages the careers of her three sons, bringing the same conviction to NIL, branding, and recruiting that she brought to school leadership.</p>
   </div>
 
-  <figure class="about-inset col-inset plate-img">
-    <Image
-      src={athleticsDetail}
-      alt="A heel resting on a football, goalposts standing behind"
-      widths={[320, 480, 640, 900]}
-      sizes="(max-width: 1024px) 100vw, 22vw"
-      quality={78}
-      loading="eager"
-      decoding="sync"
-    />
-  </figure>
+  <!--
+    THE LINE BREAK IS AUTHORED, not left to the wrap. Two sentences,
+    two lines, at every width. Unforced, the break happened to fall
+    between the sentences at some widths and inside "One through-line."
+    at others — it set as one line at 1279 and at 390, and would break
+    as "One / through-line." at widths between. A closing line whose
+    shape changes with the viewport is not a composition.
+
+    A <br> rather than two block spans: the paragraph's text content
+    stays the single string "Different rooms. One through-line.",
+    byte-identical to COPY.md, and nothing is added to the
+    accessibility tree.
+  -->
+  <p class="win-about-close about-coda">Different rooms.<br />One through-line.</p>
 </section>
 
 <style>
-  .about{ padding-top: var(--vr-standard); }
+  /* CONTEXT.md's per-section padding table gives About a flat 96, and
+     the Cover above it 64. Sections MUST NOT share a padding token, so
+     these values are declared here and nowhere else — there is
+     deliberately no --vr-* token in this rule.
 
+     THE TOP PADDING IS NOW ASYMMETRIC, and this is a deliberate
+     departure from the table's flat "About 96". At a fixed 96 the lede
+     was legible below the Cover at scroll 0, broken mid-phrase, and it
+     read as a fourth item in the Cover's foot cluster rather than as
+     the opening of a new section.
+
+     The cause is that the two measurements are in different units. The
+     Cover is 80svh, so the distance from the fold down to the lede
+     scales with viewport height, while 96px does not. A fixed value
+     cannot satisfy a viewport-relative requirement, so the padding
+     becomes viewport-relative too, keeping 96px as a floor for short
+     viewports where the fixed value was already sufficient.
+
+     THE CONSTANT IS +12, NOT -40, AND THE DIFFERENCE IS MEASURED. The
+     brief specified max(96px, calc(20svh - 40px)) from the model
+
+         lede cap-top = (0.80 x vh) + 64 + padding-top
+
+     but there is no +64. The Cover's 64px is `padding-block: 0 64px`
+     INSIDE its own `min-height: 80svh` box, so it is consumed by the
+     height floor rather than added to it. Measured at 1440x900: the
+     Cover's bottom edge sits at exactly 720.0, which is 0.80 x 900,
+     not 784. Built as specified, the lede's ink was still 28.0px above
+     the fold at 800, 900, 1080 and 1440 tall, and 5.0px above it at
+     700 — verified by scanning the actual pixels between the Cover's
+     bottom edge and the fold, not by arithmetic.
+
+     Two further corrections came out of that scan. The threshold is
+     the lede's FIRST INK, which is 12px below its line box top — not
+     its cap top, because Fraunces' lowercase ascender (the "d" in
+     "decades") rises above the cap line. And the Cover is content-tall
+     rather than 80svh on short viewports: at 700 it measures 583px,
+     not 560.
+
+     Corrected, with the brief's own 24px of margin preserved:
+
+         first ink = coverBottom + padding-top + 12
+         clears the fold when  padding-top > (0.20 x vh) - 12
+         shipped:              padding-top = 20svh + 12
+
+     Verified by pixel scan at 700, 800, 900, 1080 and 1440 tall: no
+     lede ink anywhere in the band below the Cover, clearing by 24px at
+     every height and by 47px at 700. What shows there is GROUND, not
+     type, which is what the Cover's 80svh exists to create.
+
+     THE svh TERM IS SCOPED TO 1024 AND UP, because the problem it
+     solves only exists there. The Cover is 80svh only while its
+     desktop composition is live; below 1024 it collapses to a stacked
+     column with `min-height: auto` and becomes content-tall — 1131px
+     at 390 wide, which already clears an 844px fold by 467px. Left
+     unconditional it resolved to 180.8px at 390: 85px of extra dead
+     scroll on a phone, buying separation that was already there.
+     Below 1024 the padding is a flat 96px, matching the bottom, and
+     the section is symmetric again.
+
+     The desktop top stays asymmetric on purpose: it is buying
+     separation from a viewport-height Cover, while the bottom is
+     ordinary section rhythm against a content-height neighbour. */
+  .about{
+    padding-block: 96px;
+  }
+
+  @media (min-width: 1024px){
+    .about{ padding-top: max(96px, calc(20svh + 12px)); }
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3. Treatment copied from PillarPremier.astro's lede
+     verbatim — same family, same four axes, same weight, same clamp,
+     same line-height and letterfit — because CONTEXT.md's lede rule
+     names that component as the reference every section matches.
+
+     Obsidian, not Slate: it is the first type a reader meets after the
+     Cover and it is the section's whole entrance apart from the cap.
+
+     THE CLAMP IS NOT PillarPremier's. Its clamp(27px, 3.6vw, 52px)
+     bottoms out at 27px, and this page's body tier is a FIXED 17px at
+     every width — R1 carries no mobile step-down for --bio-size — so
+     that floor lands the lede at 1.59x the body on a phone. CONTEXT.md
+     records ~1.8x as the exact condition under which "the eye reads
+     lede and body as the same tier", which is the failure this ratio
+     rule was written against; 1.59x is inside it. The floor is raised
+     to 52px so the ratio holds at 3x or better at EVERY width, the way
+     R1 held the Cover's name-to-tagline ratio at 3.05x down to 360px
+     rather than letting it fall to 2.6x. Measured: 3.22x at 1440,
+     3.06x at 1280, 1279, 1024, 1023, 390 and 360, 3.76x at the 64px
+     ceiling. Face, four axes, weight, line-height and letterfit are
+     PillarPremier's, unchanged — only the size band moved. */
+  .about-lede{
+    margin: 0 0 clamp(44px, 4.4vw, 72px);
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(52px, 3.8vw, 64px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    /* balance, not pretty. `pretty` only protects the last line from
+       being a short widow; it left "serve them." alone on line 3 at
+       1440, well short of lines 1-2, because it optimises the rag from
+       the bottom rather than evening the block. `balance` is the right
+       tool for a 2-4 line block of display type and this is exactly its
+       target case — the words and their order do not change, only where
+       the browser breaks.
+
+       PROGRESSIVE ENHANCEMENT, not a requirement. An engine without
+       `balance` falls back to normal wrapping and the lede is merely
+       unbalanced, never broken. Chrome also declines to balance blocks
+       over its own line-count threshold, which is why the phone widths
+       below are unaffected and are reported as such rather than as a
+       failure. The body keeps `pretty` — its paragraphs are far too
+       long for balance to be either applied or wanted. */
+    text-wrap: balance;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3. Montserrat, the existing body tier, unchanged:
+     --bio-size / --bio-lh are the tokens the old build's About used and
+     the ones R1 carried forward in global.css with the note "the drop
+     cap solve (R2) keys off these". The solve below does exactly that.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else — a max-width here is the thing CONTEXT.md's layout
+     rules forbid, and the old build had one (62ch). */
   .about-body{
-    column-count: 2;
-    column-gap: clamp(32px, 3.4vw, 52px);
     font-family: var(--sans);
     font-weight: 300;
     font-size: var(--bio-size);
     line-height: var(--bio-lh);
     letter-spacing: 0.004em;
     color: var(--slate);
-    text-align: left;
-    text-wrap: pretty;      /* rag + widow control */
+    text-wrap: pretty;
     orphans: 3;
     widows: 3;
   }
@@ -51,71 +235,347 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
   .about-body p{ margin: 0; }
   .about-body p + p{ margin-top: 1.5em; }
 
-  /* The inset deliberately does NOT start where the paragraph starts.
-     Dropping it well down the measure is what stops the margin reading as
-     a second column and makes it read as a margin. */
-  .about-inset{
-    margin-top: clamp(96px, 13vw, 210px);
-    aspect-ratio: 3 / 4;
-    align-self: start;
+  /* ---- CODA ------------------------------------------------------
+     Tier 2 of 3. Fraunces at opsz 96 / SOFT 35 / wght 400 — all four
+     axes stated, none left to Fraunces' defaults of wght 900 / WONK 1 /
+     SOFT 100. These are NOT --fx-coda, which is opsz 48 / SOFT 45 /
+     wght 360; the Phase B optical system is preserved untouched and
+     this section states its own coordinates locally, the same way the
+     Cover's `.legacy` does.
+
+     SIZE. The brief puts the coda at roughly 1.5-2x the body and never
+     near the lede. The body is a fixed 17px at every width, so that
+     band is a fixed 25.5-34px — a clamp whose floor sits under 25.5px
+     leaves the band on a phone no matter what its vw term does. The
+     first pass ran clamp(21px, 2.1vw, 31px) and measured 1.26x at 1024
+     and 1.24x at 390: outside the band at half the tested widths, and
+     visibly so on the 1023 capture, where the closing line read as a
+     caption rather than as a third tier. Floor and ceiling are now the
+     band itself. Measured against the body: 1.86x at 1440, 1.66x at
+     1280, 1.53x at 1024 and below. Against the lede: 1.73x at 1440 and
+     2.00x at 390 — clearly subordinate at both ends.
+
+     Obsidian rather than Slate, so the section closes on the same
+     colour it opened on and the Slate body is framed between them. */
+  /* ---- THE JOG, AND THE BASELINE SNAP ----------------------------
+     THE CLOSING LINE SITS BESIDE THE BODY, IN THE SAME GRID ROW, AND
+     IT IS ANCHORED TO THE BOTTOM OF THAT ROW, NOT THE TOP.
+
+     Two passes got this wrong in two different ways. The first put it
+     on its own row under paragraph 2. The second put it in the body's
+     row but snapped its FIRST baseline to paragraph 1's LAST — which
+     is level with the top third of the body block, so the closing line
+     vacated the lower right entirely and left the corner hollow, the
+     two columns ended on a ~100px staircase, and with nothing beneath
+     it the block read as floating rather than as held.
+
+     That placement came off the grayscale wireframe, whose boxes had
+     roughly even mass. The real content does not: paragraph 2 is long,
+     the closing line is three words, and the section is far taller
+     than the wireframe implied. Same failure as R1.4 — a placement
+     correct in wireframe and wrong against real content.
+
+     SHIPPED: the closing line's LAST baseline sits on body paragraph
+     2's LAST baseline. The section then closes on one level line, and
+     the weight lands in the corner that was hollow.
+
+     THE OFFSET IS COMPUTED, AND ANCHORING FROM THE ROW'S END MAKES IT
+     MUCH SIMPLER THAN THE TOP-ANCHORED VERSION WAS. `align-self: end`
+     puts the closing line's margin-box bottom on the row's bottom
+     edge, and the row's bottom edge IS the body block's bottom edge,
+     because the body is always the taller of the two items in the row
+     (209px against 83px at 1440; the ratio never inverts, since the
+     body is at minimum five lines and the closing is fixed at two).
+
+     Measuring both blocks up from that shared bottom edge:
+
+       row bottom -> P2's last baseline   = body line-height - B_body
+       row bottom -> coda's last baseline = margin-bottom
+                                            + coda line-height - B_coda
+
+       so  margin-bottom = (body line-height - B_body)
+                         - (coda line-height - B_coda)
+
+     Both terms are a line-height minus a first-baseline offset — the
+     distance from a baseline down to the bottom of its own line box.
+     The offset is just the difference between the two faces' descender
+     space. At 1440 that is 9.60 - 9.18 = 0.42px.
+
+     --p1-lines IS GONE, AND THAT IS THE POINT. The top-anchored
+     version needed paragraph 1's rendered line count, which no CSS
+     expression can produce, so it carried a hardcoded five-band
+     lookup (>=1807 -> 2, 1292-1806 -> 3, 1280-1291 -> 4, 1122-1279 ->
+     3, 1024-1121 -> 4) swept at 1px against this exact copy at this
+     exact body size. Any copy edit or --bio-size change would have
+     silently moved the snap by a whole 30.6px line. Anchoring from the
+     row's end cancels the body's height out of the arithmetic
+     entirely: no line count appears in it, so there is nothing to
+     re-sweep and nothing to go stale. The bands are deleted, not
+     documented. CONTEXT.md carries the warning against re-introducing
+     that shape.
+
+     B_body is the body baseline's distance from the top of its own
+     line box: MEASURED at 21.000px with a zero-size inline-block
+     probe, constant at every width because the body tier is a fixed
+     17px/30.6px.
+
+     B_coda is the same quantity for the closing line, and it cannot be
+     a constant because the coda's size is fluid. It comes from the box
+     metrics instead: a first baseline sits at half-leading plus
+     ascent, which reduces to
+
+         B = lh/2 + (ascent - descent)/2 x font-size
+
+     and Fraunces' ascent - descent measured 0.72058em. Hence
+     0.5lh + 0.36029em in the element's own units, so it re-resolves at
+     every width with no second measurement.
+
+     RESIDUAL, stated because it is real: Chrome rounds a font's ascent
+     and descent to whole pixels and then floors the baseline, so the
+     rendered B_coda steps where the formula is smooth. Measured
+     residuals per width are in the R2 report. They are under the 2x
+     pixel scan's own resolution.
+
+     Below 1024 none of this applies — the section is one stacked
+     column, there is no body block beside the closing line and so no
+     baseline to align to. It reverts to ordinary rhythm, unchanged
+     from the accepted build. */
+  .about-coda{
+    align-self: end;
+    margin: 0 0 calc(
+              var(--bio-size) * var(--bio-lh) - var(--body-baseline)
+              - (0.5lh - 0.36029em)
+            );
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+    /* NO text-wrap here. The break is authored in the markup above, so
+       there is nothing left for `balance` to balance — it was inert
+       and has been removed rather than left as decoration. The lede
+       keeps `balance`, the body keeps `pretty`. */
   }
 
-  .about-inset :global(img){
-    object-position: 50% 62%;   /* focal point: the football */
-    /* Restored from the previous build: the turf is the only saturated area
-       in this frame and it has to come well down to sit in the palette. */
-    filter: grayscale(0.58) contrast(1.06) saturate(0.52);
-  }
+  /* ---- THE DROP CAP ----------------------------------------------
+     THE ENTRANCE. The only section on the page that opens this way.
 
-  /* Warmer than the shared default, to match the heavier desaturation. */
-  .about-inset::before{ opacity: 0.44; }
+     CONTEXT.md's stated formula assumes a five-line span. FIVE IS
+     WRONG HERE and was not used: body paragraph 1 renders three lines
+     in columns 1-6 at 1440, and a cap taller than its own paragraph is
+     the failure case the rule exists to prevent. N was measured from
+     the rendered DOM at every breakpoint, capped at 3, and the cap was
+     re-solved per breakpoint. Numbers are in the R2 report.
 
-  /* Drop cap — spans exactly 5 lines. Ink cap-height optically aligned to the
-     cap height of line 1, ink baseline to the baseline of line 5.
+     THE SOLVE, per breakpoint:
 
-     Untouched by this layout pass: the solve keys off --bio-size and --bio-lh
-     and off the drop cap's own axes, none of which changed here.
+       required ink cap-height  = (N - 1) x body line-height
+                                  + body cap-height
+       drop cap font-size  F    = required / capRatio(Fraunces)
+       line-height         L    = 2 x b1 - 1
+       margin-top               = (baselineOffset - capHeight_body)
+                                  - F x (L - capRatio)
 
-       required ink cap-height = 4 x line-height + body cap-height
-                               = 4(30.6) + 0.70000(17) = 134.30px
-       font-size               = 134.30 / 0.69946 = 191.933px */
-  /* GOLD */
+     where b1 is the glyph baseline's position inside the box at
+     line-height 1, expressed as a fraction of the font size, and
+     baselineOffset is the body baseline's distance from the top of its
+     own line box. L = 2b1 - 1 is what puts the float's BOX BOTTOM
+     exactly on its own ink baseline, which is what makes the float
+     clear line N and not line N+1 — no trial-and-error line-height.
+
+     capRatio, b1 and baselineOffset were MEASURED, not assumed:
+     capRatio was read off rendered pixels at the exact four axes below,
+     because the substitution from Bodoni Moda to Fraunces already
+     forced one re-solve and the old 0.699 figure could not be carried
+     over on trust. Montserrat's own cap ratio and baseline offset were
+     measured the same way.
+
+     GOLD — 1 of the 3 saturated type accents CONTEXT.md budgets by
+     name. No other gold is introduced by this slice. */
   .dropcap{
     float: left;
     font-family: var(--display);
-    font-variation-settings: var(--fx-dropcap);
-    font-weight: 380;
-    font-size: 191.933px;
-    line-height: 0.64787;              /* box 124.347px; float bottom lands in line 5 */
+    /* opsz 144, SOFT 20, wght 300, WONK 0 — all four explicit.
+       wght 300 is this prompt's value and it is NOT --fx-dropcap, which
+       carries wght 380. The lighter stem is what keeps a 100px+ glyph
+       from reading as a block of colour beside 17px body copy. */
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'SOFT' 20, 'WONK' 0;
+    font-weight: 300;
     color: var(--gold);
-    margin: 0.069571em 0.042em 0 0;    /* top 13.353px — drops the ink cap top
-                                          onto the line-1 cap top */
     padding: 0;
     -webkit-font-smoothing: antialiased;
+
+    /* Solved values land here — see the media queries below. */
+    font-size:   var(--cap-size);
+    line-height: var(--cap-lh);
+    margin: var(--cap-top) var(--cap-right) 0 0;
+    margin-left: var(--cap-hang);
   }
 
-  @media (max-width: 1024px){
-    .about-body{
-      column-count: 1;
-      max-width: 62ch;
-    }
-    /* In one column the inset is no longer a margin element; it becomes a
-       full-width plate and needs ordinary section spacing above it. */
-    .about-inset{
-      margin-top: var(--vr-tight);
-      aspect-ratio: 4 / 5;
-    }
+  /* ---- THE SOLVED VALUES ------------------------------------------
+     MEASURED CONSTANTS, read off rendered ink at 1000px, not assumed:
+
+       Fraunces  opsz 144 / wght 300 / SOFT 20 / WONK 0
+         cap-height ratio          0.70000
+         baseline at line-height 1 0.86029 em   (= b1)
+       Montserrat wght 300
+         cap-height ratio          0.70000
+       Body line box, as rendered
+         font-size 17px · line-height 30.6px · baseline 21px from the
+         top of its own line box
+
+     'D' is the probe in both faces because it is flat-topped and
+     flat-bottomed — its ink top IS the cap line and its ink bottom IS
+     the baseline, with no round-letter overshoot to correct for.
+
+     THE FIRST MEASUREMENT OF THIS WAS WRONG AND WAS CAUGHT BY THE
+     RENDER, WHICH IS WHY IT IS WRITTEN DOWN HERE. The first probe
+     clipped the screenshot to the glyph box's own edge; Porcelain page
+     ground leaked into the outer rows of the scan and put Fraunces'
+     cap ratio at 0.72200. The cap built on it landed its ink baseline
+     2.1-2.9px SHORT of line N's baseline at every desktop width — a
+     2.9% error, small on screen and fatal to the arithmetic. The probe
+     now sits inside 60px of its own white padding with the clip taken
+     strictly inside that, and the ratio is flat at 0.700 across six
+     sizes from 1000px to 59px.
+
+     Two independent cross-checks on the corrected numbers, because a
+     measurement that has already been wrong once does not get taken on
+     trust the second time:
+       - b1 implies ascent - descent = 2 x b1 - 1. For Montserrat that
+         gives 0.716 against a published hhea of 968/-251 = 0.717.
+       - Fraunces is drawn on a 1000 upem with a 700 cap height, so
+         0.700 is the value the outline actually carries.
+     The old build's 0.69946 was near enough; it was still re-derived
+     rather than trusted, which is what this slice was asked to do.
+
+     LINE-HEIGHT is solved, not tuned: L = 2 x b1 - 1 = 0.72058 is the
+     one value at which the float's BOX BOTTOM coincides with its own
+     INK BASELINE. That is what makes the float release the text after
+     exactly N lines — the box can then never reach into line N+1, and
+     no trial-and-error line-height is involved at any breakpoint.
+
+     N, MEASURED FROM THE RENDERED DOM AT EVERY BREAKPOINT, capped at
+     3 per R2's brief. Re-measured in full after R3 re-banded the
+     sheet, because N is a function of the MEASURE and R3 moved the
+     measure at every width below 1024. Body paragraph 1 renders:
+
+       band 1  1440  3 lines   N=3    cap 104.443px
+               1280  4 lines   N=3    cap 104.443px
+       band 2  1279  3 lines   N=3    cap 104.443px
+               1024  4 lines   N=3    cap 104.443px
+       band 3  1023  3 lines   N=3    cap 104.443px   <- was 2 lines
+                950  4 lines   N=3    cap 104.443px
+                901  4 lines   N=3    cap 104.443px
+                900  3 lines   N=3    cap 104.443px
+                850  3 lines   N=3    cap 104.443px
+                800  4 lines   N=3    cap 104.443px
+                768  4 lines   N=3    cap 104.443px
+                751  4 lines   N=3    cap 104.443px
+       band 4   750  3 lines   N=3    cap 104.443px
+                700  3 lines   N=3    cap 104.443px
+                600  4 lines   N=3    cap 104.443px
+                390  6 lines   N=3    cap 104.443px
+                360  6 lines   N=3    cap 104.443px
+
+     THE CAP NEVER EXTENDS PAST THE LAST LINE OF ITS OWN PARAGRAPH at
+     any width — verified by scanning the rendered gold ink against the
+     paragraph's own box, not by trusting the arithmetic.
+
+     THE 872px BAND IS GONE, AND SO IS THE 1023px N=2 BAND. This is the
+     part of R3 worth reading twice.
+
+     R2 shipped three hardcoded cap bands: N=3 above 1024, N=2 from
+     1023 down to 873, and N=3 again at 872 and below. The middle band
+     existed for exactly one reason — below 1024 the sheet collapsed to
+     one full-width column, the measure JUMPED from 513px to 943px, and
+     paragraph 1 fell to two lines. The 872px boundary was a 5px sweep
+     against that 943px measure, derived from nothing, and CONTEXT.md
+     carries a standing warning that it goes stale silently: any edit to
+     About's copy or to --bio-size / --bio-lh required re-sweeping it,
+     and a wrong band does not degrade gracefully — it misses by a whole
+     body line-height and the cap overhangs its own paragraph.
+
+     R3 DELETED THE 943px MEASURE, so the two-line case it produced no
+     longer exists anywhere. The widest measure below 1024 is now
+     581.88px, at the top of the 8-column band, and paragraph 1 renders
+     three lines there. Every narrower width renders three or more. N is
+     therefore 3 at EVERY width on the page and the cap needs no band at
+     all — the values in .about below are the only ones, and the two
+     media-query overrides are deleted rather than left in place
+     agreeing with the default by coincidence.
+
+     This was not a goal of R3; it is a consequence of fixing the
+     measure, and it is the second time a measurement has been made to
+     cancel instead of being hardcoded (R2 did the same to the
+     five-band --p1-lines lookup by re-anchoring the closing line from
+     its grid row's END). CONTEXT.md's instruction to check whether a
+     measurement can be cancelled before hardcoding a line count is the
+     rule that retired both. THERE IS NOW NO SWEPT PIXEL BOUNDARY LEFT
+     IN THIS COMPONENT.
+
+     If a future pass widens the measure below 1024 past roughly 670px,
+     the two-line case comes back and this comment is the warning. */
+  .about{
+    /* Body baseline offset inside its own line box. MEASURED with a
+       zero-size inline-block probe: 21.000px, and constant at every
+       width because the body tier is a fixed 17px / 30.6px. */
+    --body-baseline: 21px;
+
+    /* N = 3 */
+    --cap-size:  104.443px;
+    --cap-lh:    0.72058;
+    --cap-top:   6.941px;
+    /* Space to the text it is set into. Fraunces' D already carries a
+       right sidebearing; this is the optical remainder on top of it. */
+    --cap-right: 0.045em;
+    /* OPTICAL HANG, measured off the rendered face rather than
+       estimated. Scanned at 2x from pixels: with no hang the D's INK
+       lands at 67.50px against a 64px column-1 line, while the body
+       paragraph's own ink lands at 64.00 — the cap's stem stood 3.5px
+       right of every other left edge in the section, which at this size
+       is plainly visible. 3.50 / 101.247 = 0.0346em is the D's own left
+       sidebearing at these axes, so hanging by exactly that puts its
+       ink on 64.00 with the body.
+
+       An em, not a pixel: a left sidebearing is a fixed fraction of the
+       em, so one measurement holds at the 60.722px cap in the collapsed
+       band as well. Re-scanned at the shipped 104.443px to confirm.
+
+       The lede's T measures 1.00px inside the same line and is left
+       alone. One pixel on a 52px glyph is under the threshold at which
+       it can be seen, and moving it would be a change with no visible
+       cause. */
+    --cap-hang:  -0.0346em;
   }
 
-  @media (max-width: 560px){
-    .dropcap{
-      /* Re-solved independently for the 16px/1.74 mobile body:
-           4(27.84) + 0.70000(16) = 122.56px ink cap-height
-           122.56 / 0.69948 = 175.129px */
-      font-size: 175.129px;
-      line-height: 0.6451;         /* box 112.976px */
-      margin-top: 0.07026em;       /* 12.304px */
-      margin-right: 0.040em;
+  /* ---- BELOW 1024 — bands 3 and 4 ---------------------------------
+     THE CAP CARRIES NO OVERRIDE HERE ANY MORE. N = 3 at every width on
+     the page after R3 re-banded the sheet; the two cap media queries
+     R2 shipped are deleted, not neutralised. See the N table above.
+
+     What remains in this block is the CLOSING LINE, and it is
+     unchanged from the pre-R3 build. It covers the whole of band 3
+     (751-1023) and band 4 (<= 750) in one rule, exactly as it covered
+     everything below 1024 before, because .win-about-close spans the
+     full width in BOTH of those bands — the closing line is
+     deliberately NOT promoted into band 3's live margin.
+
+     That is what keeps this rule correct without re-solving anything.
+     There is no body block beside the closing line in either band, so
+     there is no baseline to align to, and the computed snap gives way
+     to ordinary rhythm. Both the alignment and the bottom margin the
+     desktop rule sets are reset. Had the closing line been promoted
+     into columns 7-8 at tablet width, this rule would have had to be
+     split and the baseline-snap arithmetic re-solved for an 8-column
+     band it was never derived for. */
+  @media (max-width: 1023px){
+    .about-coda{
+      align-self: auto;
+      margin-top: clamp(72px, 7.6vw, 118px);
+      margin-bottom: 0;
     }
   }
 </style>

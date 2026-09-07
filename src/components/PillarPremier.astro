@@ -1,137 +1,147 @@
 ---
-// 4. PILLAR — Premier Leadership.
+// PILLAR — Premier Leadership.
+//
+// ENTRANCE — TREATMENT B, the numeral opener. The section numeral is set at
+// true display scale and hung in the live margin, optically centred against
+// the lede, with no kicker and no rule above it: the numeral IS the entrance.
+// Educational Leader above opens on a hairline head and Everyday Legends
+// below opens on one too, so this section is what keeps the two apart.
+//
+// The <h2> naming the section therefore lands BELOW the lede rather than
+// above it, on the outdented kicker edge. It is still the element whose text
+// matches the folio label, which is the rule Phase E.5 locked; only its
+// position moved.
+//
+// COLUMN WINDOW — C, the NARROW one: columns 4-9, a column right of the page
+// default. The shortest section on the page gets the window that starts
+// furthest in. Because that window reaches column 9, this section's inset
+// hangs at 10-12 (.col-inset-trim) rather than 9-11 — see global.css.
+//
+// IMAGE — the one true `inset` on the page. It was previously a `column`
+// image at the full 684px body width, which is why every photograph on the
+// page read at one size. At 330px it is 48% of a column image, hung in the
+// margin, and dropped four baselines so it BEGINS MID-PARAGRAPH rather than
+// aligning to the top of the paragraph beside it.
+//
+// OVERLAP 2 OF 3 — the caption sits over the bottom of the photograph rather
+// than cleanly below it. Image and caption share one grid cell, so it holds
+// at every width; no position:absolute, no pixel offsets.
+//
 // The display name carries no LLC suffix in headings, eyebrows or links. The
 // legal form survives in exactly one place on the site — the About paragraph,
 // where the client wrote it herself — and is not normalised away from there.
-// No email is published from this section. The published Premier Leadership
-// address is the gmail one recorded in CONTEXT.md's contact directory, and it
-// belongs to the contact section (Phase F), not here. The mcclain@ address on
-// the premierleadersllc domain appears in the client's source copy and is
-// superseded by client decision; it must never be published. Neither address
-// is written out in this tree, comments included, so a grep stays clean.
-// The photograph drops to the `column` tier (3-8, the body measure) and the
-// lede is promoted to a true pull quote: it breaks OUT of the measure it
-// interrupts, sharing neither edge with the paragraphs around it.
+// No email is published from this section. Neither the gmail address nor the
+// superseded mcclain@ address is written out in this tree, comments included.
+//
+// NO HAND-SET grid-column ANYWHERE IN THIS FILE.
 import { Image } from 'astro:assets';
 import portraitSeated from '../assets/portrait-seated.jpg';
 ---
 
 <section class="pillar spread" id="sec-pillar">
-  <div class="pillar-head col-body">
-    <h2 class="pillar-kicker">Premier Leadership</h2>
-    <p class="pillar-role">Founder &amp; CEO | Educational Consultant</p>
+  <!-- FIRST in source order: it is the entrance, so when the margin collapses
+       at 1280 it lands above the lede, which is where an entrance belongs.
+       aria-hidden — it is a graphic, and the folio already announces 04. -->
+  <span class="section-numeral section-numeral--display col-numeral row-1" aria-hidden="true">04</span>
+
+  <p class="lede col-body-narrow row-1">&ldquo;Leadership is not simply a position&mdash;it is the responsibility to move people, ideas, and organizations forward.&rdquo;</p>
+
+  <div class="pillar-name col-kicker-narrow row-2">
+    <h2 class="kicker">Premier Leadership</h2>
+    <p class="role">Founder &amp; CEO | Educational Consultant</p>
   </div>
 
-  <figure class="pillar-figure col-body plate-img">
+  <!-- Body and link share ROW 3 with the inset. They were on rows 3 and 4:
+       the inset is taller than two paragraphs, so it stretched row 3 and the
+       link was pushed a clear 250px below the copy it belongs to, with
+       nothing in between. One row, one block. -->
+  <div class="pillar-copy col-indent-narrow row-3">
+  <div class="body-copy">
+    <p>Premier Leadership was created from more than 20 years of real-world experience leading schools, developing programs, navigating complex systems, and working alongside students, families, educators, and community partners. Dr.&nbsp;McClain brings that experience beyond the schoolhouse to help others turn vision into meaningful action.</p>
+    <p>Through consulting, leadership coaching, professional development, workshops, strategic planning, program development, and speaking engagements, Premier Leadership partners with schools, organizations, leaders, and communities ready to strengthen their people and increase their impact.</p>
+  </div>
+    <a class="pillar-link" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Visit Premier Leadership</a>
+  </div>
+
+  <!-- Last in source order, so at 1280 it collapses inline after the copy. -->
+  <figure class="pillar-figure col-inset-trim row-3 plate-img">
     <Image
       src={portraitSeated}
       alt="Dr. Syreeta McClain seated in a leopard-print blazer against a warm tan ground"
-      widths={[480, 720, 960, 1400]}
-      sizes="(max-width: 1024px) 100vw, 48vw"
+      widths={[330, 480, 660, 900]}
+      sizes="(max-width: 1279px) 100vw, 23vw"
       quality={78}
       loading="eager"
       decoding="sync"
     />
+    <figcaption class="plate-caption plate-caption--over">Seated portrait, leopard blazer</figcaption>
   </figure>
-
-  <!-- Columns 2-10. Starts one column left of the body and ends two columns
-       right of it, so neither edge lines up with the paragraphs below. -->
-  <p class="pillar-lede col-break">&ldquo;Leadership is not simply a position&mdash;it is the responsibility to move people, ideas, and organizations forward.&rdquo;</p>
-
-  <div class="pillar-copy col-body">
-    <div class="pillar-body">
-      <p>Premier Leadership was created from more than 20 years of real-world experience leading schools, developing programs, navigating complex systems, and working alongside students, families, educators, and community partners. Dr.&nbsp;McClain brings that experience beyond the schoolhouse to help others turn vision into meaningful action.</p>
-      <p>Through consulting, leadership coaching, professional development, workshops, strategic planning, program development, and speaking engagements, Premier Leadership partners with schools, organizations, leaders, and communities ready to strengthen their people and increase their impact.</p>
-    </div>
-    <a class="pillar-link" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Visit Premier Leadership</a>
-  </div>
 </section>
 
 <style>
-  /* Standard rhythm above; the elements inside sit TIGHT to one another so
-     the section reads as one cluster rather than four stacked blocks. */
-  .pillar{ padding-top: var(--vr-standard); }
+  /* RHYTHM: tight. The section is abridged — lede, name, one body block, one
+     link — and a standard step above it would give it more air than it has
+     content to justify. */
+  .pillar{ padding-top: var(--vr-tight); }
 
-  .pillar-head{ margin-bottom: var(--s5); }
+  .pillar-name{ margin-bottom: var(--s5); }
 
+  /* --- The inset ---------------------------------------------------- */
   .pillar-figure{
-    /* Moderate portrait — distinct from the taller field plate and from the
-       wide bleed, so the page carries four different proportions, not one. */
-    aspect-ratio: 4 / 5;
-    margin-bottom: var(--vr-tight);
+    /* 2:3 — taller and narrower than the 4:5 field plate, the 3:4 About
+       inset and the 5:7 street frame. No two photographs on this page share
+       a crop; the ratio is a separate lever from the width and the eye
+       registers proportion faster than scale. */
+    aspect-ratio: 2 / 3;
+    align-self: start;
+    /* BEGINS MID-PARAGRAPH. Four baselines is line 5 of the first
+       paragraph beside it — far enough down that its top edge cannot read
+       as aligned to the paragraph's, which is what makes a margin read as
+       a second column instead of as a margin. */
+    margin-top: calc(4 * var(--baseline));
+    /* Image and caption share one cell. Grid placement, so the overlap
+       survives any resize; no absolute positioning, no pixel offsets. */
+    display: grid;
+    /* The treatment layers are inset:0 on the figure, so a caption in the
+       same cell needs to sit above them, not under them. */
+    overflow: hidden;
   }
 
-  .pillar-figure :global(img){
+  .pillar-figure > :global(img){
+    grid-area: 1 / 1;
     object-position: 56% 22%;   /* focal point: her face */
-    /* Restored from the previous build. The frame is already warm tan, so it
-       needs the lightest grade of the four. */
+    /* The frame is already warm tan, so it needs the lightest grade of the
+       four photographs. */
     filter: grayscale(0.14) contrast(1.03);
   }
 
-  .pillar-kicker{
-    margin: 0 0 var(--s3);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: 1.8;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--slate);
-  }
-
-  .pillar-kicker::before{
-    content: "";
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: clamp(24px, 3vw, 40px);
-  }
-
-  .pillar-role{
+  /* OVERLAP 2 OF 3. Porcelain, not Slate: this caption is on the picture. */
+  .plate-caption--over{
+    grid-area: 1 / 1;
+    align-self: end;
+    z-index: 3;                 /* over ::before (1) and ::after (2) */
+    position: relative;
     margin: 0;
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: clamp(12px, 1.1vw, 14px);
-    line-height: 1.6;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--obsidian);
+    padding: var(--baseline) 1.1em;
+    color: var(--porcelain);
+    opacity: 1;                 /* the ground below it is doing the contrast */
+    text-wrap: balance;
   }
 
-  /* The pull quote. Larger than it was, because it now has a wider measure to
-     fill and has to justify breaking the column to sit there. */
-  .pillar-lede{
-    margin: 0 0 var(--vr-tight);
-    font-family: var(--display);
-    /* Lede tier — unchanged. */
-    font-variation-settings: var(--fx-lede);
-    font-weight: 350;
-    font-size: clamp(27px, 3.6vw, 52px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-    color: var(--obsidian);
-    text-wrap: pretty;
+  /* The shared bottom gradient is tuned for a photograph with nothing on it.
+     This one carries type, so the bottom band is carried further down and
+     further up the frame — measured against the rendered pixels under the
+     caption, not against the photograph's average tone. */
+  .pillar-figure::after{
+    background: linear-gradient(to top,
+      rgba(26,22,19,0.86) 0%,
+      rgba(26,22,19,0.72) 12%,
+      rgba(26,22,19,0.30) 30%,
+      rgba(26,22,19,0)    52%);
   }
 
-  .pillar-body{
-    margin: 0;
-    /* Held short of the full 3-8 span: the column frames the text, the text
-       does not have to fill it. 62ch keeps the line count readable. */
-    max-width: 62ch;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.75;
-    letter-spacing: 0.004em;
-    color: var(--slate);
-    text-wrap: pretty;
-  }
-
-  .pillar-body p{ margin: 0; }
-  .pillar-body p + p{ margin-top: 1.5em; }
-
-  /* Solid fill, high contrast. Never a ghost or outline button.
+  /* --- Link out ------------------------------------------------------
+     Solid fill, high contrast. Never a ghost or outline button.
      Porcelain on Obsidian is 12.9:1. */
   .pillar-link{
     display: inline-block;
@@ -171,8 +181,26 @@ import portraitSeated from '../assets/portrait-seated.jpg';
   }
   .pillar-link:focus-visible{ outline: 2px solid var(--gold); outline-offset: 5px; }
 
-  @media (max-width: 1024px){
-    .pillar-figure{ aspect-ratio: 4 / 5; }
-    .pillar-body{ max-width: none; }
+  /* The numeral opener sits optically against the lede rather than on the
+     baseline lattice — display type is exempt from the baseline rule, and a
+     168px numeral snapped to a 28px grid reads as snapped, not as hung. */
+  .pillar .section-numeral{
+    align-self: center;
+    /* No optical hang here. The tier already carries letter-spacing -0.045em,
+       which pulls the last glyph ~7px short of its box at this size; adding a
+       negative margin on top of it pushed the numeral 10px PAST the trim.
+       Measured at 1440: right edge 1426 against a 1416 trim. */
+    margin-right: 0;
+  }
+
+  /* At 1280 the margin is gone: the inset becomes a full-measure column
+     image and the numeral leads the section inside the measure. */
+  @media (max-width: 1279px){
+    .pillar-figure{
+      aspect-ratio: 4 / 5;
+      margin-top: 0;
+      margin-bottom: var(--vr-tight);
+    }
+    .pillar .section-numeral{ margin-right: 0; }
   }
 </style>

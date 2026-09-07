@@ -14,16 +14,25 @@
 // is public by specification and the Formspree endpoint is a public POST
 // target, which is what the token and the honeypot exist to protect.
 //
-// SECTION OPENING: this section opens on the LEDE at display scale, with no
-// eyebrow and no visible title. SectionBlog immediately above opens on an
-// eyebrow leading into a display heading, and CONTEXT.md's rule is that no two
-// adjacent sections open with the same element leading. The lede rule is still
-// satisfied — "Speaking, consulting, partnership, and press inquiries." is the
-// detached display-scale line, and it labels the section better than the word
-// "Contact" would. The <h2> naming the section is therefore visually hidden
-// via .vh, exactly as About and the index already do. It stays in the
-// accessibility tree and its text matches the folio label, per the Phase E.5
-// heading rule.
+// ENTRANCE — TREATMENT A, the hairline head (E.8). A Smoked Slate rule runs
+// from the kicker to the live margin and terminates on the section numeral.
+// SectionBlog immediately above opens on an eyebrow leading into a display
+// Fraunces heading, so the two are not matched, and the other two A sections
+// are five and seven sections up the page.
+//
+// The <h2> was visually hidden in Phase F, because the section then opened on
+// its lede and the word "Contact" had nowhere to sit that did not duplicate
+// the blog's opener above it. Treatment A gives it somewhere: it is the
+// kicker, it is visible, and its text still matches the folio label, which is
+// the Phase E.5 heading rule. The lede rule is unaffected — the lede is still
+// there, still at display scale, one edge in from the kicker.
+//
+// COLUMN WINDOW — A, the page default: columns 3-8. RHYTHM — standard.
+// The three edges: kicker at column 2, lede at column 3, form at column 4.
+//
+// NOTHING BELOW THE HEAD CHANGED IN E.8. The form markup, the four states,
+// the honeypot, the Turnstile mount and the whole script are byte-identical
+// to the Phase F build; only the section's placement classes moved.
 //
 // INQUIRY OPTIONS ARE AN ASSUMPTION. CONTEXT.md requires a native <select> for
 // inquiry type but does not enumerate the options anywhere. The six below are
@@ -54,16 +63,21 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 ---
 
 <section class="contact spread" id="sec-contact">
-  <h2 class="vh">Contact</h2>
+  <div class="section-head col-rule row-1">
+    <h2 class="kicker">Contact</h2>
+    <span class="head-rule" aria-hidden="true"></span>
+    <span class="section-numeral section-numeral--head" aria-hidden="true">09</span>
+  </div>
 
-  <!-- Columns 2-10, the break every lede on this page takes. Uses the
-       .col-break PRIMITIVE rather than a hand-set grid-column: the primitive
-       already carries its own mobile collapse, and hand-setting it here
-       spawned implicit columns that collapsed the rest of the section. See
-       the note on .pillar-lede below. -->
-  <p class="pillar-lede col-break">Speaking, consulting, partnership, and press inquiries.</p>
+  <!-- Edge 2 of 3: the lede on the body edge. It used to take .col-break, the
+       2-10 span that EVERY lede on the page took, which meant the one outdent
+       in the build was identical in ten places and read as sameness rather
+       than as composition. .col-break is now what its name says: the pull
+       quote's tier, used once. -->
+  <p class="lede col-body row-2">Speaking, consulting, partnership, and press inquiries.</p>
 
-  <div class="contact-grid col-body">
+  <!-- Edge 3 of 3: the form indents one column, like every body block. -->
+  <div class="contact-grid col-indent row-3">
     <form
       class="contact-form"
       id="contact-form"
@@ -144,8 +158,8 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
   <!-- LIVE MARGIN, columns 9-12. The page's rule is that this strip is never
        empty for long stretches; here it carries the direct address, which is
        also the fallback every error state points at. -->
-  <aside class="contact-direct col-margin">
-    <p class="direct-kicker">Direct</p>
+  <aside class="contact-direct margin-block col-margin row-3">
+    <p class="margin-label">Direct</p>
     <p class="direct-line">
       <a class="direct-link" href={`mailto:${inbox}`}>{inbox}</a>
     </p>
@@ -156,30 +170,16 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 <style>
   .contact{ padding-top: var(--vr-standard); }
 
-  /* Matches every other lede on the page: columns 2-10, so neither edge lines
-     up with the form below it. Metrics copied from PillarPremier's .pillar-lede
-     verbatim — same tier, same optical axes.
-     WIDTH IS NOT SET HERE. It comes from the .col-break primitive on the
-     element. This rule originally carried `grid-column: 2 / 11` directly, and
-     that was a real bug: at <=1024 .spread collapses to ONE explicit column,
-     so `-1` resolves to line 2, while a hand-set `2 / 11` still demanded ten
-     column lines. Grid supplied the missing nine as IMPLICIT auto-width
-     columns, and every sibling spanning `1 / -1` — the form and the direct
-     block — was squeezed into a 62.75px first column while the implicit
-     columns took the rest. Measured exactly that at 768px. The primitives are
-     collapse-aware; a hand-set span is not. Use the tier classes. */
-  .pillar-lede{
-    margin: 0 0 var(--vr-tight);
-    font-family: var(--display);
-    font-variation-settings: var(--fx-lede);
-    font-weight: 350;
-    font-size: clamp(27px, 3.6vw, 52px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-    color: var(--obsidian);
-    text-wrap: pretty;
-  }
-
+  /* The lede's type comes from the global .lede tier and its WIDTH comes from
+     the .col-body primitive. Neither is set here, and that is the rule this
+     file exists to remember: a hand-set `grid-column: 2 / 11` once lived on
+     this element and it was a real bug. At <=1024 .spread collapses to ONE
+     explicit column, so `-1` resolves to line 2, while a hand-set 2 / 11
+     still demanded ten column lines. Grid supplied the missing nine as
+     IMPLICIT auto-width columns, and every sibling spanning `1 / -1` — the
+     form and the direct block — was squeezed into a 62.75px first column.
+     Measured exactly that at 768px. Primitives are collapse-aware; a
+     hand-set span is not. Use the tier classes, every time. */
   .contact-grid{ position: relative; }
 
   .contact-form{
@@ -200,7 +200,12 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-family: var(--sans);
     font-weight: 500;
     font-size: 10.5px;
-    line-height: 1.8;
+    /* On the baseline lattice (E.8), like every other small line on the page.
+       At 1.8 its box was 18.9px, which is not a multiple of 28, so the direct
+       block hung beside the form could not be snapped against it. Nothing
+       functional changes: font-size, the input sizes and the Turnstile fit are
+       all untouched. */
+    line-height: var(--baseline);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--slate);
@@ -414,43 +419,18 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
   .form-status :global(a:hover){ border-bottom-color: var(--gold); }
   .form-status :global(a:focus-visible){ outline: 1px solid var(--gold); outline-offset: 4px; }
 
-  /* --- Live margin ------------------------------------------------------ */
-  .contact-direct{
-    grid-row: 2;              /* beside the form, not under the lede */
-    align-self: start;
-    margin: 0;
-    /* Dropped down the measure so its top edge does not line up with the
-       first field label beside it. */
-    padding-top: clamp(40px, 5vw, 92px);
-  }
-
-  .direct-kicker{
-    margin: 0 0 var(--s2);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: 1.8;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--slate);
-  }
-
-  .direct-kicker::before{
-    content: "";
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: clamp(20px, 2.4vw, 32px);
-  }
-
+  /* --- Live margin ------------------------------------------------------
+     .margin-block carries the drop down the measure, the hairline above it
+     and the baseline offset; the row comes from .row-3, so the block sits
+     beside the form rather than under the lede. Nothing positional is set
+     here, and nothing here is gold. */
   .direct-line{ margin: 0; }
 
   .direct-link{
     font-family: var(--sans);
     font-weight: 300;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: var(--baseline);   /* on the lattice with the rest of the margin */
     letter-spacing: 0.02em;
     color: var(--obsidian);
     text-decoration: none;
@@ -463,27 +443,28 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
   .direct-link:focus-visible{ outline: 1px solid var(--gold); outline-offset: 4px; }
 
   .direct-note{
-    margin: var(--s3) 0 0;
+    margin: var(--baseline) 0 0;
     font-family: var(--sans);
     font-weight: 300;
     font-size: 10.5px;
-    line-height: 1.8;
+    line-height: var(--baseline);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--slate);
   }
 
-  @media (max-width: 1024px){
-    /* Live-margin content collapses INLINE in reading order — never into a
-       sidebar, never hidden. It follows the form. */
-    .contact-direct{
-      grid-row: auto;
-      padding-top: var(--vr-tight);
-    }
+  /* Live-margin content collapses INLINE in reading order at 1280 — never
+     into a sidebar, never hidden. It is last in source order, so it follows
+     the form. The row and the offset are handled by .row-3 and .margin-block
+     in global.css, and nothing positional is set here.
 
-    .contact-form,
-    .form-status{ max-width: none; }
-  }
+     The form's 52ch cap is NOT released below 1024 any more. It used to be,
+     and between about 700px and 1024px that produced an 881px-wide form —
+     labels and an underline running 106 characters across, which is an app
+     screen, not a measure. Below ~700px the trim is narrower than 52ch and
+     binds on its own, so the cap simply stops mattering and no override is
+     needed. Field font-size, the Turnstile fit and every form state are
+     unaffected: 52ch is 547px and the widget needs 300px. */
 
   /* Below the 360px floor the Turnstile iframe is wider than the measure.
      transform-origin:left keeps it on the trim; the height is compensated so

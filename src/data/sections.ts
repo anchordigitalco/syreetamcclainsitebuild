@@ -28,7 +28,7 @@ export const sections: PageSection[] = [
   { id: 'sec-about',               n: '02', label: 'About' },
   { id: 'sec-education',           n: '03', label: 'Educational Leader' },
   { id: 'sec-pillar',              n: '04', label: 'Premier Leadership' },
-  { id: 'sec-legends',             n: '05', label: 'Everyday Legends' },
+  { id: 'sec-legends',             n: '05', label: 'Everyday Legends Foundation' },
   { id: 'sec-athletics',           n: '06', label: 'Athletic Management' },
   { id: 'sec-index',               n: '07', label: 'Index' },
   { id: 'charging-it-to-the-game', n: '08', label: 'Charging It to the Game' },

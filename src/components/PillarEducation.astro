@@ -2,135 +2,76 @@
 // PILLAR — Educational Leader. The earliest chronological pillar, so it sits
 // before Premier Leadership.
 //
-// SECTION OPENING: the LEDE leads. About above it opens on body copy (the
-// drop cap) and PillarPremier below it opens on its kicker, so neither
-// neighbour is matched. This is also the one pillar with no photograph — the
-// lede at full display scale is what stands in for the opening image, which
-// is exactly the case the lede rule exists for.
+// ENTRANCE — TREATMENT A, the hairline head. A Smoked Slate rule runs from the
+// kicker across to the live margin and terminates on the section numeral; the
+// role line drops beneath it. About above opens on a drop cap and Premier
+// below opens on a display numeral, so neither neighbour is matched.
 //
-// No image, deliberately. The page already carries a heavy photo load by this
-// point (portrait band, about inset, seated portrait) and the live margin plus
-// the vertical rhythm carry this section instead.
+// COLUMN WINDOW — B, the WIDE one: columns 2-7, a column left of the page
+// default. This is the section with the most body copy on the page and it is
+// the one that can carry being pulled toward the trim.
+//
+// No image, deliberately, and it stays that way — CONTEXT.md's photography
+// rule keeps photographs out of adjacent sections and this is the section
+// nominated to go without. The live margin carries the section instead.
 //
 // Contact: the district WEBSITE is published; her district EMAIL is not. That
 // address is her public-school-district employer address and it does not
 // belong on a commercial consulting page. Final client decision, not a
 // placeholder. The address itself is deliberately not written anywhere in
 // this tree, comments included, so a grep for it stays clean.
+//
+// NO HAND-SET grid-column ANYWHERE IN THIS FILE. Every placement is a
+// collapse-aware primitive from global.css. See the collapse table there.
 ---
 
 <section class="education spread" id="sec-education">
-  <!-- Columns 2-10 — the same break PillarPremier's lede takes, so the two
-       ledes rhyme even though the sections open differently. -->
-  <p class="pillar-lede">Education should not simply require students to fit into systems; strong systems must also be willing to evolve to meet the needs of the students they serve.</p>
-
-  <div class="education-head">
-    <h2 class="pillar-kicker">Educational Leader</h2>
-    <p class="pillar-role">Alternative Education High School Principal</p>
+  <!-- TREATMENT A. The <h2> is the kicker, so the element naming the section
+       is still the element the folio labels — unchanged by the outdent. -->
+  <div class="section-head section-head--wide col-rule-wide row-1">
+    <h2 class="kicker">Educational Leader</h2>
+    <span class="head-rule" aria-hidden="true"></span>
+    <span class="section-numeral section-numeral--head" aria-hidden="true">03</span>
+    <p class="role">Alternative Education High School Principal</p>
   </div>
 
-  <div class="pillar-body">
+  <!-- Edge 2 of 3: the lede sits on the window's body edge, column 2. -->
+  <p class="lede col-body-wide row-2">Education should not simply require students to fit into systems; strong systems must also be willing to evolve to meet the needs of the students they serve.</p>
+
+  <!-- Edge 3 of 3: the paragraphs indent one column in, to column 3. -->
+  <div class="body-copy col-indent-wide row-3">
     <!-- Paragraph 1 ends at "traditional measures." The rest of the client's
          sentence is detached upward into the lede above and is not repeated. -->
     <p>For more than two decades, Dr.&nbsp;Syreeta McClain has dedicated her career to seeing possibility in young people&mdash;especially those whose potential may not always be recognized through traditional measures.</p>
     <p>Her expertise in customized high school programming, alternative education, student engagement, and leadership has allowed her to create pathways for students navigating complex academic and life circumstances. Through innovation, technology, collaboration, compassion, and unwavering advocacy, Dr.&nbsp;McClain works to build educational environments where students are seen, supported, challenged, and prepared for what comes next.</p>
   </div>
 
-  <!-- A CODA, not a pull quote: it stays inside the body measure (3-8) and
-       does not break out of it. There is exactly one pull quote on this page
-       and it is the chapter break. -->
-  <p class="pillar-coda">At the heart of her leadership is a simple belief: meet students where they are, without losing sight of where they are capable of going.</p>
+  <!-- A CODA, not a pull quote: there is exactly one pull quote on this page
+       and it is the chapter break. It steps back OUT to the lede's edge
+       rather than staying on the body indent — the staircase run in reverse
+       is what sets it apart, so it needs no rule and no ornament. -->
+  <p class="coda col-body-wide row-4">At the heart of her leadership is a simple belief: meet students where they are, without losing sight of where they are capable of going.</p>
 
-  <!-- Live margin. Last in source order so that when the grid collapses it
-       falls inline in reading order, after the copy rather than before it. -->
-  <aside class="education-margin">
+  <!-- Live margin. Last in source order so that when the margin collapses at
+       1280 it falls inline in reading order, after the copy rather than
+       before it. Positioned by grid, never by position:absolute — a screen
+       reader meets the district link where it belongs in the text. -->
+  <aside class="margin-block col-margin row-3">
     <p class="margin-label">District</p>
     <a class="margin-link" href="https://www.ucvts.org" target="_blank" rel="noopener">ucvts.org</a>
   </aside>
 </section>
 
 <style>
+  /* RHYTHM: standard. Assigned per section, never one repeating gap. */
   .education{ padding-top: var(--vr-standard); }
 
-  /* Explicit rows. The lede leads; the margin hangs beside the body copy. */
-  .pillar-lede      { grid-column: 2 / 11; grid-row: 1; }
-  .education-head   { grid-column: 3 / 9;  grid-row: 2; }
-  .pillar-body      { grid-column: 3 / 9;  grid-row: 3; }
-  .pillar-coda      { grid-column: 3 / 9;  grid-row: 4; }
-  .education-margin { grid-column: 9 / 13; grid-row: 3; }
-
-  /* Type treatment copied from PillarPremier's .pillar-lede verbatim — same
-     size, weight, line-height, tracking and Fraunces axes. No value is new. */
-  .pillar-lede{
-    margin: 0 0 var(--vr-tight);
-    font-family: var(--display);
-    /* Lede tier — opsz 72, wght 350, SOFT 35, WONK 0. */
-    font-variation-settings: var(--fx-lede);
-    font-weight: 350;
-    font-size: clamp(27px, 3.6vw, 52px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-    color: var(--obsidian);
-    text-wrap: pretty;
-  }
-
-  .education-head{ margin-bottom: var(--s5); }
-
-  .pillar-kicker{
-    margin: 0 0 var(--s3);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: 1.8;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--slate);
-  }
-
-  /* The hairline sits between the lede and the label, so it reads as the rule
-     that closes the lede rather than as decoration above the section. */
-  .pillar-kicker::before{
-    content: "";
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: clamp(24px, 3vw, 40px);
-  }
-
-  .pillar-role{
-    margin: 0;
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: clamp(12px, 1.1vw, 14px);
-    line-height: 1.6;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--obsidian);
-  }
-
-  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
-  .pillar-body{
-    margin: 0;
-    max-width: 62ch;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.75;
-    letter-spacing: 0.004em;
-    color: var(--slate);
-    text-wrap: pretty;
-  }
-
-  .pillar-body p{ margin: 0; }
-  .pillar-body p + p{ margin-top: 1.5em; }
-
-  /* Intermediate scale — ~1.9x the body, ~0.58x the lede, so it is plainly
-     larger than the paragraphs and plainly smaller than the display line.
-     The OPEN step above it. That step is the chapter break's own, but the
-     break spends it TWICE (margin + padding), so it stays the largest gap on
-     the page by roughly 2x and this does not compete with it. */
-  .pillar-coda{
+  /* Intermediate scale — ~1.9x the body, well under the lede, so it is
+     plainly larger than the paragraphs and plainly smaller than the display
+     line. The OPEN step above it. That step is the chapter break's own, but
+     the break spends it TWICE (margin + padding), so it stays the largest gap
+     on the page by roughly 2x and this does not compete with it. */
+  .coda{
     margin: var(--vr-open) 0 0;
     max-width: 34ch;
     font-family: var(--display);
@@ -141,78 +82,10 @@
     line-height: 1.42;
     letter-spacing: -0.008em;
     color: var(--obsidian);
-    text-wrap: pretty;
+    text-wrap: balance;
   }
 
-  /* --- Marginalia: one labelled link in the live margin ----------- */
-  /* Dropped well down the measure so its top edge does not line up with the
-     body copy beside it — that alignment is what makes a margin read as a
-     second column. */
-  .education-margin{
-    margin-top: clamp(72px, 9vw, 150px);
-    align-self: start;
-    padding-top: var(--s3);
-    border-top: 1px solid var(--hair);
-  }
-
-  .margin-label{
-    margin: 0 0 var(--s2);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 9.5px;
-    line-height: 1.9;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    /* Slate at FULL opacity. At 0.72 this measured 3.81:1 on Porcelain, under
-       the 4.5:1 AA floor for 9.5px text. The step below the Obsidian link it
-       labels is carried by colour and size, which is enough — it does not need
-       an opacity knock-down that costs legibility. */
-    color: var(--slate);
-  }
-
-  /* A text link, not a button: the margin carries references, and a solid
-     fill out here would outweigh the section it sits beside. Underlined at
-     rest so it never depends on colour alone to read as a link. */
-  .margin-link{
-    display: inline-block;
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: clamp(12px, 1.05vw, 14px);
-    line-height: 1.6;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--obsidian);
-    text-decoration: underline;
-    text-decoration-color: var(--hair-strong);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 6px;
-    transition: color 320ms var(--ease),
-                text-decoration-color 320ms var(--ease),
-                transform 320ms var(--ease);
-  }
-
-  .margin-link:hover,
-  .margin-link:focus-visible{
-    color: var(--slate);
-    text-decoration-color: var(--obsidian);
-    transform: translateY(-1px);
-  }
-  .margin-link:active{ transform: translateY(0); }
-  .margin-link:focus-visible{ outline: 1px solid var(--slate); outline-offset: 6px; }
-
-  /* ---- One stacked column. The 12-column grid does not exist here. ---- */
   @media (max-width: 1024px){
-    .pillar-lede,
-    .education-head,
-    .pillar-body,
-    .pillar-coda,
-    .education-margin{ grid-column: 1 / -1; grid-row: auto; }
-
-    .pillar-body{ max-width: none; }
-    .pillar-coda{ max-width: none; }
-
-    /* Collapses INLINE in reading order — it is last in source order, so it
-       lands after the coda. Not a sidebar, not hidden. */
-    .education-margin{ margin-top: var(--vr-tight); }
+    .coda{ max-width: none; }
   }
 </style>

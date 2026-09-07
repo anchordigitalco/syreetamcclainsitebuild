@@ -1,88 +1,114 @@
 ---
-// 5. PILLAR — Athletic Management / "Momager".
-// Modelled on PillarPremier: kicker, role, lede, body copy, photography. No
-// CTA — the brothers' own sites are the destination and they are already
-// entry 04 in the index below.
+// PILLAR — Athletic Management / "Momager".
 //
-// The section ends on the body copy deliberately. CONTEXT.md's source
-// paragraph runs on into "Every decision is viewed through a larger lens:
-// Legacy", but that line is the PullQuote component immediately following, at
-// full display scale. It is not repeated here.
+// ENTRANCE — TREATMENT C, image-first. The section opens on the photograph
+// before any type at all; the kicker and lede land below it and to the right,
+// offset from the photo's left edge rather than aligned to it. Everyday
+// Legends above opens on a hairline head and the chapter break below is the
+// pivot, so nothing adjacent is matched.
 //
-// Photo hierarchy: the FIELD frame leads. It is composed and direct, like
-// every other photograph of her on this site. The bleachers frame is the one
-// candid — glancing off-axis, seated loosely — so it sits at secondary scale
-// in the live margin, where it reads as a human detail instead of competing
-// with the editorial portraits around it.
+// COLUMN WINDOW — A, the page default: columns 3-8.
 //
-// Crop provenance. brand_assets/mcclain-bleachers.jpg carries EXIF
-// orientation 6: its stored buffer is 2976x1984 but it renders 1984x2976 —
-// a PORTRAIT frame. Verified with sharp().metadata(); sips reports the raw
-// buffer and is misleading here. Crops were cut from a master with that
-// rotation applied:
-//   -detail   extract left 260, top 640, 1200 x 1800   (2:3, tall, cut in
-//             from the right where sky shows through the railings)
-// and from brand_assets/mcclain-field.jpg (no EXIF flag):
-//   -primary  extract left 816, top 900,  1140 x 1425  (4:5, torso-up;
-//             the window sits high so white bleachers, not turf, fill the
-//             ground behind her)
-// The field crop is 4:5 rather than the old 2:3 because a less-tall frame
-// buys width at the same torso-up framing — 1140px of source for a ~708px
-// slot, where the old crop had 950px.
+// RHYTHM — open. The largest step on the page other than the chapter break's
+// own, which spends the open step twice over.
+//
+// OVERLAP 1 OF 3 — the copy block climbs INTO the Cashmere band and crosses
+// its bottom edge, so the photograph's ground and the section's type occupy
+// the same rectangle instead of stacking. Contrast is safe on both sides of
+// the boundary by construction: Obsidian on Cashmere is 10.9:1 and Obsidian
+// on Porcelain is 15.6:1, so a line that straddles the edge is legible along
+// its whole length. Negative margin, not position:absolute — it survives any
+// resize.
+//
+// THE PLATE'S WIDTH — FIXED HERE. Phase D made .plate-panel a two-track grid:
+// the photograph in columns 1-6, plus a second track of flat Cashmere
+// deliberately RESERVED as legible ground for RunningHead, which was fixed to
+// the right trim at 9.5px and unreadable over the picture. Phase E.5 deleted
+// RunningHead.astro. The reservation survived it and was still live on this
+// branch — a 708px photograph beside 732px of empty ground with a hard seam
+// down the middle of the page. The band is now a single width ending at the
+// COLUMN-8 EDGE, which is the body measure's right edge, so the photograph
+// and the copy below it terminate on the same line.
+//
+// THE BLEACHERS FRAME IS OUT. CONTEXT.md records mcclain-bleachers.jpg as
+// retired — it is the one candid in a set of composed, camera-facing frames,
+// glancing off-axis and seated loosely, and the standing rule is that a
+// photograph whose register fights the page does not earn a smaller
+// placement, it comes out. It was still rendering here as a second inset. Its
+// removal also settles the image budget: one inset on the page, not three.
+//
+// Crop provenance for the frame that stays. From brand_assets/mcclain-field.jpg
+// (no EXIF orientation flag):
+//   -primary  extract left 816, top 900, 1140 x 1425  (4:5, torso-up; the
+//             window sits high so white bleachers, not turf, fill the ground
+//             behind her)
+// Verified with sharp().metadata(), never sips.
+//
+// COPY — ⚠️ THIS SECTION IS SHORT BY TWO PARAGRAPHS. COPY.md Part 1 approves
+// three body paragraphs here and only the first is present on this branch;
+// Phase E.6 is recorded as shipped in CONTEXT.md but is not in this repo's
+// history. E.8 is a composition pass under a zero-copy-changes constraint, so
+// it is NOT restoring them — that is a copy pass and it needs its own branch.
+// Flagged in the E.8 report.
+//
+// NO HAND-SET grid-column ANYWHERE IN THIS FILE.
 import { Image } from 'astro:assets';
 import fieldPrimary from '../assets/mcclain-field-primary.jpg';
-import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
 ---
 
 <section class="athletics" id="sec-athletics">
-  <!-- Cashmere band. Full width so the ground reads as a ground; the
-       photograph inside it meets one trim only. -->
+  <!-- The entrance: the photograph, before any type. Full-width Cashmere
+       ground so the ground reads as a ground; the photograph inside it meets
+       the left trim only and stops at the column-8 edge. -->
   <div class="plate-panel">
     <figure class="plate-figure plate-img">
       <Image
         src={fieldPrimary}
         alt="Dr. Syreeta McClain on the field in a black blazer, cropped close"
-        widths={[480, 720, 900, 1140]}
-        sizes="(max-width: 1024px) 96vw, 50vw"
+        widths={[480, 720, 960, 1140]}
+        sizes="(max-width: 1024px) 96vw, 66vw"
         quality={80}
         loading="eager"
+        decoding="sync"
       />
     </figure>
   </div>
 
   <div class="spread athletics-copy">
-    <div class="athletics-head">
-      <h2 class="pillar-kicker">Athletic Management</h2>
-      <p class="pillar-role">Momager | Athletic Manager to the McClain Brothers</p>
+    <!-- No rule and no numeral above the type: the picture was the entrance.
+         Kicker outdented to column 2, lede on the body edge at column 3,
+         paragraphs indented to column 4 — the three edges. -->
+    <div class="athletics-head col-kicker row-1">
+      <h2 class="kicker">Athletic Management</h2>
+      <p class="role">Momager | Athletic Manager to the McClain Brothers</p>
     </div>
 
-    <!-- Columns 2-10, the same break PillarPremier's lede takes, so the two
-         sections rhyme rather than merely resemble each other. -->
-    <p class="pillar-lede">Long before NIL became part of college athletics, there were early mornings, long drives, practices, recruiting conversations, academic decisions, sacrifices, victories, disappointments, and countless lessons learned along the way.</p>
+    <p class="lede col-body row-2">Long before NIL became part of college athletics, there were early mornings, long drives, practices, recruiting conversations, academic decisions, sacrifices, victories, disappointments, and countless lessons learned along the way.</p>
 
-    <div class="pillar-body">
+    <div class="body-copy col-indent row-3">
       <p>As the mother of three football players navigating the high school and Division&nbsp;I levels, Dr.&nbsp;McClain&rsquo;s role as &ldquo;Momager&rdquo; grew organically from motherhood into strategy.</p>
     </div>
 
-    <!-- Secondary. Roughly half the plate's width and a taller frame, so the
-         two never read as one proportion at two sizes. -->
-    <figure class="detail-inset plate-img">
-      <Image
-        src={bleachersDetail}
-        alt="Dr. Syreeta McClain seated on stadium bleachers, a football resting in her hands"
-        widths={[320, 480, 720, 1200]}
-        sizes="(max-width: 1024px) 100vw, 23vw"
-        quality={80}
-        loading="eager"
-      />
-    </figure>
+    <!-- Live margin, split across two rows on purpose. The numeral sits on
+         ROW 2 beside the lede: the lede here runs ten lines and the body
+         runs three, so with both in row 3 the margin was empty for the whole
+         height of the display type and the caption ended up a long way from
+         the photograph it describes. The caption stays on ROW 3 beside the
+         body, which is the only place its baseline can be snapped to a body
+         baseline — display type is exempt from the lattice, so a caption
+         hung beside the lede cannot be. Both are last in source order for
+         their rows, so at 1280 they fall inline after the copy. -->
+    <span class="athletics-numeral section-numeral section-numeral--head col-numeral row-2" aria-hidden="true">06</span>
+
+    <p class="plate-caption athletics-caption col-margin row-3">On the field, direct gaze</p>
   </div>
 </section>
 
 <style>
-  .athletics{ margin-top: var(--vr-standard); }
+  /* RHYTHM: open. */
+  .athletics{ margin-top: var(--vr-open); }
 
-  /* --- The Cashmere band, carrying the PRIMARY photograph -------- */
+  /* --- The Cashmere band, carrying the section's entrance --------- */
   .plate-panel{
     background-color: var(--cashmere);
     /* Cashmere is a ground here, not a wash — but it still layers rather
@@ -91,22 +117,24 @@ import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
       radial-gradient(96% 62% at 12% 8%,  rgba(231,226,221,0.34) 0%, rgba(231,226,221,0) 62%),
       radial-gradient(70% 58% at 88% 92%, rgba(71,68,64,0.14) 0%, rgba(71,68,64,0) 60%);
     display: grid;
-    /* The photograph meets the LEFT trim and stops at the right edge of
-       column 6; Cashmere carries the rest of the band as negative space.
-       That puts the empty half under columns 9-12 — the live margin — so the
-       running head sits over ground rather than over the picture, where at
-       9.5px it was unreadable. */
+    /* ONE track for the picture, ending at the COLUMN-8 EDGE — the same line
+       the body measure below it ends on. The old second track was a grid
+       reservation left behind by a deleted component; see the header note.
+       Expressed against the page grid's own custom properties, so it tracks
+       the trim at every width rather than being pinned to a pixel value. */
     grid-template-columns:
-      calc(var(--grid-left) + var(--grid-pad) + 6 * var(--col-w) + 5 * var(--grid-gap))
+      calc(var(--grid-left) + var(--grid-pad) + 8 * var(--col-w) + 7 * var(--grid-gap))
       minmax(0, 1fr);
     align-items: center;
-    padding: clamp(88px, 11vw, 160px) 0;
+    /* Bottom padding is deep on purpose: the copy block below climbs back up
+       into it, and this is the room that overlap needs. */
+    padding: clamp(88px, 11vw, 160px) 0 clamp(120px, 14vw, 210px);
   }
 
   .plate-figure{
     grid-column: 1;
-    /* 4:5 — squarer than the secondary below it, so the pair differ in shape
-       and not only in scale. */
+    /* 4:5 — used nowhere else now that the 4:5 seated portrait has become a
+       2:3 inset. The four photographs on the page run 3:4, 2:3, 4:5 and 5:7. */
     aspect-ratio: 4 / 5;
   }
 
@@ -115,9 +143,9 @@ import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
     /* The running track behind her is the one out-of-palette area left after
        the crop. Measured on the rendered frame: this grade lands the track at
        ~24deg hue and under 0.18 saturation — muted clay, inside the warm
-       earth family, without the sepia cast that a hue-mapping filter would
-       give it. Sepia was tested and rejected: no other photograph on the site
-       uses one, and it broke tonal consistency with the leopard portrait. */
+       earth family, without the sepia cast a hue-mapping filter would give
+       it. Sepia was tested and rejected: no other photograph on the site uses
+       one, and it broke tonal consistency with the leopard portrait. */
     filter: grayscale(0.58) contrast(1.05) saturate(0.42);
   }
 
@@ -140,102 +168,48 @@ import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
       linear-gradient(270deg,  rgba(209,199,189,0.36) 0%, rgba(209,199,189,0) 24%);
   }
 
-  /* --- Copy ------------------------------------------------------ */
-  .athletics-copy{ padding-top: var(--vr-standard); }
-
-  .athletics-head{ grid-column: 3 / 9;  grid-row: 1; }
-  .pillar-lede   { grid-column: 2 / 11; grid-row: 2; }
-  .pillar-body   { grid-column: 3 / 9;  grid-row: 3; }
-  .detail-inset  { grid-column: 9 / 12; grid-row: 3; }
-
-  .pillar-kicker{
-    margin: 0 0 var(--s3);
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: 1.8;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--slate);
+  /* --- OVERLAP 1 OF 3 ---------------------------------------------
+     The copy climbs into the band and crosses its bottom edge. z-index so it
+     paints over the Cashmere rather than under it; position:relative only to
+     make z-index apply — no offsets are set here, so nothing is pinned. */
+  .athletics-copy{
+    position: relative;
+    z-index: 1;
+    margin-top: calc(-1 * clamp(64px, 8vw, 128px));
   }
 
-  .pillar-kicker::before{
-    content: "";
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: clamp(24px, 3vw, 40px);
-  }
+  .athletics-head{ margin-bottom: var(--s5); }
 
-  .pillar-role{
-    margin: 0 0 clamp(32px, 4vw, 52px);
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: clamp(12px, 1.1vw, 14px);
-    line-height: 1.6;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--obsidian);
-  }
-
-  /* Type treatment copied from PillarPremier's .pillar-lede verbatim, so the
-     two sections read as siblings. No value here is new. */
-  .pillar-lede{
-    margin: 0 0 var(--vr-tight);
-    font-family: var(--display);
-    /* Lede tier — unchanged. */
-    font-variation-settings: var(--fx-lede);
-    font-weight: 350;
-    font-size: clamp(27px, 3.6vw, 52px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-    color: var(--obsidian);
-    text-wrap: pretty;
-  }
-
-  /* Body metrics copied from PillarPremier's .pillar-body verbatim. */
-  .pillar-body{
-    margin: 0;
-    max-width: 62ch;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.75;
-    letter-spacing: 0.004em;
-    color: var(--slate);
-    text-wrap: pretty;
-  }
-
-  .pillar-body p{ margin: 0; }
-  .pillar-body p + p{ margin-top: 1.5em; }
-
-  /* --- The SECONDARY photograph, in the live margin -------------- */
-  .detail-inset{
-    /* Dropped down the measure so its top edge does not line up with the
-       body copy beside it. */
-    margin-top: clamp(40px, 5vw, 88px);
-    /* 2:3 — taller and narrower than the 4:5 plate above. */
-    aspect-ratio: 2 / 3;
+  /* --- Live margin ------------------------------------------------- */
+  /* Hung at the outer trim, like the funnel index numerals below. The tier's
+     own -0.045em tracking already lands the last glyph short of its box, so
+     no negative margin is added on top of it — stacking one put the numeral
+     past the trim. Measured. */
+  .athletics-numeral{
     align-self: start;
+    text-align: right;
+    /* Optically against the lede beside it, not on the lattice: display type
+       is exempt, and a 66px glyph snapped to a 28px grid reads as snapped. */
+    margin-top: clamp(48px, 6vw, 96px);
   }
 
-  .detail-inset :global(img){
-    object-position: 50% 42%;
-    /* A wedge of sky survives in the top right corner of this crop. */
-    filter: grayscale(0.44) contrast(1.05) saturate(0.50);
+  .athletics-caption{
+    align-self: start;
+    text-align: right;
+    /* Six baselines down, so its top edge cannot line up with the paragraph
+       beside it — that alignment is what makes a margin read as a second
+       column instead of as a margin — and a whole number of baselines, so
+       its own baseline lands on a body baseline. */
+    margin-top: calc(6 * var(--baseline));
+    margin-left: 0;
   }
 
-  /* Weighted to the TOP here — the opposite of the plate above — because this
-     frame's out-of-palette colour is sky overhead, not track underfoot. */
-  .detail-inset::before{
-    background: linear-gradient(to bottom,
-      var(--gold)      0%,
-      var(--gold)     16%,
-      var(--cashmere) 38%,
-      var(--porcelain) 66%,
-      var(--porcelain) 100%);
-    opacity: 0.46;
+  @media (max-width: 1279px){
+    /* Inline in the measure: both go flush left again. */
+    .athletics-numeral,
+    .athletics-caption{ text-align: left; }
+    .athletics-numeral{ margin-top: var(--vr-tight); }
+    .athletics-caption{ margin-top: var(--baseline); }
   }
 
   @media (max-width: 1024px){
@@ -243,28 +217,14 @@ import bleachersDetail from '../assets/mcclain-bleachers-detail.jpg';
        trim, a strip of Cashmere on the right. */
     .plate-panel{
       grid-template-columns: minmax(0, 1fr) var(--gutter);
-      padding: clamp(64px, 12vw, 104px) 0;
+      padding: clamp(64px, 12vw, 104px) 0 clamp(88px, 15vw, 132px);
     }
-
-    /* Single column: the two are the same width, so the weight difference has
-       to come from the frame. The plate stays generous, the detail goes
-       distinctly taller and is held short of the full measure. */
     .plate-figure{ aspect-ratio: 4 / 5; }
 
-    .athletics-head,
-    .pillar-lede,
-    .pillar-body,
-    .detail-inset{ grid-column: 1 / -1; grid-row: auto; }
-
-    .athletics-copy{ padding-top: var(--vr-tight); }
-
-    .pillar-body{ max-width: none; }
-
-    .detail-inset{
-      margin-top: var(--vr-tight);
-      aspect-ratio: 2 / 3;
-      width: 72%;
-      margin-right: auto;
-    }
+    /* The overlap holds at phone width too — it is expressed in vw and needs
+       no separate value — but it is scaled back, because at 390px a deep
+       climb would put the kicker on top of the picture rather than on the
+       ground below it. */
+    .athletics-copy{ margin-top: calc(-1 * clamp(40px, 9vw, 64px)); }
   }
 </style>

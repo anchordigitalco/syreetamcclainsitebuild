@@ -1,58 +1,54 @@
 ---
+/**
+ * PHASE R — the hub page, rebuilt in vertical slices from the approved
+ * wireframe. This file is reduced to the slice that has actually been
+ * built and reviewed. Slices R2-R11 add one section each.
+ *
+ *   R1       Cover               <- shipped
+ *   R2       About               <- shipped
+ *   R-shell  Collapse bands      <- shipped (four bands, 8-col tablet step)
+ *   R3       Educational Leader  <- shipped
+ *   R4       Premier Leadership  <- THIS SLICE (batched with R5)
+ *   R5       Everyday Legends    <- THIS SLICE (batched with R4)
+ *
+ *   R6  Athletic Management  R9   Charging It to the Game
+ *   R7  Feature Quote        R10  Contact + footer (form is PORTED)
+ *   R8  Index                R11  /privacy
+ *
+ * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
+ * built to rhyme and the failure mode of a rhyme is a repeat, so they
+ * had to be reviewed side by side. Everything after this returns to
+ * one slice at a time.
+ *
+ * Every component from the old build is still on disk in
+ * src/components/ — nothing was deleted. They are simply not imported.
+ * ContactSection.astro (Phase F, Formspree + Turnstile) and
+ * BaseLayout.astro's Fraunces font request are reused unchanged and
+ * were not touched by this slice.
+ *
+ * NO ANCESTOR OF A SECTION CARRIES A MAX-WIDTH, A CENTRING
+ * margin-inline, OR A CONTAINER WRAPPER. <main> is a bare element.
+ * That is the rule this rebuild exists to enforce: a single max-width
+ * above a section collapses every column placement below it and
+ * produces the centred stack that cost three passes.
+ *
+ * <main> also carries no transform, opacity, filter or isolation, so a
+ * descendant's mix-blend-mode composites against the page ground.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FolioMarginalia from '../components/FolioMarginalia.astro';
-import Hero from '../components/Hero.astro';
-import PortraitBand from '../components/PortraitBand.astro';
+import Cover from '../components/Cover.astro';
 import About from '../components/About.astro';
-import PillarEducation from '../components/PillarEducation.astro';
-import PillarPremier from '../components/PillarPremier.astro';
-import PillarLegends from '../components/PillarLegends.astro';
-import PillarAthletics from '../components/PillarAthletics.astro';
-import PullQuote from '../components/PullQuote.astro';
-import FunnelIndex from '../components/FunnelIndex.astro';
-import SectionBlog from '../components/SectionBlog.astro';
-import ContactSection from '../components/ContactSection.astro';
-import Footer from '../components/Footer.astro';
+import EducationalLeader from '../components/EducationalLeader.astro';
+import PremierLeadership from '../components/PremierLeadership.astro';
+import EverydayLegends from '../components/EverydayLegends.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
-  <!-- The folio at the left trim is the page's ONLY current-section
-       indicator. RunningHead used to render a second one in the live margin
-       showing the identical string; it was removed rather than restyled. The
-       live margin now carries only per-section content — the district link,
-       the Instagram handle, the insets — which each section places itself. -->
-  <FolioMarginalia />
-
-  <!-- main carries no transform, opacity, filter or isolation, so the hero
-       submark's mix-blend-mode composites against the page ground. -->
   <main>
-    <Hero />
-    <PortraitBand />
+    <Cover />
     <About />
-    <!-- Earliest chronological pillar, so it leads the run. -->
-    <PillarEducation />
-    <PillarPremier />
-    <!-- Sits before the Cashmere band, which is the first thing
-         PillarAthletics renders. CONTEXT.md refers to that band as
-         BreakBand.astro; there is no such component in this build — the band
-         was folded into PillarAthletics during Phase D. -->
-    <PillarLegends />
-    <PillarAthletics />
-    <!-- The quote is this pillar's own closing line; it follows immediately
-         and delivers it at full scale, so the pillar's body copy stops short
-         of it rather than repeating it. -->
-    <PullQuote />
-    <FunnelIndex />
-    <!-- Carries id="charging-it-to-the-game" so index entry 05 has a real
-         anchor available; entry 05 itself is deliberately left at href="#"
-         for Jackson to decide. -->
-    <SectionBlog />
-    <!-- Last content on the page. Follows the blog's coda deliberately: the
-         reading order is what she does, then her voice, then how to reach
-         her. It opens on its lede rather than on an eyebrow, so it does not
-         open the same way the blog above it does. -->
-    <ContactSection />
+    <EducationalLeader />
+    <PremierLeadership />
+    <EverydayLegends />
   </main>
-
-  <Footer />
 </BaseLayout>

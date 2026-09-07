@@ -17,22 +17,22 @@
        rules, not through a title. The outline still needs the entry. -->
   <h2 class="vh">Index</h2>
   <ul class="index-list spread list-none p-0">
-    <li class="index-item"><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
+    <li class="index-item col-full"><a class="index-row" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">
       <span class="index-name">Premier Leadership, LLC</span>
       <span class="index-desc">Educational consulting &amp; leadership development</span>
       <span class="index-num">01</span>
     </a></li>
-    <li class="index-item"><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
+    <li class="index-item col-full"><a class="index-row" href="https://www.everydaylegend.com" target="_blank" rel="noopener">
       <span class="index-name">Everyday Legends Foundation</span>
       <span class="index-desc">Education, athletics &amp; service</span>
       <span class="index-num">02</span>
     </a></li>
-    <li class="index-item"><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
+    <li class="index-item col-full"><a class="index-row" href="https://www.ucvts.org" target="_blank" rel="noopener">
       <span class="index-name">Educational Leadership</span>
       <span class="index-desc">Alternative education high school principal</span>
       <span class="index-num">03</span>
     </a></li>
-    <li class="index-item">
+    <li class="index-item col-full">
       <!-- Open by default so the sub-rows are present on load, in full-page
            captures and in any PDF the client makes. -->
       <details class="index-expand" open>
@@ -60,7 +60,7 @@
         </ul>
       </details>
     </li>
-    <li class="index-item"><a class="index-row" href="#">
+    <li class="index-item col-full"><a class="index-row" href="#">
       <span class="index-name">Charging It to the Game</span>
       <span class="index-desc">The blog</span>
       <span class="index-num">05</span>
@@ -71,7 +71,11 @@
 <style>
   .index{ padding-bottom: var(--vr-standard); }
 
-  .index-item{ grid-column: 1 / -1; }
+  /* The only placement in this file that sits on .spread; it takes the
+     .col-full primitive on the element instead. Every OTHER grid-column
+     below is inside .index-row / .subrow, which re-divide their own span
+     into the page's tracks the way .section-head does, and which carry
+     their own complete collapse block at the foot of this file. */
 
   /* The rules run from the body measure's left edge (column 3) to the outer
      trim, so they start where every other element on the page starts.
