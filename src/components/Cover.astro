@@ -9,9 +9,41 @@
  *   portrait, column-tall, full-height tall crop    columns 8-12
  *   vertical padding: flush at the top, 64px at the bottom
  *
- * The Cover is a cover, not a section entrance: no kicker rule, no
- * section numeral, no folio. It is also outside the ten-<h2> heading
- * structure — it carries the page's single <h1>.
+ * The Cover is a cover, not a section entrance: no kicker rule and no
+ * section numeral.
+ *
+ * IT IS INSIDE THE TEN-<h2> HEADING STRUCTURE, and the note that used
+ * to sit here saying otherwise was wrong. CONTEXT.md locks "ten
+ * sections, ten <h2>s, in visual order under one <h1>", and its
+ * Section Composition table's ten rows OPEN with the Cover — so the
+ * Cover is one of the ten, and the <h1> it also carries is the page's,
+ * not a substitute for its section heading. Shipped with neither an
+ * `id` nor an `<h2>`, which meant a screen-reader user walking the
+ * page by heading met the page title and then jumped straight into
+ * About, and the folio's first entry tracked an element that did not
+ * exist.
+ *
+ * THE <h2> IS "Portrait", VERBATIM FROM src/data/sections.ts, and the
+ * `id` is `sec-portrait` from the same entry — both read off the list
+ * rather than guessed, because the rule is that a section's <h2> text
+ * and its folio label are the same string. The Cover has no visible
+ * title to carry it, so it is visually hidden with `.vh`, which uses
+ * `clip-path` and stays in the accessibility tree. NEVER
+ * `display: none` or `visibility: hidden`, which remove it from the
+ * tree and defeat the whole point. It is authored AFTER the <h1> — see
+ * the note at the element.
+ *
+ * `aria-labelledby` REPLACES THE HAND-WRITTEN `aria-label`. The
+ * section was named "Dr. Syreeta McClain" by an attribute while its
+ * heading said "Portrait" — two accessible names for one region, with
+ * the attribute silently winning. Pointing the label at the heading
+ * makes the region name, the heading and the folio label one string
+ * instead of two, and keeps the landmark the aria-label was providing.
+ *
+ * CONTEXT.md CONFLICT, REPORTED NOT RESOLVED: this file's Composition
+ * table row says the Cover takes no folio, while sections.ts carries
+ * `01 / Portrait` for it and the folio therefore displays over it.
+ * The entry is real and is left exactly as it is — see the R7 report.
  *
  * AUTHORED IN THREE BLOCKS ON PURPOSE. head / portrait / foot is what
  * makes the mobile stack fall out of source order — head, portrait,
@@ -43,11 +75,30 @@ import { Image } from 'astro:assets';
 import portraitHero from '../assets/portrait-hero.jpg';
 ---
 
-<section class="sheet cover" aria-label="Dr. Syreeta McClain">
+<section class="sheet cover" id="sec-portrait" aria-labelledby="cover-heading">
   <div class="win-cover-head">
     <p class="kicker cover-credit">KNOW Women: 50 Under 50 Women to Know in NJ, 2026</p>
 
     <h1 class="cover-name">Dr. Syreeta McClain</h1>
+
+    <!--
+      AUTHORED AFTER THE <h1>, NOT BEFORE IT. CONTEXT.md's structure is
+      ten <h2>s "under one <h1>", and the page's only <h1> lives inside
+      this section — so a section heading authored ahead of it would
+      make the first heading a reader jumping by heading meets be a
+      level 2, with the level 1 behind it. One line later, the walk is
+      h1 "Dr. Syreeta McClain" -> h2 "Portrait" -> h2 "About", which is
+      the outline this file's own comment claims.
+
+      `.vh` is `position: absolute`, so it is out of flow: it is not a
+      grid item, it does not move .sheet's auto-placement cursor, and
+      it contributes nothing to .win-cover-head's flex column. Verified
+      rather than asserted — .cover, .win-cover-head, .cover-name,
+      .win-cover-portrait, .win-cover-foot, #sec-about and the document
+      height all measure byte-identical to the pre-change build at
+      1920, 1440, 1280, 1024, 1023, 900, 750 and 390.
+    -->
+    <h2 id="cover-heading" class="vh">Portrait</h2>
 
     <p class="cover-tagline">Where Leadership Meets <em class="legacy">Legacy</em></p>
   </div>
