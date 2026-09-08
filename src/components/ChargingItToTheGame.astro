@@ -462,6 +462,18 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      change shape with size, and the tracking is in `em`. Measured
      42.3942 at 26px, 54.72px and 100px alike.
 
+     THE CAP IS SCOPED TO THE BESIDE ARRANGEMENT (R9.3). It exists
+     because the frame holds columns 9-12 and leaves the lede HALF A
+     SHEET; below the crossover there is no such column, so the cap is
+     solving a problem that does not exist there. R9.2 applied it in
+     every band and the stacked bands paid for it: at 390 the
+     derivation wanted 20.7px, the 1.5 x body floor clamped it to
+     25.5px, and the lede shipped SMALLER THAN THE TURN AND THE CODA
+     at 26px — tier 1 set below tier 2, and 1.5 x body against
+     CONTEXT.md's 3x lede-to-body minimum. The floor was not the wrong
+     number; the cap was in the wrong place. Below the crossover the
+     lede takes --lede-size outright, as every other section's does.
+
      THREE LINES OF WINDOW IS NOT THREE WINDOWS OF ADVANCE, and the
      difference is the rag. A line box is never filled to the last
      pixel — it breaks at the last whole word that fits — so the naive
@@ -864,11 +876,28 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
            10 cols + 9 gaps = 10(100vw - 392px)/12 + 216px
                             = 83.3333vw - 110.667px */
     .chg{
-      --chg-lede-window: calc(58.3333vw - 84.667px);
       --chg-coda-window: calc(83.3333vw - 110.667px);
     }
     .chg-coda{
       width: var(--chg-coda-window);
+    }
+
+    /* THE LEDE'S THREE-LINE CAP STOPS HERE, AND SO DOES EVERY BAND
+       BELOW — this is the widest of the stacked media blocks, so the
+       declaration cascades into band 3 and band 4 unaided.
+
+       --lede-size OUTRIGHT: the page's shared token, exactly what
+       About's, Educational Leader's, Premier's, Everyday Legends' and
+       Athletic's ledes take. No cap, no derivation, no floor to
+       conflict with. Five lines on a phone is what an editorial lede
+       does at 52px on a 340px measure.
+
+       --chg-lede-window is deliberately NOT declared in this block any
+       more: nothing consumes it here. It survives in band 3 for one
+       job only — setting the lede's BOX so it runs to the sheet's
+       right trim — and that is a width, not a size input. */
+    .chg-lede{
+      font-size: var(--lede-size);
     }
   }
 
@@ -905,6 +934,9 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      line, PremierLeadership's value for this pair, the same rule band
      4 already carried. */
   @media (max-width: 1023px){
+    /* --chg-lede-window is a BOX WIDTH here and nothing else: the
+       lede's size came off the derivation at the crossover. It runs
+       the sheet's content box, trim to trim, alongside the coda. */
     .chg{
       --chg-lede-window: calc(100vw - 80px);
       --chg-coda-window: calc(100vw - 80px);
@@ -956,7 +988,6 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
        constant and the string it describes can never be one band
        apart. */
     .chg{
-      --chg-lede-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
       --chg-coda-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
       --chg-coda-k: 10.5328;
     }
