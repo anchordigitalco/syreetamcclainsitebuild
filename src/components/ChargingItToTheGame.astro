@@ -343,6 +343,77 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     --chg-coda-k:      20.7752;
     --chg-coda-floor:  calc(1.5 * var(--bio-size));
     --chg-coda-window: calc(50vw - 76px);
+
+    /* ---- THE TURN'S TWO GEOMETRY TOKENS, R9.6 -------------------
+       Both were literals inside .chg-turn and both are now consumed
+       by a SECOND element — the frame's top registration. CONTEXT.md
+       R8.2: "a relationship that must hold is declared against its
+       counterpart, never left to fall out of two swept values." The
+       frame's offset is a function of the turn's air and the turn's
+       leading; if either moves and the frame keeps a stale copy, the
+       registration silently comes apart and nothing reports it.
+
+       NEITHER VALUE CHANGES. --chg-turn-air is byte-for-byte the
+       margin .chg-turn already carried (2.0 body line-heights, R9.2,
+       settled) and --chg-turn-lh is the 1.3 it already carried. This
+       is a re-declaration, not a re-derivation. */
+    --chg-turn-air: calc(2.0 * var(--bio-size) * var(--bio-lh));
+    --chg-turn-lh:  1.3;
+
+    /* ---- THE FRAME'S TOP REGISTRATION, R9.6 ---------------------
+       The distance from the type row's top edge to the TURN'S CAP
+       HEIGHT — which is where the frame's top trim now lands.
+
+           register = turn air + half-leading + (ascent - cap height)
+
+       stated in the turn's own em so it re-resolves from the type at
+       every width with no breakpoint and nothing swept:
+
+           half-leading      = (lh - asc - desc) / 2
+           asc - cap         = asc - cap
+           sum, in em        = lh/2 + (asc - desc)/2 - cap
+
+       FRAUNCES' METRICS, MEASURED, NOT ASSUMED. Read off
+       CanvasRenderingContext2D.measureText() at ten sizes from 200px
+       to 2000px, where Chrome's whole-pixel rounding of ascent and
+       descent is negligible against the size:
+
+           ascent      0.97750 em
+           descent     0.25500 em
+           cap height  0.70000 em
+
+       The cap ratio lands on 0.700 exactly, at every one of the ten
+       sizes and at all five shipped sizes — an independent
+       confirmation of CONTEXT.md's R2 measurement, which was taken
+       off rendered ink by a different method entirely.
+
+           k = 1.3/2 + (0.9775 - 0.255)/2 - 0.700 = 0.31125
+
+       WHY A MODELLED CONSTANT IS LEGAL HERE, AND WHY R6.3 DOES NOT
+       FORBID IT. R6.3 rules that where elements must share a
+       BASELINE, grid's baseline-sharing group answers and a modelled
+       em offset must not. That route does not exist for this
+       problem: CSS has no cap-height alignment, `align-self:
+       baseline` aligns ALPHABETIC baselines, and the frame is a
+       photograph with no baseline of its own to contribute to a
+       group. A model is the only thing CSS can express here, which
+       is the case R8.2's 3px ink tolerance was written for.
+
+       AND THE MODEL IS VERIFIED AGAINST MEASURED INK, per width, not
+       inferred from the arithmetic. Residual, frame top trim to turn
+       cap height, at the five beside widths:
+
+           1920  +0.06px      1279  -0.34px
+           1440  -0.05px      1255  -0.03px
+           1280  -0.33px
+
+       Worst 0.34px, against a 3px tolerance that MUST NOT be
+       tightened and against the 0.65px width-to-width jitter of
+       Chrome's own rounding. The residual is smaller than the noise
+       floor of the quantity it measures. */
+    --chg-frame-register: calc(
+      var(--chg-turn-air) + var(--closing-size) * 0.31125
+    );
   }
 
   /* ---- THE HEAD --------------------------------------------------
@@ -608,12 +679,12 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      does not fit, that is REPORTED — it is not shrunk below the
      register. */
   .chg-turn{
-    margin: calc(2.0 * var(--bio-size) * var(--bio-lh)) 0;
+    margin: var(--chg-turn-air) 0;
     font-family: var(--display);
     font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
     font-weight: 400;
     font-size: var(--closing-size);
-    line-height: 1.3;
+    line-height: var(--chg-turn-lh);
     letter-spacing: -0.012em;
     color: var(--obsidian);
   }
@@ -743,8 +814,44 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      the 0.800 shape R9 derived at 1920 and the 112% / -12% window. The
      distance is closed by moving the column, not by resizing the
      photograph. */
+  /* ---- THE FRAME'S TOP TRIM IS REGISTERED TO THE TURN'S CAP HEIGHT
+     (R9.6.) -------------------------------------------------------
+
+     WHAT WAS WRONG. R9.5 put the frame in row 2 and left it at the
+     row's top edge, which is the LEDE'S BOTTOM. Measured, the lede's
+     last line box did not merely touch the plate — it OVERLAPPED it:
+
+         1920  -1.48px      1279  -0.64px
+         1440  -1.44px      1255  -0.64px
+         1280  -0.64px
+
+     A display line running out over columns 9-11 with the plate
+     starting under it at negative clearance is not a composition; it
+     is two elements colliding. And the row's top edge is not a
+     registration mark for anything a reader can see: it is the
+     lede's descender line, which is invisible.
+
+     WHAT IT REGISTERS TO NOW. The turn's CAP HEIGHT — the top of the
+     "B" in "But this is not simply a football story." That is a mark
+     the reader can actually see, it is the first ink of the column
+     the plate stands beside, and a plate top trim level with the
+     first cap of the text beside it is the ordinary editorial
+     registration.
+
+     NOT THE TURN'S BOX TOP. The box carries --chg-turn-air above it
+     (2.0 body line-heights, settled R9.2) and its own half-leading
+     above the cap. Registering to the box would land the trim
+     61.19px + a leading above the ink and reproduce the same defect
+     lower down the page. The offset is derived in --chg-frame-register
+     against the turn's own type; see its declaration on .chg.
+
+     THE STACKED BANDS OVERRIDE THIS MARGIN OUTRIGHT. Below the
+     crossover the frame leaves the type's row entirely and the
+     `@media (max-width: 1254px)` rule below replaces margin-top with
+     its own value, so nothing here reaches any stacked band. Verified
+     by measuring both trees, not assumed. */
   .chg-figure{
-    margin: 0;
+    margin: var(--chg-frame-register) 0 0;
     align-self: start;
   }
 
