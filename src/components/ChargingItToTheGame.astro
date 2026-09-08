@@ -126,7 +126,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     is the entrance.
   -->
   <div class="win-chg-head chg-head">
-    <h2 class="chg-kicker" id="chg-heading">Charging It to the Game</h2>
+    <h2 class="chg-kicker" id="chg-heading"><span>Charging It</span> <span>to the Game</span></h2>
     <p class="chg-subtitle">The Blog</p>
   </div>
 
@@ -175,7 +175,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     <div class="chg-coda">
       <p>Because some things are wins.</p>
       <p>Some things are lessons.</p>
-      <p>And some things you simply have to charge to the game.</p>
+      <p>And some things you simply have to <br class="chg-coda-break" />charge to the game.</p>
     </div>
   </div>
 
@@ -265,6 +265,38 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      scroll to Contact rather than pausing on it. */
   .chg{
     padding-block: 110px 40px;
+
+    /* ---- THE CODA'S DERIVATION, R9.1 ----------------------------
+       --closing-size    LOCAL ALIAS of the page's shared closing-line
+                         register, byte-for-byte what .edu-coda and
+                         .ath-close declare. It is the CAP. Declared
+                         here so min() can name it; nothing else on the
+                         page sees it and neither of those components
+                         is touched.
+       --chg-coda-k      measured advance-per-px of the coda's longest
+                         line at the shipped axes. 20.7752 for the full
+                         53-character line 3; band 4 overrides it to
+                         13.3720, the value for the authored break's
+                         first half, because that is the longest line
+                         once the break is live.
+       --chg-coda-floor  1.5 x body. A REPORTING TRIPWIRE: where it
+                         engages, the width is a failure, not a
+                         shipped value.
+       --chg-coda-window the coda's rendered window, in closed form
+                         against the same grid arithmetic the
+                         primitives use. Bands 2-4 override it below
+                         and band 3 also SETS its box from it, so the
+                         size and the box cannot disagree.
+
+       BAND 1 AND BAND 2 ABOVE THE CROSSOVER: the coda takes the type
+       window, columns 3-8 of 12.
+           6 cols + 5 gaps = (100vw - 392px)/2 + 120px = 50vw - 76px
+       Verified against the rendered window: 884.0 at 1920, 644.0 at
+       1440, 564.0 at 1280, 495.0 at 1142. */
+    --closing-size:    clamp(26px, 2.2vw, 32px);
+    --chg-coda-k:      20.7752;
+    --chg-coda-floor:  calc(1.5 * var(--bio-size));
+    --chg-coda-window: calc(50vw - 76px);
   }
 
   /* ---- THE HEAD --------------------------------------------------
@@ -273,6 +305,23 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      rather than floating in the middle of a tall row. */
   .chg-head{
     align-self: start;
+
+    /* THE KICKER'S SIZE IS A TOKEN SO THE SUBTITLE CAN DERIVE FROM IT.
+       (R9.1.) The kicker carries the page's optical half-tracking
+       pullback — half of 0.26em, so the C's stem lands on the column
+       line rather than on the tracking space after it — and the
+       subtitle carried none, so the two sat 1.36px apart on rendered
+       ink while their boxes looked identical in the source. That is
+       R8.1's rule exactly: equalize on ink, not on box edges.
+
+       The subtitle now takes the SAME pull-back IN PIXELS, derived
+       from this token rather than restated: -0.13em against 10.5px is
+       -1.365px, and calc(-0.13 x var(--chg-kicker-size)) is the same
+       -1.365px whatever the subtitle's own font-size happens to be. An
+       `em` pullback on the subtitle would have resolved against ITS
+       12px and overshot by 0.195px. Declared once, consumed twice; if
+       the kicker's size ever moves, the subtitle follows it. */
+    --chg-kicker-size: 10.5px;
   }
 
   /* The kicker is an <h2>; the browser's heading margins and weight
@@ -288,15 +337,56 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      exactly that role. */
   .chg-kicker{
     margin: 0;
-    margin-left: -0.13em;
+    margin-left: calc(-0.13 * var(--chg-kicker-size));
     font-family: var(--sans);
     font-weight: 500;
-    font-size: 10.5px;
+    font-size: var(--chg-kicker-size);
     line-height: var(--baseline);
     letter-spacing: 0.26em;
     text-transform: uppercase;
     color: var(--slate);
   }
+
+  /* THE BREAK IS AUTHORED, AND IT IS CONDITIONAL BY CONSTRUCTION.
+     (R9.1.)
+
+     R9 let the kicker rag, and in its two-column outdent it broke as
+     "CHARGING IT TO THE / GAME" — a one-word widow under three words.
+     The wanted break is "CHARGING IT / TO THE GAME": two halves of
+     comparable length.
+
+     WHY NOT A <br>. A literal <br> is unconditional, and the kicker
+     sets on ONE line at 1920, 1023, 750, 390 and 360 — a <br> would
+     force a break at all five, which is exactly what must not happen.
+     Making it conditional needs the width at which the full string
+     stops fitting, and that is TWO swept pixel boundaries derived from
+     a string's rendered width — 1522 in bands 1-2 and 990 in band 3 —
+     in a file whose standing rule is that swept boundaries go stale
+     silently. There is also no single media query that expresses it:
+     the string fits at 1023 and does not at 1024, so the boundary
+     crosses a band edge in the wrong direction.
+
+     Two nowrap halves with an ordinary space between them make the
+     break FALL OUT of the fit instead of being scheduled:
+
+       fits on one line   -> no break, at any width, ever
+       does not fit       -> the only breakable point is the space
+                             between the halves, so it breaks there
+       three lines        -> structurally impossible; neither half can
+                             break internally
+
+     Each of the brief's three requirements is then met by
+     construction rather than by a number that has to stay true.
+     Measured: the wider half, "TO THE GAME", is 110.4px, against a
+     narrowest kicker window of 129.3px at 1024 — so neither half ever
+     overflows its column.
+
+     THE ACCESSIBLE NAME IS UNAFFECTED. The two spans carry the same
+     characters in the same order with the space between them, so the
+     <h2> still computes to "Charging It to the Game" — the exact
+     string sections.ts carries as the folio label. Verified, not
+     assumed; see the R9.1 report. */
+  .chg-kicker span{ white-space: nowrap; }
 
   /* The deck, in the register Educational Leader, Premier Leadership,
      Everyday Legends and Athletic Management all share. Sentence
@@ -306,6 +396,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      from COPY.md. */
   .chg-subtitle{
     margin: 2px 0 0;
+    margin-left: calc(-0.13 * var(--chg-kicker-size));
     font-family: var(--sans);
     font-weight: 300;
     font-size: 12px;
@@ -316,11 +407,44 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   }
 
   /* ---- THE TYPE COLUMN -------------------------------------------
-     Top-aligned for the same reason as the head: the type sets the
-     section's height, so its top edge is the section's top content
-     edge and there is nothing for it to centre against. */
+     THE SECTION CLOSES ON ONE HORIZONTAL. (R9.1.)
+
+     R9 top-aligned both columns, so the figure ended 72.5px above the
+     type at 1920 and roughly 700px above it at 1440: the right column
+     died while the left ran on, and the surplus hung at the foot where
+     it read as a hole rather than as air.
+
+     Both columns now take `align-self: last baseline`, which puts them
+     in ONE BASELINE-SHARING GROUP and lets grid align the caption's
+     last baseline with the coda's last baseline on a single y. The
+     head is deliberately NOT in the group — it keeps `align-self:
+     start`, because the kicker is the entrance and belongs on the
+     section's top content edge.
+
+     THE OFFSET IS NOT MODELLED, AND MUST NOT BE. Chrome rounds a
+     font's ascent and descent to whole pixels at the rendered size, so
+     a hand-derived `em` offset between two different faces at two
+     different sizes drifts with the size — measured on this project at
+     0.02px out at one width and 1.27px at another, from arithmetic
+     correct to five decimal places. Baseline alignment reads the
+     rounded metrics the renderer actually used. This is R6.3's finding
+     applied a third time; Athletic's foot and the Index's row group
+     are the other two, and it makes Safari load-bearing for a third
+     section.
+
+     WHERE THE SURPLUS GOES. It moves ABOVE the frame, beside the lede,
+     which is the one legal place for it per R6.3 — never between two
+     type blocks, where it would inflate a gap that the type derived.
+     Nothing inside the type column moves: the lede, turn, body and
+     coda keep every gap they had, because the group aligns the two
+     COLUMNS and does not reach inside either one.
+
+     BELOW THE CROSSOVER THIS DOES NOT APPLY. The figure is stacked in
+     a row of its own there, with its own derived 91.8px of air, and
+     two items in different rows have no baseline group to share. Both
+     are returned to `start` in that band so nothing is left implied. */
   .chg-text{
-    align-self: start;
+    align-self: last baseline;
   }
 
   /* ---- LEDE ------------------------------------------------------
@@ -412,42 +536,111 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   .chg-body p{ margin: 0; }
 
   /* ---- THE CODA --------------------------------------------------
-     Tier 2 of 3, the page's existing closing-line register: Fraunces
-     at opsz 96 / wght 400 / SOFT 35 / WONK 0, clamp(26px, 2.2vw,
-     32px), line-height 1.3, letter-spacing -0.012em. Byte-for-byte
-     what .edu-coda and .ath-close already carry. NO NEW SIZE TOKEN
-     WAS INTRODUCED.
+     THE SIZE DERIVES FROM ITS OWN LONGEST LINE. (R9.1, correcting R9.)
 
-     THREE ELEMENTS, NOT THREE LINES OF ONE. The breaks are
-     structural, so they hold at every width and cannot be moved by a
-     rag. margin: 0 on each, so the three sit as consecutive line
-     boxes on the coda's own leading and read as one block with three
-     hard breaks rather than as three paragraphs.
+     R9 reused the page's shared closing-line register unchanged —
+     clamp(26px, 2.2vw, 32px) — and line 3 wrapped at 8 of the 13
+     widths. The register is not wrong; it was derived on Educational
+     Leader and Athletic Management, whose closings are ONE line each.
+     This is the page's only three-line coda and its longest line is 53
+     characters. A size derived for a different job does not transfer,
+     and holding the token fixed was holding the wrong thing fixed.
 
-     text-wrap: balance is DELIBERATELY ABSENT here, unlike every
-     other display element in this file. These lines are authored
-     breaks; asking the browser to balance them would be asking it to
-     re-break lines whose breaks are the design. */
+     THE CONSTANT IS MEASURED, NOT ASSUMED. Rendered at the shipped
+     axes — opsz 96, wght 400, SOFT 35, WONK 0, tracking -0.012em —
+     line 3 measures 2077.516px at 100px, so it costs
+
+         K = 20.7752 px of width per px of type
+
+     and K IS GENUINELY CONSTANT: 20.7752 at 26px, 20.7754 at 40px,
+     20.7752 at 100px. It has to be — `opsz` is PINNED at 96 rather
+     than swept, so the face does not change shape with size, and the
+     tracking is stated in `em` so it scales with it. A face whose
+     optical size varied would not admit a constant at all. (Brief's
+     figure 20.78; measured 20.7752, agreeing to 0.02%.)
+
+     THE THREE TERMS:
+
+       cap    --closing-size, the shared register. The coda MUST NOT
+              exceed it. This is a correction for FIT, not a promotion
+              in the hierarchy — the coda stays tier 2 of 3, under the
+              lede and over the body.
+       fit    window / K, with 4% headroom.
+       floor  1.5 x body = 25.5px. Below this it stops reading as a
+              coda and the failure has moved rather than closed, so
+              the floor is a REPORTING TRIPWIRE, not a safety net:
+              wherever it engages, the width is reported as a failure.
+
+     --closing-size IS A LOCAL ALIAS, NOT A NEW TOKEN. It names the
+     value .edu-coda and .ath-close already carry so that min() can
+     refer to it. It is declared on .chg and inherited by nothing else
+     on the page; neither of those components is touched.
+
+     THE WINDOW IS DECLARED PER BAND, in closed form against the same
+     grid arithmetic the primitives use, and each formula is verified
+     against the rendered window at four widths in its own band. Band 3
+     also SETS its width from the same custom property, so the size and
+     the box cannot disagree — the quantity is declared once and used
+     twice rather than swept twice.
+
+     text-wrap: balance is DELIBERATELY ABSENT, and prohibited: these
+     lines are authored breaks and asking the browser to balance them
+     is asking it to re-break lines whose breaks are the design. So are
+     hyphenation and any tightening of the tracking. */
   .chg-coda p{
     margin: 0;
     font-family: var(--display);
     font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
     font-weight: 400;
-    font-size: clamp(26px, 2.2vw, 32px);
+    font-size: max(
+      var(--chg-coda-floor),
+      min(
+        var(--closing-size),
+        calc(var(--chg-coda-window) / var(--chg-coda-k) * 0.96)
+      )
+    );
     line-height: 1.3;
     letter-spacing: -0.012em;
     color: var(--obsidian);
   }
 
+  /* THE AUTHORED BREAK, BAND 4 ONLY.
+
+     340px cannot hold a 53-character line at any size that still
+     reads as a coda, and that is not closable by geometry — at 390
+     the exact-fit size is 25.43px against a 25.5px floor. The design
+     intent is that the coda's breaks are CHOSEN, so a chosen break at
+     a measure that cannot hold the line honours that intent where a
+     ragged wrap does not.
+
+     ONE break, after "have to", nowhere else, no other line, no other
+     band. Not a word of the copy changes.
+
+     THE SPACE BEFORE THE <br> IS LOAD-BEARING. Above 750 the element
+     is display: none and the two text nodes rejoin; without that
+     space they would rejoin as "have tocharge". The trailing space
+     collapses at the end of a broken line, so it costs nothing when
+     the break is live. */
+  .chg-coda-break{ display: none; }
+
+  @media (max-width: 750px){
+    .chg-coda-break{ display: inline; }
+  }
+
   /* ---- THE FRAME -------------------------------------------------
-     Top-aligned, so the plate's top edge sits on the section's top
-     content edge beside the kicker and the lede, and every pixel of
-     surplus ground in the row falls BELOW the caption. That is the
-     one legal place for it here: the frame has no minimum shape to
-     satisfy, so it never needs to push the type down. */
+     The second member of the baseline-sharing group — see .chg-text.
+     Its last baseline is the CAPTION's, because the figcaption is the
+     figure's last in-flow child with a line box, and the caption is
+     what has to land on the coda.
+
+     THE FRAME'S OWN GEOMETRY IS UNTOUCHED BY THIS. No height floor, no
+     stretch, no change of aspect, no change of crop: the plate keeps
+     the 0.800 shape R9 derived at 1920 and the 112% / -12% window. The
+     distance is closed by moving the column, not by resizing the
+     photograph. */
   .chg-figure{
     margin: 0;
-    align-self: start;
+    align-self: last baseline;
   }
 
   /* ---- THE STACKED BANDS ONLY: air between the coda and the frame
@@ -487,6 +680,62 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     .chg-figure{
       margin-top: calc(3.0 * var(--bio-size) * var(--bio-lh));
     }
+
+    /* Out of the baseline group: the two are in different rows here,
+       so there is nothing to share. Stated rather than left implied. */
+    .chg-text,
+    .chg-figure{ align-self: start; }
+
+    /* BAND 2 BELOW THE CROSSOVER: the coda takes the widened type
+       window, columns 3-10 of 12.
+           8 cols + 7 gaps = 2(100vw - 392px)/3 + 168px
+                           = 66.6667vw - 93.333px
+       Verified against the rendered window: 667.3 at 1141 and 589.3
+       at 1024. */
+    .chg{
+      --chg-coda-window: calc(66.6667vw - 93.333px);
+    }
+  }
+
+  /* ---- BAND 3 · 751-1023 -----------------------------------------
+     THE CODA RUNS THE SECTION WINDOW, TRIM TO TRIM — it is the one
+     element in the section whose window is not the type window.
+
+     WHY IT HAS TO. At the type window the coda wraps at 901 and at
+     751: the type holds 505.5px and 498.3px there, against the 529.8px
+     that line 3 needs at the 25.5px floor. Widening only to the right
+     trim does not close it, because at 900 and below the type ALREADY
+     reaches the right trim — that widening is a no-op in exactly the
+     half of the band that fails. The section window is the only window
+     that fits at every width in the band.
+
+     THE COST, STATED PLAINLY. The coda's left edge moves from the type
+     edge at column 3 to the sheet's left trim at column 1. That is
+     NOT a new left edge — column 1 is the kicker's, and it exists in
+     this section in every band — but it does put the coda on a
+     different edge from the lede, turn and body above it, in this band
+     only. The brief asks for both this window and an unmoved left
+     edge, and in band 3 those two cannot both hold. Flagged in the
+     R9.1 report for Jackson's ruling; the fit requirement was taken as
+     the pass/fail criterion.
+
+     ONE QUANTITY, DECLARED ONCE, USED TWICE. --chg-coda-window sets
+     both the box and the size, so they cannot drift apart:
+           8 cols + 7 gaps = 100vw - 80px         (the sheet's content)
+     and the pull-back to the left trim is the two columns and two gaps
+     the type is inset by:
+           2 cols + 2 gaps = 25vw - 15px
+     Verified: the coda's left edge lands on 40px — the band's page
+     gutter — at 1023, 901, 800 and 751, and its right edge on the
+     right trim at all four. */
+  @media (max-width: 1023px){
+    .chg{
+      --chg-coda-window: calc(100vw - 80px);
+    }
+    .chg-coda{
+      width: var(--chg-coda-window);
+      margin-left: calc(-1 * (25vw - 15px));
+    }
   }
 
   /* ---- BAND 4 · <= 750 -------------------------------------------
@@ -504,6 +753,30 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   @media (max-width: 750px){
     .chg-head{
       margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+    }
+
+    /* The single column is the full measure, and the band-3 pull-back
+       is undone — there is nothing to pull back from when the type
+       already starts at the trim. */
+    .chg-coda{
+      width: auto;
+      margin-left: 0;
+    }
+
+    /* THE WINDOW is the sheet's content box, which in this band is the
+       viewport less the clamped page gutter on each side. Verified
+       against the rendered window: 670.0 at 750, 340.1 at 390, 312.0
+       at 360.
+
+       THE CONSTANT CHANGES WITH THE STRING. Once the authored break is
+       live, line 3 is no longer the section's longest coda line — its
+       first half, "And some things you simply have to", is, at
+       1337.203px per 100px of type. K moves to 13.3720 in the same
+       media block that turns the break on, so the constant and the
+       string it describes can never be one band apart. */
+    .chg{
+      --chg-coda-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
+      --chg-coda-k: 13.3720;
     }
   }
 
