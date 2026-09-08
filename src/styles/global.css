@@ -1989,15 +1989,63 @@ a{ color: inherit; }
                 the component, not from here.
      1024-1279  unchanged. Bands 1 and 2 carry the same tracks and
                 this section has no live-margin content, so nothing
-                separates them here.
+                separates them here. In band 1 the head takes an
+                explicit grid-row: 1 (R9.5) — with the lede beside it
+                in row 1 and the type and frame both in row 2, all four
+                items are placed explicitly rather than half-placed and
+                half-auto.
      751-1023   FULL MEASURE — the outdent is dropped in this band
                 (R9.2). See the band-3 note below for why. The head
                 then sits ABOVE the lede rather than beside it and
                 takes a one-body-line gap from the component.
      <= 750     full measure, first in reading order.
 
-   ---- .win-chg-text — lede, turn, body and coda ------------------
-     >= 1280    columns 3-8. Six columns, one edge.
+   ---- .win-chg-lede — the lede band, R9.5 ------------------------
+     >= 1280    columns 3-11. ITS OWN ROW, ACROSS THE TOP OF THE
+                SECTION, ABOVE THE FRAME. Nine columns, not the type's
+                six.
+
+                WHY IT IS A SEPARATE PRIMITIVE. Through R9.4 the lede
+                was the first child of .win-chg-text and inherited the
+                type window, which in the beside arrangement is half a
+                sheet because the frame holds 9-12. A display line in a
+                body measure sets four and five lines. Three passes
+                tried to close that by SIZING the lede and each ran
+                into CONTEXT.md's 3x lede-to-body minimum from the
+                other side. The window was the free variable.
+
+                THE RIGHT EDGE IS COLUMN 11, NOT 12. One column of air
+                at the right trim, which is the property CONTEXT.md's
+                R7 transcription note names as what a window carries:
+                the band never runs trim to trim, so it reads as a
+                measure rather than as a full-bleed rule. It is also
+                the Index's lede edge (4-11) and Educational Leader's
+                (4-11) — the page already ends a lede on column 11 in
+                two other sections.
+
+                IT IS NOT A FOURTH LEFT EDGE. It starts on column 3,
+                the same edge the turn, the body and the coda take.
+                Only its right trim differs, which is exactly how
+                CONTEXT.md's R4.1 image-paired amendment says such a
+                section differentiates.
+     1024-1279  unchanged down to the crossover; below it the lede
+                REJOINS THE TYPE WINDOW at 3-9, byte-for-byte what
+                .win-chg-text takes. There is no frame beside it in the
+                stacked arrangement, so there is nothing for a wider
+                band to win. The stacked composition is untouched by
+                R9.5.
+     751-1023   columns 1-8 of 8 — the full content box, trim to trim.
+                This REPLACES the component's --chg-lede-window box
+                override, which set the same rendered width
+                (calc(100vw - 80px) = the content box at 40px gutters)
+                by declaring a width on a 1-5 span. A span says the
+                same thing without a second declaration that can drift
+                out of agreement with it.
+     <= 750     full measure.
+
+   ---- .win-chg-text — turn, body and coda ------------------------
+     >= 1280    columns 3-8. Six columns, one edge. THE LEDE IS NO
+                LONGER IN THIS WINDOW (R9.5).
      1024-1279  unchanged down to the crossover at 1254; below it the
                 frame drops beneath the coda and the type widens to
                 3-9.
@@ -2025,12 +2073,25 @@ a{ color: inherit; }
      <= 750     full measure.
 
    ---- .win-chg-frame — the plate ---------------------------------
-     >= 1280    columns 9-12, beside the type. NO EMPTY COLUMN between
-                them — the type ends at 8 and the frame starts at 9 —
-                which is what permits the single type edge under
-                CONTEXT.md's R4.1 image-paired amendment. An empty
-                column would make column 3 a free choice and therefore
-                a fourth edge rather than a derived one.
+     >= 1280    columns 9-12, IN THE TURN'S ROW — row 2, not row 1.
+                (R9.5.) It is top-aligned to the turn's band rather
+                than to the section's top edge: the lede band runs
+                above it, and the frame stands beside the turn, the
+                body and the coda only.
+
+                THIS IS THE OTHER HALF OF THE R9.5 CHANGE. Sized
+                against the whole type column INCLUDING the lede, the
+                frame ended level with the turn and left the body and
+                the coda running against several hundred pixels of dead
+                right column. Beside the prose alone it governs its own
+                row, and the dead column closes.
+
+                NO EMPTY COLUMN between the type and the frame — the
+                type ends at 8 and the frame starts at 9 — which is
+                what permits the single type edge under CONTEXT.md's
+                R4.1 image-paired amendment. An empty column would make
+                column 3 a free choice and therefore a fourth edge
+                rather than a derived one.
      1024-1279  unchanged down to the crossover; below it, columns
                 3-7, beneath the coda, on the type's own left edge.
      751-1023   columns 1-5 of 8, beneath the coda, on the type's own
@@ -2045,9 +2106,10 @@ a{ color: inherit; }
    Premier Leadership as the two enumerated exceptions, so this is a
    third exception not yet recorded there.
    ============================================================ */
-.win-chg-head      { grid-column: 1 / 3;  }
-.win-chg-text      { grid-column: 3 / 9;  }
-.win-chg-frame     { grid-column: 9 / 13; }
+.win-chg-head      { grid-column: 1 / 3;  grid-row: 1; }
+.win-chg-lede      { grid-column: 3 / 12; grid-row: 1; }
+.win-chg-text      { grid-column: 3 / 9;  grid-row: 2; }
+.win-chg-frame     { grid-column: 9 / 13; grid-row: 2; }
 
 /* --- THE CROSSOVER · 1254 --------------------------------------
    RE-DERIVED IN R9.2, and it moved because R9's bracket was computed
@@ -2098,6 +2160,8 @@ a{ color: inherit; }
    used deliberately rather than tripped over.
    --------------------------------------------------------------- */
 @media (max-width: 1254px){
+  .win-chg-head    { grid-row: auto; }
+  .win-chg-lede    { grid-column: 3 / 10; grid-row: auto; }
   .win-chg-text    { grid-column: 3 / 10; grid-row: auto; }
   .win-chg-frame   { grid-column: 3 / 8;  grid-row: auto; }
 }
@@ -2130,6 +2194,7 @@ a{ color: inherit; }
    collapses it entirely in band 4, applied one band earlier. */
 @media (max-width: 1023px){
   .win-chg-head    { grid-column: 1 / -1; }
+  .win-chg-lede    { grid-column: 1 / -1; }
   .win-chg-text    { grid-column: 1 / 6; }
   .win-chg-frame   { grid-column: 1 / 6; grid-row: auto; }
 }
@@ -2146,6 +2211,7 @@ a{ color: inherit; }
    above, so R9 edits nothing that shipped. */
 @media (max-width: 750px){
   .win-chg-head,
+  .win-chg-lede,
   .win-chg-text,
   .win-chg-frame   { grid-column: 1 / -1; grid-row: auto; }
 }

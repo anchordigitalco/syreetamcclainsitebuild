@@ -7,7 +7,13 @@
  *   Entrance      DELIBERATELY BREAKS THE STAIRCASE. This section and
  *                 the Feature Quote are the page's two sanctioned
  *                 exceptions to the three-left-edge system.
- *   Column window kicker 1-2 · lede/turn/body/coda 3-8 · frame 9-12
+ *   Column window BESIDE (>=1255): kicker 1-2 · LEDE 3-11, its own
+ *                 band across the top · turn/body/coda 3-8 · frame
+ *                 9-12, in the turn's row rather than the section's
+ *                 top edge.   STACKED (<=1254): kicker 1-2 · lede and
+ *                 type 3-9 · coda to the right trim · frame beneath
+ *                 the coda.   (R9.5 amends the R9 row, and CONTEXT.md's
+ *                 Composition table already records the amendment.)
  *   Image         `column` — lifestyle-street, right side
  *   Rhythm        open. 110px top, 40px bottom — the table's own
  *                 per-section value for this row, flat at every width.
@@ -19,6 +25,11 @@
  * column in from it. Here the kicker outdents to columns 1-2 and the
  * lede, the turn, the body AND the coda all share ONE edge at column
  * 3. The body does not indent.
+ *
+ * R9.5 DOES NOT ADD AN EDGE. The lede band widens to column 11 but
+ * still STARTS on column 3. Only its right trim moved, which is how
+ * CONTEXT.md's R4.1 image-paired amendment says a single-type-edge
+ * section differentiates its registers — "on the RIGHT edge instead."
  *
  * COLUMN 3 IS A SANCTIONED FOURTH EDGE, FOR THIS SECTION ONLY, AND
  * MUST NOT BE PROPAGATED. CONTEXT.md's standing rule — "three left
@@ -64,17 +75,19 @@
  * primitives carrying it live in global.css beside every other
  * window; nothing in this file hand-sets a grid-column.
  *
- *   band 1  >=1280     kicker 1-2 · type 3-8 · frame 9-12, beside
- *   band 2  1024-1279  the same, down to the CROSSOVER AT 1141;
- *                      below it the frame drops BENEATH the coda at
- *                      3-7 on the type's own left edge and the type
- *                      widens to 3-10
- *   band 3  751-1023   kicker 1-2 · type 3-7 above 900 and 3-8 at
- *                      900 and below · frame beneath the coda at 3-7,
- *                      on the type's own left edge
+ *   band 1  >=1280     kicker 1-2 row 1 · LEDE 3-11 row 1 · type
+ *                      3-8 row 2 · frame 9-12 row 2, beside the type
+ *   band 2  1024-1279  the same, down to the CROSSOVER AT 1254;
+ *                      below it the lede REJOINS the type window at
+ *                      3-9, the type widens to 3-9, and the frame
+ *                      drops BENEATH the coda at 3-7 on the type's
+ *                      own left edge
+ *   band 3  751-1023   kicker full measure · lede full measure, trim
+ *                      to trim · type 1-5 above 900 and 1-6 at 900 and
+ *                      below · frame beneath the coda at 1-5, on the
+ *                      type's own left edge, which is column 1
  *   band 4  <=750      one column, everything full measure in reading
- *                      order: kicker, lede, turn, body, coda, frame,
- *                      caption
+ *                      order: kicker, lede, turn, body, coda, frame
  *
  * NO JAVASCRIPT. No observer, no listener, no reveal, no
  * opacity: 0 initial state. Every word is in the DOM and visible on
@@ -131,15 +144,44 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   </div>
 
   <!--
-    THE TYPE COLUMN. One block, one left edge, four registers:
-    lede, turn, body, coda. Authored as a single grid item rather than
-    as four, because the whole point of this section is that they
-    share an edge — four separate items on four separate placements
-    would be four chances for one of them to drift onto a fifth.
+    THE LEDE BAND — R9.5. ITS OWN GRID ITEM, ITS OWN ROW.
+
+    R9 through R9.4 authored the lede as the first child of the type
+    block, so it inherited the type window: six columns at 3-8 in the
+    beside arrangement. A display line has no business in a body
+    measure. At 1440 it set five lines at --lede-size, and every
+    correction pass that tried to fix that by SIZING it ran into
+    CONTEXT.md's 3x lede-to-body minimum from the other side. The
+    window was the variable, not the size.
+
+    It now takes columns 3-11 — its own full-width band across the top
+    of the section, above the frame — and the frame drops to sit beside
+    the turn, body and coda only.
+
+    IT STILL SHARES THE SECTION'S ONE LEFT EDGE. Column 3 in the
+    beside arrangement, column 1 in band 3, the trim in band 4 — the
+    same edge the turn, the body and the coda run on. A wider band is
+    not a second edge; it is the same edge with a different right trim,
+    which is exactly how CONTEXT.md's image-paired sections
+    differentiate (R4.1: "its lede, body and closing line differentiate
+    on the RIGHT edge instead").
+
+    IN THE STACKED ARRANGEMENT ITS WINDOW DOES NOT MOVE. Below the
+    crossover it takes 3-9, byte-for-byte the window the type block
+    takes, because there is no frame beside it to make room for. The
+    split is a beside-arrangement change; the stacked composition is
+    untouched and re-measured to prove it.
+  -->
+  <p class="win-chg-lede chg-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
+
+  <!--
+    THE TYPE COLUMN. One block, one left edge, three registers now:
+    turn, body, coda. Authored as a single grid item rather than as
+    three, because the whole point of this section is that they share
+    an edge — separate items on separate placements would be separate
+    chances for one of them to drift onto a fifth.
   -->
   <div class="win-chg-text chg-text">
-    <p class="chg-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
-
     <!--
       THE TURN. Its own block-level element, set in the BODY face at
       BODY size, with air above and below equal to twice the
@@ -301,8 +343,6 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     --chg-coda-k:      20.7752;
     --chg-coda-floor:  calc(1.5 * var(--bio-size));
     --chg-coda-window: calc(50vw - 76px);
-    --chg-lede-k:      42.3942;
-    --chg-lede-window: calc(50vw - 76px);
   }
 
   /* ---- THE HEAD --------------------------------------------------
@@ -434,91 +474,98 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      and the figure column simply runs shorter than the type — which
      is what a column plate beside a longer text column does in print.
      Which column governs is MEASURED at every width and reported; it
-     is not assumed. */
+     is not assumed.
+
+     ---- R9.5: WHICH COLUMN GOVERNS HAS NOW INVERTED, AND THE SURPLUS
+     RULE CANNOT BE APPLIED. REPORTED, NOT ARBITRATED.
+
+     With the lede lifted out of this column into its own band, the
+     frame is TALLER than the type beside it at every beside width, for
+     the first time in this section. Measured, frame minus type:
+
+         1920   +309.42px        1280    +9.72px
+         1440    +57.36px        1255    +2.19px
+
+     R6.3 says a shape floor's surplus lands ABOVE the type column —
+     bottom-align it. Built and measured, that is what it does here:
+
+         width   lede -> turn gap   in body line-heights   8-line ceiling
+         1920        370.61px             12.11              BREACH
+         1440        118.55px              3.87              ok
+         1280         70.91px              2.32              ok
+         1255         63.38px              2.07              ok
+
+     12.11 line-heights at 1920 is CONTEXT.md's own documented failure,
+     reproduced exactly — "it blew the 8-line gap ceiling at 1920 twice
+     (R6.2 at 13.39 lines, and R6.3's first arrangement)", and "the
+     failure only appears at the widest viewports, where the floor's
+     surplus is largest, so it will not show at 1440." It did not show
+     at 1440 here either. It showed at 1920 and nowhere else.
+
+     WHY THE RULE DOES NOT TRANSFER. On Athletic the type column STARTS
+     the section — kicker first — so "above the type column" is the
+     section's own top margin, which has no ceiling on it. Here the
+     lede band sits above the type column in the same columns, so
+     "above the type column" IS a gap between two type blocks, which
+     R6.3 forbids in the same breath. The surplus has no legal
+     destination above the type in this arrangement.
+
+     LEFT ON `start`, WHICH CHANGES NOTHING THAT WAS ALREADY SHIPPING.
+     The lede -> turn gap stays at a flat 61.19px (2.00 body lines) at
+     every beside width and the frame overhangs the coda instead. This
+     is not a ruling that the overhang is correct; it is the only
+     option that does not breach a documented ceiling, and the conflict
+     is in the R9.5 report for a decision. */
   .chg-text{
     align-self: start;
   }
 
   /* ---- LEDE ------------------------------------------------------
-     Tier 1 of 3, on the page's shared --lede-size — AS A CAP, not as
-     a flat value. (R9.2.)
+     THE PAGE'S SHARED --lede-size. FLAT, IN BOTH ARRANGEMENTS, WITH
+     NOTHING DERIVED. (R9.5.)
 
-     WHY IT NEEDED A CAP. Every other section takes --lede-size in a
-     window that is most of the sheet; this section takes it in HALF a
-     sheet, because the frame holds columns 9-12 beside it. Same token,
-     half the measure, and it set FIVE LINES at 1440 where About's and
-     Educational Leader's set two and three. Five lines at 54.72px is
-     not a lede — it is a paragraph at display scale — and it was the
-     single largest contributor to an 855px type column.
+     EVERY CUSTOM PROPERTY, CAP, RAG RATIO AND MEASURED CONSTANT
+     INTRODUCED FOR THIS LEDE ACROSS R9.2, R9.3 AND R9.4 IS DELETED.
+     By name: --chg-lede-k (42.3942, the measured advance-per-px),
+     --chg-lede-window (declared twice — calc(50vw - 76px) in bands 1-2
+     and calc(100vw - 80px) in band 3), the 0.8973 rag ratio and its
+     0.96 headroom folded into the 0.861 constant, the four-line cap
+     the constant expressed, the 3 x body floor beneath it, and the
+     band-2 font-size override that switched the whole derivation off
+     below the crossover. Also gone: the band-3 `width` override and
+     the band-4 `width: auto` reset, both of which existed only to keep
+     the box and the derived size in agreement.
 
-     THE DERIVATION IS THE CODA'S, one axis over. Rendered at the
-     shipped axes — opsz 72, wght 350, SOFT 35, WONK 0, tracking
-     -0.018em — the lede string measures 4239.42px at 100px, so
+     THEY WERE ALL SOLVING THE SAME WRONG PROBLEM. The lede ran long
+     because it was set in a six-column body measure, not because
+     --lede-size is too large. R9.2 capped it at three lines and hit
+     CONTEXT.md's 3x lede-to-body minimum; R9.3 scoped the cap to the
+     beside arrangement; R9.4 relaxed the cap to four lines and raised
+     the floor. Three passes, each moving the same imbalance somewhere
+     else, none of them touching the window. Widen the window and every
+     one of those constants has nothing left to do.
 
-         K = 42.3942 px of width per px of type
+     WHAT THAT BUYS, MECHANICALLY: nothing in this section now carries
+     a swept constant for the lede, so there is nothing to go stale
+     when the copy, the face, the axes or the crossover moves. The lede
+     is declared against the same token About, Educational Leader,
+     Premier Leadership and Everyday Legends declare, and it changes
+     when that token changes.
 
-     and it is size-invariant for the same reason the coda's is:
-     `opsz` is PINNED at 72 rather than swept, so the face does not
-     change shape with size, and the tracking is in `em`. Measured
-     42.3942 at 26px, 54.72px and 100px alike.
+     NO max-width, NO width, NO clamp of its own, NO line cap, NO <br>.
+     Measure is controlled by the column span and by nothing else —
+     CONTEXT.md's Layout System rule, which the derived width overrides
+     were quietly working around.
 
-     THE CAP IS SCOPED TO THE BESIDE ARRANGEMENT (R9.3). It exists
-     because the frame holds columns 9-12 and leaves the lede HALF A
-     SHEET; below the crossover there is no such column, so the cap is
-     solving a problem that does not exist there. R9.2 applied it in
-     every band and the stacked bands paid for it: at 390 the
-     derivation wanted 20.7px, the 1.5 x body floor clamped it to
-     25.5px, and the lede shipped SMALLER THAN THE TURN AND THE CODA
-     at 26px — tier 1 set below tier 2, and 1.5 x body against
-     CONTEXT.md's 3x lede-to-body minimum. The floor was not the wrong
-     number; the cap was in the wrong place. Below the crossover the
-     lede takes --lede-size outright, as every other section's does.
-
-     THREE LINES OF WINDOW IS NOT THREE WINDOWS OF ADVANCE, and the
-     difference is the rag. A line box is never filled to the last
-     pixel — it breaks at the last whole word that fits — so the naive
-     3 x window / K OVERSTATES the size that sets in three lines. Built
-     with 3W/K x 0.96 the lede rendered FOUR lines at eleven of the
-     thirteen widths: 4% is nowhere near the shortfall.
-
-     THE RAG IS MEASURED, AND IT IS A CONSTANT. Binary-searching the
-     largest size that still sets three lines, at eleven widths from
-     360 to 1920, against the naive 3W/K at the same width:
-
-         1920  0.8974      1023  0.8973       751  0.8974
-         1440  0.8975       900  0.8973       750  0.8974
-         1280  0.8975       800  0.8973       390  0.8975
-         1024  0.8975                         360  0.8977
-
-     A spread of 0.0004 over a 5.3x range of window widths. That is not
-     a coincidence to be swept per band — it is a property of THIS
-     STRING at THIS letterfit, and it holds because the rag repeats the
-     same word-boundary pattern at every scale.
-
-         fit = 3 x window / K x 0.8973 x 0.96
-             = 3 x window / K x 0.861
-
-     the measured rag ratio times the 4% headroom, folded into one
-     constant. Capped at --lede-size, floored at 1.5 x body. VERIFIED
-     BY RENDERED LINE COUNT at all thirteen widths, not inferred from
-     the arithmetic — line counts are in the R9.2 report.
-
-     NO max-width. The window is a column span, and where the lede runs
-     wider than its parent — bands 2-stacked and 3 — it takes the same
-     custom property that sizes it, so the box and the size cannot
-     disagree. */
+     text-wrap: balance is KEPT. It is what .prem-lede, .legends-lede
+     and .edu-lede all carry, it changes no line COUNT, and an engine
+     without it wraps normally. */
   .chg-lede{
     margin: 0;
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: max(
-      var(--chg-coda-floor),
-      min(
-        var(--lede-size),
-        calc(3 * var(--chg-lede-window) / var(--chg-lede-k) * 0.861)
-      )
-    );
+    font-size: var(--lede-size);
     line-height: var(--lede-lh);
     letter-spacing: -0.018em;
     color: var(--obsidian);
@@ -882,23 +929,13 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
       width: var(--chg-coda-window);
     }
 
-    /* THE LEDE'S THREE-LINE CAP STOPS HERE, AND SO DOES EVERY BAND
-       BELOW — this is the widest of the stacked media blocks, so the
-       declaration cascades into band 3 and band 4 unaided.
-
-       --lede-size OUTRIGHT: the page's shared token, exactly what
-       About's, Educational Leader's, Premier's, Everyday Legends' and
-       Athletic's ledes take. No cap, no derivation, no floor to
-       conflict with. Five lines on a phone is what an editorial lede
-       does at 52px on a 340px measure.
-
-       --chg-lede-window is deliberately NOT declared in this block any
-       more: nothing consumes it here. It survives in band 3 for one
-       job only — setting the lede's BOX so it runs to the sheet's
-       right trim — and that is a width, not a size input. */
-    .chg-lede{
-      font-size: var(--lede-size);
-    }
+    /* NO .chg-lede RULE HERE ANY MORE (R9.5). This block used to
+       switch the lede's derivation off below the crossover by
+       redeclaring font-size as --lede-size. The derivation is gone, so
+       the override has nothing to override: the lede takes --lede-size
+       in band 1 and inherits it down. An override that agrees with the
+       default by coincidence is exactly the shape CONTEXT.md's R-shell
+       addendum deletes rather than leaves standing. */
   }
 
   /* ---- BAND 3 · 751-1023 -----------------------------------------
@@ -934,18 +971,17 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      line, PremierLeadership's value for this pair, the same rule band
      4 already carried. */
   @media (max-width: 1023px){
-    /* --chg-lede-window is a BOX WIDTH here and nothing else: the
-       lede's size came off the derivation at the crossover. It runs
-       the sheet's content box, trim to trim, alongside the coda. */
+    /* THE LEDE TAKES ITS WIDTH FROM ITS SPAN (R9.5). It used to carry
+       a --chg-lede-window box override so it could run past the type's
+       span to the sheet's right trim; the primitive .win-chg-lede now
+       carries that placement itself, so the property is deleted rather
+       than left declared for one consumer. The CODA still takes a box
+       width here — that is settled R9.2 work and is untouched. */
     .chg{
-      --chg-lede-window: calc(100vw - 80px);
       --chg-coda-window: calc(100vw - 80px);
     }
     .chg-head{
       margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
-    }
-    .chg-lede{
-      width: var(--chg-lede-window);
     }
     .chg-coda{
       width: var(--chg-coda-window);
@@ -957,14 +993,14 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      Single column, full measure. The head keeps the gap band 3
      introduced — same pair, same relationship, one band further down.
 
-     The lede and the coda no longer need a box wider than their
-     parent, because their parent is the measure. */
+     The coda no longer needs a box wider than its parent, because its
+     parent is the measure. The lede never carries a box width at any
+     band as of R9.5 — its span is its measure everywhere. */
   @media (max-width: 750px){
     .chg-head{
       margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
     }
 
-    .chg-lede,
     .chg-coda{
       width: auto;
       margin-left: 0;
