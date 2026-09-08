@@ -1,0 +1,891 @@
+---
+/**
+ * CONTACT — slice R10. The tenth and last section of the rebuild.
+ *
+ * CONTEXT.md Section Composition table, row "Contact":
+ *
+ *   Entrance      A — HAIRLINE HEAD.
+ *   Column window text 1-5, form 7-11. Column 6 deliberately empty.
+ *   Image         NONE. Five sections carry no photograph and this is
+ *                 the last of them.
+ *   Rhythm        standard. 96px, flat, from the per-section padding
+ *                 list. NOT a shared token — see the .contact rule.
+ *   Margin holds  NOTHING. The table's cell is empty for this row and
+ *                 that is the arrangement, not an omission.
+ *   Length        the lede rule applies — no exception.
+ *
+ * THE FORM IS PORTED, NOT REBUILT. It shipped in Phase F and was
+ * verified before the composition pass, so composition changes land
+ * UNDERNEATH it. Everything inside <form>, the whole submit script,
+ * the four states, the honeypot, the Turnstile mount and every field
+ * rule below is Phase F's, carried across.
+ *
+ * WHAT THE PORT HAD TO CHANGE, AND WHY — none of it is a verified
+ * Phase F behaviour, and each is listed so the next pass can audit it
+ * against the Phase F entry in CONTEXT.md rather than guess:
+ *
+ *   1. EVERY PLACEMENT CLASS IT USED NO LONGER EXISTS. .spread,
+ *      .col-rule, .col-body, .col-indent, .col-margin, .row-1..3,
+ *      .section-head, .section-numeral, .margin-block, .margin-label
+ *      were all deleted by R1 when the old grid system came out. The
+ *      component's own comment says a hand-set `grid-column: 2 / 11`
+ *      on this element was a real bug; the fix is the same one it
+ *      names — collapse-aware primitives, .win-contact-text and
+ *      .win-contact-form, declared in global.css with all four bands
+ *      written out before the implementation. NOTHING IN THIS FILE
+ *      SETS grid-column OR grid-row.
+ *
+ *   2. --hair-gold NO LONGER EXISTS. Phase F drew three link
+ *      underlines with it. On the rebuilt page the gold budget's
+ *      hairline bucket stands at 0 of 8 — R8 and R9 each spent none
+ *      deliberately — and CONTEXT.md routes every new rule to Smoked
+ *      Slate. R10 spends none either. The underlines take
+ *      .edu-link's Slate treatment, which is the page's established
+ *      marginal-link device rather than a new one.
+ *
+ *   3. THE FOCUS RING WAS GOLD AND IS NOW OBSIDIAN. This is a
+ *      correction, not a preference: CONTEXT.md measures Antique Gold
+ *      at 2.4:1 on Porcelain, which fails WCAG 1.4.11's 3:1 floor for
+ *      a non-text indicator. Obsidian on Porcelain is 12.9:1, and it
+ *      is already what .btn-solid and .edu-link focus in, so the form
+ *      now focuses the same way as the rest of the page.
+ *
+ *   4. THE SUBMIT BUTTON TAKES .btn-solid. Phase F carried a local
+ *      three-layer tinted box-shadow; the rebuilt page has ZERO
+ *      box-shadow anywhere and three buttons, all .btn-solid. The
+ *      verified property — Obsidian, solid fill, not ghost, not
+ *      outline, not gold — is what .btn-solid already is, so it holds
+ *      unchanged while the button stops being the one shadowed object
+ *      on the page.
+ *
+ *   5. THE SECTION NUMERAL "09" IS GONE. No shipped section on the
+ *      rebuilt page carries one; CONTEXT.md removed them precisely to
+ *      stop a lone numeral being read against the Index's own 01-05.
+ *
+ *   6. THE LIVE-MARGIN ASIDE IS GONE AND ITS CONTENT MOVED INTO THE
+ *      TEXT COLUMN. The Composition table gives this row NO margin
+ *      content. The direct address is not dropped — it is COPY.md's
+ *      "Direct email" line and it is the fallback every error state
+ *      points at — it simply sits under the lede at columns 1-5 now.
+ *
+ *   7. THE "Premier Leadership · Everyday Legends Foundation" NOTE
+ *      UNDER THE ADDRESS IS DELETED. It is Claude-written copy, it is
+ *      not in COPY.md, and it asserts as settled the exact question
+ *      CONTEXT.md's launch-clock item 6 records as OPEN: whether
+ *      Everyday Legends inquiries should route to this inbox at all,
+ *      it being a separate legal entity. A line that answers an open
+ *      legal-routing question does not ship unsigned.
+ *
+ *   8. THE BUTTON READS "Send Inquiry". Phase F shipped "Send
+ *      inquiry"; COPY.md's Contact block gives the capital I.
+ *
+ * COPY IS SET VERBATIM FROM COPY.md Part 1 -> Contact. Opening
+ * statement, four field labels, button, success state, direct email.
+ * Nothing reworded, nothing added.
+ *
+ * THE SIX <select> OPTIONS ARE UNCONFIRMED AND SHIP AS-IS. CONTEXT.md
+ * launch-clock item 6 and COPY.md both flag them as pending client
+ * sign-off. They are not rewritten, not reordered, and no seventh is
+ * added.
+ *
+ * THE <h2> IS THE KICKER AND IT IS VISIBLE. Its text is "Contact",
+ * verified byte-for-byte against src/data/sections.ts —
+ * { id: 'sec-contact', n: '08', label: 'Contact' } — with
+ * Buffer.compare, in source and in the rendered DOM, not assumed.
+ * The id is 'sec-contact' for the same reason: the folio (R12) tracks
+ * this section by that string.
+ *
+ * THE COVER'S CTA LANDS HERE FROM THIS SLICE ON. Cover.astro's button
+ * pointed at "#contact", which has never existed on the rebuilt page
+ * — the section id is 'sec-contact' and sections.ts is the source of
+ * truth for it. R10 is the slice that creates the target, so R10
+ * carries the one-attribute fix, exactly as R7 carried the Cover's id
+ * and <h2> and R8 carried the sections.ts change. Nothing renders
+ * differently; a dead anchor starts resolving.
+ *
+ * NO PHOTOGRAPH, so no treatment layer and no blend to protect. No
+ * height constraint — R1.4, the Cover is the only section with one.
+ * NO MOTION, no observer, no second scroll listener. The Turnstile
+ * iframe is third-party and is excluded from the screenshot loop.
+ *
+ * GOLD: ZERO. 3 of 3 saturated type accents, all elsewhere on the
+ * page (Cover tagline, About drop cap, pull quote) — untouched.
+ * 0 of 8 hairline-gold rule contexts; this slice adds none and the
+ * ceiling is still whole.
+ *
+ * COLLAPSE, IN FOUR BANDS, STATED BEFORE IMPLEMENTATION. The
+ * primitives carrying it live in global.css beside every other
+ * window; nothing in this file hand-sets a span.
+ *
+ *   band 1  >=1280     text 1-5 · form 7-11, beside · col 6 empty
+ *   band 2  1024-1279  IDENTICAL. No live-margin content, so nothing
+ *                      moves at 1280 — the only other section on the
+ *                      page with no band-2 block is the Index, for
+ *                      the same reason.
+ *   band 3  751-1023   STACKED, full measure, text above form. Four
+ *                      of eight columns is ~250px at 751 and the
+ *                      Turnstile widget is a fixed 300px that does
+ *                      not reflow, so beside is impossible here, not
+ *                      merely tight. The form's 52ch cap holds the
+ *                      measure; it is Phase F's and is not released.
+ *   band 4  <=750      one column, same order. Below 360 the
+ *                      Turnstile slot scales 0.86 from its left edge
+ *                      with a compensated height — Phase F's rule,
+ *                      byte-identical.
+ *
+ * PROVIDER AND SECRETS — Phase F's reasoning, unchanged. Formspree,
+ * with native Turnstile. The site stays fully static: no adapter, no
+ * output:'server', no prerender:false. There is no server in this
+ * project to verify a Turnstile token, so Formspree verifies it with
+ * the SECRET key held in its own dashboard and the secret never
+ * enters this repo. The two values read below are public by design —
+ * a Turnstile sitekey is public by specification and the Formspree
+ * endpoint is a public POST target, which is what the token and the
+ * honeypot exist to protect. Env vars only; .env is gitignored and
+ * .env.example is committed.
+ */
+const endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? '';
+// Falls back to Cloudflare's official always-passes TEST sitekey so the form
+// is exercisable on localhost with no .env present. Never pair this with a
+// live secret in the Formspree dashboard.
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x00000000000000000000AA';
+
+// UNCONFIRMED — pending client sign-off. Ships as-is: not rewritten, not
+// reordered, no seventh added. See CONTEXT.md launch clock, item 6.
+const inquiries = [
+  'Speaking or keynote',
+  'Consulting or professional development',
+  'Everyday Legends Foundation',
+  'Athletic management or NIL',
+  'Press or media',
+  'Something else',
+];
+
+// R11 builds this page. It 404s today and the link ships pointing at it
+// regardless — CalOPPA needs the disclosure path named, and a link to "#"
+// reads as a broken site. Phase G, and a launch blocker in CONTEXT.md.
+const privacyPath = '/privacy';
+const inbox = 'premierleadersllc' + '@' + 'gmail.com';
+---
+
+<section class="sheet contact" id="sec-contact" aria-labelledby="contact-heading">
+  <!--
+    THE TEXT COLUMN — columns 1-5. One grid item carrying three
+    registers on one left edge: the hairline head, the lede, and the
+    direct address. Authored as a single item rather than three
+    because sharing that edge IS the column's composition.
+  -->
+  <div class="win-contact-text contact-text">
+    <!-- ENTRANCE A. The hairline caps the head and the kicker hangs
+         under it. `border: 0` + explicit height because Tailwind's
+         preflight styles <hr> as a zero-height element with a top
+         border. -->
+    <hr class="contact-head-rule" />
+
+    <h2 class="contact-kicker" id="contact-heading">Contact</h2>
+
+    <!-- THE LEDE RULE, NO EXCEPTION. One sentence at display scale,
+         same face, same four axes, same clamp as every other lede on
+         the page — --lede-size flat, exactly as R9.5 left Charging's.
+         Set verbatim from COPY.md. -->
+    <p class="contact-lede">Speaking, consulting, partnership, and press inquiries.</p>
+
+    <!-- The direct address. COPY.md's "Direct email" line, and the
+         fallback every error state below points at. It sits here, in
+         the text column, because this row of the Composition table
+         holds NO margin content. -->
+    <div class="contact-direct">
+      <p class="contact-direct-label">Direct email</p>
+      <a class="contact-direct-link" href={`mailto:${inbox}`}>{inbox}</a>
+    </div>
+  </div>
+
+  <!--
+    THE FORM COLUMN — columns 7-11. Column 6 between the two is
+    deliberately empty and is not closed.
+  -->
+  <div class="win-contact-form contact-col">
+    <form
+      class="contact-form"
+      id="contact-form"
+      method="POST"
+      action={endpoint}
+      novalidate={false}
+    >
+      <!-- Subject line carries the selected inquiry type. Kept in sync by the
+           script below so the inbox list view is triageable. -->
+      <input type="hidden" name="_subject" id="contact-subject" value="Website inquiry" />
+
+      <!-- Honeypot, second layer behind Turnstile. Off-screen rather than
+           display:none — a hidden field is trivially detected, an off-screen
+           one is not. Never focusable, never announced. -->
+      <div class="honeypot" aria-hidden="true">
+        <label for="contact-company">Company</label>
+        <input type="text" id="contact-company" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-name">Name</label>
+        <input class="field-input" type="text" id="contact-name" name="name"
+               autocomplete="name" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-email">Email</label>
+        <input class="field-input" type="email" id="contact-email" name="email"
+               autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-type">Inquiry type</label>
+        <!-- Native <select>. The popup is the OS's own; only the resting box
+             is restyled to the page's underline, never replaced with a
+             scripted dropdown. -->
+        <select class="field-input field-select" id="contact-type" name="inquiry" required>
+          <option value="" disabled selected>Choose one</option>
+          {inquiries.map((label) => <option value={label}>{label}</option>)}
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact-message">Message</label>
+        <textarea class="field-input field-textarea" id="contact-message" name="message"
+                  rows="5" required></textarea>
+      </div>
+
+      <!-- Turnstile mounts here. Explicit render so the widget id is held and
+           can be reset after a failed submission; an unreset widget hands the
+           same spent token to the retry and fails again. -->
+      <div class="turnstile-slot">
+        <div id="turnstile-widget"></div>
+      </div>
+
+      <button class="btn-solid contact-submit" type="submit" id="contact-submit">
+        <span data-label-idle>Send Inquiry</span>
+        <span data-label-busy hidden>Sending&hellip;</span>
+      </button>
+
+    </form>
+
+    <!-- Four states share one live region. Never an opacity:0 reveal — the
+         region is empty and `hidden` at rest, and content is written into it.
+         OUTSIDE the form on purpose: the success state hides the form, and a
+         status region nested inside it would be hidden along with it. -->
+    <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
+
+    <!-- Also outside the form, and AFTER the status. Inside the form it was
+         the last child, which put the error message visually below the
+         privacy link instead of directly under the button that produced it.
+         Out here it stays visible in all four states, success included. -->
+    <p class="contact-privacy">
+      <a href={privacyPath}>Privacy policy</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* ---- THE SECTION ------------------------------------------------
+     96px, flat, both edges. Straight from CONTEXT.md's per-section
+     padding list, which gives this row "Contact 96". SECTIONS MUST
+     NOT SHARE A PADDING TOKEN, so the value is declared here and
+     there is deliberately no --vr-* in this rule — Phase F used
+     var(--vr-standard), which is a clamp running to 190px and is not
+     this section's number.
+
+     SYMMETRIC. About's asymmetric top carries an svh term for one
+     reason only — keeping its lede below an 80svh Cover's fold — and
+     this section follows a content-height neighbour, so copying it
+     would be cargo-culting. Charging It above closes on 40px, which
+     with this 96 puts 136px between the two. */
+  .contact{
+    padding-block: 96px;
+  }
+
+  /* ---- THE TEXT COLUMN — entrance A ------------------------------
+     Three registers, one left edge. Placement comes from
+     .win-contact-text; nothing positional is set here.
+
+     A FLEX COLUMN, so the address can be pushed to the section's
+     foot with an auto margin. The grid item stretches to the row
+     height that the form sets; without this the column's lower half
+     stood empty for 411-465px across bands 1 and 2 — measured — and
+     the address hung off the lede into open ground with no vertical
+     edge under it. Nothing here counts a line or sweeps a pixel: the
+     auto margin absorbs whatever the two columns' height difference
+     turns out to be, at every width, including zero when the section
+     is stacked and the item is content-height. */
+  .contact-text{
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Smoked Slate at 0.38 — the same hairline treatment as the Cover's
+     foot rule and both of Educational Leader's, so the page has one
+     rule, not several. NOT GOLD: the 8 hairline-gold contexts stand
+     at 0 of 8 and R10 spends none. */
+  .contact-head-rule{
+    width: 100%;
+    height: 1px;
+    margin: 0 0 var(--s2);
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* The kicker is the <h2>; the browser's heading margins and weight
+     are reset here rather than inherited. Treatment matches the
+     global .kicker primitive — 10.5px Montserrat, 0.26em tracking,
+     uppercase, Smoked Slate — with the optical half-tracking pullback
+     so the C's stem lands on the column line rather than on the
+     tracking space after it. */
+  .contact-kicker{
+    margin: 0;
+    margin-left: -0.13em;           /* half of 0.26em tracking */
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    line-height: var(--baseline);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     The page's shared lede tier, taken FLAT. Same face, same four
+     axes via --fx-lede, same weight, same clamp, same line-height and
+     letterfit as About's, Educational Leader's, Premier's, Everyday
+     Legends' and — since R9.5 deleted every derived constant that had
+     been controlling it — Charging It's. There is no local sizing
+     term in this section and none is to be added.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else.
+
+     KICKER -> LEDE is one baseline unit, because the kicker sits on
+     the baseline lattice and the space above the lede should read as
+     the head introducing it. LEDE -> DIRECT is 0.75 of the lede's OWN
+     line-height, via the `lh` unit, so it re-resolves from the type
+     at every width with no breakpoint — the same derivation
+     .edu-lede uses for lede -> body. The lower gap is the larger of
+     the two, which groups the rule, the kicker and the lede as the
+     head and leaves the address standing apart from it. */
+  .contact-lede{
+    margin: var(--baseline) 0 0.75lh;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    /* balance, matching every other lede on the page. Progressive
+       enhancement: an engine without it wraps normally. */
+    text-wrap: balance;
+  }
+
+  /* ---- THE DIRECT ADDRESS ---------------------------------------
+     Not marginalia — this row of the Composition table holds no
+     margin content — but it takes the page's marginal register:
+     a tracked uppercase label over a lowercase link, both Slate,
+     both on the baseline lattice. */
+  /* Pushed to the foot of the column. See .contact-text. The lede's
+     own 0.75lh bottom margin is the FLOOR of this gap — an auto
+     margin adds to it — so when the section stacks and there is no
+     surplus to absorb, the address sits exactly where the derivation
+     put it. */
+  .contact-direct{ margin-top: auto; }
+
+  .contact-direct-label{
+    margin: 0;
+    margin-left: -0.11em;           /* half of 0.22em tracking */
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: var(--baseline);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+    /* 0.82, not a lighter knock-down. Measured in R1: Slate on
+       Porcelain is 7.54:1 at full strength; at 0.78 the composite
+       falls to 4.45:1, under the floor. 0.82 composites to 4.90:1. */
+    opacity: 0.82;
+  }
+
+  /* .edu-link's treatment, reused rather than reinvented: lowercase
+     so the address reads as an address, an underline OFFSET rather
+     than a border so the descender in "g" is not struck through, and
+     Slate at 0.42 — no gold. Transform and opacity only. */
+  .contact-direct-link{
+    display: inline-block;
+    margin-top: 2px;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+    transition:
+      transform 260ms var(--ease),
+      opacity   260ms var(--ease);
+  }
+
+  .contact-direct-link:hover{ transform: translateY(-1px); opacity: 0.7; }
+  .contact-direct-link:active{ transform: translateY(0); opacity: 1; }
+  .contact-direct-link:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* ================================================================
+     THE FORM — PHASE F, PORTED. Everything from here down is the
+     shipped component's own CSS. Only the three items listed in the
+     header comment differ: the deleted --hair-gold, the focus ring's
+     colour, and the submit button taking .btn-solid.
+     ================================================================ */
+
+  /* position:relative is what the off-screen honeypot positions
+     against. Never a transform, opacity, filter or isolation here —
+     those would trap a descendant's blend, and this column is a
+     sibling of the page's grain sheet. */
+  .contact-col{ position: relative; }
+
+  .contact-form{
+    /* Held short of the full span. A form that fills its column reads
+       as an app screen; held short it reads as a measure. 52ch is
+       547px; the Turnstile widget needs 300px, so the cap never binds
+       against the widget. It IS the thing holding the measure in
+       band 3, where the block runs full width. NOT released below
+       1024 — Phase F released it there once and produced an 881px
+       form, labels and an underline running 106 characters across. */
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* --- Fields ---------------------------------------------------------
+     Underline only. No border box, no radius, no fill: the page is built
+     out of rules and measures, and a boxed input is SaaS convention. */
+  .field{ margin-bottom: var(--s4); }
+
+  .field-label{
+    display: block;          /* always visible, above the field */
+    margin-bottom: var(--s1);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    /* On the baseline lattice, like every other small line on the
+       page. At 1.8 its box was 18.9px, which is not a multiple of 28. */
+    line-height: var(--baseline);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .field-input{
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0 12px;
+    border: 0;
+    border-bottom: 1px solid var(--hair-strong);
+    border-radius: 0;                 /* iOS adds one to text inputs */
+    background-color: transparent;
+    background-image: none;
+    font-family: var(--sans);
+    font-weight: 300;
+    /* 16px MINIMUM. Below this iOS Safari zooms the viewport on focus and the
+       whole layout jumps. Applies to the select and textarea too. */
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: 0.004em;
+    color: var(--obsidian);
+    transition: border-color 320ms var(--ease);
+  }
+
+  .field-input::placeholder{ color: transparent; }   /* never a label */
+
+  .field-input:hover{ border-bottom-color: var(--slate); }
+
+  .field-input:focus{
+    outline: 0;
+    border-bottom-color: var(--obsidian);
+  }
+
+  /* OBSIDIAN, NOT GOLD. Gold measures 2.4:1 on Porcelain (CONTEXT.md,
+     Feature Quote note) and a focus indicator needs 3:1 under WCAG
+     1.4.11; Obsidian is 12.9:1. It is also what .btn-solid and
+     .edu-link already focus in. */
+  .field-input:focus-visible{
+    outline: 2px solid var(--obsidian);
+    outline-offset: 5px;
+  }
+
+  .field-textarea{
+    resize: vertical;
+    min-height: 7.5em;
+  }
+
+  /* Native select, restyled to the underline. appearance:none removes the OS
+     box AND its arrow, so the arrow is redrawn as a background chevron. The
+     popup itself stays the platform's own. */
+  .field-select{
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%231A1613' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    cursor: pointer;
+  }
+
+  .field-select:invalid{ color: var(--slate); }   /* the "Choose one" state */
+
+  /* Off-screen, not display:none. Never focusable, never announced. */
+  .honeypot{
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* --- Turnstile -------------------------------------------------------
+     The widget is a fixed ~300px x 65px iframe and does not reflow. At 360px
+     the measure is 312px, so it fits; below that it would overflow the trim,
+     so the slot is scaled from its LEFT edge and the container height is
+     compensated to match. Scaling rather than swapping to `compact` at render
+     time means a resize needs no re-render. */
+  .turnstile-slot{
+    margin-bottom: var(--s4);
+    min-height: 65px;
+  }
+
+  /* --- Submit ----------------------------------------------------------
+     .btn-solid carries the fill, the type and the states: Obsidian
+     ground, Porcelain type at 12.9:1, square corners, transform and
+     opacity only, never ghost or outline and never gold. It is the
+     page's one button treatment and the other three buttons on the
+     page take it. What is left here is the two things a <button>
+     needs that an <a> does not. */
+  .contact-submit{
+    border: 0;
+    cursor: pointer;
+  }
+
+  .contact-submit[disabled]{
+    cursor: default;
+    opacity: 0.62;
+    transform: none;
+  }
+
+  .contact-privacy{
+    margin: var(--s4) 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .contact-privacy a{
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+    transition: color 320ms var(--ease);
+  }
+
+  .contact-privacy a:hover{ color: var(--obsidian); text-decoration-color: var(--obsidian); }
+  .contact-privacy a:focus-visible{ outline: 1px solid var(--obsidian); outline-offset: 4px; }
+
+  /* --- The four states -------------------------------------------------
+     idle is the form itself; the other three render here.
+
+     EVERY selector below that targets status CONTENT is :global(), and must
+     stay that way. The .status-head / .status-body elements are written by
+     the script with innerHTML, so they never receive Astro's
+     data-astro-cid-* attribute and a scoped selector silently does not match
+     them. Observed exactly that: the success line rendered in body sans
+     instead of Fraunces. .form-status is in the markup, so the element
+     itself stays scoped; only its injected children are global. */
+  /* Sits directly under the button that produced it. No top margin at rest —
+     the element is `hidden` then and contributes no box at all. */
+  .form-status{ max-width: 52ch; margin-top: var(--s4); }
+
+  .form-status[data-state="success"] :global(.status-head){
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-coda);
+    font-weight: 360;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.24;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+  }
+
+  .form-status :global(.status-body){
+    margin: var(--s3) 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--slate);
+  }
+
+  .form-status[data-state="error"]{
+    border-left: 2px solid var(--hair-strong);
+    padding-left: var(--s3);
+  }
+
+  .form-status[data-state="error"] :global(.status-head){
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1.8;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+  }
+
+  .form-status :global(a){
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+  }
+  .form-status :global(a:hover){ text-decoration-color: var(--obsidian); }
+  .form-status :global(a:focus-visible){ outline: 1px solid var(--obsidian); outline-offset: 4px; }
+
+  /* ---- BAND 3 · 751-1023 -----------------------------------------
+     The section stacks; the primitives in global.css do that. What is
+     left here is the one thing a span cannot express.
+
+     THE HEAD RULE DOES NOT BECOME A FULL-WIDTH DIVIDER. The text
+     block runs trim to trim in this band, and a 943px hairline across
+     the top of the section is a horizontal line breaking the page in
+     half, not an editorial mark. It keeps the width of THREE OF THE
+     BAND'S EIGHT COLUMNS — the exact window Educational Leader's own
+     head rule spans here — expressed against the band's real track
+     arithmetic rather than as a swept percentage, so it re-resolves
+     at every width in the band with nothing to go stale.
+
+     THE FORM GAINS ITS AIR FROM THE TEXT BLOCK, not from a row gap:
+     .sheet declares column-gap only. --s6 is the section's own
+     padding value, so the space between the two columns when they
+     stack is the same measure as the space above them. */
+  @media (max-width: 1023px){
+    .contact-head-rule{
+      width: calc((100% - 7 * var(--grid-gap)) / 8 * 3 + 2 * var(--grid-gap));
+    }
+    .contact-col{ margin-top: var(--s6); }
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     One stacked column. The rule takes a fixed short length, matching
+     .edu-head-rule's own band-4 treatment byte-for-byte. */
+  @media (max-width: 750px){
+    .contact-head-rule{ width: 96px; }
+    .contact-col{ margin-top: var(--s5); }
+  }
+
+  /* Below the 360px floor the Turnstile iframe is wider than the measure.
+     transform-origin keeps it on the LEFT trim, and `top` rather than the
+     default `center` is what makes the compensating height correct — a
+     centre origin would leave the widget hanging half a scale-step above
+     its slot. The height is compensated so the scale leaves no gap. */
+  @media (max-width: 359px){
+    .turnstile-slot{
+      transform: scale(0.86);
+      transform-origin: left top;
+      min-height: 56px;      /* 65 * 0.86 */
+    }
+  }
+</style>
+
+<!-- define:vars implies is:inline, matching FolioMarginalia: the config is
+     serialised into the tag rather than bundled behind a module graph.
+
+     PHASE F'S SCRIPT, BYTE-FOR-BYTE. Not one line of it is edited by the
+     port. Client-side fetch POST, response rendered inline, zero main-frame
+     navigations; honeypot short-circuits before any request is made; four
+     states, with the three error kinds distinguished and every one of them
+     surfacing the mailto: fallback; Turnstile rendered explicitly so the
+     widget id is retained for reset() after a failed submission. -->
+<script is:inline define:vars={{ endpoint, sitekey, inbox }}>
+(function () {
+  function init() {
+    var form    = document.getElementById('contact-form');
+    var status  = document.getElementById('form-status');
+    var submit  = document.getElementById('contact-submit');
+    var select  = document.getElementById('contact-type');
+    var subject = document.getElementById('contact-subject');
+    var pot     = document.getElementById('contact-company');
+    var idle    = submit.querySelector('[data-label-idle]');
+    var busy    = submit.querySelector('[data-label-busy]');
+    if (!form) return;
+
+    var widgetId = null;
+    var mailto = '<a href="mailto:' + inbox + '">' + inbox + '</a>';
+
+    // ---- Subject line carries the inquiry type -------------------------
+    function syncSubject() {
+      var picked = select.value;
+      subject.value = picked ? 'Website inquiry — ' + picked : 'Website inquiry';
+    }
+    select.addEventListener('change', syncSubject);
+    syncSubject();
+
+    // ---- The four states ----------------------------------------------
+    // idle | submitting | success | error. One live region, polite, so a
+    // screen reader is told the outcome without being interrupted mid-field.
+    function setState(state, head, body) {
+      if (state === 'idle') {
+        status.hidden = true;
+        status.removeAttribute('data-state');
+        status.innerHTML = '';
+        form.hidden = false;
+        submit.disabled = false;
+        idle.hidden = false; busy.hidden = true;
+        return;
+      }
+
+      if (state === 'submitting') {
+        submit.disabled = true;
+        idle.hidden = true; busy.hidden = false;
+        status.hidden = true;
+        status.innerHTML = '';
+        return;
+      }
+
+      submit.disabled = false;
+      idle.hidden = false; busy.hidden = true;
+      status.hidden = false;
+      status.setAttribute('data-state', state);
+      status.innerHTML =
+        '<p class="status-head">' + head + '</p>' +
+        '<p class="status-body">' + body + '</p>';
+
+      // The form is replaced on success; on error it stays put so the typed
+      // message is not thrown away.
+      form.hidden = (state === 'success');
+    }
+
+    function fail(head, body) {
+      setState('error', head, body);
+      // A spent token fails the retry too. Reset so the next submission
+      // carries a fresh one.
+      if (window.turnstile && widgetId !== null) {
+        try { window.turnstile.reset(widgetId); } catch (e) {}
+      }
+    }
+
+    // ---- Submit ---------------------------------------------------------
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Honeypot. Report success to the bot and send nothing.
+      if (pot && pot.value) {
+        setState('success', 'Received. She&rsquo;ll be in touch.', '');
+        return;
+      }
+
+      if (!endpoint) {
+        fail(
+          'Not configured',
+          'The form endpoint is missing. Please email ' + mailto + ' directly.'
+        );
+        return;
+      }
+
+      var token = form.querySelector('[name="cf-turnstile-response"]');
+      if (!token || !token.value) {
+        fail(
+          'Verification needed',
+          'The verification check has not completed. Wait a moment and try again, ' +
+          'or email ' + mailto + ' directly.'
+        );
+        return;
+      }
+
+      setState('submitting');
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form)
+      })
+        .then(function (res) {
+          if (res.ok) {
+            setState(
+              'success',
+              'Received. She&rsquo;ll be in touch.',
+              'A copy of your inquiry has been sent. If it is urgent, ' + mailto + ' reaches her directly.'
+            );
+            form.reset();
+            syncSubject();
+            return;
+          }
+          // Distinguish a rejected token from an ordinary server error: the
+          // caller can retry a token failure, but not a 5xx.
+          return res.json().catch(function () { return null; }).then(function (data) {
+            var msg = data && data.errors && data.errors.length
+              ? data.errors.map(function (x) { return x.message; }).join(' ')
+              : '';
+            if (/captcha|turnstile|challenge/i.test(msg) || res.status === 403) {
+              fail(
+                'Verification failed',
+                'The security check did not pass. Please complete it again and resend, ' +
+                'or email ' + mailto + ' directly.'
+              );
+            } else {
+              fail(
+                'Not sent',
+                (msg ? msg + ' ' : 'The message could not be sent. ') +
+                'Please try again, or email ' + mailto + ' directly.'
+              );
+            }
+          });
+        })
+        .catch(function () {
+          // Transport-level failure — offline, DNS, CORS, blocked request.
+          fail(
+            'Connection problem',
+            'The message could not be sent because the connection failed. ' +
+            'Check your network and try again, or email ' + mailto + ' directly.'
+          );
+        });
+    });
+
+    // ---- Turnstile ------------------------------------------------------
+    // Explicit render so the widget id is retained for reset(). The callback
+    // is installed before the API script is requested.
+    window.onTurnstileLoad = function () {
+      widgetId = window.turnstile.render('#turnstile-widget', {
+        sitekey: sitekey,
+        theme: 'light',
+        action: 'contact'
+      });
+    };
+
+    var s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

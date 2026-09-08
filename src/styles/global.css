@@ -2417,3 +2417,219 @@ a{ color: inherit; }
   outline: 1px solid var(--obsidian);
   outline-offset: 5px;
 }
+
+/* ============================================================
+   R10 · CONTACT + THE PAGE FOOTER — the tenth and last section,
+   and the page's colophon beneath it.
+
+   ADDITIVE ONLY, on the R9 pattern. Nothing above this comment is
+   edited: no existing primitive changes, and the band-3 / band-4
+   collapse rules below are written as their OWN media blocks rather
+   than appended to the shared selector lists further up the file, so
+   this slice cannot move a shipped section by one pixel. Reverting
+   R10 is deleting one contiguous region.
+
+   CONTEXT.md Section Composition table, row "Contact":
+   Entrance A — hairline head · text 1-5, form 7-11 · no image ·
+   standard rhythm · no margin content · the lede rule applies.
+
+   COLUMN 6 IS DELIBERATELY EMPTY and is not closed. It is the channel
+   between the two halves of the section and it is what makes the
+   arrangement read as two facing columns rather than as a wide block
+   with a form in it. COLUMN 12 IS AIR — one column at the right trim,
+   the same property the Index's window (1-11) and the Charging lede
+   band (3-11) carry, so the section never runs trim to trim.
+
+   TWO LEFT EDGES, AND THAT IS NOT THE SANCTIONED-EXCEPTION CLAUSE.
+   The page's staircase is kicker outdented / lede on the body edge /
+   body indented one column. Contact's text window OPENS ON COLUMN 1,
+   the sheet's left trim, so there is nothing to the left of it to
+   outdent into — the outdent is a property of Educational Leader's
+   4-11 lede window, not of entrance A itself, which is the hairline
+   rule. And Contact has no body-copy tier at all: its registers are
+   kicker, lede and form. The form IS the third register and it sits
+   on the second edge at column 7.
+
+   CONTEXT.md's standing rule prohibits landing on a FOURTH edge, and
+   nothing here does. Two edges, both named by the Composition table,
+   neither invented.
+
+   ---- .win-contact-text — head, lede, direct address ------------
+   ONE GRID ITEM, NOT THREE. The three registers share a left edge and
+   that is the whole composition of the column; authoring them as
+   three placements would be three chances for one to drift onto an
+   edge of its own. Same reasoning as .win-chg-text.
+
+     >= 1280    columns 1-5. NO align-self — the item STRETCHES to the
+                row height, which the form sets. That is what lets the
+                direct address sit on the section's foot; see the
+                foot-close note below. The head still sits on the
+                section's top content edge because it is the first
+                thing in the column, not because the item is
+                start-aligned.
+
+                THE SECTION CLOSES ON ONE HORIZONTAL, AND IT IS A
+                FLEX auto MARGIN, NOT A BASELINE GROUP. Built with the
+                text column start-aligned, the address sat one derived
+                gap under the lede and left 411.77px of empty ground
+                beneath it at 1920, 452.83px at 1440 and 464.84px at
+                1280 — the bottom half of the left column empty for
+                the section's remaining height. That is R2's About
+                finding exactly: not a breath, a hollow half, with the
+                last element hanging in open ground rather than off a
+                vertical edge.
+
+                The address now takes `margin-top: auto` inside a flex
+                column, so it is pushed to the foot of the stretched
+                item and the section closes on a horizontal carrying
+                the address at column 1 and the privacy link at column
+                7. R6.3 routes shared foot edges to the layout engine
+                rather than to modelled arithmetic; this is the same
+                move without `align-self: last baseline`, which
+                CONTEXT.md still flags as unverified in Safari and
+                which a two-column foot does not need. The derived
+                lede -> address gap survives as a MINIMUM: an auto
+                margin adds to the lede's 0.75lh, it does not replace
+                it, so in bands 3 and 4 — where the item is content-
+                height and auto resolves to zero — the gap is exactly
+                what it was.
+     1024-1279  columns 1-5, UNCHANGED. Contact carries NO live-margin
+                content, so — exactly like the Index, and unlike every
+                other section on the page — nothing moves at 1280 and
+                there is no band-2 block for this slice at all.
+     751-1023   1 / -1. THE SECTION STACKS. Four of eight columns is
+                ~250px at 751, and the Turnstile widget alone is a
+                fixed 300px that does not reflow, so the beside
+                arrangement is not merely tight here, it is
+                impossible. The band boundary does the work; no
+                crossover is invented for it.
+     <= 750     1 / -1.
+
+   ---- .win-contact-form — the form, its status region, the
+        privacy link -----------------------------------------------
+     >= 1280    columns 7-11. align-self: start.
+     1024-1279  columns 7-11, unchanged. See above.
+     751-1023   1 / -1, BENEATH the text block. The form's own
+                `max-width: 52ch` cap is what holds the measure here —
+                it is Phase F's, unchanged, and this is the band it
+                was written for.
+     <= 750     1 / -1.
+
+   STACKING ORDER IN BANDS 3 AND 4 IS TEXT ABOVE FORM, and it is
+   derived rather than chosen. Three independent reasons, any one of
+   which settles it:
+
+     1. The <h2> is in the text block. Entrance A is a HEAD; a section
+        whose heading arrives after its form has no entrance below the
+        pivot width, and the composition table's entrance would simply
+        cease to exist in two of four bands.
+     2. The lede rule. "Speaking, consulting, partnership, and press
+        inquiries" is the sentence that says what the form is for.
+        Under the form it annotates something the reader has already
+        been asked to fill in.
+     3. Grid. Both items are 1 / -1 in these bands, so they take two
+        auto rows IN SOURCE ORDER, and source order is already fixed
+        by 1 and 2. Nothing has to be declared to get it, and there is
+        no grid-row in this slice to contradict.
+
+   NO grid-row IS DECLARED FOR EITHER WINDOW. In bands 1 and 2 the
+   text takes row 1 columns 1-5 and leaves the sparse cursor at column
+   6; the form asks for column 7, which is AHEAD of the cursor and
+   free, so it seats beside the text in the same row and column 6 is
+   left open. R3.1's placement rule used deliberately, the same way
+   About's closing line and R9's frame use it.
+
+   ---- THE PAGE FOOTER ------------------------------------------
+   NOT a section: no id in sections.ts, no <h2>, no folio entry, and
+   it sits OUTSIDE <main> so its <footer> resolves to the contentinfo
+   landmark rather than to a generic element inside the main region.
+   It takes .sheet so it stands on the page's real columns instead of
+   being a flex bar under them.
+
+   .win-foot-rule   the hairline. 1 / -1 in every band — trim to
+                    trim, because a footer rule IS the page's terminal
+                    divider, which is the one place the Index's
+                    "a rule that reaches both trims is a divider" note
+                    describes the thing actually wanted. No media
+                    override exists or is needed.
+
+   THE SPLIT POINT IS SET BY MEASURED NEED, NOT BY THE SECTION ABOVE.
+   The first version split 5 / 6 to register the copyright to Contact's
+   text window and the credit to its form window. Both registrations
+   are INVISIBLE — the copyright is 355.75px of tracked uppercase and
+   the credit 195.39px, so neither block's text ever reaches its own
+   right edge, and what actually registers is the LEFT edge at column
+   1 and the RIGHT edge at the trim. What the 5 / 6 split did do was
+   put the copyright 3.58px inside its block at 1024 and wrap it to
+   two lines from 819 down through the whole bottom of band 3 —
+   measured, at 1px. A 3.58px clearance is finer than the jitter
+   CONTEXT.md's R8.2 note records for quantities of this kind, and it
+   would have broken on any copy or type change nobody connected to
+   it.
+
+   The blocks now split 8 / 4 and 5 / 3, which is the 65 / 35 the two
+   strings actually want. Both outer edges are unchanged — column 1
+   and the right trim — so nothing visible moved; only the wrap
+   disappeared.
+
+   .win-foot-left   copyright, then the privacy link beneath it.
+     >= 1280    columns 1-8. Left edge on column 1, the sheet's left
+                trim, shared with Contact's text column above it.
+     1024-1279  unchanged. Clearance over the copyright's 355.75px is
+                233.0px at 1024, against 3.58px before.
+     751-1023   columns 1-5 of 8. Clearance 56.2px at 751.
+     <= 750     1 / -1. The copyright still wraps to two lines below
+                399 — 355.75px of string against a 340.09px measure at
+                390 — and that is correct: it is a phone, every other
+                block on the page wraps there too, and the credit is
+                stacked beneath rather than beside it, so there is no
+                one-line neighbour for it to look ragged against.
+
+   .win-foot-right  the Anchor Digital credit, right-aligned.
+     >= 1280    columns 9-12, running out to the right trim.
+                Live-margin content on this page already runs to
+                column 12 (About's closing line, Educational Leader's,
+                Premier's and Everyday Legends' margins all hold
+                10-12), so the trim is the established right edge for
+                a hung element and the colophon takes it.
+     1024-1279  unchanged.
+     751-1023   columns 6-8 of 8. Clearance 43.7px at 751 over the
+                credit's 195.39px.
+     <= 750     1 / -1, left-aligned and stacked last. NOT CENTRED —
+                the old build's footer centred itself on mobile and it
+                would be the only centred type on the rebuilt page.
+
+   BASELINE, NOT `last baseline`. Both footer blocks take
+   `align-self: baseline`, so the credit's first baseline sits on the
+   copyright's first baseline through grid's baseline-sharing group.
+   R6.3 routes shared baselines to the layout engine rather than to a
+   modelled em offset; `first baseline` is the long-supported half of
+   that property and carries none of the `last baseline` Safari risk
+   CONTEXT.md flags as outstanding.
+   ============================================================ */
+.win-contact-text  { grid-column: 1 / 6;  }
+.win-contact-form  { grid-column: 7 / 12; align-self: start; }
+
+.win-foot-rule     { grid-column: 1 / -1; }
+.win-foot-left     { grid-column: 1 / 9;  align-self: baseline; }
+.win-foot-right    { grid-column: 9 / 13; align-self: baseline; }
+
+/* --- BAND 3 · 751-1023 · 8 tracks ------------------------------- */
+@media (max-width: 1023px){
+  .win-contact-text,
+  .win-contact-form { grid-column: 1 / -1; align-self: auto; }
+
+  .win-foot-left    { grid-column: 1 / 6; }
+  .win-foot-right   { grid-column: 6 / 9; }
+}
+
+/* --- BAND 4 · <= 750 · one column -------------------------------
+   The footer's two blocks stack in reading order and the baseline
+   group is released — there is no second item on the line to share a
+   baseline with. */
+@media (max-width: 750px){
+  .win-contact-text,
+  .win-contact-form,
+  .win-foot-left,
+  .win-foot-right   { grid-column: 1 / -1; align-self: auto; }
+}

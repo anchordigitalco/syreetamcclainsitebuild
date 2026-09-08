@@ -1,0 +1,248 @@
+---
+/**
+ * THE PAGE FOOTER — slice R10, the page's colophon.
+ *
+ * CONTEXT.md "Footer":
+ *   Left   © 2026 Dr. Syreeta McClain. All rights reserved.
+ *   Right  linked "Built by Anchor Digital" -> https://anchordigitalco.com,
+ *          new tab, rel="noopener"
+ *   Plus   a privacy policy link, conspicuous.
+ *
+ * NOT A SECTION, AND DELIBERATELY SO. No id in src/data/sections.ts,
+ * no <h2>, no folio entry, no entry in the Composition table and none
+ * of the ten-<h2> structure. It is the colophon, not the eleventh
+ * spread. It sits OUTSIDE <main> in index.astro so its <footer>
+ * resolves to the contentinfo landmark — a <footer> nested inside
+ * <main> is a generic element and names no landmark at all.
+ *
+ * REBUILT, NOT PORTED. Only the FORM is ported in R10. The old
+ * Footer.astro cannot render on this page: it hangs on .spread and
+ * .col-trim, both deleted by R1 with the old grid system, and draws
+ * its rule with --hair-gold, a token that no longer exists. It also
+ * carries no privacy link at all. Left on disk, unimported, like
+ * every other old-build component.
+ *
+ * IT STANDS ON THE PAGE'S REAL COLUMNS. .sheet, the same section-level
+ * grid every spread above it takes, rather than a flex bar sitting
+ * under the composition. The two blocks register to Contact's own two
+ * edges: the copyright takes the text column's edge at 1-5, the
+ * credit takes the form column's at 7, running out to the right trim.
+ * The page's last band therefore sits on the same two edges as the
+ * section above it.
+ *
+ * THE PRIVACY LINK SITS WITH THE COPYRIGHT, ON ITS OWN LINE.
+ * CONTEXT.md lists it separately from both the left and the right
+ * item, so it is free to sit where it reads best, and "conspicuous"
+ * is better served by its own line under the client's copyright than
+ * by being tucked beside a 65%-opacity agency credit. It is also the
+ * page's SECOND privacy link — the contact form carries one outside
+ * its <form>, which is a verified Phase F behaviour and stays. A
+ * form-level disclosure and a footer legal link are two different
+ * jobs and both are required.
+ *
+ * /privacy 404s TODAY. R11 builds it (Phase G, a launch blocker in
+ * CONTEXT.md — CalOPPA, and the form is the collection point). The
+ * link ships pointing at it regardless: a dead click reads as a
+ * broken site, and href="#" reads as one too. NOTHING HERE STUBS A
+ * PRIVACY PAGE.
+ *
+ * THE ANCHOR MARK IS INLINED, NEVER AN <img>. Its root carries
+ * fill="currentColor", which does not resolve through an <img>, and
+ * fill and colour are never overridden. viewBox "364 171 615 312" is
+ * 1.9712:1 — the HEIGHT is set and the width derived from it, per
+ * CONTEXT.md's explicit warning against a square box.
+ *
+ * THE DOMAIN IS anchordigitalco.com. CONTEXT.md records that an
+ * earlier version of anchor-digital-standards.md had ".co" marked as
+ * a placeholder and it leaked into a build verbatim.
+ *
+ * rel="noopener", NOT "noopener noreferrer". The cross-repo standard:
+ * noreferrer strips the Referer header and costs Anchor referral
+ * attribution from every client site it ships.
+ *
+ * THE YEAR IS HARDCODED. Never a JS auto-updating year — the page
+ * carries no runtime and a copyright that changes itself is a claim
+ * nobody reviewed.
+ *
+ * GOLD: ZERO. The old footer drew its rule in --hair-gold. The
+ * hairline bucket stands at 0 of 8 on the rebuilt page and R10 spends
+ * none; this rule is Smoked Slate at 0.38, the same hairline as every
+ * other rule on the page.
+ *
+ * COLLAPSE, IN FOUR BANDS, STATED BEFORE IMPLEMENTATION. Three
+ * primitives in global.css carry it — .win-foot-rule, -left, -right.
+ * Nothing in this file hand-sets a span.
+ *
+ *   band 1  >=1280     rule 1-12 · copyright 1-5 · credit 7-12,
+ *                      right-aligned, first baselines shared
+ *   band 2  1024-1279  IDENTICAL — no live-margin content to give a
+ *                      column back to, so there is no band-2 block
+ *   band 3  751-1023   rule 1-8 · copyright 1-4 · credit 5-8
+ *   band 4  <=750      one column, stacked, left-aligned, in reading
+ *                      order: copyright, privacy, credit. NOT centred
+ */
+---
+
+<footer class="sheet page-footer">
+  <!-- The page's terminal divider, and the one rule on the page that
+       is MEANT to reach both trims. `border: 0` + explicit height
+       because Tailwind's preflight styles <hr> as a zero-height
+       element with a top border. -->
+  <hr class="win-foot-rule foot-rule" />
+
+  <div class="win-foot-left foot-left">
+    <p class="foot-copyright">&copy; 2026 Dr. Syreeta McClain. All rights reserved.</p>
+    <p class="foot-privacy-line">
+      <a class="foot-privacy" href="/privacy">Privacy Policy</a>
+    </p>
+  </div>
+
+  <div class="win-foot-right foot-right">
+    <a class="foot-credit" href="https://anchordigitalco.com" target="_blank" rel="noopener">
+      <svg class="foot-mark" viewBox="364 171 615 312" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M415.114 175.471C422.662 174.519 435.65 175.176 443.54 175.195C475.422 175.269 507.295 175.281 539.177 175.255L576.692 175.207C595.257 175.148 611.257 173.139 625.62 187.312C636.751 197.725 640.393 211.89 640.298 226.753C640.115 255.322 639.878 284.165 640.286 312.751C640.212 328.236 641.49 344.62 629.769 356.621C617.313 369.374 598.488 367.622 586.181 355.74C575.831 345.747 576.748 329.414 576.941 316.067C561.518 315.177 527.824 315.45 512.193 316.042C512.104 318.43 512.112 320.82 512.215 323.207C513.791 359.643 530.246 391.978 556.936 416.512C581.567 437.314 605.175 447.588 637.603 449.823C620.605 480.092 594.286 475.553 564.537 475.309L512.313 475.248L449.549 475.316C431.366 475.334 408.652 477.773 392.765 467.696C368.303 452.178 372.763 421.988 372.811 397.019L372.836 329.511L372.807 259.148C372.698 222.138 366.501 182.43 415.114 175.471Z"></path>
+        <path d="M771.304 174.933C791.016 174.375 817.183 174.776 836.55 178.375C878.892 186.232 916.393 210.559 940.835 246.023C971.452 290.987 972.37 334.32 971.198 386.405C970.576 414.066 976.678 448.865 949.908 466.764C943.894 470.865 937.011 473.515 929.8 474.506C920.441 475.719 908.867 475.371 899.243 475.366L854.343 475.321L786.481 475.349C768.499 475.352 750.56 476.424 733.027 472.901C719.864 467.59 713.594 462.068 706.435 449.84C750.429 448.596 792.56 421.072 813.957 383.161C826.412 361.095 830.715 341.105 831.494 316.054C828.479 315.815 825.511 315.766 822.488 315.789C804.754 315.927 786.806 315.402 769.103 316.2C768.982 338.233 767.147 362.719 737.779 365.527C730.259 366.246 721.157 361.852 715.785 356.754C707.03 348.444 705.003 336.711 705.11 325.144C704.996 306.992 704.905 289.389 705.056 271.146C705.227 250.567 703.447 226.794 707.094 206.575C708.111 200.936 713.393 193.174 717.404 189.122C733.293 173.071 751.019 175.213 771.304 174.933Z"></path>
+      </svg><span>Built by Anchor Digital</span>
+    </a>
+  </div>
+</footer>
+
+<style>
+  /* Contact closes on 96px of ground. The rule then sits at the top of
+     this element, so the space ABOVE it is that 96 and the space below
+     it is --s3, 24px — a 4:1 ratio.
+
+     R3.1: a rule belongs to what it INTRODUCES, not to what precedes
+     it. Educational Leader's coda rule runs 3.3:1 for the same reason
+     and this is the same device: the gap under the rule is the
+     smallest in the band and the gap over it is the largest, so the
+     eye groups the rule with the colophon beneath it rather than
+     reading it as a divider floating between two things.
+
+     --s5 of ground at the foot. Not --s6: 96px of empty page under a
+     colophon at the bottom of a ~7800px scroll is dead scroll, and
+     the rule already declares where the page ends. */
+  .page-footer{
+    padding-block: 0 var(--s5);
+  }
+
+  /* Smoked Slate at 0.38 — the same hairline as the Cover's foot rule,
+     both of Educational Leader's and Contact's head rule. NOT GOLD:
+     the old footer drew this in --hair-gold and the rebuilt page's
+     hairline bucket stays at 0 of 8. */
+  .foot-rule{
+    width: 100%;
+    height: 1px;
+    margin: 0 0 var(--s3);
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* The client's line. 11px, the same register the contact privacy
+     line takes, so the page's two pieces of small legal type match. */
+  .foot-copyright{
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .foot-privacy-line{
+    margin: var(--s1) 0 0;
+    font-family: var(--sans);
+    font-weight: 400;      /* one step up from the copyright — conspicuous */
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+  }
+
+  /* Underline OFFSET rather than a border, so the descender in "y" is
+     not struck through. Slate at 0.42, matching .edu-link and the
+     contact column's direct address. Transform and opacity only. */
+  .foot-privacy{
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+    transition:
+      transform 260ms var(--ease),
+      opacity   260ms var(--ease);
+  }
+
+  .foot-privacy:hover{ transform: translateY(-1px); opacity: 0.7; }
+  .foot-privacy:active{ transform: translateY(0); opacity: 1; }
+  .foot-privacy:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* Right-aligned to the page's right trim. Live-margin content on
+     this page already runs to column 12, so the trim is the
+     established right edge for a hung element. */
+  .foot-right{ text-align: right; }
+
+  /* One step down from the client's copyright — 10px at 65% — so the
+     agency credit is subordinate to it and is never the loudest thing
+     in the band. Inherits the site's own type stack; no separate
+     import. */
+  .foot-credit{
+    display: inline-block;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    text-decoration: none;
+    opacity: 0.65;
+    transition:
+      transform 260ms var(--ease),
+      opacity   260ms var(--ease);
+  }
+
+  .foot-credit:hover{ opacity: 1; transform: translateY(-1px); }
+  .foot-credit:active{ opacity: 0.85; transform: translateY(0); }
+  .foot-credit:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 6px;
+    opacity: 1;
+  }
+
+  /* viewBox 364 171 615 312 is 1.9712:1. Height set, width DERIVED
+     from it — 14 x 1.9712 = 27.6px. Never equal width and height. The
+     root carries fill="currentColor", so the mark inherits the
+     credit's colour; no fill or color override here. */
+  .foot-mark{
+    display: inline-block;
+    width: 27.6px;
+    height: 14px;
+    margin-right: 0.85em;
+    vertical-align: -0.35em;   /* centres the mark on the credit's cap band */
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     One column. The two blocks stack in reading order — copyright,
+     privacy, credit — and the right block returns to the left edge.
+
+     NOT CENTRED. The old build's footer centred itself here; on the
+     rebuilt page that would be the only centred type anywhere, and a
+     centred colophon under nine left-aligned spreads reads as a
+     different site's footer.
+
+     The credit needs its own air once it is no longer beside the
+     copyright: --s3, one step, so it reads as the third item in the
+     stack rather than as a second line of the privacy link. */
+  @media (max-width: 750px){
+    .foot-right{ text-align: left; margin-top: var(--s3); }
+  }
+</style>

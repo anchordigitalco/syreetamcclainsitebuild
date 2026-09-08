@@ -14,10 +14,10 @@
  *   R6       Athletic Management <- shipped
  *   R7       Feature Quote       <- shipped
  *   R8       Index               <- shipped
- *   R9       Charging It          <- THIS SLICE
+ *   R9       Charging It         <- shipped
+ *   R10      Contact + footer    <- THIS SLICE
  *
- *   R10 Contact + footer (form is PORTED)   R11 /privacy
- *   R12 Folio marginalia
+ *   R11 /privacy   R12 Folio marginalia
  *
  * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
  * built to rhyme and the failure mode of a rhyme is a repeat, so they
@@ -26,9 +26,22 @@
  *
  * Every component from the old build is still on disk in
  * src/components/ — nothing was deleted. They are simply not imported.
- * ContactSection.astro (Phase F, Formspree + Turnstile) and
- * BaseLayout.astro's Fraunces font request are reused unchanged and
- * were not touched by this slice.
+ * That now includes ContactSection.astro and Footer.astro: R10's
+ * Contact.astro PORTS the Phase F form out of the first (the markup,
+ * the four states, the honeypot, the Turnstile mount and the whole
+ * script, carried across unedited) into the rebuilt grid, and
+ * PageFooter.astro replaces the second, which hung on .spread and
+ * .col-trim and drew its rule with a token R1 deleted.
+ *
+ * THE TEN-<h2> STRUCTURE CLOSES AT 10 OF 10 WITH THIS SLICE. Portrait
+ * (hidden), About (hidden), Educational Leader, Premier Leadership,
+ * Everyday Legends Foundation, Athletic Management, the pull quote,
+ * Index (hidden), Charging It to the Game, Contact.
+ *
+ * THE FOOTER SITS OUTSIDE <main>. A <footer> nested inside <main> is
+ * a generic element and resolves to no landmark; outside it, it is
+ * the contentinfo landmark. It is not a section, carries no <h2> and
+ * has no entry in src/data/sections.ts.
  *
  * NO ANCESTOR OF A SECTION CARRIES A MAX-WIDTH, A CENTRING
  * margin-inline, OR A CONTAINER WRAPPER. <main> is a bare element.
@@ -49,6 +62,8 @@ import AthleticManagement from '../components/AthleticManagement.astro';
 import FeatureQuote from '../components/FeatureQuote.astro';
 import Index from '../components/Index.astro';
 import ChargingItToTheGame from '../components/ChargingItToTheGame.astro';
+import Contact from '../components/Contact.astro';
+import PageFooter from '../components/PageFooter.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -62,5 +77,8 @@ import ChargingItToTheGame from '../components/ChargingItToTheGame.astro';
     <FeatureQuote />
     <Index />
     <ChargingItToTheGame />
+    <Contact />
   </main>
+
+  <PageFooter />
 </BaseLayout>
