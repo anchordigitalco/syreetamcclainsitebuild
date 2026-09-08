@@ -175,7 +175,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     <div class="chg-coda">
       <p>Because some things are wins.</p>
       <p>Some things are lessons.</p>
-      <p>And some things you simply have to <br class="chg-coda-break" />charge to the game.</p>
+      <p>And some things you simply <br class="chg-coda-break" />have to charge to the game.</p>
     </div>
   </div>
 
@@ -186,12 +186,20 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     both are spent on Athletic Management; this is a column plate and
     nothing else.
 
-    THE CAPTION IS THE FIGURE'S OWN figcaption, so it inherits the
-    frame's window in all four bands by construction. Athletic's
-    caption needed a window of its own because it hangs on the
-    OPPOSITE side of the sheet from its frame; this one sits directly
-    beneath its photograph, and a second primitive tracking the same
-    four windows would only be a second thing to keep in sync.
+    NO CAPTION. R9 and R9.1 hung "OFF THE CLOCK" beneath the plate;
+    Jackson removed it in R9.2. CONTEXT.md's rule is that every
+    photograph in a SECTION carries a caption, with the Cover and
+    Premier Leadership as the two enumerated exceptions — so this is a
+    THIRD exception and CONTEXT.md's Photography section does not yet
+    record it. Flagged in the R9.2 report; that file is not edited
+    from here.
+
+    The <figure> stays a <figure>: it is still a self-contained
+    illustrative unit referenced from the flow, and a figure with no
+    figcaption is well-formed. Removing the caption takes 56px off the
+    figure column — the caption's 28px line on a 28px baseline margin
+    — which changes which column governs the row and is re-measured
+    rather than assumed.
 
     NO HEIGHT FLOOR AND NO STRETCH. The type column sets the
     section's height and the frame's surplus ground sits below it.
@@ -214,8 +222,19 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
 
           <=750    plate is the full sheet    670px at 750  = 90vw
           <=1023   plate is 5 of 8, stacked   582px at 1023 = 57vw
-          <=1141   plate is 5 of 12, stacked  408px at 1141 = 36vw
+          <=1254   plate is 5 of 12, stacked  455px at 1254 = 37vw
           else     plate is 4 of 12, beside   581px at 1920 = 31vw
+
+        THE THIRD BREAKPOINT NAMES THE CROSSOVER AND HAD TO FOLLOW IT
+        (R9.2). The crossover moved 1141 -> 1254, and this declaration
+        is the one that describes the STACKED plate; left at 1141 the
+        widths 1142-1254 would have fallen through to the beside
+        figure of 31vw while rendering a stacked plate of up to 455px,
+        under-declaring by 60px at 1200 and fetching a rendition the
+        layout then upsamples. The VALUES were re-derived only where
+        the moved boundary forced it: 36vw no longer covers the band's
+        widest instance (455.2px at 1254 is 36.3vw), so it steps to
+        37. Everything else in this table is R9's and untouched.
 
         Each declaration carries the widest instance in its band with
         a point or two of headroom. Source is 1500px wide, so the
@@ -227,27 +246,12 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
         src={lifestyleStreet}
         alt="Dr. Syreeta McClain standing in the middle of a downtown street in a red blazer and jeans."
         widths={[480, 720, 960, 1200, 1500]}
-        sizes="(max-width: 750px) 90vw, (max-width: 1023px) 57vw, (max-width: 1141px) 36vw, 31vw"
+        sizes="(max-width: 750px) 90vw, (max-width: 1023px) 57vw, (max-width: 1254px) 37vw, 31vw"
         loading="eager"
         decoding="sync"
       />
     </div>
 
-    <!--
-      OFF THE CLOCK — new copy, not in COPY.md, shipping pending
-      Jackson's sign-off alongside the Athletic caption and the Index
-      lede. Deliberately short: the Athletic caption became the
-      binding constraint on that section's crossover at 1.54px of
-      clearance, and a three-word caption cannot do that to this one.
-
-      The register is the page's existing .plate-caption primitive —
-      Montserrat 10.5px, 0.22em tracking, uppercase, Smoked Slate at
-      0.82. No gold rule; the budget is spent and this section draws
-      no rules at all. Its 28px top margin and 28px line-height are
-      both --baseline, so its own baseline lands on the page's body
-      lattice rather than on the frame's bottom trim.
-    -->
-    <figcaption class="plate-caption chg-caption">Off the clock</figcaption>
   </figure>
 </section>
 
@@ -297,6 +301,8 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     --chg-coda-k:      20.7752;
     --chg-coda-floor:  calc(1.5 * var(--bio-size));
     --chg-coda-window: calc(50vw - 76px);
+    --chg-lede-k:      42.3942;
+    --chg-lede-window: calc(50vw - 76px);
   }
 
   /* ---- THE HEAD --------------------------------------------------
@@ -407,66 +413,100 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   }
 
   /* ---- THE TYPE COLUMN -------------------------------------------
-     THE SECTION CLOSES ON ONE HORIZONTAL. (R9.1.)
+     TOP-ALIGNED. R9.1 put this column and the figure into a grid
+     baseline-sharing group so the caption's last baseline met the
+     coda's, and that was a mistake with a name: it applied R6.3's
+     surplus rule to a case that is not R6.3's.
 
-     R9 top-aligned both columns, so the figure ended 72.5px above the
-     type at 1920 and roughly 700px above it at 1440: the right column
-     died while the left ran on, and the surplus hung at the foot where
-     it read as a hole rather than as air.
+     ON ATHLETIC THE FRAME IS TALLER THAN THE TYPE. The surplus exists
+     whatever you do, and the only question is where it lands — above
+     the type, per R6.3, rather than inside a gap the type derived.
 
-     Both columns now take `align-self: last baseline`, which puts them
-     in ONE BASELINE-SHARING GROUP and lets grid align the caption's
-     last baseline with the coda's last baseline on a single y. The
-     head is deliberately NOT in the group — it keeps `align-self:
-     start`, because the kicker is the entrance and belongs on the
-     section's top content edge.
+     HERE THE TYPE COLUMN IS TALLER. There was no surplus to place.
+     Bottom-aligning the figure did not move a hole, it MANUFACTURED
+     one: 347px of empty ground at 1440 and 504px at 1142, opened
+     beside the largest type on the page, to close a 72.5px gap at the
+     foot. A hole five times the size of the one it fixed, in the more
+     conspicuous place.
 
-     THE OFFSET IS NOT MODELLED, AND MUST NOT BE. Chrome rounds a
-     font's ascent and descent to whole pixels at the rendered size, so
-     a hand-derived `em` offset between two different faces at two
-     different sizes drifts with the size — measured on this project at
-     0.02px out at one width and 1.27px at another, from arithmetic
-     correct to five decimal places. Baseline alignment reads the
-     rounded metrics the renderer actually used. This is R6.3's finding
-     applied a third time; Athletic's foot and the Index's row group
-     are the other two, and it makes Safari load-bearing for a third
-     section.
-
-     WHERE THE SURPLUS GOES. It moves ABOVE the frame, beside the lede,
-     which is the one legal place for it per R6.3 — never between two
-     type blocks, where it would inflate a gap that the type derived.
-     Nothing inside the type column moves: the lede, turn, body and
-     coda keep every gap they had, because the group aligns the two
-     COLUMNS and does not reach inside either one.
-
-     BELOW THE CROSSOVER THIS DOES NOT APPLY. The figure is stacked in
-     a row of its own there, with its own derived 91.8px of air, and
-     two items in different rows have no baseline group to share. Both
-     are returned to `start` in that band so nothing is left implied. */
+     Both columns are back on `start`. The frame's top trim sits on the
+     section's top content edge, the caption sits beneath the frame,
+     and the figure column simply runs shorter than the type — which
+     is what a column plate beside a longer text column does in print.
+     Which column governs is MEASURED at every width and reported; it
+     is not assumed. */
   .chg-text{
-    align-self: last baseline;
+    align-self: start;
   }
 
   /* ---- LEDE ------------------------------------------------------
-     Tier 1 of 3, on the shared --lede-size token. Same face, same
-     four axes via --fx-lede, same weight, same line-height and
-     letterfit as About's, Educational Leader's, Premier's, Everyday
-     Legends' and Athletic's — CONTEXT.md's lede rule, which admits no
-     exceptions and gained a note in R8.1 saying so.
+     Tier 1 of 3, on the page's shared --lede-size — AS A CAP, not as
+     a flat value. (R9.2.)
 
-     This section differs from its neighbours in ENTRANCE, WINDOW and
-     RHYTHM, which is where the difference belongs. Re-scaling the
-     lede would break the page's one display tier into two that mean
-     nothing.
+     WHY IT NEEDED A CAP. Every other section takes --lede-size in a
+     window that is most of the sheet; this section takes it in HALF a
+     sheet, because the frame holds columns 9-12 beside it. Same token,
+     half the measure, and it set FIVE LINES at 1440 where About's and
+     Educational Leader's set two and three. Five lines at 54.72px is
+     not a lede — it is a paragraph at display scale — and it was the
+     single largest contributor to an 855px type column.
 
-     NO max-width. Measure is controlled by the column span and by
-     nothing else. */
+     THE DERIVATION IS THE CODA'S, one axis over. Rendered at the
+     shipped axes — opsz 72, wght 350, SOFT 35, WONK 0, tracking
+     -0.018em — the lede string measures 4239.42px at 100px, so
+
+         K = 42.3942 px of width per px of type
+
+     and it is size-invariant for the same reason the coda's is:
+     `opsz` is PINNED at 72 rather than swept, so the face does not
+     change shape with size, and the tracking is in `em`. Measured
+     42.3942 at 26px, 54.72px and 100px alike.
+
+     THREE LINES OF WINDOW IS NOT THREE WINDOWS OF ADVANCE, and the
+     difference is the rag. A line box is never filled to the last
+     pixel — it breaks at the last whole word that fits — so the naive
+     3 x window / K OVERSTATES the size that sets in three lines. Built
+     with 3W/K x 0.96 the lede rendered FOUR lines at eleven of the
+     thirteen widths: 4% is nowhere near the shortfall.
+
+     THE RAG IS MEASURED, AND IT IS A CONSTANT. Binary-searching the
+     largest size that still sets three lines, at eleven widths from
+     360 to 1920, against the naive 3W/K at the same width:
+
+         1920  0.8974      1023  0.8973       751  0.8974
+         1440  0.8975       900  0.8973       750  0.8974
+         1280  0.8975       800  0.8973       390  0.8975
+         1024  0.8975                         360  0.8977
+
+     A spread of 0.0004 over a 5.3x range of window widths. That is not
+     a coincidence to be swept per band — it is a property of THIS
+     STRING at THIS letterfit, and it holds because the rag repeats the
+     same word-boundary pattern at every scale.
+
+         fit = 3 x window / K x 0.8973 x 0.96
+             = 3 x window / K x 0.861
+
+     the measured rag ratio times the 4% headroom, folded into one
+     constant. Capped at --lede-size, floored at 1.5 x body. VERIFIED
+     BY RENDERED LINE COUNT at all thirteen widths, not inferred from
+     the arithmetic — line counts are in the R9.2 report.
+
+     NO max-width. The window is a column span, and where the lede runs
+     wider than its parent — bands 2-stacked and 3 — it takes the same
+     custom property that sizes it, so the box and the size cannot
+     disagree. */
   .chg-lede{
     margin: 0;
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: var(--lede-size);
+    font-size: max(
+      var(--chg-coda-floor),
+      min(
+        var(--lede-size),
+        calc(3 * var(--chg-lede-window) / var(--chg-lede-k) * 0.861)
+      )
+    );
     line-height: var(--lede-lh);
     letter-spacing: -0.018em;
     color: var(--obsidian);
@@ -474,54 +514,64 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   }
 
   /* ---- THE TURN --------------------------------------------------
-     THE AIR IS THE DEVICE, AND IT IS DERIVED, NOT CHOSEN.
+     THE HINGE, AND IT IS NOW SET LIKE ONE. (R9.2.)
 
-     The rule: air above and below equal to at least TWICE the
-     section's largest other internal type gap. Enumerating this
-     section's internal gaps, all of them derived from the type:
+     R9 set this at body size, on the reasoning that space alone should
+     set it apart and that promoting it would collide with the pivot.
+     The first half held; the second was over-cautious. At 17px, alone
+     in 122px of air on both sides, with a 54.72px lede above it and a
+     31.68px coda below, it read as a caption that had lost its
+     picture — the smallest type in the section sitting in the largest
+     space in the section.
 
-       lede -> turn     this margin
-       turn -> body     this margin
-       body -> coda     calc(2.0 x --bio-size x --bio-lh) = 61.2px
-       coda line -> line   none; the three lines are consecutive line
-                           boxes at the coda's own 1.3 line-height
+     IT TAKES THE PAGE'S CLOSING-LINE REGISTER — the same
+     --closing-size and the same four axes the coda uses, opsz 96 /
+     wght 400 / SOFT 35 / WONK 0. NO NEW TOKEN. NOT Fraunces italic:
+     that is the pivot's, and WONK 1 is spent there and nowhere else.
+     The turn and the coda now share a register, which is right — they
+     are the section's two statements, and the body and the lede are
+     what they turn between.
 
-     The largest OTHER gap is therefore body -> coda at two body
-     line-heights, which is Athletic Management's value for the same
-     relationship. Twice it is FOUR body line-heights:
+     THE AIR COMES DOWN, from four body line-heights to two. (Item 4.)
+     122.4px of air on both sides was sized against a five-line lede
+     and a body-size turn; with the lede capped at three lines and the
+     turn at display-adjacent scale, the same air made the section
+     mostly empty. calc(2.0 x 17px x 1.8) = 61.2px.
 
-       calc(4.0 x 17px x 1.8) = 122.4px
+     IT IS STILL THE SECTION'S MOST-AIRED ELEMENT BY A CLEAR MARGIN,
+     which is the requirement that has not moved: 61.2px against the
+     next largest gap of 36.7px, a ratio of 1.67. Stated in the body's
+     own tokens so it re-resolves from the type at every width with no
+     breakpoint.
 
-     Stated in the body's own tokens rather than as a pixel, so it
-     re-resolves from the type at every width with no breakpoint and
-     cannot go stale when a token moves. A fixed pixel gap set from
-     one width is a swept band by another name (R3.1).
-
-     IT IS THE ONLY PARAGRAPH IN THE SECTION CARRYING THAT AIR, and
-     that is what sets it alone. Nothing else is doing the work — no
-     rule, no indent, no italic, no size change. */
+     THE TURN MUST NOT WRAP. 40 characters at 13.6232 advance-per-px
+     on these axes; fit is reported at all thirteen widths. Where it
+     does not fit, that is REPORTED — it is not shrunk below the
+     register. */
   .chg-turn{
-    margin: calc(4.0 * var(--bio-size) * var(--bio-lh)) 0;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: var(--bio-size);
-    line-height: var(--bio-lh);
-    letter-spacing: 0.004em;
-    color: var(--slate);
-    text-wrap: pretty;
+    margin: calc(2.0 * var(--bio-size) * var(--bio-lh)) 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: var(--closing-size);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
   }
 
   /* ---- BODY ------------------------------------------------------
      Tier 3 of 3, on --bio-size / --bio-lh, the page's body tokens,
      unchanged. One paragraph, per COPY.md. NO max-width — span only.
 
-     BODY -> CODA. Two body lines = 61.2px, from the body's own
-     tokens. It is the largest internal gap in the section apart from
-     the turn's air, which is defined as twice it. Educational Leader
-     marks the same relationship with a hairline rule; this section
-     has no rules by design, so the gap carries it alone. */
+     BODY -> CODA. 1.2 body lines = 36.72px, down from 2.0 in R9.
+     (Item 4.) Educational Leader marks the same relationship with a
+     hairline rule; this section has no rules by design, so the gap
+     carries it alone — but it only has to say "the text block has
+     ended", and at 61.2px it was saying it as loudly as the turn's
+     air, which has to say something bigger. It is now the section's
+     SECOND largest gap, at 0.6 of the turn's. */
   .chg-body{
-    margin: 0 0 calc(2.0 * var(--bio-size) * var(--bio-lh));
+    margin: 0 0 calc(1.2 * var(--bio-size) * var(--bio-lh));
     font-family: var(--sans);
     font-weight: 300;
     font-size: var(--bio-size);
@@ -613,34 +663,30 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      a measure that cannot hold the line honours that intent where a
      ragged wrap does not.
 
-     ONE break, after "have to", nowhere else, no other line, no other
+     ONE break, after "simply", nowhere else, no other line, no other
      band. Not a word of the copy changes.
 
      THE SPACE BEFORE THE <br> IS LOAD-BEARING. Above 750 the element
      is display: none and the two text nodes rejoin; without that
-     space they would rejoin as "have tocharge". The trailing space
+     space they would rejoin as "simplyhave". The trailing space
      collapses at the end of a broken line, so it costs nothing when
      the break is live. */
   .chg-coda-break{ display: none; }
 
-  @media (max-width: 750px){
-    .chg-coda-break{ display: inline; }
-  }
-
   /* ---- THE FRAME -------------------------------------------------
-     The second member of the baseline-sharing group — see .chg-text.
-     Its last baseline is the CAPTION's, because the figcaption is the
-     figure's last in-flow child with a line box, and the caption is
-     what has to land on the coda.
+     Top-aligned with the type — see .chg-text for why the R9.1
+     baseline group was reverted rather than tuned. The caption sits
+     beneath the frame and the column's shorter run below it is
+     ordinary, not a defect.
 
-     THE FRAME'S OWN GEOMETRY IS UNTOUCHED BY THIS. No height floor, no
+     THE FRAME'S OWN GEOMETRY IS UNTOUCHED. No height floor, no
      stretch, no change of aspect, no change of crop: the plate keeps
      the 0.800 shape R9 derived at 1920 and the 112% / -12% window. The
      distance is closed by moving the column, not by resizing the
      photograph. */
   .chg-figure{
     margin: 0;
-    align-self: last baseline;
+    align-self: start;
   }
 
   /* ---- THE STACKED BANDS ONLY: air between the coda and the frame
@@ -676,110 +722,6 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      type's row and its top trim IS the section's top content edge,
      level with the kicker and the lede; a margin there would push the
      photograph down off that edge for no reason. */
-  @media (max-width: 1141px){
-    .chg-figure{
-      margin-top: calc(3.0 * var(--bio-size) * var(--bio-lh));
-    }
-
-    /* Out of the baseline group: the two are in different rows here,
-       so there is nothing to share. Stated rather than left implied. */
-    .chg-text,
-    .chg-figure{ align-self: start; }
-
-    /* BAND 2 BELOW THE CROSSOVER: the coda takes the widened type
-       window, columns 3-10 of 12.
-           8 cols + 7 gaps = 2(100vw - 392px)/3 + 168px
-                           = 66.6667vw - 93.333px
-       Verified against the rendered window: 667.3 at 1141 and 589.3
-       at 1024. */
-    .chg{
-      --chg-coda-window: calc(66.6667vw - 93.333px);
-    }
-  }
-
-  /* ---- BAND 3 · 751-1023 -----------------------------------------
-     THE CODA RUNS THE SECTION WINDOW, TRIM TO TRIM — it is the one
-     element in the section whose window is not the type window.
-
-     WHY IT HAS TO. At the type window the coda wraps at 901 and at
-     751: the type holds 505.5px and 498.3px there, against the 529.8px
-     that line 3 needs at the 25.5px floor. Widening only to the right
-     trim does not close it, because at 900 and below the type ALREADY
-     reaches the right trim — that widening is a no-op in exactly the
-     half of the band that fails. The section window is the only window
-     that fits at every width in the band.
-
-     THE COST, STATED PLAINLY. The coda's left edge moves from the type
-     edge at column 3 to the sheet's left trim at column 1. That is
-     NOT a new left edge — column 1 is the kicker's, and it exists in
-     this section in every band — but it does put the coda on a
-     different edge from the lede, turn and body above it, in this band
-     only. The brief asks for both this window and an unmoved left
-     edge, and in band 3 those two cannot both hold. Flagged in the
-     R9.1 report for Jackson's ruling; the fit requirement was taken as
-     the pass/fail criterion.
-
-     ONE QUANTITY, DECLARED ONCE, USED TWICE. --chg-coda-window sets
-     both the box and the size, so they cannot drift apart:
-           8 cols + 7 gaps = 100vw - 80px         (the sheet's content)
-     and the pull-back to the left trim is the two columns and two gaps
-     the type is inset by:
-           2 cols + 2 gaps = 25vw - 15px
-     Verified: the coda's left edge lands on 40px — the band's page
-     gutter — at 1023, 901, 800 and 751, and its right edge on the
-     right trim at all four. */
-  @media (max-width: 1023px){
-    .chg{
-      --chg-coda-window: calc(100vw - 80px);
-    }
-    .chg-coda{
-      width: var(--chg-coda-window);
-      margin-left: calc(-1 * (25vw - 15px));
-    }
-  }
-
-  /* ---- BAND 4 · <= 750 -------------------------------------------
-     The head stops being outdented and collapses to sit ABOVE the
-     lede, which is the one place in the section where those two
-     elements have a vertical relationship at all. One body line
-     between them — calc(1.0 x 17px x 1.8) = 30.6px — which is
-     PremierLeadership's value for exactly this pair and for exactly
-     this reason. Without it the lede's cap-height sits on the
-     subtitle's descender.
-
-     Nothing else changes on phones. The single stacked column is the
-     primitives' job and they already do it; this is the one thing a
-     span cannot express. */
-  @media (max-width: 750px){
-    .chg-head{
-      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
-    }
-
-    /* The single column is the full measure, and the band-3 pull-back
-       is undone — there is nothing to pull back from when the type
-       already starts at the trim. */
-    .chg-coda{
-      width: auto;
-      margin-left: 0;
-    }
-
-    /* THE WINDOW is the sheet's content box, which in this band is the
-       viewport less the clamped page gutter on each side. Verified
-       against the rendered window: 670.0 at 750, 340.1 at 390, 312.0
-       at 360.
-
-       THE CONSTANT CHANGES WITH THE STRING. Once the authored break is
-       live, line 3 is no longer the section's longest coda line — its
-       first half, "And some things you simply have to", is, at
-       1337.203px per 100px of type. K moves to 13.3720 in the same
-       media block that turns the break on, so the constant and the
-       string it describes can never be one band apart. */
-    .chg{
-      --chg-coda-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
-      --chg-coda-k: 13.3720;
-    }
-  }
-
   /* THE SHAPE. One intrinsic aspect at every width — no height: 100%,
      no padding-top spacer, no aspect floor. Athletic's frame needs a
      minimum shape because it is the page's spread moment and must
@@ -890,12 +832,135 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     object-fit: cover;
   }
 
-  /* The caption's left edge is the frame's left edge — the same
-     optical half-tracking pullback .plate-caption already carries, so
-     the O's bowl lands on the column line rather than the tracking
-     space after it. Nothing else is declared here; the register is
-     the primitive's. */
-  .chg-caption{
-    color: var(--slate);
+
+  @media (max-width: 1254px){
+    .chg-figure{
+      margin-top: calc(3.0 * var(--bio-size) * var(--bio-lh));
+    }
+
+    /* BAND 2 BELOW THE CROSSOVER.
+
+       THE TYPE WINDOW NARROWED FROM 3-10 TO 3-9 IN THIS PASS. R9.2
+       released the crossover for re-derivation, and the 78-character
+       ceiling on the stacked measure was exactly what pinned its upper
+       bracket; buying headroom there is what let the crossover rise to
+       where the coda fits in the BESIDE arrangement. Seven columns:
+           7 cols + 6 gaps = 7(100vw - 392px)/12 + 144px
+                           = 58.3333vw - 84.667px
+       The lede takes the same window here.
+
+       THE CODA RUNS TO THE RIGHT TRIM HERE TOO — columns 3-12, from
+       the type's own left edge. It has a fit requirement the type does
+       not, and band 3 already establishes the coda as the one element
+       in this section allowed its own wider window; doing the same
+       here makes that a RULE — in every stacked band the coda runs to
+       the right trim — rather than a one-off.
+
+       It also removes a sub-window this band would otherwise need. At
+       3-9 the coda falls under its 529.77px floor requirement below
+       1053; at 3-10 the type breaches 78 characters above 1147. No
+       single shared window spans [1024, crossover], so the coda takes
+       its own:
+           10 cols + 9 gaps = 10(100vw - 392px)/12 + 216px
+                            = 83.3333vw - 110.667px */
+    .chg{
+      --chg-lede-window: calc(58.3333vw - 84.667px);
+      --chg-coda-window: calc(83.3333vw - 110.667px);
+    }
+    .chg-coda{
+      width: var(--chg-coda-window);
+    }
+  }
+
+  /* ---- BAND 3 · 751-1023 -----------------------------------------
+     THE KICKER STOPS OUTDENTING, AND THE SECTION RUNS ON ONE LEFT
+     EDGE. (R9.2, item 5.)
+
+     R9.1 could not satisfy both of its own band-3 requirements: the
+     coda had to run wider than the type in order to fit, and the type
+     edge had to hold. Those two are only in conflict WHILE THE KICKER
+     IS OUTDENTED — the outdent is what pushes the type off column 1
+     and leaves the coda a different edge to run to.
+
+     Drop the outdent and the conflict disappears. Kicker, subtitle,
+     lede, turn, body and coda ALL START AT COLUMN 1: one left edge for
+     the whole section in this band, no fourth edge, nothing to
+     reconcile. The staircase is a desktop-space device, and an 8-track
+     sheet at 751px does not have width to spend a step on it — the
+     same reasoning that collapses it entirely in band 4, applied one
+     band earlier.
+
+     RIGHT EDGES DO THE DIFFERENTIATING INSTEAD, which is CONTEXT.md's
+     R4.1 note used deliberately: the LEDE and the CODA run to the
+     sheet's right trim, and the BODY stops short of it to hold its
+     measure inside the 45-78 window. Two right edges, one left edge.
+
+     THE BODY'S WINDOW IS UNCHANGED IN WIDTH — five columns above 900,
+     six at 900 and below, exactly what R9.1 shipped. Only its left
+     edge moved, from column 3 to column 1, so every measured character
+     count is identical.
+
+     THE HEAD NOW SITS ABOVE THE LEDE rather than beside it, so it
+     needs the vertical gap it never needed while outdented: one body
+     line, PremierLeadership's value for this pair, the same rule band
+     4 already carried. */
+  @media (max-width: 1023px){
+    .chg{
+      --chg-lede-window: calc(100vw - 80px);
+      --chg-coda-window: calc(100vw - 80px);
+    }
+    .chg-head{
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+    }
+    .chg-lede{
+      width: var(--chg-lede-window);
+    }
+    .chg-coda{
+      width: var(--chg-coda-window);
+      margin-left: 0;
+    }
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     Single column, full measure. The head keeps the gap band 3
+     introduced — same pair, same relationship, one band further down.
+
+     The lede and the coda no longer need a box wider than their
+     parent, because their parent is the measure. */
+  @media (max-width: 750px){
+    .chg-head{
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+    }
+
+    .chg-lede,
+    .chg-coda{
+      width: auto;
+      margin-left: 0;
+    }
+
+    /* THE WINDOW is the sheet's content box — the viewport less the
+       clamped page gutter each side. Verified: 670.0 at 750, 340.1 at
+       390, 312.0 at 360.
+
+       THE CONSTANT CHANGES WITH THE STRING, AND THE STRING CHANGED IN
+       THIS PASS. R9.1 broke line 3 after "have to", which left a
+       34-character first half costing 13.3720 advance-per-px — more
+       than the 13.3365 a 390px viewport can pay at the floor. The half
+       itself wrapped, stranding "to" alone on a line: the break made
+       band 4 worse than no break at all. Breaking after "simply"
+       splits the line 10.5328 / 10.0827 — two halves within 4% of each
+       other — and the binding one clears 390 and 360 with room. Not a
+       word of copy changed; the break moved one word earlier.
+
+       K moves in the same media block that turns the break on, so the
+       constant and the string it describes can never be one band
+       apart. */
+    .chg{
+      --chg-lede-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
+      --chg-coda-window: calc(100vw - 2 * clamp(24px, 6.4vw, 40px));
+      --chg-coda-k: 10.5328;
+    }
+
+    .chg-coda-break{ display: inline; }
   }
 </style>

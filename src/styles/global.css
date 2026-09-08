@@ -1990,189 +1990,152 @@ a{ color: inherit; }
      1024-1279  unchanged. Bands 1 and 2 carry the same tracks and
                 this section has no live-margin content, so nothing
                 separates them here.
-     751-1023   columns 1-2. THE BRIEF SPECIFIED COLUMN 1 AND THE
-                KICKER DOES NOT FIT IN IT. Measured: the longest word
-                in this section's kicker, "CHARGING" at 10.5px with
-                0.26em tracking, is 81.2px wide, and one column of
-                eight is 72.5px at 800 and 66.4px at 751 — so the word
-                broke out of its own grid column by up to 14.8px and
-                closed to within 5.2px of the type's left edge. It did
-                not collide, and it did not clip; what it destroyed
-                was the OUTDENT, which is this section's entrance. A
-                kicker 5px from the type it is outdented from is not
-                outdented.
-
-                Two columns of eight is 152.8px at 751 and holds the
-                kicker in two lines at every width in the band. It is
-                also the page's own precedent: .win-edu-head, the
-                other outdented kicker on the page, takes THREE
-                columns of eight here rather than one.
+     751-1023   FULL MEASURE — the outdent is dropped in this band
+                (R9.2). See the band-3 note below for why. The head
+                then sits ABOVE the lede rather than beside it and
+                takes a one-body-line gap from the component.
      <= 750     full measure, first in reading order.
 
    ---- .win-chg-text — lede, turn, body and coda ------------------
      >= 1280    columns 3-8. Six columns, one edge.
-     1024-1279  unchanged down to the crossover at 1141; below it the
+     1024-1279  unchanged down to the crossover at 1254; below it the
                 frame drops beneath the coda and the type widens to
-                3-10.
+                3-9.
 
-                THE BRIEF SPECIFIED 3-11 AND IT IS ONE COLUMN TOO
-                WIDE. Measured: a 3-11 window renders the body
-                paragraph at 85 characters at 1136 and only comes
-                back under CONTEXT.md's enforced 78-character maximum
-                once the viewport is down at 1024 — so it is over the
-                ceiling across almost the whole band it exists in.
-                3-10 renders 78 at 1141 and 71 at 1024. The property
-                the brief names — the type WIDENS once the frame
-                leaves its row — is kept, and it is large: 496px
-                beside becomes 669px stacked at 1141. Same
-                correction, same reason, as band 3's sub-window
-                below.
-     751-1023   columns 3-7 above 900, columns 3-8 at 900 and below.
+                SEVEN COLUMNS, NOT R9's EIGHT. The stacked measure is
+                what pins the crossover's upper bound, and at 3-10 it
+                breaches 78 characters above 1147 — which held the
+                crossover below the width at which the coda fits
+                beside, and was the direct cause of R9's 1142-1211
+                failure band. 3-9 renders 72 characters at 1254 and 58
+                at 1024. The coda takes a wider window of its own here
+                rather than sharing this one; see the component.
+     751-1023   columns 1-5 above 900, columns 1-6 at 900 and below.
                 TWO SUB-WINDOWS, for the same reason .win-body has
-                two: no single span holds a working measure across
-                the whole band. Five columns renders 69 characters at
-                1023 and 58 at 901; six renders 71 at 900 and 57 at
-                751.
+                two: no single span holds a working measure across the
+                whole band. Five columns renders 69 characters at 1023
+                and 58 at 901; six renders 71 at 900 and 57 at 751.
 
-                THE LEFT EDGE IS COLUMN 3, NOT THE BRIEF'S COLUMN 2,
-                because the kicker beside it needed two columns
-                rather than one (see .win-chg-head). The WIDTHS are
-                unchanged by that shift — five and six columns either
-                way — so every measured character count is identical;
-                the window moved one column right, it did not narrow.
-                The arrangement is now the same shape in band 3 as in
-                bands 1 and 2: kicker in the first two columns, type
-                from the third.
+                THE LEFT EDGE IS COLUMN 1 (R9.2). The widths are
+                unchanged from R9.1 — five and six columns either way
+                — so every measured character count is identical; the
+                window moved two columns LEFT, it did not narrow. The
+                lede and the coda run past its right edge to the
+                sheet's trim, by width rather than by span.
      <= 750     full measure.
 
-   ---- .win-chg-frame — the plate and its caption -----------------
-     >= 1280    columns 9-12, beside the type. NO EMPTY COLUMN
-                between them — the type ends at 8 and the frame
-                starts at 9 — which is what permits the single type
-                edge under CONTEXT.md's R4.1 image-paired amendment.
-                An empty column would make column 3 a free choice and
-                therefore a fourth edge rather than a derived one.
+   ---- .win-chg-frame — the plate ---------------------------------
+     >= 1280    columns 9-12, beside the type. NO EMPTY COLUMN between
+                them — the type ends at 8 and the frame starts at 9 —
+                which is what permits the single type edge under
+                CONTEXT.md's R4.1 image-paired amendment. An empty
+                column would make column 3 a free choice and therefore
+                a fourth edge rather than a derived one.
      1024-1279  unchanged down to the crossover; below it, columns
                 3-7, beneath the coda, on the type's own left edge.
-     751-1023   columns 3-7 of 8, beneath the coda — ON THE TYPE'S
-                OWN LEFT EDGE, which is the property band 2's stacked
-                arrangement carries and the reason the brief's "1-5 of
-                8" is not what ships. With the type at column 3 here,
-                a frame at column 1 would sit on a left edge that
-                nothing else in the section uses, two columns out from
-                the type it is stacked under. It renders 581.9px at
-                1023 and 412.0px at 751, both clear of the 320px
-                thumbnail floor.
+     751-1023   columns 1-5 of 8, beneath the coda, on the type's own
+                left edge — which is column 1 in this band. Renders
+                581.9px at 1023 and 411.9px at 751, both clear of the
+                320px thumbnail floor.
      <= 750     full measure, last in reading order.
 
-   The caption is the figure's own <figcaption> and inherits every one
-   of these windows by construction, so it is not a fifth primitive.
+   THE FRAME CARRIES NO CAPTION as of R9.2. "OFF THE CLOCK" was
+   removed by Jackson; CONTEXT.md's Photography section still says
+   every photograph in a section carries one, with the Cover and
+   Premier Leadership as the two enumerated exceptions, so this is a
+   third exception not yet recorded there.
    ============================================================ */
 .win-chg-head      { grid-column: 1 / 3;  }
 .win-chg-text      { grid-column: 3 / 9;  }
 .win-chg-frame     { grid-column: 9 / 13; }
 
-/* --- THE CROSSOVER · 1141 --------------------------------------
-   MEASURED, NOT PICKED — AND IT IS BRACKETED, NOT BOUND. Every
-   constraint in the arrangement was enumerated and swept, and the
-   result is not the usual single binding value: TWO constraints close
-   on the crossover from OPPOSITE sides and leave an 11px window for
-   it to sit in.
+/* --- THE CROSSOVER · 1254 --------------------------------------
+   RE-DERIVED IN R9.2, and it moved because R9's bracket was computed
+   before the coda had a fit constraint at all. R9 shipped 1141 inside
+   a bracket of [1136, 1147]; the consequence was a 70px band just
+   above it — 1142 to 1211 — where the beside type window is too narrow
+   to hold the coda's third line at its size floor. The prohibition on
+   re-deriving was released for this pass.
 
-     constraint                          selects   direction
-     -------------------------------------------------------------
-     frame width floor, 320px, beside      1136    crossover must be >=
-     type measure ceiling, 78 chars,
-       stacked                             1147    crossover must be <=
-     -------------------------------------------------------------
-     coda line 3 fits, beside              1482    NOT TAKEN, see below
-     type measure floor, 45 chars, beside <1024    never binds
-     caption fits its window              <1024    never binds
-     frame + caption <= type height        n/a     binds at 1920, not
-                                                   at the crossover
+   THE FULL ENUMERATION, swept at 1px in both arrangements:
 
-   THE LEGAL WINDOW IS [1136, 1147] AND 1141 IS ITS MIDPOINT: 5px of
-   headroom over the frame floor, 6px under the measure ceiling.
-   Neither end is a value to sit against. The lower end is a hard
-   pixel floor on a photograph's rendered width; the upper end is a
-   CHARACTER COUNT, which steps in whole words — the stacked measure
-   reads 78 characters at 1146 and 79 at 1148 — so a crossover parked
-   at 1147 would be a tolerance finer than the jitter of the quantity
-   it measures, which is the mistake R8.2 wrote a whole note about.
+     BESIDE — the crossover must sit at or ABOVE each of these
+       coda line 3 fits at the floor      1212   <- BINDS
+       frame width floor, 320px           1136
+       lede sets three lines or fewer    <1100   never binds
+       turn sets on one line             <1100   never binds
+       type measure >= 45 characters     <1100   never binds
 
-   Measured at the shipped 1141: beside frame 321.7px against a 320px
-   floor, stacked measure 78 characters against a 78 ceiling.
+     STACKED — the crossover must sit at or BELOW each of these
+       type measure <= 78 characters      1295   <- BINDS
+       coda line 3 fits at the floor     >1320   never binds
+       lede sets three lines or fewer    >1320   never binds
+       frame width floor, 320px          >1320   never binds
 
-   THE CODA CONSTRAINT SELECTS THE WIDEST VALUE AND IS DELIBERATELY
-   NOT TAKEN, because taking it is impossible rather than merely
-   unattractive. The coda's third line only clears its beside window
-   at 1482 and above. A crossover at 1482 would ship the STACKED
-   arrangement at 1440 — which is not the composition the Section
-   Composition table draws — and the stacked type window at 1482 runs
-   about 101 characters, far past the ceiling the other constraint is
-   protecting. There is no crossover at which the coda fits and the
-   rest of the arrangement survives, so the wrap is REPORTED as a
-   copy-or-window decision rather than hidden by moving a crossover
-   341px.
+   LEGAL WINDOW [1212, 1295], 84px wide. SHIPPED AT 1254, its midpoint:
+   42px of headroom over the lower bound, 41px under the upper. At 1211
+   the coda wraps and at 1212 it does not; at 1295 the stacked measure
+   reads 78 characters and at 1296 it reads 79.
 
-   THE FRAME FLOOR IS THE LOWER BOUND AND IT IS REAL. Below 1136 the
-   beside frame renders under 320px wide and reads as a thumbnail
-   rather than as a plate — CONTEXT.md's R4.1 finding approached from
-   the other side, where 532px read as pasted on and 421px read as a
-   portrait plate.
+   THE UPPER BOUND ONLY EXISTS BECAUSE THE STACKED TYPE WINDOW WAS
+   NARROWED. At R9's 3-10 the stacked measure breaches 78 characters
+   above 1147, which put the upper bound BELOW the lower one — that is
+   precisely why R9 could not reach a crossover where the coda fits,
+   and why the window was released as a free variable here. Seven
+   columns instead of eight moves that bound from 1147 to 1295 and
+   opens an 84px window. The coda then needs a wider stacked window of
+   its own to keep fitting; see the component.
 
-   THE FRAME DROPS BENEATH THE CODA, ON THE TYPE'S OWN LEFT EDGE, AND
-   IT NEEDS NO grid-row TO DO IT. After the type has been placed at
-   columns 3-10, grid's sparse auto-placement cursor sits past column
-   10, and a frame asking for column 3 is BEHIND that cursor, so it
-   takes a row of its own. That is the R3.1 finding used deliberately
-   rather than tripped over — the same behaviour that dropped
-   Educational Leader's district link out of its row is what seats
-   this frame under the coda with nothing declared. grid-row is
-   returned to auto explicitly so no earlier declaration survives.
+   EVERY WIDTH FROM 1254 TO 1281 WAS SWEPT AT 1px on the built page: no
+   coda wrap, no four-line lede, no turn wrap. The coda's size floor
+   engages at 1255 and 1256 without wrapping, and at no other width in
+   that interval.
+
+   THE FRAME DROPS BENEATH THE CODA ON THE TYPE'S OWN LEFT EDGE and
+   needs no grid-row to do it: once the type is placed at columns 3-9
+   the sparse auto-placement cursor sits past column 9, and a frame
+   asking for column 3 is behind it, so it takes a row of its own. R3.1
+   used deliberately rather than tripped over.
    --------------------------------------------------------------- */
-@media (max-width: 1141px){
-  .win-chg-text    { grid-column: 3 / 11; grid-row: auto; }
+@media (max-width: 1254px){
+  .win-chg-text    { grid-column: 3 / 10; grid-row: auto; }
   .win-chg-frame   { grid-column: 3 / 8;  grid-row: auto; }
 }
 
 /* --- BAND 3 · 751-1023 · 8 tracks -------------------------------
-   TRANSCRIBED BY PROPERTY, NOT BY RATIO (CONTEXT.md, R7). What the
-   12-track arrangement carries is: a kicker outdented one step left
-   of the type, a type block holding a working measure, and a frame
-   that has stopped competing for the type's width. Three properties,
-   and the 8-track window that keeps all three is kicker 1, type 2-6,
-   frame 1-5.
+   THE KICKER STOPS OUTDENTING AND THE SECTION RUNS ON ONE LEFT EDGE.
+   (R9.2.)
 
-   ALL THREE WINDOWS DIFFER FROM THE BRIEF'S, AND EACH FOR ITS OWN
-   MEASURED REASON. The brief gives kicker 1, type 2-7, frame 1-5.
+   R9.1 could not satisfy both of its band-3 requirements at once — the
+   coda had to run wider than the type in order to fit, and the type
+   edge had to hold — and shipped the coda on the sheet's left trim
+   with everything above it two columns in. That conflict only exists
+   WHILE THE KICKER IS OUTDENTED: the outdent is what pushes the type
+   off column 1 and leaves the coda a different edge to run to.
 
-     kicker 1  ->  1-2   "CHARGING" is 81.2px and one column of eight
-                         is 66.4px at 751. The word left its column by
-                         14.8px and came within 5.2px of the type,
-                         which is the outdent gone.
-     type 2-7  ->  3-7   Six columns renders 81 characters at 1023,
-                         over the enforced 78-character maximum. Five
-                         renders 69. The shift from 2 to 3 follows the
-                         kicker's second column and costs no width.
-     type      ->  3-8   at 900 and below, the same widening .win-body
-                         makes at the same width: five columns falls
-                         to 48 characters at 751 and six holds 57.
-     frame 1-5 ->  3-7   on the type's own left edge, which is what
-                         band 2's stacked arrangement carries.
+   Drop the outdent and it dissolves. The head spans the sheet, the
+   type block starts at column 1, and the lede and coda take their
+   width from a custom property rather than from a span. Measured,
+   every element in the section starts at 40px — the band's page gutter
+   — at 1023, 901, 900, 800 and 751.
 
-   What survives from the brief is the arrangement's three properties,
-   which is what R7's transcription rule asks for: a kicker outdented
-   left of the type, a type block holding a working measure, and a
-   frame that has stopped competing for the type's width. */
+   THE BODY'S WINDOW IS UNCHANGED IN WIDTH: five columns above 900, six
+   at 900 and below — the same two sub-windows R9.1 shipped, for the
+   same reason .win-body has two. Only the left edge moved, from column
+   3 to column 1, so the measured character counts are identical: 69 at
+   1023, 58 at 901, 71 at 900, 62 at 800, 57 at 751.
+
+   The staircase is a desktop-space device and an 8-track sheet at
+   751px has no width to spend a step on it. Same reasoning that
+   collapses it entirely in band 4, applied one band earlier. */
 @media (max-width: 1023px){
-  .win-chg-head    { grid-column: 1 / 3; }
-  .win-chg-text    { grid-column: 3 / 8; }
-  .win-chg-frame   { grid-column: 3 / 8; grid-row: auto; }
+  .win-chg-head    { grid-column: 1 / -1; }
+  .win-chg-text    { grid-column: 1 / 6; }
+  .win-chg-frame   { grid-column: 1 / 6; grid-row: auto; }
 }
 
 @media (max-width: 900px){
-  .win-chg-text    { grid-column: 3 / 9; }
+  .win-chg-text    { grid-column: 1 / 7; }
 }
 
 /* --- BAND 4 · <= 750 · one column -------------------------------
