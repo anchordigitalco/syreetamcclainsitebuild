@@ -1,0 +1,628 @@
+---
+/**
+ * CHARGING IT TO THE GAME — slice R9.
+ *
+ * CONTEXT.md Section Composition table, row "Charging It to the Game":
+ *
+ *   Entrance      DELIBERATELY BREAKS THE STAIRCASE. This section and
+ *                 the Feature Quote are the page's two sanctioned
+ *                 exceptions to the three-left-edge system.
+ *   Column window kicker 1-2 · lede/turn/body/coda 3-8 · frame 9-12
+ *   Image         `column` — lifestyle-street, right side
+ *   Rhythm        open. 110px top, 40px bottom — the table's own
+ *                 per-section value for this row, flat at every width.
+ *   Length        manifesto only; the coda's three lines hang on one
+ *                 edge.
+ *
+ * TWO LEFT EDGES, NOT THREE. Everywhere else on the page the kicker
+ * outdents, the lede takes the body edge and the body indents one
+ * column in from it. Here the kicker outdents to columns 1-2 and the
+ * lede, the turn, the body AND the coda all share ONE edge at column
+ * 3. The body does not indent.
+ *
+ * COLUMN 3 IS A SANCTIONED FOURTH EDGE, FOR THIS SECTION ONLY, AND
+ * MUST NOT BE PROPAGATED. CONTEXT.md's standing rule — "three left
+ * edges must stay legible, which means nothing may land on a fourth"
+ * — is what makes this a decision rather than a drift. What keeps it
+ * legible as a step-out rather than as column 4 missed by one is that
+ * the section ALSO drops the body indent entirely. One type edge one
+ * column left of the page's lede edge reads as a section that has
+ * moved; one type edge at 3 with a second at 4 would read as an
+ * error. The two changes only work together, which is why neither
+ * ships without the other.
+ *
+ * NO DISPLAY-SCALE SECTION TITLE. The section's name lives in the
+ * kicker, as it does on Educational Leader. The lede is the only
+ * display-scale type in the section.
+ *
+ * MANIFESTO ONLY. No posts exist and no blog URL exists. COPY.md:
+ * "No post index, no fabricated articles, no 'coming soon'
+ * placeholder." There is also no button — every other pointing
+ * section on this page points AT something, and this one has nothing
+ * to point at. COPY.md's Appendix A3 holds two cut paragraphs for
+ * this section; they do not ship and their absence is not an
+ * oversight.
+ *
+ * NO RULES, AND THEREFORE NO GOLD. This section draws no hairline
+ * anywhere — not under the head, not above the coda. Educational
+ * Leader's coda takes a hairline lid at columns 4-6; importing that
+ * device into the one section built to break the pattern would
+ * defeat the break. CONTEXT.md's gold budget is untouched by this
+ * slice: 3 of 3 saturated accents (all elsewhere), 0 of 8 hairline
+ * contexts.
+ *
+ * THE <h2> IS THE KICKER AND IT IS VISIBLE. CONTEXT.md's locked
+ * heading structure: each section's <h2> is the element whose text
+ * names the section, and that string equals the folio label.
+ * Verified against src/data/sections.ts — { id:
+ * 'charging-it-to-the-game', n: '07', label: 'Charging It to the
+ * Game' } — not assumed. The id is the same string the Index's entry
+ * 05 has been linking to since R8; this component is what makes that
+ * anchor land.
+ *
+ * COLLAPSE, IN FOUR BANDS, STATED BEFORE IMPLEMENTATION. The
+ * primitives carrying it live in global.css beside every other
+ * window; nothing in this file hand-sets a grid-column.
+ *
+ *   band 1  >=1280     kicker 1-2 · type 3-8 · frame 9-12, beside
+ *   band 2  1024-1279  the same, down to the CROSSOVER AT 1141;
+ *                      below it the frame drops BENEATH the coda at
+ *                      3-7 on the type's own left edge and the type
+ *                      widens to 3-10
+ *   band 3  751-1023   kicker 1-2 · type 3-7 above 900 and 3-8 at
+ *                      900 and below · frame beneath the coda at 3-7,
+ *                      on the type's own left edge
+ *   band 4  <=750      one column, everything full measure in reading
+ *                      order: kicker, lede, turn, body, coda, frame,
+ *                      caption
+ *
+ * NO JAVASCRIPT. No observer, no listener, no reveal, no
+ * opacity: 0 initial state. Every word is in the DOM and visible on
+ * load, which is what makes the section survive a full-page capture
+ * and any PDF the client generates.
+ */
+import { Image } from 'astro:assets';
+import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
+
+/*
+ * THE FILE IS `lifestyle-street-inset.jpg`, AND THE NAME IN
+ * CONTEXT.md's photography table IS `lifestyle-street.jpg`. There is
+ * no file by that name on disk. CONTEXT.md's own filename note is the
+ * reason this was checked rather than guessed: raw camera-named files
+ * in this project are NOT interchangeable with their working-named
+ * counterparts, and `SHP SHoot 7.jpg` is explicitly recorded as a
+ * DIFFERENT IMAGE from this one. Verified rather than assumed:
+ *
+ *   src/assets/lifestyle-street-inset.jpg
+ *     sha256 f5c94c3e8f501912a2b68f3066ac325cf5f5acc3e9dfafaa8bb221208bc9f441
+ *     sharp().metadata()  1500 x 2100, no EXIF orientation tag
+ *     native aspect       0.7143
+ *
+ *   brand_assets/SHP SHoot 7.jpg
+ *     sha256 605db5faff2956c24e5e6c75e4e969cdcd718375c0c94f95ed8880e95f12a148
+ *     sharp().metadata()  2832 x 4240, no EXIF orientation tag
+ *     native aspect       0.6679
+ *
+ * Different hash, different dimensions, different aspect. They are
+ * two files and only this one is the working asset.
+ *
+ * sharp().metadata() rather than `sips`, per CONTEXT.md: `sips`
+ * reports the raw buffer and was wrong on mcclain-bleachers.jpg,
+ * which carries EXIF orientation 6. This file carries no orientation
+ * tag at all, so stored and presented dimensions agree — but that is
+ * a measurement, not an assumption.
+ */
+---
+
+<section class="sheet chg" id="charging-it-to-the-game" aria-labelledby="chg-heading">
+  <!--
+    THE HEAD — outdented to columns 1-2 and top-aligned in its row, so
+    the kicker sits on the section's top content edge and hangs to the
+    LEFT of the lede rather than above it.
+
+    NO RULE ABOVE IT. Educational Leader opens on a hairline and a
+    kicker; two sections cannot announce themselves the same way, and
+    this one is the page's designated pattern-break. The outdent alone
+    is the entrance.
+  -->
+  <div class="win-chg-head chg-head">
+    <h2 class="chg-kicker" id="chg-heading">Charging It to the Game</h2>
+    <p class="chg-subtitle">The Blog</p>
+  </div>
+
+  <!--
+    THE TYPE COLUMN. One block, one left edge, four registers:
+    lede, turn, body, coda. Authored as a single grid item rather than
+    as four, because the whole point of this section is that they
+    share an edge — four separate items on four separate placements
+    would be four chances for one of them to drift onto a fifth.
+  -->
+  <div class="win-chg-text chg-text">
+    <p class="chg-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
+
+    <!--
+      THE TURN. Its own block-level element, set in the BODY face at
+      BODY size, with air above and below equal to twice the
+      section's largest other internal gap. COPY.md: "its own
+      paragraph, set alone. Must not be absorbed above or below."
+
+      IT IS NOT PROMOTED TO A THIRD DISPLAY REGISTER. Fraunces italic
+      is the pivot's, and WONK 1 is spent there and nowhere else. What
+      sets this paragraph alone is SPACE, not face — which is also the
+      only device that cannot be confused with the lede sitting three
+      lines above it in the same column.
+    -->
+    <p class="chg-turn">But this is not simply a football story.</p>
+
+    <div class="chg-body">
+      <p>It is about the miles driven when no one was watching. The sacrifices families make behind the scenes. The decisions that change trajectories. The losses that teach more than victories ever could. And the understanding that sometimes the lesson only makes sense after living through it.</p>
+    </div>
+
+    <!--
+      THE CODA — three hard lines on one edge, the section's type
+      edge. THE LINE BREAKS ARE STRUCTURAL: three separate block-level
+      elements, never one paragraph relying on a natural rag to fall
+      in the right places.
+
+      Never run together as a sentence. Never centred. No decorative
+      rules between them, and no rule above them.
+
+      Set in the page's existing closing-line register — the same
+      Fraunces opsz 96 / wght 400 / SOFT 35 / WONK 0 at
+      clamp(26px, 2.2vw, 32px) that .edu-coda and .ath-close both
+      carry. No new size token was introduced for this section.
+    -->
+    <div class="chg-coda">
+      <p>Because some things are wins.</p>
+      <p>Some things are lessons.</p>
+      <p>And some things you simply have to charge to the game.</p>
+    </div>
+  </div>
+
+  <!--
+    THE FRAME. `column` tier — half the page or less, inside the body
+    window's row rather than breaking a trim. CONTEXT.md allots
+    exactly one `bleed-left` and one `inset` on the whole page and
+    both are spent on Athletic Management; this is a column plate and
+    nothing else.
+
+    THE CAPTION IS THE FIGURE'S OWN figcaption, so it inherits the
+    frame's window in all four bands by construction. Athletic's
+    caption needed a window of its own because it hangs on the
+    OPPOSITE side of the sheet from its frame; this one sits directly
+    beneath its photograph, and a second primitive tracking the same
+    four windows would only be a second thing to keep in sync.
+
+    NO HEIGHT FLOOR AND NO STRETCH. The type column sets the
+    section's height and the frame's surplus ground sits below it.
+    This is deliberately NOT Athletic's arrangement: there the frame
+    carries a minimum aspect and the surplus had to be pushed above
+    the type. Here the frame has one intrinsic shape at every width
+    and never competes for the row's height.
+  -->
+  <figure class="win-chg-frame chg-figure">
+    <div class="plate-img chg-frame">
+      <!--
+        `sizes` DESCRIBES THE <img> BOX, NOT THE PLATE. This crop
+        oversizes the box VERTICALLY — the rendered aspect is wider
+        than the source's, so the window comes off the top, not off
+        the sides — which means the box's WIDTH is the plate's width
+        and `sizes` is the plate. That is the one case where the two
+        agree, and it is stated here so nobody "corrects" it later by
+        multiplying in a crop factor that applies to the other axis.
+        Measured per band, box width against viewport:
+
+          <=750    plate is the full sheet    670px at 750  = 90vw
+          <=1023   plate is 5 of 8, stacked   582px at 1023 = 57vw
+          <=1141   plate is 5 of 12, stacked  408px at 1141 = 36vw
+          else     plate is 4 of 12, beside   581px at 1920 = 31vw
+
+        Each declaration carries the widest instance in its band with
+        a point or two of headroom. Source is 1500px wide, so the
+        ladder stops there: at 750 the box is 670 CSS px and a 2x
+        screen wants 1340, which the file supplies; at 390 it wants
+        680 and gets 720. Nothing on this page upsamples.
+      -->
+      <Image
+        src={lifestyleStreet}
+        alt="Dr. Syreeta McClain standing in the middle of a downtown street in a red blazer and jeans."
+        widths={[480, 720, 960, 1200, 1500]}
+        sizes="(max-width: 750px) 90vw, (max-width: 1023px) 57vw, (max-width: 1141px) 36vw, 31vw"
+        loading="eager"
+        decoding="sync"
+      />
+    </div>
+
+    <!--
+      OFF THE CLOCK — new copy, not in COPY.md, shipping pending
+      Jackson's sign-off alongside the Athletic caption and the Index
+      lede. Deliberately short: the Athletic caption became the
+      binding constraint on that section's crossover at 1.54px of
+      clearance, and a three-word caption cannot do that to this one.
+
+      The register is the page's existing .plate-caption primitive —
+      Montserrat 10.5px, 0.22em tracking, uppercase, Smoked Slate at
+      0.82. No gold rule; the budget is spent and this section draws
+      no rules at all. Its 28px top margin and 28px line-height are
+      both --baseline, so its own baseline lands on the page's body
+      lattice rather than on the frame's bottom trim.
+    -->
+    <figcaption class="plate-caption chg-caption">Off the clock</figcaption>
+  </figure>
+</section>
+
+<style>
+  /* ---- THE SECTION ------------------------------------------------
+     110px top, 40px bottom, FLAT AT EVERY WIDTH. Straight from
+     CONTEXT.md's per-section padding list, which gives this row
+     "Blog 110/40" — the only asymmetric pair on the page. No taper,
+     no svh term, no clamp. About's svh term is scoped to a problem
+     this section does not have (keeping a lede below an 80svh Cover's
+     fold) and copying it here would be cargo-culting.
+
+     The short bottom is the point: the coda's three lines are the
+     page's quietest close, and 40px of ground under them hands the
+     scroll to Contact rather than pausing on it. */
+  .chg{
+    padding-block: 110px 40px;
+  }
+
+  /* ---- THE HEAD --------------------------------------------------
+     Top-aligned in its row so the kicker's first baseline sits on the
+     section's top content edge, level with the lede's first line
+     rather than floating in the middle of a tall row. */
+  .chg-head{
+    align-self: start;
+  }
+
+  /* The kicker is an <h2>; the browser's heading margins and weight
+     are reset here rather than inherited. Treatment matches the
+     global .kicker primitive — 10.5px Montserrat, 0.26em tracking,
+     uppercase, Smoked Slate — with the optical half-tracking pullback
+     so the C's stem lands on the column line rather than on the
+     tracking space after it.
+
+     WEIGHT 500, matching .edu-kicker rather than the 400 of the
+     global .kicker primitive: this string is a section name carrying
+     an <h2>, and Educational Leader established that register for
+     exactly that role. */
+  .chg-kicker{
+    margin: 0;
+    margin-left: -0.13em;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    line-height: var(--baseline);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* The deck, in the register Educational Leader, Premier Leadership,
+     Everyday Legends and Athletic Management all share. Sentence
+     case, deliberately: the kicker above it is uppercase and
+     letterspaced, so setting the subtitle the same way would give the
+     head two identical-looking lines and no hierarchy. Set verbatim
+     from COPY.md. */
+  .chg-subtitle{
+    margin: 2px 0 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- THE TYPE COLUMN -------------------------------------------
+     Top-aligned for the same reason as the head: the type sets the
+     section's height, so its top edge is the section's top content
+     edge and there is nothing for it to centre against. */
+  .chg-text{
+    align-self: start;
+  }
+
+  /* ---- LEDE ------------------------------------------------------
+     Tier 1 of 3, on the shared --lede-size token. Same face, same
+     four axes via --fx-lede, same weight, same line-height and
+     letterfit as About's, Educational Leader's, Premier's, Everyday
+     Legends' and Athletic's — CONTEXT.md's lede rule, which admits no
+     exceptions and gained a note in R8.1 saying so.
+
+     This section differs from its neighbours in ENTRANCE, WINDOW and
+     RHYTHM, which is where the difference belongs. Re-scaling the
+     lede would break the page's one display tier into two that mean
+     nothing.
+
+     NO max-width. Measure is controlled by the column span and by
+     nothing else. */
+  .chg-lede{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: var(--lede-size);
+    line-height: var(--lede-lh);
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* ---- THE TURN --------------------------------------------------
+     THE AIR IS THE DEVICE, AND IT IS DERIVED, NOT CHOSEN.
+
+     The rule: air above and below equal to at least TWICE the
+     section's largest other internal type gap. Enumerating this
+     section's internal gaps, all of them derived from the type:
+
+       lede -> turn     this margin
+       turn -> body     this margin
+       body -> coda     calc(2.0 x --bio-size x --bio-lh) = 61.2px
+       coda line -> line   none; the three lines are consecutive line
+                           boxes at the coda's own 1.3 line-height
+
+     The largest OTHER gap is therefore body -> coda at two body
+     line-heights, which is Athletic Management's value for the same
+     relationship. Twice it is FOUR body line-heights:
+
+       calc(4.0 x 17px x 1.8) = 122.4px
+
+     Stated in the body's own tokens rather than as a pixel, so it
+     re-resolves from the type at every width with no breakpoint and
+     cannot go stale when a token moves. A fixed pixel gap set from
+     one width is a swept band by another name (R3.1).
+
+     IT IS THE ONLY PARAGRAPH IN THE SECTION CARRYING THAT AIR, and
+     that is what sets it alone. Nothing else is doing the work — no
+     rule, no indent, no italic, no size change. */
+  .chg-turn{
+    margin: calc(4.0 * var(--bio-size) * var(--bio-lh)) 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+
+  /* ---- BODY ------------------------------------------------------
+     Tier 3 of 3, on --bio-size / --bio-lh, the page's body tokens,
+     unchanged. One paragraph, per COPY.md. NO max-width — span only.
+
+     BODY -> CODA. Two body lines = 61.2px, from the body's own
+     tokens. It is the largest internal gap in the section apart from
+     the turn's air, which is defined as twice it. Educational Leader
+     marks the same relationship with a hairline rule; this section
+     has no rules by design, so the gap carries it alone. */
+  .chg-body{
+    margin: 0 0 calc(2.0 * var(--bio-size) * var(--bio-lh));
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .chg-body p{ margin: 0; }
+
+  /* ---- THE CODA --------------------------------------------------
+     Tier 2 of 3, the page's existing closing-line register: Fraunces
+     at opsz 96 / wght 400 / SOFT 35 / WONK 0, clamp(26px, 2.2vw,
+     32px), line-height 1.3, letter-spacing -0.012em. Byte-for-byte
+     what .edu-coda and .ath-close already carry. NO NEW SIZE TOKEN
+     WAS INTRODUCED.
+
+     THREE ELEMENTS, NOT THREE LINES OF ONE. The breaks are
+     structural, so they hold at every width and cannot be moved by a
+     rag. margin: 0 on each, so the three sit as consecutive line
+     boxes on the coda's own leading and read as one block with three
+     hard breaks rather than as three paragraphs.
+
+     text-wrap: balance is DELIBERATELY ABSENT here, unlike every
+     other display element in this file. These lines are authored
+     breaks; asking the browser to balance them would be asking it to
+     re-break lines whose breaks are the design. */
+  .chg-coda p{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+  }
+
+  /* ---- THE FRAME -------------------------------------------------
+     Top-aligned, so the plate's top edge sits on the section's top
+     content edge beside the kicker and the lede, and every pixel of
+     surplus ground in the row falls BELOW the caption. That is the
+     one legal place for it here: the frame has no minimum shape to
+     satisfy, so it never needs to push the type down. */
+  .chg-figure{
+    margin: 0;
+    align-self: start;
+  }
+
+  /* ---- THE STACKED BANDS ONLY: air between the coda and the frame
+     Below the crossover the frame leaves the type's row and lands in
+     a row of its own beneath the coda, and grid gives a new row no
+     gap at all — the sheet declares column-gap and nothing else. Built
+     without this the photograph's top trim sat hard against the coda's
+     last line at 1141 and below, which reads as the coda captioning
+     the picture rather than as the section closing and a plate
+     following it.
+
+     THE VALUE IS FORCED, NOT CHOSEN — it is the only body-line
+     multiple that fits between two constraints already in this file:
+
+       > 2 lines (61.2px)   the largest gap INSIDE the type block, the
+                            body -> coda gap. A gap to the photograph
+                            no bigger than a gap inside the column
+                            makes the photograph read as one more block
+                            in the column.
+       < 4 lines (122.4px)  the turn's air. That is the section's
+                            largest gap BY DESIGN and it is the only
+                            thing setting the turn alone; anything
+                            matching or exceeding it takes the device
+                            away.
+
+     Three body lines — calc(3.0 x 17px x 1.8) = 91.8px — is the only
+     integer multiple strictly between them. Stated in the body's own
+     tokens so it re-resolves from the type at every width, like every
+     other gap in this section.
+
+     IT IS SCOPED TO THE STACKED BANDS AND MUST NOT BE MADE
+     UNCONDITIONAL. In the beside arrangement the frame shares the
+     type's row and its top trim IS the section's top content edge,
+     level with the kicker and the lede; a margin there would push the
+     photograph down off that edge for no reason. */
+  @media (max-width: 1141px){
+    .chg-figure{
+      margin-top: calc(3.0 * var(--bio-size) * var(--bio-lh));
+    }
+  }
+
+  /* ---- BAND 4 · <= 750 -------------------------------------------
+     The head stops being outdented and collapses to sit ABOVE the
+     lede, which is the one place in the section where those two
+     elements have a vertical relationship at all. One body line
+     between them — calc(1.0 x 17px x 1.8) = 30.6px — which is
+     PremierLeadership's value for exactly this pair and for exactly
+     this reason. Without it the lede's cap-height sits on the
+     subtitle's descender.
+
+     Nothing else changes on phones. The single stacked column is the
+     primitives' job and they already do it; this is the one thing a
+     span cannot express. */
+  @media (max-width: 750px){
+    .chg-head{
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh));
+    }
+  }
+
+  /* THE SHAPE. One intrinsic aspect at every width — no height: 100%,
+     no padding-top spacer, no aspect floor. Athletic's frame needs a
+     minimum shape because it is the page's spread moment and must
+     hold a trim; this one is a plate in a column and holds nothing.
+     `aspect-ratio` is exactly the right tool when the requirement is
+     a shape rather than a minimum, which is the distinction R6 drew
+     when it had to reject it there.
+
+     THE CROP, AND WHY IT IS A VERTICAL WINDOW.
+
+     Source: 1500 x 2100 — exactly 5:7, native aspect 0.714286. The
+     rendered aspect is WIDER than native, so the crop is a
+     horizontal band on the full source width: the sides stay, and
+     the window comes off the TOP. Nothing is cut from the left, the
+     right, or the bottom.
+
+     THE TOP IS WHERE IT COMES OFF, AND THAT IS AN EDITORIAL CHOICE
+     BEFORE IT IS A GEOMETRIC ONE. The open sky is the most
+     palette-hostile region in the file — it is the one saturated
+     blue in a frame that also has to agree with Antique Gold and
+     Cashmere — and it is also the least informative part of the
+     photograph. Taking the window off the top removes it, brings the
+     tree line down to just above her, and keeps every part of the
+     frame that makes this the page's one ENVIRONMENTAL image: the
+     receding street, the traffic signals, the storefronts, the
+     road markings she is standing on. Taking the same amount off the
+     bottom would have cut her at the thigh and kept the sky, which
+     is the trade backwards.
+
+     The window's height, as a fraction of the source:
+
+       f = native aspect / rendered aspect = (5/7) / (4/5) = 25/28
+
+     and the two crop terms follow from f alone:
+
+       --crop-h  =  1 / f            = 28/25  = 112.000%
+       --crop-t  = -( 1 - f ) / f    = -3/25  =  -12.000%
+
+     Both exact, because 5:7 and 4:5 are both exact. BOTH ARE
+     PERCENTAGES OF THE PLATE'S OWN HEIGHT, and the plate's height is
+     its width divided by a fixed aspect, so plate size cancels out
+     of the source window entirely and the crop is IDENTICAL in all
+     four bands — no drift, no breakpoint, nothing to re-measure.
+     Narrowing the plate therefore SCALES the image; it does not
+     tighten the crop. This is CONTEXT.md's R4.1 finding transposed
+     one axis: there the invariant terms were percentages of width
+     because the window was horizontal, here they are percentages of
+     height because the window is vertical, and in both cases the
+     property being protected is that plate size cancels.
+
+     NO TRANSFORM ON THE PHOTOGRAPH. A transform promotes the <img>
+     to its own compositing layer and .plate-img::before silently
+     stops blending against it — measured on this project at R-B 8 to
+     -1, the multiply simply gone. The oversized box inside
+     .plate-img's overflow: hidden is how the crop is done.
+
+     WHY 0.80 AND NOT SOMETHING TALLER. Two constraints close on this
+     number from opposite sides and there is not much room between
+     them.
+
+     From below, THE TYPE MUST GOVERN THE SECTION'S HEIGHT. The type
+     column gets SHORTER as the viewport widens (the measure widens,
+     the paragraph loses lines) while a fixed-aspect frame gets
+     TALLER, so the two cross at some width for any aspect. Measured
+     at 1920, the widest verified width and the worst case: the type
+     column is 855.2px, so the frame plus its caption must fit in
+     that, and the caption is 56px of it. 581.3 / (855.2 - 56) =
+     0.7273 is the floor. A first pass shipped 0.62 and put the frame
+     138.4px TALLER than the type at 1920 — the section's height set
+     by the photograph, with the coda closing early and the plate
+     running past it. That failure appears at 1920 and nowhere else,
+     which is the third time on this project that a defect has lived
+     only above 1440 (CONTEXT.md, R8.2).
+
+     From above, NO TWO PHOTOGRAPHS ON THE PAGE SHARE A CROP. The two
+     other FIXED shapes on the page are athletics-detail at 0.70 and
+     Athletic's frame at 1.00; Premier's plate and the Cover's are
+     row-driven and sweep 0.62-1.05 and 0.59-1.11, so they are not
+     shapes to be distinct from so much as ranges that any fixed
+     value crosses somewhere. 0.80 clears 0.70 by 14% and 1.00 by
+     20%, and it is the roundest value in the window the floor
+     leaves.
+
+     It is still a PORTRAIT — 4:5, taller than wide. CONTEXT.md's
+     rule is that no vertical image is ever cropped WIDE, and this
+     one is not: it is cropped from 5:7 to 4:5 and stays upright. */
+  .chg-frame{
+    aspect-ratio: var(--chg-aspect);
+    --chg-aspect: 0.80;
+    --crop-h: 112%;
+    --crop-t: -12%;
+  }
+
+  /* :global() — <Image> emits its own <img>, which never receives
+     Astro's data-astro-cid-*, so a scoped selector silently stops
+     matching. This has bitten this project twice.
+
+     max-width: none is not optional. Tailwind's preflight sets
+     `img { max-width: 100% }`, which clamps the oversized box back to
+     the plate width and produces no crop at all. */
+  .chg-frame :global(img){
+    position: absolute;
+    top: var(--crop-t);
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: var(--crop-h);
+    object-fit: cover;
+  }
+
+  /* The caption's left edge is the frame's left edge — the same
+     optical half-tracking pullback .plate-caption already carries, so
+     the O's bowl lands on the column line rather than the tracking
+     space after it. Nothing else is declared here; the register is
+     the primitive's. */
+  .chg-caption{
+    color: var(--slate);
+  }
+</style>

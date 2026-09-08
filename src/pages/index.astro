@@ -13,10 +13,11 @@
  *   R4.2     Premier corrections <- shipped
  *   R6       Athletic Management <- shipped
  *   R7       Feature Quote       <- shipped
- *   R8       Index               <- THIS SLICE
+ *   R8       Index               <- shipped
+ *   R9       Charging It          <- THIS SLICE
  *
- *   R9  Charging It to the Game   R10  Contact + footer (form is PORTED)
- *   R11 /privacy                  R12  Folio marginalia
+ *   R10 Contact + footer (form is PORTED)   R11 /privacy
+ *   R12 Folio marginalia
  *
  * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
  * built to rhyme and the failure mode of a rhyme is a repeat, so they
@@ -47,6 +48,7 @@ import EverydayLegends from '../components/EverydayLegends.astro';
 import AthleticManagement from '../components/AthleticManagement.astro';
 import FeatureQuote from '../components/FeatureQuote.astro';
 import Index from '../components/Index.astro';
+import ChargingItToTheGame from '../components/ChargingItToTheGame.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -59,5 +61,6 @@ import Index from '../components/Index.astro';
     <AthleticManagement />
     <FeatureQuote />
     <Index />
+    <ChargingItToTheGame />
   </main>
 </BaseLayout>
