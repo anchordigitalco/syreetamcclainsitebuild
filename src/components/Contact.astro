@@ -79,6 +79,21 @@
  *   8. THE BUTTON READS "Send Inquiry". Phase F shipped "Send
  *      inquiry"; COPY.md's Contact block gives the capital I.
  *
+ *   9. (R10.1) THE PRIVACY LINK IS DELETED FROM THIS COLUMN. R10 shipped
+ *      two, ~150px apart at the page foot, and reported it. Ruled: one
+ *      link, in the footer. Phase F item 11 asked for the link to sit
+ *      OUTSIDE the <form> because as its last child it pushed error
+ *      messages below itself; with no link in this column the status
+ *      region is unconditionally the last thing under the button, which
+ *      is what that item was protecting.
+ *
+ *  10. (R10.1) THE FORM'S VERTICAL RHYTHM IS REDISTRIBUTED. The label
+ *      -> field pairing measured 2.18 body lines against a 1.65-line
+ *      group gap, so every label belonged to the field above it. All
+ *      three gaps are now declared against counterparts and the ratio
+ *      is 0.71. See the .field block. Font sizes, the textarea's rows
+ *      and its line-height are untouched.
+ *
  * COPY IS SET VERBATIM FROM COPY.md Part 1 -> Contact. Opening
  * statement, four field labels, button, success state, direct email.
  * Nothing reworded, nothing added.
@@ -161,10 +176,10 @@ const inquiries = [
   'Something else',
 ];
 
-// R11 builds this page. It 404s today and the link ships pointing at it
-// regardless — CalOPPA needs the disclosure path named, and a link to "#"
-// reads as a broken site. Phase G, and a launch blocker in CONTEXT.md.
-const privacyPath = '/privacy';
+// The privacy path now lives only in PageFooter.astro (R10.1). This
+// component no longer renders a privacy link, so it no longer declares
+// the path — an unused const here would be the next pass's invitation to
+// re-add the second link.
 const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 ---
 
@@ -273,13 +288,21 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
          status region nested inside it would be hidden along with it. -->
     <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
 
-    <!-- Also outside the form, and AFTER the status. Inside the form it was
-         the last child, which put the error message visually below the
-         privacy link instead of directly under the button that produced it.
-         Out here it stays visible in all four states, success included. -->
-    <p class="contact-privacy">
-      <a href={privacyPath}>Privacy policy</a>
-    </p>
+    <!-- THE CONTACT COLUMN'S PRIVACY LINK IS DELETED (R10.1).
+         R10 shipped two privacy links roughly 150px apart at the foot of
+         the page — one here, one in the footer — and reported it for a
+         ruling. Ruled: delete this one, keep the footer's.
+
+         THIS SATISFIES PHASE F ITEM 11 RATHER THAN BREAKING IT. That item
+         reads "privacy link sits OUTSIDE the <form>", and the defect it
+         was written from was ordering: as the form's last child the link
+         pushed error messages below itself instead of under the button
+         that produced them. With no link in this column at all, the
+         status region is the last thing under the button and that
+         ordering is unconditional. Verified after deletion, not assumed.
+
+         The status region stays where it is, outside the form, so the
+         success state can hide the form without hiding the message. -->
   </div>
 </section>
 
@@ -468,17 +491,78 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 
   /* --- Fields ---------------------------------------------------------
      Underline only. No border box, no radius, no fill: the page is built
-     out of rules and measures, and a boxed input is SaaS convention. */
-  .field{ margin-bottom: var(--s4); }
+     out of rules and measures, and a boxed input is SaaS convention.
+
+     THE RHYTHM WAS INVERTED, AND THAT — NOT THE TOTAL AIR — IS WHAT
+     READ AS LOOSE (R10.1). Measured on the shipped R10 build, at 1920,
+     1440, 1280 and 1024 alike:
+
+       label baseline -> its own field's rule   66.83px = 2.18 body lines
+       field rule -> the next label's cap top   50.41px = 1.65 body lines
+
+     Every label was 1.33x closer to the field ABOVE it than to its own.
+     A form whose labels belong upward is not a form with too much air;
+     it is a form whose air is in the wrong places, and no uniform
+     reduction fixes that.
+
+     THE THREE GAPS ARE NOW DECLARED AGAINST COUNTERPARTS, NOT AS
+     LITERALS (R8.2). What each is measured against is named in its own
+     rule below. The group gap is a multiple of the BODY LINE, the same
+     expression .edu-rule uses for its two derived gaps, so it
+     re-resolves from the type with no breakpoint and cannot drift out
+     of agreement with a second swept value (R3.1).
+
+       group gap   1.5 x --bio-size x --bio-lh   = 45.9px
+       ink to rule 1 x --s1                      =  8px, the page's
+                                                   smallest token, the
+                                                   floor
+       label pair  0 declared                    = 10.24px RENDERED,
+                                                   supplied by the
+                                                   label's own lattice
+                                                   leading
+
+     RESULT: pairing 40.04px (1.31 lines), separation 56.31px (1.84
+     lines), ratio 0.71. The label now belongs to its own field. Pitch
+     per field falls 117.24px -> 96.35px, 17.8% tighter, while the
+     SEPARATING gap actually grows by 5.9px. That is the shape of the
+     fix: redistribution, not shrinkage. */
+  .field{
+    /* Block-to-block, derived from the page's reading rhythm rather
+       than from --s4's 40px, which was a literal agreeing with nothing.
+       1.5 body lines sits between .edu-body's paragraph gap (1.5em of
+       --bio-size) and .edu-rule's 2.5-line group separator, which is
+       the right register for "next field" — a block change, not a new
+       section. */
+    margin-bottom: calc(1.5 * var(--bio-size) * var(--bio-lh));
+  }
 
   .field-label{
     display: block;          /* always visible, above the field */
-    margin-bottom: var(--s1);
+    /* ZERO DECLARED, AND THAT IS NOT A ZERO GAP. The label sits on the
+       baseline lattice at line-height: var(--baseline) over a 10.5px
+       face, so its own line box already carries 10.24px of leading
+       BELOW its baseline before any margin is added — 1.28 x --s1,
+       already past the page's smallest token. The old var(--s1) was
+       stacked on top of that and rendered 18.24px, which is R4.1's
+       "inline gaps render larger than they are declared; match the
+       RENDERED gap, not the declared one" arriving through leading
+       instead of a strut. Nothing here is below --s1 in rendered
+       terms. */
+    margin-bottom: 0;
     font-family: var(--sans);
     font-weight: 500;
     font-size: 10.5px;
     /* On the baseline lattice, like every other small line on the
-       page. At 1.8 its box was 18.9px, which is not a multiple of 28. */
+       page. At 1.8 its box was 18.9px, which is not a multiple of 28.
+
+       KEPT DELIBERATELY. Phase F's original justification for the
+       lattice — snapping the direct block hung beside the form — no
+       longer applies, because R10 moved that block into the text
+       column and bottom-aligns it with an auto margin. The lattice
+       stays anyway: .kicker, .contact-direct-label and .plate-caption
+       all set line-height: var(--baseline), and taking one 10.5px
+       uppercase line off the page's shared lattice to buy 4.5px would
+       trade a system for a number. */
     line-height: var(--baseline);
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -489,7 +573,17 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     display: block;
     width: 100%;
     margin: 0;
-    padding: 10px 0 12px;
+    /* THE ONE REAL RELATIONSHIP IN THIS BOX IS INK TO ITS OWN RULE, and
+       it is now exactly --s1 — the page's smallest spacing token, and
+       the floor this pass is not permitted to go under. Was 10px top /
+       12px bottom, two literals bracketing a 25.6px line box, which
+       put 48.6px of empty box between a label and its rule and was the
+       largest single term in the inverted pairing.
+
+       TOP PADDING IS ZERO because the label's lattice leading above
+       already separates the two; adding a second gap on top of it was
+       the same double-count the label's margin was making. */
+    padding: 0 0 var(--s1);
     border: 0;
     border-bottom: 1px solid var(--hair-strong);
     border-radius: 0;                 /* iOS adds one to text inputs */
@@ -498,9 +592,15 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-family: var(--sans);
     font-weight: 300;
     /* 16px MINIMUM. Below this iOS Safari zooms the viewport on focus and the
-       whole layout jumps. Applies to the select and textarea too. */
+       whole layout jumps. Applies to the select and textarea too.
+       UNTOUCHED BY R10.1 — the rhythm pass moves boxes, never this. */
     font-size: 16px;
-    line-height: 1.6;
+    /* 1.3 on the SINGLE-LINE controls only. On an input and a select the
+       line-height sets box height and nothing else — there is no second
+       line for it to space against — so 1.6 was 5.6px of pure box per
+       field. The textarea overrides back to 1.6 below, because there it
+       is a reading line-height and real multi-line text sits on it. */
+    line-height: 1.3;
     letter-spacing: 0.004em;
     color: var(--obsidian);
     transition: border-color 320ms var(--ease);
@@ -527,6 +627,11 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
   .field-textarea{
     resize: vertical;
     min-height: 7.5em;
+    /* BACK TO 1.6. This is the one control on which line-height is a
+       READING measure rather than a box height, and rows="5" is sized
+       against it. R10.1 is a spacing pass: the textarea keeps its rows
+       and its line-height, and only the padding above changed. */
+    line-height: 1.6;
   }
 
   /* Native select, restyled to the underline. appearance:none removes the OS
@@ -560,7 +665,10 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
      compensated to match. Scaling rather than swapping to `compact` at render
      time means a resize needs no re-render. */
   .turnstile-slot{
-    margin-bottom: var(--s4);
+    /* The same derived block gap the fields take, so the widget and the
+       button sit in the form's rhythm rather than on a separate one.
+       Was var(--s4). */
+    margin-bottom: calc(1.5 * var(--bio-size) * var(--bio-lh));
     min-height: 65px;
   }
 
@@ -581,28 +689,6 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     opacity: 0.62;
     transform: none;
   }
-
-  .contact-privacy{
-    margin: var(--s4) 0 0;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 11px;
-    line-height: 1.7;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--slate);
-  }
-
-  .contact-privacy a{
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    text-decoration-color: rgba(71, 68, 64, 0.42);
-    transition: color 320ms var(--ease);
-  }
-
-  .contact-privacy a:hover{ color: var(--obsidian); text-decoration-color: var(--obsidian); }
-  .contact-privacy a:focus-visible{ outline: 1px solid var(--obsidian); outline-offset: 4px; }
 
   /* --- The four states -------------------------------------------------
      idle is the form itself; the other three render here.
