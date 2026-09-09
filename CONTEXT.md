@@ -3,22 +3,23 @@
 Project-specific. Read alongside `CLAUDE.md` and `anchor-digital-standards.md`.
 Written after the design direction was chosen from mockups, per standard workflow.
 
-**Last updated:** September 8, 2026 — **all ten sections are built. R10 + R10.1 shipped
-(Contact + footer, form rhythm), closing the ten-`<h2>` structure at 10 of 10.** R9 settled
-through R9.6, R8 through R8.2. **R11 (`/privacy`) and R12 (folio marginalia) are what
-remain before launch.** The height-spread check ran at R10 and is **rescinded as
+**Last updated:** September 8, 2026 — **all ten sections are built and R12 (folio
+marginalia) has shipped.** R10 + R10.1 shipped (Contact + footer, form rhythm), closing the
+ten-`<h2>` structure at 10 of 10. R9 settled through R9.6, R8 through R8.2. **R11
+(`/privacy`) is deferred by Jackson — no privacy policy is being built for now; see the
+Launch clock entry.** The height-spread check ran at R10 and is **rescinded as
 specified** — see the Rhythm entry. **The R13 motion concept is now written** (see Motion
-vocabulary); R13–R15 are post-launch and two of them are blocked on Jackson's ruling. Copy rewrite approved, wireframe approved (Variant A), photo placement
-approved.
+vocabulary); R13–R15 are post-launch and two of them are blocked on Jackson's ruling. Copy
+rewrite approved, wireframe approved (Variant A), photo placement approved.
 **The page is being rebuilt from the wireframe in vertical slices.** Do not write another
 composition pass against the old build.
 
 **Copy now lives in `COPY.md`.** This file governs design, layout, and build. Copy
 passes read `COPY.md`; layout passes do not need it. Do not duplicate copy here.
 
-> **This file must be tracked in git.** It was untracked as of September 1 2026 —
-> the document governing the entire build had no history and existed on one machine.
-> If it is still untracked, commit it before doing anything else.
+> **This file and `COPY.md` are now tracked in git.** Untracked as of September 1 2026;
+> both committed to `main` and pushed to `github.com/jbleecker21/syreetamcclainsitebuild`
+> on September 8 2026. Keep committing changes to this file going forward.
 
 ---
 
@@ -30,9 +31,11 @@ lists her URL; print copies are already circulating.
 **Active blockers — none of these are code tasks except G and H:**
 
 1. **Domain control unresolved.** Nobody has confirmed who owns/controls the DNS.
-2. **Privacy policy not drafted (Phase G).** The contact form is now live in the build
-   and links to `/privacy`, which **404s today.** CalOPPA requirement. This moved from
-   future work to an active blocker the moment Phase F shipped.
+2. **Privacy policy — deferred by Jackson, September 8 2026.** `/privacy` still 404s and
+   the footer still links to it. This is a **known, chosen gap**, not an oversight — Jackson
+   has decided not to build R11 for now. CalOPPA still technically requires this for any
+   site with a contact form; the decision is his to make and is recorded here so it is not
+   mistaken for something that fell through.
 3. **Meta / Open Graph / favicon not built (Phase H).** Deferred by Jackson, but print
    is driving traffic and people will share the URL. With no OG image, every share
    renders as a blank card. **Reconsider the deferral.**
@@ -1640,8 +1643,8 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R9.6 | Charging It — frame registration | **Shipped September 8 2026. R9 is settled.** Frame top trim registered to the turn's cap height via `--chg-frame-register`, k = 0.31125. Residual ≤0.75px against a 3px tolerance, two methods. Clearance −1.48px → +70px. `text-wrap: balance` measured both ways and ruled to stay. Stacked arrangement byte-identical, 20 quantities × 10 widths, zero differences. |
 | R10 | Contact + footer | **Shipped September 8 2026.** Form ported into the rebuilt grid, not rebuilt; text 1–5, form 7–11, column 6 left open as a measured empty channel (175.3px at 1920 → 100.7px at 1024). Stacking derived text-above-form. All twelve Phase F items re-verified with method. Height-spread check run and rescinded. **Carried fix: the Cover CTA pointed at `#contact` against an id of `sec-contact` — the page's primary call to action had been a dead click since R1.** Precedent: R7 carried the Cover's id, R8 carried the `sections.ts` change. |
 | R10.1 | Contact — form rhythm + one privacy link | **Shipped September 8 2026.** One file, `Contact.astro`; `global.css` untouched, which is why the nine-section delta is structural rather than hopeful. Six declarations changed, three deleted with the link. Pairing ratio 1.33 (inverted) → 0.71; form height −72.94px; Contact 1011.94 → 880.31px, reported not steered. Predicted 40.04 / 56.31 / 0.71 before building, measured 40.03 / 56.30 / 0.71. |
-| R11 | `/privacy` | Phase G, launch blocker |
-| R12 | Folio marginalia | **`FolioMarginalia.astro` is not mounted.** Mount it, wire the single scroll listener, verify it goes quiet over the pivot and that every label matches its section's `<h2>`. Depends on R8's `sections.ts` change. **This is the page's entire scroll budget and the only element that carries section identity — the page cannot be judged inert until it is live.** |
+| R11 | `/privacy` | Phase G. **Deferred by Jackson, September 8 2026 — not being built for now.** Independent, can run whenever the client sends data-practice details and Jackson decides to resume it. |
+| R12 | Folio marginalia | **Shipped September 8 2026.** `FolioMarginalia.astro` mounted, single scroll listener wired. Horizontal stability, active-section accuracy, quiet-over-pivot, and label integrity against every `<h2>` all verified and reviewed by Jackson on localhost at 1440 and at the 1280 collapse edge. Zero layout regression on the nine prior sections. |
 | R13 | Index row hover (weight shift) | **After launch. ⚠️ Blocked on Jackson's ruling** — it needs a scoped exception to "animate `transform` and `opacity` only," conditional on a measured reflow pass. Concept, conflict and the two routes are written in **Motion vocabulary**. |
 | R14 | Contact on Obsidian | **After launch. ⚠️ Blocked on Jackson's ruling** — a second dark ground either gives the page a spine or dilutes the pivot. If ruled in, the focus ring must be re-derived on Obsidian and gold must still not be spent. See **Motion vocabulary**. |
 | R15 | Everyday Legends opener | **After launch.** Break the third consecutive type-opener. Composition judgment, Opus, screenshot before numbers. The three left edges do not move. See **Motion vocabulary**. |

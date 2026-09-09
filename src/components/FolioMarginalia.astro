@@ -1,7 +1,13 @@
 ---
 // SIGNATURE MOVE — folio marginalia.
 //
-// This is now the ONLY current-section indicator on the page, and the only
+// MOUNTED IN R12. Until this slice the file existed on disk and was imported
+// by nothing, so CONTEXT.md's "one scroll listener exists in the entire build"
+// described a build that had zero. It has exactly one now, and it is the one
+// below. If a future component needs scroll tracking it reuses this; it does
+// not add a second.
+//
+// This is the ONLY current-section indicator on the page, and the only
 // scroll-driven behaviour anywhere in the build. RunningHead.astro used to
 // render a second one in the live margin (columns 9-12) off its own hand-copied
 // copy of the same section list; at any scroll position the two displayed the
@@ -12,17 +18,31 @@
 //
 // It never gates content visibility; it only relabels the margin.
 //
-// The section list is imported, not restated. See src/data/sections.ts.
+// The section list is imported, not restated. See src/data/sections.ts. The
+// Cover and the Feature Quote have no entry there — a cover is not a section
+// and the pivot is a pivot — so the folio prints nothing over either. That is
+// data, not a special case in this file, and it MUST stay that way.
 import { sections } from '../data/sections';
-
-const first = sections[0];
 ---
 
-<!-- xl:, not lg:. The folio hides at the same 1280px threshold the live
-     margin does (raised from 1024 in E.8): below it there is no margin
-     column for a marginal element to belong to, and the folio is one. -->
+{/* COLLAPSE, ALL FOUR BANDS — stated here rather than retrofitted.
+      >=1280  band 1 : rendered, fixed to the left trim, vertically centred
+      1024-1279 band 2 : NOT rendered
+      751-1023  band 3 : NOT rendered
+      <=750     band 4 : NOT rendered
+
+      xl:, not lg:. The folio hides at 1280 (raised from 1024 in E.8). This is
+      NOT the live margin's threshold and did not move with it: R3 deleted the
+      margin's 1024-1279 suppression, and the note in CONTEXT.md's Layout
+      System is explicit that the folio's 1280 stayed put because the folio is
+      fixed to the viewport edge and is not a grid item. Below 1280 the page
+      has no motion at all and that is correct.
+
+      display:none here is the render tree, not a fade — and the script reads
+      that same computed value rather than restating 1280 in JS, so the CSS
+      remains the single place the threshold is written. */}
 <div class="folio hidden xl:block fixed left-0 top-1/2 z-40 pointer-events-none" aria-hidden="true">
-  <div class="folio-inner" id="folio"><span class="folio-num">{first.n}</span><span id="folio-label">{first.label}</span></div>
+  <div class="folio-inner" id="folio"><span class="folio-num"></span><span id="folio-label"></span></div>
 </div>
 
 <style>
@@ -35,7 +55,12 @@ const first = sections[0];
      but keeps the box narrow and left-anchored, so the folio sits at a fixed
      distance from the trim edge no matter how long the label is.
      Never rotate(-90deg): that makes the bounding box track text width and the
-     folio jitters horizontally between labels of different lengths. */
+     folio jitters horizontally between labels of different lengths.
+
+     Concretely: in vertical-rl the block axis is horizontal, so the box's WIDTH
+     is a line box and is a function of the font, not of the string. rotate(180)
+     is axis-preserving. The residual between the widest label and the narrowest
+     is therefore 0 by construction, not by tuning. */
   .folio-inner{
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -52,18 +77,27 @@ const first = sections[0];
 
   .folio-inner.is-visible{ opacity: 0.75; }
 
-  .folio-num{ margin-right: 1.1em; }
+  /* LOGICAL, NOT PHYSICAL. The gap between numeral and label runs along the
+     INLINE axis, which vertical-rl turns vertical. A physical `margin-right`
+     here is a block-axis margin on an inline box and is ignored outright, so
+     the numeral and the label set solid. margin-inline-end is also the only
+     form that cannot contribute to the box's width, which is what item 1 of
+     this slice measures. */
+  .folio-num{ margin-inline-end: 1.1em; }
 </style>
 
 <!-- define:vars implies is:inline, so the list is serialised straight into the
      tag and the script is never bundled or deferred behind a module graph. -->
 <script is:inline define:vars={{ sections }}>
 (function () {
-  // This component renders before <main>, so resolving the section elements
-  // immediately captured an empty list and the folio never became visible or
-  // changed label. Initialisation waits for the document to finish parsing.
+  // The mount point is after <main> and <footer>, but the readyState guard is
+  // kept regardless: it is what makes the component independent of where it is
+  // mounted. An earlier throwaway mount placed it before <main>, resolved the
+  // section elements immediately, captured an empty list, and the folio never
+  // became visible or changed label.
   function init() {
-    var folio = document.getElementById('folio');
+    var folio = document.getElementById('folio');   // .folio-inner — carries the type and the opacity
+    var wrap  = folio.parentNode;                   // .folio — carries the 1280 collapse
     var label = document.getElementById('folio-label');
     var num   = folio.querySelector('.folio-num');
 
@@ -71,21 +105,85 @@ const first = sections[0];
       .map(function (m) { return { el: document.getElementById(m.id), n: m.n, t: m.label }; })
       .filter(function (m) { return m.el; });
 
-    function sync() {
-      // A plain scroll-position check against each section's box. No observer,
-      // so nothing on the page depends on visibility to render.
-      var mid = window.scrollY + window.innerHeight / 2;
-      var active = null;
-      nodes.forEach(function (m) {
-        var top = m.el.offsetTop;
-        if (mid >= top && mid < top + m.el.offsetHeight) active = m;
-      });
-      if (active) {
-        if (num.textContent !== active.n) { num.textContent = active.n; label.textContent = active.t; }
-        folio.classList.add('is-visible');
-      } else {
-        folio.classList.remove('is-visible');
+    // How long the opacity transition actually runs, read from the cascade
+    // rather than restated. Under prefers-reduced-motion global.css clamps
+    // every transition-duration to 0.001ms with !important, so this resolves
+    // to ~0 and the folio goes quiet instantly instead of fading.
+    var fadeMs = (parseFloat(getComputedStyle(folio).transitionDuration) || 0) * 1000;
+
+    // ---- GEOMETRY CACHE ---------------------------------------------------
+    // Every layout read the folio needs happens HERE, and measure() is called
+    // on load, on resize and when webfonts settle — never from the scroll
+    // handler. The inherited version read el.offsetTop and el.offsetHeight for
+    // all eight sections inside the scroll path, which is eight forced layout
+    // reads per serviced scroll frame.
+    //
+    // getBoundingClientRect + scrollY, not offsetTop: offsetTop is measured
+    // from the offsetParent, so it silently reports the wrong number the day
+    // any ancestor of a section becomes positioned.
+    var tops = new Float64Array(nodes.length);
+    var bots = new Float64Array(nodes.length);
+    var half = 0;
+    var rendered = false;
+    var painted = -2; // sentinel: never a valid index and never the quiet -1
+
+    function measure() {
+      // The 1280 threshold is owned by the stylesheet. Reading the computed
+      // display is how this script learns it without duplicating the number.
+      rendered = getComputedStyle(wrap).display !== 'none';
+      half = window.innerHeight / 2;
+      var sy = window.scrollY;
+      for (var i = 0; i < nodes.length; i++) {
+        var r = nodes[i].el.getBoundingClientRect();
+        tops[i] = r.top + sy;
+        bots[i] = tops[i] + r.height;
       }
+      painted = -2;
+    }
+
+    // ---- QUIET ------------------------------------------------------------
+    // Going quiet is not a fade to opacity 0 with the last label still set.
+    // The text is REMOVED once the fade has run, so over the Cover and over
+    // the pivot the folio renders nothing at all. display is never touched:
+    // toggling it would collapse the box that item 1 measures.
+    var clearTimer = 0;
+    function cancelClear() { if (clearTimer) { clearTimeout(clearTimer); clearTimer = 0; } }
+    function scheduleClear() {
+      cancelClear();
+      clearTimer = setTimeout(function () {
+        clearTimer = 0;
+        num.textContent = '';
+        label.textContent = '';
+      }, fadeMs + 30);
+    }
+
+    function paint(i) {
+      if (i === painted) return;
+      painted = i;
+      if (i < 0) {
+        folio.classList.remove('is-visible');
+        scheduleClear();
+      } else {
+        cancelClear();
+        num.textContent = nodes[i].n;
+        label.textContent = nodes[i].t;
+        folio.classList.add('is-visible');
+      }
+    }
+
+    // ---- THE RULE ---------------------------------------------------------
+    // The folio names the section occupying the viewport's vertical midpoint.
+    // Half-open interval [top, bottom) so a shared edge belongs to exactly one
+    // section and no scroll position can match two. No match — the Cover, the
+    // pivot, past the last section — is quiet.
+    function sync() {
+      if (!rendered) return;
+      var mid = window.scrollY + half;   // the only read in the scroll path
+      var i = -1;
+      for (var k = 0; k < nodes.length; k++) {
+        if (mid >= tops[k] && mid < bots[k]) { i = k; break; }
+      }
+      paint(i);
     }
 
     // Coalesce scroll work into one frame, but never let the guard LATCH.
@@ -105,9 +203,37 @@ const first = sections[0];
       setTimeout(release, 250);
     }
 
+    function remeasure() { measure(); sync(); }
+
+    // THE ONE SCROLL LISTENER IN THE BUILD. Passive: the handler never calls
+    // preventDefault, and declaring so keeps it off the main thread's critical
+    // path for the gesture.
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', sync, { passive: true });
-    sync();
+
+    // Not scroll listeners. These exist to keep the geometry cache honest —
+    // without them the cache would be a stale copy of the layout at load.
+    window.addEventListener('resize', remeasure, { passive: true });
+    window.addEventListener('load', remeasure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+
+    // THE INDEX'S <details> IS THE ONE THING ON THIS PAGE THAT CHANGES
+    // DOCUMENT HEIGHT WITHOUT A RESIZE. Opening the McClain Brothers
+    // expansion adds 200px at 1440 and pushes every section below the Index
+    // down by that much, and a cache taken at load knows nothing about it.
+    // MEASURED, not anticipated: with the expansion open and no listener
+    // here, the folio read "07 Charging It to the Game" while the Index still
+    // occupied the midpoint (mid 6835), and "08 Contact" while Charging still
+    // did (mid 7777) — one section ahead across a 200px band at each
+    // boundary. The live-read version this file replaced could not have that
+    // bug; caching the geometry is what introduced it, so caching is what has
+    // to pay for it.
+    //
+    // Capture phase: `toggle` does not bubble, so a listener on document only
+    // sees it on the way down. Bound to document rather than to the element
+    // so the folio stays ignorant of which component owns the disclosure.
+    document.addEventListener('toggle', remeasure, true);
+
+    remeasure();
   }
 
   if (document.readyState === 'loading') {

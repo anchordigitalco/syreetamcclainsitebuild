@@ -15,9 +15,10 @@
  *   R7       Feature Quote       <- shipped
  *   R8       Index               <- shipped
  *   R9       Charging It         <- shipped
- *   R10      Contact + footer    <- THIS SLICE
+ *   R10      Contact + footer    <- shipped
+ *   R12      Folio marginalia    <- THIS SLICE
  *
- *   R11 /privacy   R12 Folio marginalia
+ *   R11 /privacy
  *
  * R4 AND R5 ARE THE ONLY PAIR BATCHED IN THE WHOLE REBUILD. They are
  * built to rhyme and the failure mode of a rhyme is a repeat, so they
@@ -37,6 +38,18 @@
  * (hidden), About (hidden), Educational Leader, Premier Leadership,
  * Everyday Legends Foundation, Athletic Management, the pull quote,
  * Index (hidden), Charging It to the Game, Contact.
+ *
+ * THE FOLIO SITS OUTSIDE <main> AND OUTSIDE <footer>, LAST IN THE
+ * DOCUMENT. It is position:fixed, pointer-events:none and aria-hidden,
+ * so it is neither a section nor content: it has no entry in
+ * src/data/sections.ts, no <h2>, and it takes no part in the
+ * ten-<h2> structure. Mounted last so it cannot sit between the
+ * landmarks, and because nothing in the page depends on it existing.
+ *
+ * IT CARRIES THE PAGE'S ONLY SCROLL LISTENER. Before R12 the build had
+ * zero, and CONTEXT.md's "one scroll listener exists in the entire
+ * build" described something that was not true yet. A second one is
+ * not to be added; a future component that needs scroll reuses this.
  *
  * THE FOOTER SITS OUTSIDE <main>. A <footer> nested inside <main> is
  * a generic element and resolves to no landmark; outside it, it is
@@ -64,6 +77,7 @@ import Index from '../components/Index.astro';
 import ChargingItToTheGame from '../components/ChargingItToTheGame.astro';
 import Contact from '../components/Contact.astro';
 import PageFooter from '../components/PageFooter.astro';
+import FolioMarginalia from '../components/FolioMarginalia.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -81,4 +95,6 @@ import PageFooter from '../components/PageFooter.astro';
   </main>
 
   <PageFooter />
+
+  <FolioMarginalia />
 </BaseLayout>
