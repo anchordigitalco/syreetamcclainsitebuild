@@ -3,11 +3,13 @@
 Project-specific. Read alongside `CLAUDE.md` and `anchor-digital-standards.md`.
 Written after the design direction was chosen from mockups, per standard workflow.
 
-**Last updated:** September 8, 2026 — **R9 shipped and settled through R9.6** (Charging It
-to the Game: lede band, frame reposition, cap-height registration). R8 shipped and settled
-(Index + McClain Brothers, through R8.2). **R10 — Contact + footer — is next, and the
-height-spread check runs the moment it ships.** Copy rewrite approved, wireframe approved
-(Variant A), photo placement approved.
+**Last updated:** September 8, 2026 — **all ten sections are built. R10 + R10.1 shipped
+(Contact + footer, form rhythm), closing the ten-`<h2>` structure at 10 of 10.** R9 settled
+through R9.6, R8 through R8.2. **R11 (`/privacy`) and R12 (folio marginalia) are what
+remain before launch.** The height-spread check ran at R10 and is **rescinded as
+specified** — see the Rhythm entry. **The R13 motion concept is now written** (see Motion
+vocabulary); R13–R15 are post-launch and two of them are blocked on Jackson's ruling. Copy rewrite approved, wireframe approved (Variant A), photo placement
+approved.
 **The page is being rebuilt from the wireframe in vertical slices.** Do not write another
 composition pass against the old build.
 
@@ -43,6 +45,11 @@ lists her URL; print copies are already circulating.
    separate legal entity.
 7. **Formspree free tier is 50 submissions/month.** Price a paid tier before the gala.
    Confirm at signup that CAPTCHA is on the free plan.
+7b. **The build ships Cloudflare's TEST sitekey and TEST secret.** The widget renders
+   *"For testing only. If seen, report to site owner"* in red on the live page, and the
+   form's endpoint is still `formspree.io/f/your_form_id`. **Swap both to live credentials
+   and re-verify the four states against the real endpoint.** Not a build slice — a launch
+   task, and the most visible one on this list. Never mix a test sitekey with a live secret.
 8. **Pillars wording** — "education, athletics, and service" vs. "education, sports,
    and community." Site uses the former. Needs explicit client confirmation.
 9. **Two pieces of Claude-written copy are shipping unsigned.** The Athletic caption
@@ -306,16 +313,38 @@ Athletic 110 · Feature Quote 150 · Index 110 · Blog 110/40 · Contact 96.
 > floor is set by constraint, not preference — it cannot fall below Educational Leader's and
 > Athletic's flat 110.
 
-The height spread between the tallest sections (Educational Leader, Athletic) and the
-shortest (Contact) MUST be visible on the built page. If every section ends up the same
-height, the build is wrong regardless of how it is styled.
+The height spread between the tallest and shortest sections MUST be visible on the built
+page. If every section ends up the same height, the build is wrong regardless of how it is
+styled.
 
-> **This check cannot run until R10 (R7).** Contact is not built, so the spread's short end
-> does not exist yet. Interim measurement at 1440×900: tallest 1206px (Athletic), shortest
-> content section 739px, **1.63:1** excluding the pivot — which is one line of type and is
-> meant to be short. Athletic is 1.36× Educational Leader and 1.75× the median section, and
-> the spread is visible on the shrunk page without measuring. **Run the specified check once
-> Contact ships; do not treat the interim figure as having satisfied it.**
+> **The check as originally specified is RESCINDED (R10). Its premise fails.** It read
+> *"tallest (Educational Leader, Athletic) vs. shortest (Contact)"* and derived that pairing
+> from the word budget — ~20 words at Contact to ~110 at Educational Leader, a 5:1 spread the
+> composition was said to depend on. **Word budget does not map to height when a section's
+> content is a form.** Four labelled fields, a textarea, a widget slot and a button occupy
+> ~700px of vertical regardless of copy length. Contact runs the highest px/word of any
+> content section on the page. The specified 5:1 word ratio renders as **0.84 : 1** in
+> height; Contact is 1.14× Educational Leader, not 0.18× it.
+>
+> **Measured at R10, all ten sections, three widths.** Athletic Management is tallest at
+> 1920, 1440 and 1280 — that half of the claim holds. Contact is **not** the shortest: it is
+> third-tallest at 1920 and 1280 and second-tallest at 1440. Educational Leader, named as a
+> tall section, measures **exactly the median** (×1.00 at 1920 and 1440, ×1.03 at 1280).
+> There is no stable short end — the shortest content section is About at 1920, Premier at
+> 1440, Everyday Legends at 1280. **The Educational Leader half of the row is wrong and is
+> struck.**
+>
+> **What the check was protecting still holds.** Spread at R10: 2.58 : 1 at 1920 and
+> 1.87 : 1 at 1440 and 1280 including the pivot; 2.19 : 1 / 1.63 : 1 / 1.48 : 1 on content
+> sections alone. The shrunk-page test passes on its own terms — all ten sections read as
+> distinct shapes. **The replacement condition is that test, not a ratio between two named
+> sections.**
+>
+> **MUST NOT: adjust section padding to manufacture a spread.** Contact's 96px is the
+> per-section list's value and is untouched. R10.1 tightened the form's internal rhythm on a
+> screenshot judgement and Contact fell to 880.31px as a consequence — reported, not steered.
+> A future pass that moves a section's height to improve this ratio is doing the thing this
+> entry exists to forbid.
 
 **Image budget check:** one `bleed-left`, three `column`, one `inset`. **Five sections
 carry no photograph** — About, Educational Leader, Everyday Legends, Feature Quote, Index,
@@ -499,11 +528,28 @@ against.
 > Athletic deliberately inverts, the pivot goes quiet, **the Index has no margin content at
 > all**, and Charging fills that ground with a photograph. The page's bottom third has no
 > live margin. This is not any one section's doing — the Index's 1–11 window is settled R8,
-> the frame's 9–12 is settled R9 — and **R10's Contact (text 1–5, form 7–11) will not restore
-> it either.** Recorded here because the "never empty for long stretches" rule above is
-> currently violated across three consecutive sections and nothing on the board addresses it.
-> **Not a launch blocker and not a reason to reopen a settled slice.** If it is to be fixed,
-> it is a page-level pass with its own concept, after launch.
+> the frame's 9–12 is settled R9 — and **R10's Contact (text 1–5, form 7–11) does not restore
+> it either, confirmed by measurement.** Recorded here because the "never empty for long
+> stretches" rule above is currently violated across the page's last four sections and
+> nothing on the board addresses it. **Not a launch blocker and not a reason to reopen a
+> settled slice.** If it is to be fixed, it is a page-level pass with its own concept, after
+> launch.
+>
+> **Measured at R10, 1440.** The live-margin band starts at x ≈ 1066. About (y 1295→1378),
+> Educational Leader (1829→1890), Premier (2762→3018) and Everyday Legends (3556→3617) all
+> put ink on that edge — four consecutive sections, which is what establishes the column per
+> R3. The last margin ink on the page is at y = 6559 of 8728: **the bottom 24.8% of the page
+> has nothing in the band**, and the unbroken live run is 2321.7px, 26.6% of the page.
+> Identical picture at 1280.
+>
+> **Two mechanism corrections to the sentence above.** (1) The Index does put ink in the
+> band's x-range — the brothers' domains, right-aligned to the `idx-body` window — but at
+> **x = 1154, not 1066**, so it sits on a different edge and does not establish the column.
+> "No margin content at all" is right in substance, wrong in mechanism. (2) Contact is the
+> only one of the last four sections whose right half is not empty: the form window (7–11)
+> spans x 1016 → 1549 and crosses the band. That is the form's body, not marginalia, and its
+> left edge is 1016. Per R3 — *the column is not established by its width but by content
+> deliberately positioned in it* — **Contact does not restore the margin.**
 
 ### Collapse bands (R-shell, shipped September 6 2026)
 
@@ -705,6 +751,146 @@ against both.
   ≥1436 — passing only because a `clamp()` had frozen the numeral, and never measured above
   1440 at all. **A verification list that stops below the widths where slack is largest will
   keep certifying builds that are already failing there.**
+
+---
+
+## Motion vocabulary and post-launch composition (R13 concept)
+
+Written September 8 2026, **before any line is built**, per the R13 requirement that the
+concept enters this file first. Nothing in this section ships before launch.
+
+### The governing idea
+
+**The page is a printed object that knows where the reader is.** Not a website with
+animations layered on top. Anything that reads as a web effect is out; anything that reads
+as a printed object behaving intelligently is in. This sentence is the test for every
+future proposal, and it is the reason the rejections below are rejections rather than
+preferences.
+
+The corollary from `principles`: effects layered onto a concept-free page produce a
+concept-free page with effects. The concept comes first or the pass does not run.
+
+### The motion budget: three things, total
+
+1. **The folio (R12).** The page's only scroll-driven element, and its entire scroll
+   budget. It already carries the numeral and the section name, so section identity is a
+   solved problem the moment R12 mounts — it does not need inventing.
+2. **Hover on the Index rows (R13).** Pointer-driven, not scroll-driven. See below.
+3. **Nothing else.**
+
+The folio hides below 1280px. **Below 1280 the page has no motion at all, and that is
+correct** — a phone is a single stacked column of a printed object, not a reduced version
+of a moving one. Do not compensate with mobile-only effects.
+
+### Rejected in concept — do not re-propose
+
+Four mechanisms were considered and fail rules already in this file. Recorded so the same
+ideas do not arrive again wearing different names.
+
+- **Clip-path or wipe reveals on entering type.** Fails for the same reason fade-up fails:
+  content clipped at load is invisible in full-page screenshot capture and in any
+  client-generated PDF. The trigger would also need either an `IntersectionObserver`
+  (banned) or a second scroll listener (banned).
+- **Paginated or coverflow Index.** The five destinations read at once by design. Paging
+  them is strictly worse and breaks R8's numeral-to-lede-edge composition.
+- **Cycling the Cover role line.** "Educator · Consultant · Momager · Founder" animated in
+  place asserts the roles are sequential. About closes on "Different rooms. One
+  through-line." The mechanism argues against the copy.
+- **Hover-preview imagery on the Index rows.** No photography exists for Premier
+  Leadership, Everyday Legends or the blog, and OSU clearance is still open for the
+  brothers. It would ship as empty frames.
+
+### R13 — Index row hover ⚠️ BLOCKED ON A RULING
+
+**Proposal.** On hover, an Index entry name shifts Fraunces `wght` from its resting weight
+to a heavier one, staggered per character from the centre of the word outward. No colour
+inversion, no highlight bar, no image, no row background. Nothing else on the row moves.
+
+**Why this one and not the others.** Weight shift under the cursor is how a printed
+contents page emphasises the entry you are about to turn to. It is the printed gesture, not
+a web hover state wearing an editorial costume. Fraunces is already variable and already
+in the build, so it costs no new asset.
+
+**The conflict, stated rather than arbitrated.** Two standing rules in this file are in
+tension with it:
+
+- **"Animate `transform` and `opacity` only."** A `font-variation-settings` transition
+  animates neither. It changes glyph advance widths, which is a layout-affecting property.
+- **Reflow.** As `wght` rises the entry name's advance width grows. The entries are set on
+  the lede edge, so the **left** edge is stable and only the right edge travels. The only
+  thing to the right of an entry name is the `+` affordance on entry 04, at the far right of
+  the row. Reflow is therefore probably contained, but *probably* is not this file's
+  standard.
+
+**Two honest routes, Jackson picks one:**
+
+1. **Rule an explicit, scoped exception** to the transform/opacity rule for
+   `font-variation-settings` on Index entries only, conditional on a measured pass: entry
+   name right-edge travel, `+` affordance position, and row height, captured at rest and at
+   full weight, at all thirteen widths, with zero row-height change and no collision with
+   the `+`.
+2. **Reject it** and leave the Index inert.
+
+**Do not let Claude Code arbitrate this.** It is a rule change, not an implementation
+detail. If the measurement in route 1 fails at any width, the answer is route 2, not a
+tuned constant.
+
+**If it ships:** every Fraunces axis must be enumerated at both ends of the transition, per
+the permanent Fraunces gotcha. A transition that names only `wght` will silently ship
+`SOFT` 100 and `WONK` on at the hovered end.
+
+### R14 — Contact on Obsidian ⚠️ BLOCKED ON A RULING
+
+**Proposal.** Contact takes an Obsidian ground, giving the page a spine: Porcelain through
+the four pillars, Obsidian at the pivot, Porcelain through Index and blog, Obsidian at the
+close.
+
+**The case for.** The Feature Quote is currently the only dark ground on the page, which
+makes it read as an isolated slab rather than as a structural turn. A bookend at the close
+makes the pivot the first of a pair and gives the scroll a shape the eye can hold.
+
+**The case against, which is this file's own.** "Porcelain dominant, Obsidian type"; the
+pivot is described as the page's **single** structural pivot; and a second full-bleed dark
+ground is exactly the kind of thing that dilutes a device the page spent R7 establishing.
+
+**If ruled in, three things are not optional:**
+
+- The submit button is `.btn-solid` on Porcelain. On Obsidian it inverts, and the verified
+  Phase F property must be re-verified, not assumed to carry.
+- **The focus ring's 12.9:1 was measured against Porcelain.** It must be re-derived on
+  Obsidian against the 3:1 floor. This is the exact defect R10 caught with the gold ring at
+  2.4:1; do not reintroduce it by porting a number.
+- Gold becomes legal on this ground (5.76:1). **It must still not be spent here.** The gold
+  budget is pinned and the pivot's "Legacy" is the third and last saturated accent.
+
+### R15 — One opener that breaks pattern
+
+**The observation.** Educational Leader, Everyday Legends and Charging It to the Game all
+open identically: kicker, display lede, body. Premier and Athletic feel different only
+because they open on a photograph. Three consecutive type-openers at the same pitch is
+precisely the sameness failure this file names as the primary failure mode.
+
+**The pick: Everyday Legends.** It is abridged, it already carries the Fraunces asterisk
+doing structural work, and it sits between two heavier sections, so the break is absorbed
+rather than exposed. Let the mark carry the top of the section and the display lede sit
+lower, opening on the margin rather than the lede edge.
+
+**This is composition judgment, not arithmetic.** Opus. Screenshot before numbers. Expect
+to reject the first attempt; that is the pass working, not the pass failing.
+
+**Constraint:** the three established left edges are not in scope. The opener's *vertical*
+order changes; the edges do not move.
+
+### Cover bottom band — verify before it becomes a slice
+
+Full-page capture shows a wide empty band below the Cover's `column-tall` portrait panel,
+with the photograph terminating at the section edge in a way that reads accidental rather
+than composed. It is the page's first impression and print is driving every visitor to it.
+
+**Measure it at all thirteen widths before writing a slice.** It may be a capture artifact
+at one viewport rather than a defect. If it is real, the fix is either the panel running to
+the section floor or the band earning a reason to exist — decided from the screenshot, not
+from a padding value.
 
 ---
 
@@ -1330,6 +1516,65 @@ The form was built and verified before the composition pass, so composition chan
 underneath it. If a composition change forces a trade-off against the form, stop and report
 rather than choosing.
 
+> **Ported into the rebuilt grid at R10. Four things had to change, none of them on the
+> verified list above.** (1) Every placement class the component used — `.spread`,
+> `.col-rule`, `.col-body`, `.col-indent`, `.col-margin`, `.row-1..3`, `.section-head`,
+> `.section-numeral`, `.margin-block`, `.margin-label` — was deleted with the old grid in R1;
+> it would have rendered as an unstyled stack. (2) `--hair-gold` no longer exists, and an
+> undefined `var()` in that shorthand is invalid at computed-value time, so three link
+> underlines silently disappeared; routed to `.edu-link`'s Slate `rgba(71,68,64,0.42)`.
+> (3) **The gold focus ring was a live accessibility defect** — gold measures 2.4:1 on
+> Porcelain, under WCAG 1.4.11's 3:1 floor for a non-text indicator. Obsidian is 12.9:1 and
+> is already what `.btn-solid` and `.edu-link` focus in. (4) The submit takes `.btn-solid`;
+> Phase F's three-layer tinted shadow has no counterpart on a page with zero `box-shadow`,
+> and `.btn-solid` satisfies the verified property (Obsidian, solid, not ghost/outline/gold)
+> exactly — so no conflict and no STOP.
+>
+> **Also removed at R10:** the 09 section numeral (no shipped section carries one), and a
+> Claude-written `Premier Leadership · Everyday Legends Foundation` note under the address —
+> it is not in `COPY.md` and it asserted as settled the exact routing question the launch
+> clock records as open item 6. **Unsigned copy that prejudges a client decision is worse
+> than no copy.**
+>
+> **One privacy link ships, in the footer (R10.1).** R10 shipped two ~150px apart — one in
+> the contact column (Phase F item 11) and one in the footer (the Footer spec). The
+> contact-column link is deleted, along with its now-unused `privacyPath` const — *a dangling
+> const is the next pass's invitation to re-add the link.* **Phase F item 11 is satisfied by
+> the deletion, not broken by it:** that item required the link outside the `<form>` because
+> as its last child it pushed error messages below itself rather than under the button. With
+> no link in the column, the status region is unconditionally last — a stronger guarantee
+> than the original fix.
+>
+> **The address is pushed to the foot of the stretched grid item by `margin-top: auto` in a
+> flex column (R10, round 2).** Built without it, the section carried 411–465px of empty
+> ground under the text column — R2's About "hollow half" recurring exactly, with the address
+> hanging off the lede into open ground. The section now closes on one horizontal: address at
+> column 1, submit button at column 7, delta **0.00px** at 1920, 1440, 1280 and 1024. No
+> baseline group and no `last baseline`, so the Safari risk is not extended. Stacked, `auto`
+> resolves to zero and the derived 0.75lh lede gap survives at 46.02px.
+
+**Form rhythm — derived at R10.1, and the pairing was inverted before it.**
+
+Every label sat **1.33× closer to the field above it than to its own**, identical at all
+four beside widths because none of the terms were width-dependent. The form did not read as
+loose so much as unattached.
+
+- **Field → field: `calc(1.5 × --bio-size × --bio-lh)` = 45.9px.** Declared against the body
+  line, not as a literal (R8.2). The model is `.edu-rule`, whose binding and separating gaps
+  are both multiples of the body line at a 3.3:1 ratio and re-resolve from the type with no
+  breakpoint.
+- **Typed ink → its own rule: `var(--s1)` = 8px.**
+- **Label → its field: declared `0`.** The label sits on `line-height: var(--baseline)` over
+  a 10.5px face, so its line box already carries **10.24px** below its baseline. The old
+  `var(--s1)` stacked on top of a gap that already exceeded the floor and rendered 18.24px.
+  **This is R4.1 — match the rendered gap, not the declared one — arriving through leading
+  instead of a strut.**
+
+Result: pairing 40.03px against separation 56.30px, ratio **0.71** where it was 1.33 and
+inverted. Form height 761.25 → 688.31px, pitch per field −17.8%. **The separating gap grew
+by 5.89px while the form got tighter — the air was moved, not deleted.** `.form-status`
+keeps `var(--s4)`: it is a state gap, not resting rhythm.
+
 **Privacy policy:** required standard deliverable (CalOPPA). **Not drafted; `/privacy`
 404s today.** Must name the contact form as a collection point. Client supplies and warrants
 her own data-practice details.
@@ -1338,7 +1583,15 @@ her own data-practice details.
 - Left: `© 2026 Dr. Syreeta McClain. All rights reserved.`
 - Right: linked `Built by Anchor Digital` → `https://anchordigitalco.com`, new tab,
   `rel="noopener"`.
-- Privacy policy link, conspicuous.
+- Privacy policy link, conspicuous. **This is the page's only privacy link** (R10.1).
+
+> **Column split is 8/4 and 5/3, set on measured need (R10, round 2).** The first split
+> (5/6) put the copyright 3.58px inside its block at 1024 and wrapped it to two lines from
+> 819 down through the bottom of band 3. Both registrations were invisible anyway — the
+> copyright needs 355.75px and the credit 195.39px, so neither ever reaches its block's right
+> edge. Outer edges unchanged; minimum clearance 56.13px at 751, no wrap from 751 up. It
+> still wraps below 399, which is correct — nothing sits beside it there. The footer is a
+> direct child of `<body>`, outside `<main>`, so it resolves to the `contentinfo` landmark.
 
 **Media clearance** runs to the client via the MSA's asset warranty clause. Anchor's
 protection is contractual, not operational. Third-party media requires two written
@@ -1385,11 +1638,13 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R9 | Charging It to the Game | **Shipped September 8 2026 (R9 through R9.6).** Crossover 1254, stacked window 3–9, band 3 on one left edge, coda derived from its own longest line with one authored `<br>` at ≤750 after "simply", caption removed. Lede band and cap-height registration in R9.5/R9.6 below. **Nine passes; five corrected chat's own rulings — see Workflow.** |
 | R9.5 | Charging It — lede band + frame reposition | **Shipped September 8 2026.** Lede to its own band at 3–11; frame to 9–12 beside the prose only; turn/body/coda at 3–8; all lede derivation deleted. New collapse-aware primitive `.win-chg-lede` (3/12 → 3/10 → 1/-1 → 1/-1). Dead column 383.67px → 24px. Two STOPs reported and both ruled — see the note above. |
 | R9.6 | Charging It — frame registration | **Shipped September 8 2026. R9 is settled.** Frame top trim registered to the turn's cap height via `--chg-frame-register`, k = 0.31125. Residual ≤0.75px against a 3px tolerance, two methods. Clearance −1.48px → +70px. `text-wrap: balance` measured both ways and ruled to stay. Stacked arrangement byte-identical, 20 quantities × 10 widths, zero differences. |
-| R10 | Contact + footer | **Next.** **Form is ported, not rebuilt.** Run the height-spread check once this ships — deferred since R7. Sonnet. |
+| R10 | Contact + footer | **Shipped September 8 2026.** Form ported into the rebuilt grid, not rebuilt; text 1–5, form 7–11, column 6 left open as a measured empty channel (175.3px at 1920 → 100.7px at 1024). Stacking derived text-above-form. All twelve Phase F items re-verified with method. Height-spread check run and rescinded. **Carried fix: the Cover CTA pointed at `#contact` against an id of `sec-contact` — the page's primary call to action had been a dead click since R1.** Precedent: R7 carried the Cover's id, R8 carried the `sections.ts` change. |
+| R10.1 | Contact — form rhythm + one privacy link | **Shipped September 8 2026.** One file, `Contact.astro`; `global.css` untouched, which is why the nine-section delta is structural rather than hopeful. Six declarations changed, three deleted with the link. Pairing ratio 1.33 (inverted) → 0.71; form height −72.94px; Contact 1011.94 → 880.31px, reported not steered. Predicted 40.04 / 56.31 / 0.71 before building, measured 40.03 / 56.30 / 0.71. |
 | R11 | `/privacy` | Phase G, launch blocker |
-| R12 | Folio marginalia | **`FolioMarginalia.astro` is not mounted.** Mount it, wire the single scroll listener, verify it goes quiet over the pivot and that every label matches its section's `<h2>`. Depends on R8's `sections.ts` change. |
-| R13 | Motion vocabulary | **After launch, not before.** The page's only moving element is R12's folio; "one scroll listener exists in the entire build" is currently zero, so the page must be judged with the folio live before it is called inert. Concept into this file before a line is built. **Fade-up-on-scroll reveals stay banned** — content invisible on load breaks the screenshot loop and any client-generated PDF. **No parallax on the plates:** a `transform` on a photograph promotes it to its own layer and the multiply treatment silently stops blending. |
-
+| R12 | Folio marginalia | **`FolioMarginalia.astro` is not mounted.** Mount it, wire the single scroll listener, verify it goes quiet over the pivot and that every label matches its section's `<h2>`. Depends on R8's `sections.ts` change. **This is the page's entire scroll budget and the only element that carries section identity — the page cannot be judged inert until it is live.** |
+| R13 | Index row hover (weight shift) | **After launch. ⚠️ Blocked on Jackson's ruling** — it needs a scoped exception to "animate `transform` and `opacity` only," conditional on a measured reflow pass. Concept, conflict and the two routes are written in **Motion vocabulary**. |
+| R14 | Contact on Obsidian | **After launch. ⚠️ Blocked on Jackson's ruling** — a second dark ground either gives the page a spine or dilutes the pivot. If ruled in, the focus ring must be re-derived on Obsidian and gold must still not be spent. See **Motion vocabulary**. |
+| R15 | Everyday Legends opener | **After launch.** Break the third consecutive type-opener. Composition judgment, Opus, screenshot before numbers. The three left edges do not move. See **Motion vocabulary**. |
 **Preserved from the old build, do not rebuild:** the contact form (Phase F), the Fraunces
 optical system (Phase B), the locked palette, and the standing rules in this file.
 
@@ -1416,6 +1671,13 @@ lands on the page's thesis at the structural pivot.
 > `aria-label`. The region previously had two accessible names disagreeing with each other
 > and with the folio, with the attribute silently overriding the heading; region name, heading
 > text and folio label are now one string.
+>
+> **Built count as of R10: 10 of 10. CLOSED.** `Buffer.compare(sections.ts label, rendered
+> <h2>)` = 0 in source, in the dev-server DOM and in the `astro build` output
+> (`436f6e74616374` both sides); `aria-labelledby="contact-heading"` matches the `<h2>`'s id.
+> One `<h1>`, ten `<h2>`s in visual order: Portrait (hidden), About (hidden), Educational
+> Leader, Premier Leadership, Everyday Legends Foundation, Athletic Management, the pull
+> quote, Index (hidden), Charging It to the Game, Contact.
 >
 > **Built count as of R9: 9 of 10.** Charging It to the Game's `<h2>` is visible and reads
 > `Charging It to the Game`, matching `sections.ts` byte-for-byte; the Index's entry 05
