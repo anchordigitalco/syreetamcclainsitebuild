@@ -172,6 +172,86 @@
   --lede-size: clamp(52px, 3.8vw, 64px);
   --lede-lh:   1.18;
 
+  /* THE PIVOT'S SIZE, PROMOTED TO A TOKEN (R14/R15).
+
+     THE VALUE IS R7's, BYTE-FOR-BYTE: clamp(44px, 7.8vw, 128px). Unlike
+     R4/R5's promotion of --lede-size, FeatureQuote.astro's inline
+     declaration is NOT left in place beside this one. That precedent
+     predates R8.2, whose rule is the fourth instance of the same lesson
+     and is the one that governs here: "A relationship that must hold is
+     declared against its counterpart, never left to fall out of two
+     swept values... If the answer is 'another swept value,' the
+     proportion is a coincidence."
+
+     --legends-lede-size below must stay in a fixed proportion to the
+     pivot. Two clamps floating on two different schedules is exactly
+     the shape that shipped the Index numeral holding its ratio at 1440
+     (1.023) and losing it at 1024 (0.768). So the pivot's size is
+     declared ONCE, here, and FeatureQuote.astro consumes it. Verified
+     byte-identical: rendered quote font-size and section height at all
+     thirteen widths, before and after.
+
+     THIS IS NOT A RE-LITIGATION OF R7. R7 locked the VALUE, the face,
+     the four axes, the flat ground and the absent quotation marks.
+     None of them move. Only the place the number is written moves. */
+  --quote-size: clamp(44px, 7.8vw, 128px);
+
+  /* ----------------------------------------------------------
+     THE EVERYDAY LEGENDS OPENER (R15)
+
+     THE PAGE HAS EIGHT LEDES AT EXACTLY ONE PITCH. Measured at 1440:
+     about, edu, prem, legends, ath, idx, chg and contact all render
+     54.72px, to the hundredth. That is the sameness this file names as
+     the primary failure mode, arriving through type scale, and the
+     Section Composition table's answer -- differ in entrance, window
+     and rhythm, not in size -- has not been enough to break it.
+
+     THE RATIO IS DERIVED, NOT PICKED. The page has exactly one measured
+     display-tier step: R7 records the pivot exceeding every lede by
+     2.053x at 1440. Between the lede and the pivot there is nothing --
+     one 2.05x hole with no rung in it. This opener is that rung, placed
+     at the GEOMETRIC MEAN of the two tiers, so the page's display
+     ladder becomes lede -> opener -> pivot in two equal steps of
+     sqrt(2.053) = 1.4329 instead of one step of 2.053.
+
+     1.4329 IS THE ONLY CONSTANT HERE, and both terms below are written
+     against it -- the ceiling multiplies the lede by it, the target
+     divides the pivot by it. There is no second value to sweep and no
+     pixel taken from one viewport.
+
+     THE PIVOT CAP IS LOAD-BEARING, NOT A GUARD. R7's operative test is
+     "exceed every lede, and dominate in the screenshot," so this opener
+     may never approach the pivot. The pivot's clamp collapses far
+     faster than the lede's (7.8vw against 3.8vw, floors 44 against 52),
+     so below ~955 the target term falls under the lede's own floor and
+     the clamp's MINIMUM takes over: the opener converges to exactly the
+     shared --lede-size and this section's type differentiation goes
+     quiet, the way the folio, the 12-column grid and the live margin's
+     three-column width all already go quiet below the desktop bands.
+
+     Measured, all thirteen widths, in the pass that shipped this:
+
+         1920  89.34px  1.396x lede   pivot/opener 1.433
+         1440  78.40px  1.433x lede   pivot/opener 1.433   <- the mean
+         1280  69.68px  1.340x lede   pivot/opener 1.433
+         1279  69.62px  1.339x lede   pivot/opener 1.433
+         1024  55.74px  1.072x lede   pivot/opener 1.433
+         1023  55.68px  1.071x lede   pivot/opener 1.433
+          901+ 52.00px  1.000x lede   floor engaged, opener == lede
+
+     THE OPENER IS NEVER SMALLER THAN ITS SIBLINGS. That is what the
+     clamp's minimum term is for: without it, quote/1.4329 at 800 is
+     43.55px against a 52px lede and the section that was supposed to
+     break the sameness would set SMALLER than the seven it was breaking
+     away from.
+     ---------------------------------------------------------- */
+  --legends-step: 1.4329;
+  --legends-lede-size: clamp(
+    var(--lede-size),
+    calc(var(--quote-size) / var(--legends-step)),
+    calc(var(--lede-size) * var(--legends-step))
+  );
+
   /* ----------------------------------------------------------
      BASELINE
      16px body at 1.75 line-height = a 28px line box. That is the
@@ -898,7 +978,36 @@ a{ color: inherit; }
 
 .win-legends-mark  { grid-column: 1 / 3;  align-self: start; }
 .win-legends-head  { grid-column: 4 / 9;  }
-.win-legends-lede  { grid-column: 4 / 10; }
+/* R15: 4 / 12 — columns 4-11. WAS 4 / 10, and the window had to move
+   with the size. At --lede-size the opening statement set three lines
+   in six columns; at --legends-lede-size it set FIVE at 1440, 1280 and
+   1279, which is R9.5's documented failure exactly: "a paragraph set
+   large, not an opening statement." Measured across four candidate
+   windows at six widths before choosing.
+
+   THIS IS NOT A NEW WINDOW. It is .win-edu-lede's, byte-for-byte —
+   Educational Leader's lede holds 4 / 12 in bands 1 AND 2 with its own
+   margin at 10-12, and CONTEXT.md's R3 note records that overrun as
+   established page behaviour: "Educational Leader's district link has
+   to clear the lede, which overruns into the margin's columns." Both
+   sections seat their margin by DOCUMENT ORDER — authored after the
+   body, so grid's sparse cursor puts it in the body's row — which is
+   why the overrun costs nothing in either.
+
+   THE LEFT EDGE DOES NOT MOVE. Column 4, the same edge the head, the
+   body and Educational Leader's lede all sit on. Only the right edge
+   travels, which is the axis CONTEXT.md nominates for differentiation:
+   "its lede, body and closing line differentiate on the RIGHT edge
+   instead." One column of air at the right trim, the same property the
+   Index's 1-11 and Charging's 3-11 both carry.
+
+   NO BAND-2 OVERRIDE, for the same reason edu has none: the margin
+   steps 10-12 -> 11-12 at 1280 and the lede is in a different row, so
+   there is nothing for a second rule to fix. Bands 3 and 4 already
+   override this primitive and are untouched -- the opener is at the
+   shared --lede-size from 955 down, so there is nothing there to
+   widen for. */
+.win-legends-lede  { grid-column: 4 / 12; }
 .win-legends-body  { grid-column: 4 / 9;  }
 .win-legends-margin{ grid-column: 10 / 13; align-self: start; }
 
@@ -2632,4 +2741,143 @@ a{ color: inherit; }
   .win-contact-form,
   .win-foot-left,
   .win-foot-right   { grid-column: 1 / -1; align-self: auto; }
+}
+
+/* ============================================================
+   R14 · THE DARK GROUND — Contact and the page footer.
+
+   ADDITIVE ONLY, on the R9 / R10 pattern. Nothing above this comment
+   is edited except the two token additions in :root, which are
+   consumed and change no existing rendering. Reverting R14 is
+   deleting this one contiguous region plus those tokens.
+
+   CONTEXT.md, R14 (ruled by Jackson, September 8 2026): the page
+   closes dark. Porcelain through the four pillars, Obsidian at the
+   pivot, Porcelain through Index and blog, Obsidian at the close.
+   The footer joins the ground -- derived, not optional: Contact
+   full-bleed dark with a Porcelain footer under it closes the page
+   on a thin light sliver, which reads as an accident.
+
+   THE PIVOT KEEPS ITS STATUS. It rests on the pull quote, the
+   full-bleed type scale and the folio going quiet -- not on ground
+   exclusivity. Do not "restore consistency" by reverting Contact to
+   Porcelain, and do not add a third Obsidian ground.
+
+   ---- FOUR INK TIERS, EACH MEASURED ON RENDERED PIXELS ----------
+
+   Every colour below was derived by MIRRORING THE HIERARCHY, not by
+   mirroring the hue. On Porcelain the page runs primary type at
+   13.97:1 and quiet type at 7.53:1 -- a hierarchy factor of 1.855.
+   The dark ground reproduces that factor rather than reproducing
+   Smoked Slate, because Smoked Slate on Obsidian is 1.6:1 and is not
+   a colour, it is an absence.
+
+   Ratios below are against the ground as it actually rasterises,
+   which is not #1A1613 nominal: the page carries a fixed grain sheet
+   at mix-blend-mode:multiply 0.42 over every ground. Obsidian is
+   already dark enough that the grain moves it by less than a unit,
+   so nominal and rendered agree here; on Porcelain they do not, and
+   the light-ground figures quoted above are the RENDERED ones.
+
+       --ink        Porcelain            13.97:1   primary type
+       --a-quiet    Porcelain @ 0.71      7.53:1   kickers, labels
+       --a-faint    Porcelain @ 0.53      4.73:1   the 4.5:1 floor tier
+       --rule-ui    Porcelain @ 0.42      3.44:1   1.4.11 components
+       --rule-hair  Porcelain @ 0.22      1.83:1   decorative hairlines
+
+   ONE ALPHA PER ELEMENT, NEVER TWO STACKED. The tiers are opacities
+   rather than pre-composited colours so the hover states can stay on
+   `opacity` -- this file allows transform and opacity only, and a
+   `color` transition is not available. An element takes
+   `color: var(--ink)` plus ONE opacity; it never takes a knocked-down
+   colour AND an opacity, which is R8.2's two-swept-values shape
+   arriving through alpha.
+
+   --rule-hair IS THE EXISTING --hair-light TOKEN'S VALUE, arrived at
+   independently. Mirroring the light ground's hairline (Slate @ 0.38,
+   rendered 1.86:1) asks for Porcelain @ 0.235 on Obsidian; the token
+   already in :root for dark grounds is Porcelain @ 0.22 and measures
+   1.83:1. 0.03 apart, inside the jitter, so the existing token wins
+   and no sixth value is invented.
+
+   --rule-ui IS NOT A MIRROR, AND DELIBERATELY NOT. The light ground
+   draws field underlines in --hair-strong, which measures 1.89:1.
+   A text input on this page has no border box and no fill: THE
+   UNDERLINE IS THE ONLY THING IDENTIFYING THE CONTROL, which makes it
+   a user-interface component under WCAG 1.4.11 and puts it under the
+   same 3:1 floor as the focus ring. 1.89:1 fails that floor and has
+   since Phase F. Porcelain @ 0.42 clears it at 3.44:1. Mirroring the
+   light ground here would have ported a defect, which is precisely
+   what R14's own instruction about the focus ring forbids.
+   ============================================================ */
+.on-obsidian{
+  /* Flat #1A1613, full bleed. `.contact` and `.page-footer` are both
+     top-level and no ancestor of either carries a max-width, a
+     centring margin-inline or a container wrapper, so the background
+     is the viewport width by construction -- no 100vw and no
+     `margin-left: calc(50% - 50vw)`, both of which measure the
+     viewport INCLUDING the scrollbar and ship horizontal overflow.
+     Same mechanism as the pivot, for the same reason.
+
+     NO TEXTURE. No gradient, mesh, noise, vignette, wash or border.
+     The three rules R7 wrote against the pivot's ground all apply
+     here verbatim: colour volume is not this page's drama, a
+     gradient's corner renders as its first stop whatever the stop
+     positions, and a wash sits in neither gold bucket. The page's
+     grain sheet is a fixed sibling of the whole document and already
+     crosses this ground; it is the page's texture, not this
+     section's. Do not improve it. */
+  background-color: #1A1613;
+
+  --ink:       var(--porcelain);
+  --a-quiet:   0.71;
+  --a-faint:   0.53;
+  --rule-ui:   rgba(231, 226, 221, 0.42);
+  --rule-hair: rgba(231, 226, 221, 0.22);
+}
+
+/* ---- .btn-solid, INVERTED ---------------------------------------
+   CONTEXT.md, R14: "The submit button is .btn-solid on Porcelain. On
+   Obsidian it inverts, and the verified Phase F property must be
+   re-verified, not assumed to carry."
+
+   The Phase F property is: Obsidian, solid fill, never ghost, never
+   outline, never gold. THREE OF THE FOUR ARE COLOUR-FREE and carry
+   untouched -- solid, not ghost, not gold. The fourth was "Obsidian",
+   and it was Obsidian because Obsidian was the high-contrast pole
+   AGAINST THE GROUND IT SAT ON. On this ground that pole is
+   Porcelain. The button inverts fill and type together, so the type's
+   contrast against its own fill is unchanged at 13.97:1 either way.
+   It is the same button, not a different treatment.
+
+   THE GLOBAL PRIMITIVE IS NOT TOUCHED. Three other buttons on the
+   page take .btn-solid on Porcelain -- the Cover's, Premier's and
+   Everyday Legends' -- and this rule is scoped under .on-obsidian so
+   none of them can see it. Square corners, transform and opacity
+   only, and the hover/active steps are inherited from the primitive
+   unchanged: `opacity: 0.88` recedes a Porcelain fill toward the dark
+   ground exactly as it recedes an Obsidian fill toward the light one.
+
+   THE FOCUS RING IS RE-DERIVED, NOT PORTED. CONTEXT.md is explicit
+   that the 12.9:1 figure was measured on Porcelain and MUST NOT be
+   carried across; R10 caught this exact defect at 2.4:1 with a gold
+   ring. The floor is WCAG 1.4.11's 3:1 for a non-text indicator.
+   The ring sits at `outline-offset: 5px`, so the colour adjacent to
+   it on every side is the OBSIDIAN GROUND showing through the offset
+   gap -- not the button's fill. Porcelain on Obsidian measures
+   13.97:1 nominal and 13.5:1 on the rasterised, grained ground.
+
+   GOLD IS LEGAL ON THIS GROUND AT 5.76:1 AND IS NOT SPENT. Both
+   budgets stand where R10 left them: 3 of 3 saturated accents (the
+   Cover tagline, the About drop cap, the pivot's "Legacy") and 0 of 8
+   hairline-gold rule contexts. A gold focus ring would also have been
+   the WORSE of the two legal options here -- 5.76:1 against
+   Porcelain's 13.97:1 -- so the budget and the measurement agree. */
+.on-obsidian .btn-solid{
+  background: var(--porcelain);
+  color: var(--obsidian);
+}
+
+.on-obsidian .btn-solid:focus-visible{
+  outline: 1px solid var(--porcelain);
 }

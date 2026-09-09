@@ -260,7 +260,25 @@
     font-family: var(--display);
     font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 20, 'WONK' 0;
     font-weight: 400;
-    font-size: calc(var(--lede-size) * 1.6 / var(--mark-ink-ratio));
+    /* R15: THE 1.6 IS UNCHANGED AND THE COUNTERPART MOVED. The spec is
+       "1.6 times the lede," and the lede this mark opens is no longer
+       --lede-size, it is --legends-lede-size. Left pointing at the
+       shared token the mark would have stayed at 87.5px of ink beside
+       a 78.4px lede -- 1.12x a lede capital, which is this rule's own
+       stated fail condition: a mark that reads as a footnote marker
+       rather than as the section's entrance, with the empty column
+       beside it no longer reading as a hang.
+
+       THE OPTICAL CORRECTION BELOW SURVIVES THE CHANGE, and that is a
+       property of the expression rather than luck. The mark's ink
+       centre is a fixed fraction of its own size and the lede's cap
+       centre is a fixed fraction of ITS own size; the correction is
+       written in `em` of the mark, so it reduces to
+       (lede cap fraction / 3.2720) - (mark ink fraction) with the type
+       size cancelling out entirely. The mark stays 3.2720x whatever it
+       opens, so the -0.1553em holds at every size. Re-measured on the
+       rendered ink after the change, not assumed. */
+    font-size: calc(var(--legends-lede-size) * 1.6 / var(--mark-ink-ratio));
     line-height: 1;
     color: var(--slate);
     margin-top: -0.1553em;   /* 0.115 optical - 0.2703 measured */
@@ -274,14 +292,43 @@
      and rhythm rather than in type size.
 
      NO max-width. Measure is controlled by the column span alone. */
+  /* ---- R15 · THE OPENER IS NO LONGER AT THE SHARED PITCH ---------
+     This is the one line on the page that leaves --lede-size, and the
+     reason is measured, not felt: at 1440 EIGHT ledes render 54.72px
+     to the hundredth -- about, edu, prem, legends, ath, idx, chg and
+     contact. Eight sections opening at one pitch is the sameness this
+     file names as its primary failure mode, and the Composition
+     table's answer to it (differ in entrance, window and rhythm, never
+     in size) has not been enough on its own.
+
+     THE SIZE IS DERIVED FROM THE TOKEN, NOT PICKED. --legends-lede-size
+     is declared in global.css as the GEOMETRIC MEAN of the page's two
+     existing display tiers, so the ladder runs lede -> opener -> pivot
+     in two equal 1.4329 steps rather than one 2.053 step with nothing
+     in it. 1.4329 is sqrt(2.053), and 2.053 is R7's own measured
+     pivot-to-lede ratio. The full derivation, the pivot cap and the
+     thirteen-width table are in that token's comment.
+
+     EVERYTHING ELSE ABOUT THIS LEDE IS UNCHANGED: same face, same four
+     axes via --fx-lede, same weight, same line-height, same letterfit,
+     same `balance`, same 0.75lh gap below. Only the size moves.
+
+     WHY THIS SECTION AND NOT ANOTHER (CONTEXT.md, R15): it is
+     abridged, it already carries the Fraunces asterisk doing
+     structural work, and it sits between two heavier sections, so the
+     break is absorbed rather than exposed.
+
+     NO max-width. Measure is controlled by the column span alone. */
   .legends-lede{
     /* LEDE -> BODY. 0.75 of the lede's own line-height via `lh`. R3
-       precedent, same number, same unit. */
+       precedent, same number, same unit -- and because the unit is
+       `lh` rather than a pixel value, this gap re-resolves against the
+       BIGGER type with nothing to re-sweep. */
     margin: 0 0 0.75lh;
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: var(--lede-size);
+    font-size: var(--legends-lede-size);
     line-height: var(--lede-lh);
     letter-spacing: -0.018em;
     color: var(--obsidian);

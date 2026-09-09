@@ -34,11 +34,13 @@
  * CONTEXT.md lists it separately from both the left and the right
  * item, so it is free to sit where it reads best, and "conspicuous"
  * is better served by its own line under the client's copyright than
- * by being tucked beside a 65%-opacity agency credit. It is also the
- * page's SECOND privacy link — the contact form carries one outside
- * its <form>, which is a verified Phase F behaviour and stays. A
- * form-level disclosure and a footer legal link are two different
- * jobs and both are required.
+ * by being tucked beside a subordinate agency credit.
+ *
+ * IT IS THE PAGE'S ONLY PRIVACY LINK (R10.1). This comment used to
+ * say "SECOND" and to describe a companion link in the contact
+ * column; R10.1 deleted that one and ruled this the single link, and
+ * the sentence was left behind describing a page that no longer
+ * exists. Corrected here rather than left to mislead the next pass.
  *
  * /privacy 404s TODAY. R11 builds it (Phase G, a launch blocker in
  * CONTEXT.md — CalOPPA, and the form is the collection point). The
@@ -83,7 +85,7 @@
  */
 ---
 
-<footer class="sheet page-footer">
+<footer class="sheet page-footer on-obsidian">
   <!-- The page's terminal divider, and the one rule on the page that
        is MEANT to reach both trims. `border: 0` + explicit height
        because Tailwind's preflight styles <hr> as a zero-height
@@ -122,21 +124,37 @@
      --s5 of ground at the foot. Not --s6: 96px of empty page under a
      colophon at the bottom of a ~7800px scroll is dead scroll, and
      the rule already declares where the page ends. */
+  /* R14: THE FOOTER JOINS THE OBSIDIAN GROUND, and the ground itself
+     comes from .on-obsidian in global.css, shared with Contact. This
+     is derived, not decorative: Contact full-bleed dark with a
+     Porcelain footer beneath it closes the page on a thin light
+     sliver, which reads as an accident rather than as a composition.
+
+     THE SEAM IS NOT A SEAM. Contact's 96px of bottom padding and this
+     element's zero top padding are both Obsidian and the two are
+     adjacent siblings with no margin between them, so the ground runs
+     continuous from Contact's head rule to the page's last pixel.
+     Verified by sampling the boundary row, not assumed. */
   .page-footer{
     padding-block: 0 var(--s5);
   }
 
-  /* Smoked Slate at 0.38 — the same hairline as the Cover's foot rule,
-     both of Educational Leader's and Contact's head rule. NOT GOLD:
-     the old footer drew this in --hair-gold and the rebuilt page's
-     hairline bucket stays at 0 of 8. */
+  /* R14: --rule-hair, the decorative tier, 1.83:1 against this ground
+     where Smoked Slate at 0.38 measured 1.86:1 against Porcelain --
+     the same weight, mirrored, not the same colour. Slate itself is
+     1.6:1 on Obsidian before any knock-down and would have rendered
+     this rule as nothing at all.
+
+     STILL NOT GOLD. The old build drew this rule in --hair-gold. The
+     hairline bucket stands at 0 of 8 on the rebuilt page and R14
+     spends none of it, even though gold is legal on this ground at
+     5.76:1 -- being legal is not being budgeted. */
   .foot-rule{
     width: 100%;
     height: 1px;
     margin: 0 0 var(--s3);
     border: 0;
-    background: var(--slate);
-    opacity: 0.38;
+    background: var(--rule-hair);
   }
 
   /* The client's line. 11px, the same register the contact privacy
@@ -149,7 +167,8 @@
     line-height: 1.7;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--slate);
+    color: var(--ink);              /* R14: quiet tier, 7.53:1 */
+    opacity: var(--a-quiet);
   }
 
   .foot-privacy-line{
@@ -160,7 +179,11 @@
     line-height: 1.7;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--obsidian);
+    /* Full ink at 13.97:1. "Conspicuous" is carried by the same two
+       moves as on the light ground -- one weight step up from the
+       copyright, and the loudest ink in the band -- with only the
+       pole those point at inverted. */
+    color: var(--ink);
   }
 
   /* Underline OFFSET rather than a border, so the descender in "y" is
@@ -171,7 +194,7 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
-    text-decoration-color: rgba(71, 68, 64, 0.42);
+    text-decoration-color: var(--rule-ui);   /* R14: 3.44:1 */
     transition:
       transform 260ms var(--ease),
       opacity   260ms var(--ease);
@@ -179,10 +202,12 @@
 
   .foot-privacy:hover{ transform: translateY(-1px); opacity: 0.7; }
   .foot-privacy:active{ transform: translateY(0); opacity: 1; }
+  /* Re-derived, not ported. 1.4.11's 3:1 floor; Porcelain on this
+     ground is 13.97:1. */
   .foot-privacy:focus-visible{
-    outline: 1px solid var(--obsidian);
+    outline: 1px solid var(--porcelain);
     outline-offset: 4px;
-    text-decoration-color: var(--obsidian);
+    text-decoration-color: var(--porcelain);
   }
 
   /* Right-aligned to the page's right trim. Live-margin content on
@@ -190,10 +215,45 @@
      established right edge for a hung element. */
   .foot-right{ text-align: right; }
 
-  /* One step down from the client's copyright — 10px at 65% — so the
-     agency credit is subordinate to it and is never the loudest thing
-     in the band. Inherits the site's own type stack; no separate
-     import. */
+  /* ---- THE AGENCY CREDIT, AND THE MARK'S FILL --------------------
+     R14, verbatim: "Every footer element must be re-verified on
+     Obsidian -- copyright text, the privacy link, and Anchor Digital's
+     mark, which is an SVG built for a light ground and will need its
+     fill RE-DERIVED rather than left to inherit."
+
+     THE MARK'S FILL IS DERIVED HERE, IN THIS RULE, and this element is
+     where it belongs: the <svg> root carries fill="currentColor" and
+     CONTEXT.md forbids ever overriding fill or color ON THE MARK
+     ITSELF. So the value is chosen and measured here and currentColor
+     carries it -- the mechanism is inheritance, the VALUE is not
+     inherited from anything.
+
+     WHAT WAS ACTUALLY WRONG WITH THE OLD VALUE. Slate at 0.65 measured
+     3.21:1 on Porcelain against a 4.5:1 floor for 10px text. THE MARK
+     AND THE WORDS SHARE ONE COLOUR through currentColor, so that
+     single number was failing for both, and it had never been
+     measured -- 0.65 was a look, not a derivation. Porting it here
+     would have carried a live defect onto a new ground.
+
+     RE-DERIVED AGAINST TWO CONSTRAINTS AT ONCE:
+       1. >= 4.5:1. "Built by Anchor Digital" is 10px body text under
+          WCAG 1.4.3. (The MARK is a logotype and 1.4.11 exempts
+          logotypes, so the text is the binding half -- deriving for
+          the text clears the mark by construction.)
+       2. Subordinate to the client's copyright, which is the whole
+          point of the credit being "one step down." The copyright
+          sits on the quiet tier at 7.53:1.
+     Porcelain at 0.53 lands at 4.73:1: clear of the floor with
+     headroom for the grain, and comfortably below 7.53:1, so the
+     agency credit is still never the loudest thing in the band.
+
+     ONE ALPHA, NOT TWO. The old rule stacked a knocked-down colour
+     under an opacity to reach one number -- R8.2's two-swept-values
+     shape arriving through alpha. Full Porcelain plus one opacity
+     says the same thing once, and leaves `opacity` free to carry the
+     hover: this file allows transform and opacity only, so lifting
+     the credit to full ink on hover has to be an opacity move and
+     cannot be a colour move. */
   .foot-credit{
     display: inline-block;
     font-family: var(--sans);
@@ -202,26 +262,33 @@
     line-height: 1.7;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--slate);
+    color: var(--ink);
     text-decoration: none;
-    opacity: 0.65;
+    opacity: var(--a-faint);       /* 0.53 -> 4.73:1 */
     transition:
       transform 260ms var(--ease),
       opacity   260ms var(--ease);
   }
 
+  /* Hover takes both the words and the mark to full ink at 13.97:1 --
+     one property, and it is opacity. */
   .foot-credit:hover{ opacity: 1; transform: translateY(-1px); }
   .foot-credit:active{ opacity: 0.85; transform: translateY(0); }
   .foot-credit:focus-visible{
-    outline: 1px solid var(--obsidian);
+    outline: 1px solid var(--porcelain);   /* re-derived: 13.97:1 */
     outline-offset: 6px;
     opacity: 1;
   }
 
   /* viewBox 364 171 615 312 is 1.9712:1. Height set, width DERIVED
-     from it — 14 x 1.9712 = 27.6px. Never equal width and height. The
-     root carries fill="currentColor", so the mark inherits the
-     credit's colour; no fill or color override here. */
+     from it — 14 x 1.9712 = 27.6px. Never equal width and height.
+
+     NO fill AND NO color IN THIS RULE, deliberately. The root carries
+     fill="currentColor" and CONTEXT.md prohibits overriding it; the
+     mark takes the value derived and measured in .foot-credit above,
+     which is the re-derivation R14 asks for. Setting a fill here would
+     also silently break the hover, since currentColor is what carries
+     the credit and the mark to full ink together. */
   .foot-mark{
     display: inline-block;
     width: 27.6px;

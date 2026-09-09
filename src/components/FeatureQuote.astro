@@ -232,7 +232,21 @@
     font-variation-settings: var(--fx-quote);
     font-style: italic;
     font-weight: 340;
-    font-size: clamp(44px, 7.8vw, 128px);
+    /* --quote-size, promoted to a token in global.css by R14/R15.
+       THE VALUE IS UNCHANGED -- clamp(44px, 7.8vw, 128px), byte-for-byte,
+       verified identical at all thirteen widths. R7 locked the value, the
+       face, the four axes, the flat ground and the absent marks; only the
+       place the number is written has moved.
+
+       IT MOVED BECAUSE SOMETHING NOW DEPENDS ON IT. R15's Everyday Legends
+       opener is declared as a fixed proportion of this size, and R8.2's rule
+       is that a relationship which must hold is declared against its
+       counterpart rather than left to fall out of two swept values. Left
+       inline here, this clamp and that one would have been two independent
+       floats agreeing by coincidence in one range -- the exact shape that
+       shipped the Index numeral holding its ratio at 1440 and losing it at
+       1024. */
+    font-size: var(--quote-size);
     line-height: 1.02;
     letter-spacing: -0.028em;
     color: var(--porcelain);

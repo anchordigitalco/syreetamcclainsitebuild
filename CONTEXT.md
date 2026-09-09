@@ -3,9 +3,11 @@
 Project-specific. Read alongside `CLAUDE.md` and `anchor-digital-standards.md`.
 Written after the design direction was chosen from mockups, per standard workflow.
 
-**Last updated:** September 8, 2026 — **all ten sections are built; R12 (folio marginalia)
-and R13 (Index hover) have shipped.** R13 ships too quiet to see and is superseded by R13.1.
-R14 (Contact on Obsidian) is ruled in and not yet built. **The wipe-reveal ban is rescinded**
+**Last updated:** September 9, 2026 — **all ten sections are built; R12 (folio marginalia),
+R13 (Index hover) and R14 (Contact + footer on Obsidian) have shipped.** R13 ships too quiet
+to see and is superseded by R13.1. **R14 shipped September 9 2026 — the page closes dark.**
+**R15 shipped its type half only: the Everyday Legends opener now leaves the shared lede
+pitch. Its photograph half was STOPPED and not built — see the R15 entry.** **The wipe-reveal ban is rescinded**
 — see the entry-animation pattern under Motion vocabulary, which now governs all
 scroll-driven motion. Post-launch motion is grouped into **Round A (R16 masthead + R17
 Feature Quote scrub)** and **Round B (R18 texture)**; Round B is not scheduled until Round A
@@ -128,6 +130,33 @@ Smallest readable Montserrat, wide tracking, Smoked Slate. Updates on scroll. Hi
 **Section list lives in `src/data/sections.ts`.** One typed list, imported into the folio
 via `define:vars`. Edit it there and nowhere else. The chapter break is deliberately absent
 from the list, so the folio goes quiet over the pivot.
+
+> ⚠️ **THE FOLIO IS NEARLY INVISIBLE OVER CONTACT SINCE R14. Introduced September 9 2026,
+> measured, and deliberately NOT fixed in that round.** The folio is Smoked Slate at opacity
+> 0.75 and Contact is now Obsidian. Measured composite against each ground it crosses:
+>
+> | Over | Label | Ratio |
+> |---|---|---|
+> | Porcelain (About) | `01 About` | **4.08:1** |
+> | The pivot | *(none — correctly quiet)* | n/a |
+> | **Contact** | `08 Contact` | **1.56:1** |
+>
+> A 2.6× loss. It is `aria-hidden` and decorative, so this is a composition defect and not an
+> accessibility one, and it only exists in band 1 — the folio hides below 1280.
+>
+> **Why R14 did not fix it.** All three available routes were outside that round's explicit
+> scope, which forbade motion, animation and JavaScript work: (1) have R12's existing listener
+> set a ground flag — one line, no second listener, but it is a JS change; (2) CSS
+> scroll-driven `animation-timeline` — the Motion vocabulary's preferred mechanism, but it is
+> animation; (3) **remove Contact's entry from `sections.ts` so the folio goes quiet on both
+> Obsidian grounds, exactly as it already does over the pivot.**
+>
+> **Route 3 is the recommendation and it needs a ruling, not a build.** It is pure data, costs
+> no motion and no listener, and it is symmetric: the folio would label the Porcelain spreads
+> and go quiet on the dark ones, which is a rule rather than an exception. It is also
+> precedented — removing the Cover's entry from `sections.ts` was Jackson's ruling in R7, on
+> the same reasoning that a folio should not print where the composition says be quiet. It
+> costs the page its only "you are at the end" marker, which is the trade to weigh.
 
 **One scroll listener exists in the entire build.** If a future component needs scroll
 tracking, reuse it — do not add a second.
@@ -897,6 +926,98 @@ Feature Quote.
   copyright text, the privacy link, and **Anchor Digital's mark**, which is an SVG built for
   a light ground and will need its fill re-derived rather than left to inherit.
 
+> **SHIPPED September 9 2026. All four are done and all four numbers are measured on the
+> rasterised page, not modelled** — the page carries a fixed grain sheet at
+> `mix-blend-mode: multiply` 0.42 over every ground, so nominal hex is not what a viewer
+> sees. The harness was validated first by reproducing this file's own documented 12.9:1
+> for Obsidian-on-Porcelain (it measured 12.95:1).
+>
+> **The ink system is a MIRROR OF THE HIERARCHY, not of the hue.** Smoked Slate on Obsidian
+> is 1.60:1 — it is not a quiet colour there, it is an absence. On Porcelain the page runs
+> primary at 13.97:1 and quiet at 7.53:1, a factor of 1.855; the dark ground reproduces that
+> factor with Porcelain at reduced alpha. Four tiers, declared once in `.on-obsidian`:
+>
+> | Token | Value | Measured | Carries |
+> |---|---|---|---|
+> | `--ink` | Porcelain | **13.97:1** | lede, links, field text, status heads |
+> | `--a-quiet` | Porcelain @ 0.71 | **7.52:1** | kickers, field labels, copyright |
+> | `--a-faint` | Porcelain @ 0.53 | **4.73:1** | direct-address label, agency credit |
+> | `--rule-ui` | Porcelain @ 0.42 | **3.44:1** | field underlines, link underlines, error bar |
+> | `--rule-hair` | Porcelain @ 0.22 | **1.83:1** | head rule, footer rule (decorative) |
+>
+> **ONE ALPHA PER ELEMENT, NEVER TWO STACKED.** The light ground reached its knock-downs by
+> putting an opacity on an already-reduced colour — R8.2's two-swept-values shape arriving
+> through alpha. Each tier here is one opacity over full Porcelain, which also leaves
+> `opacity` free to carry the hover states (this file allows transform and opacity only, so a
+> `color` transition is not available).
+>
+> **`--rule-hair` landed on the existing `--hair-light` token independently.** Mirroring the
+> light ground's hairline (Slate @ 0.38, rendered 1.86:1) asks for Porcelain @ 0.235; the
+> token already in `:root` for dark grounds is Porcelain @ 0.22 at 1.83:1. 0.03 apart, inside
+> the jitter, so no sixth value was invented.
+>
+> **THE FOCUS RING: 13.97:1 nominal, 13.43–13.58:1 measured, against the 3:1 floor of WCAG
+> 2.1 SC 1.4.11.** Measured by focusing each control and scanning the outline band for the
+> extremum, not by compositing a declared colour. The ring sits at `outline-offset` 4–6px, so
+> what it is measured against is the **Obsidian ground showing through the offset gap**, not
+> the control's fill. Three candidates were measured: Porcelain 13.97:1, gold 5.76:1, Smoked
+> Slate **1.60:1** — and Slate is what a thoughtless port of "the page's secondary ink" would
+> have shipped. The 12.9:1 figure was not carried across.
+>
+> **`.btn-solid` inverts, and the global primitive is untouched.** Porcelain fill, Obsidian
+> type, in one rule scoped under `.on-obsidian`, so the Cover's, Premier's and Everyday
+> Legends' buttons cannot see it. The verified Phase F property is "Obsidian, solid, never
+> ghost, never outline, never gold" — three of the four are colour-free and carry unchanged;
+> the fourth said Obsidian because Obsidian was the high-contrast pole *against the ground
+> the button sat on*, and on this ground that pole is Porcelain. Type-against-fill is 13.97:1
+> either way. Zero `box-shadow` on the page, still.
+>
+> **GOLD: 3 of 3 saturated accents, 0 of 8 hairline contexts. R14 spends zero from both**,
+> re-measured on both bases as this file requires. Gold is legal here at 5.76:1 and is still
+> not spent — and at 5.76:1 against Porcelain's 13.97:1 it was also the weaker of the two
+> passing options for the ring, so the budget and the measurement agree.
+>
+> **The Anchor mark's fill is re-derived and the mechanism is still `currentColor`.** The
+> `<svg>` root keeps `fill="currentColor"` and nothing overrides fill or colour on the mark,
+> per the brand-asset rule; the VALUE it resolves to is chosen and measured in `.foot-credit`.
+> Rendered fill sampled directly off the raster: **#86817D at 4.68:1**, box 27.59 × 14.00px,
+> aspect **1.9710** against the viewBox's 1.9712.
+>
+> **Two PRE-EXISTING failures were found by the re-derivation and are fixed rather than
+> ported.** Both had been live since Phase F and neither is caused by this round:
+> - **The field underlines measured 1.89:1 on Porcelain** (`--hair-strong`). These controls
+>   have no border box and no fill, so the underline is the only thing identifying the
+>   control — a user-interface component under 1.4.11, under the same 3:1 floor as the ring.
+>   Now `--rule-ui` at 3.44:1. Mirroring the light ground here would have carried the defect.
+> - **The agency credit measured 3.21:1 on Porcelain** (Slate @ 0.65) against 4.5:1 for 10px
+>   text, and the mark shared that value through `currentColor`. Now 4.73:1.
+>
+> **The `<select>` chevron was a hardcoded `%231A1613` inside a data URI**, where no token
+> reaches it and no cascade would have caught it. On this ground it does not dim, it
+> disappears, taking the only affordance that says the control is a dropdown. Re-derived to
+> `%23E7E2DD`, 13.97:1.
+>
+> **Turnstile renders `theme: 'dark'`.** A render option matching its ground; none of the
+> twelve verified Phase F behaviours changes. Left at `'light'` it is a 300 × 65 white slab
+> and the single brightest object on the page's closing section.
+>
+> **The seam is 0.00px and the ground is continuous.** Contact's bottom and the footer's top
+> are coincident to the hundredth; sampled at the boundary row, the only non-Obsidian pixel
+> is the footer's own hairline rule, which is where it belongs. Obsidian runs to the page's
+> last pixel — no light sliver.
+>
+> **ALL TWELVE PHASE F BEHAVIOURS RE-VERIFIED** on the new ground, by method not assertion:
+> underline-only inputs (borders 0/0/0/1px, radius 0, transparent fill), four real visible
+> `<label>`s, 16px minimum on all three controls, native `<select>` with the six unconfirmed
+> options unreordered, honeypot off-screen with `tabindex="-1"` and `aria-hidden` — **filled
+> `_gotcha` sent 0 requests** — **0 main-frame navigations**, status region `role="status"` /
+> `aria-live="polite"` / hidden at rest / outside the form / unconditionally last, one privacy
+> link on the page and zero in the contact column, and zero `box-shadow` anywhere.
+>
+> **Nine of ten sections and the footer measured 0.00px height delta at all thirteen widths.**
+> Only Everyday Legends moves, which is R15's scope. All 143 section × width left-edge sets
+> are byte-identical.
+
 ### R15 — One opener that breaks pattern
 
 **The observation.** Educational Leader, Everyday Legends and Charging It to the Game all
@@ -914,6 +1035,97 @@ to reject the first attempt; that is the pass working, not the pass failing.
 
 **Constraint:** the three established left edges are not in scope. The opener's *vertical*
 order changes; the edges do not move.
+
+> **SHIPPED IN PART, September 9 2026. The type half is built. The photograph half was
+> STOPPED and is not built.**
+>
+> **THE STOP, stated rather than arbitrated.** The R15 build prompt required "the photograph
+> MUST break the column — full bleed, or past the established right edge." **Everyday Legends
+> has no photograph, by design, and four rules in this file forbid giving it one:**
+>
+> 1. The Section Composition table's row reads **Image: none**, and the Image budget check
+>    names Everyday Legends as one of the five sections that carry no photograph.
+> 2. `bleed-left` is **"Exactly one — Athletic Management. This is the page's single spread
+>    moment and the only place the page gutter is broken."** A full bleed here spends a tier
+>    the Image tiers table allocates to exactly one section.
+> 3. **"Photography does not sit in adjacent sections."** Everyday Legends sits between
+>    Premier (which carries `portrait-seated.jpg`) and Athletic (which carries two). A
+>    photograph here puts photography in three consecutive sections.
+> 4. **"All client photography is vertical... Any request for a full-width horizontal band
+>    must be refused at spec time, not solved by cropping a portrait."** The only unplaced
+>    frame is `mcclain-field.jpg`, which is Held and was already rejected for precisely this
+>    use — proposed as a full-width band and refused because it needs a horizontal crop of a
+>    vertical image.
+>
+> Per this file's own Workflow rule — *"Where a constraint written in this file and a
+> constraint invented in a prompt cannot both hold, the invented one yields"* — the
+> photograph requirement yields. **Nothing was substituted for it and no image was placed.**
+> Reopening it is a ruling for Jackson, and it needs a photograph that does not exist yet.
+>
+> **THE TYPE HALF, as built.** The diagnosis measured worse than the prompt stated: **eight**
+> ledes at one pitch, not seven — about, edu, prem, legends, ath, idx, chg and contact all
+> render **54.72px to the hundredth** at 1440.
+>
+> **The ratio is derived, not picked.** The page has exactly one measured display-tier step:
+> R7's own **2.053×** pivot-to-lede at 1440. Between lede and pivot there was nothing — one
+> 2.05× hole with no rung in it. The opener is that rung, at the **geometric mean** of the two
+> tiers, so the ladder runs lede → opener → pivot in two equal steps of **√2.053 = 1.4329**.
+> That single constant carries both terms: the ceiling multiplies the lede by it, the target
+> divides the pivot by it. There is no second value to sweep.
+>
+> **The pivot cap is load-bearing, not a guard**, because R7's operative test is "exceed every
+> lede." The pivot's clamp collapses far faster than the lede's (7.8vw vs 3.8vw, floors 44 vs
+> 52), so below ~955 the target term falls under the lede's own floor and the clamp's minimum
+> takes over — **the opener converges to exactly `--lede-size` and this section's type
+> differentiation goes quiet**, as the folio, the 12-column grid and the live margin's
+> three-column width all already do below the desktop bands. Without that minimum term,
+> quote/1.4329 at 800 is 43.55px against a 52px lede: the section meant to break the sameness
+> would set *smaller* than the seven it was breaking from.
+>
+> | vw | lede | opener | ×lede | pivot ÷ opener |
+> |---|---|---|---|---|
+> | 1920 | 64.00 | 89.33 | 1.396 | 1.433 |
+> | 1440 | 54.72 | 78.39 | **1.433** | 1.433 |
+> | 1280 | 52.00 | 69.68 | 1.340 | 1.433 |
+> | 1024 | 52.00 | 55.74 | 1.072 | 1.433 |
+> | ≤901 | 52.00 | 52.00 | 1.000 | floor engaged |
+>
+> **`--quote-size` is now a token and `FeatureQuote.astro` consumes it.** R4/R5's precedent
+> for `--lede-size` left the inline declaration in place beside the token; that precedent
+> predates R8.2, and R8.2 governs here — the opener must stay in proportion to the pivot, and
+> two clamps floating on two schedules is exactly the shape that shipped the Index numeral
+> holding its ratio at 1440 and losing it at 1024. **R7's value, face, axes, flat ground and
+> absent quotation marks are all untouched; only the place the number is written moved.**
+> Verified: pivot font-size and section height byte-identical at all thirteen widths.
+>
+> **The lede window moved 4–9 → 4–11, and it is not a new window.** At the larger size the
+> opener set **five lines** at 1440, 1280 and 1279 — R9.5's documented failure exactly, "a
+> paragraph set large, not an opening statement." Four candidate windows were measured at six
+> widths. **4 / 12 is `.win-edu-lede`'s, byte-for-byte:** Educational Leader's lede already
+> holds it in bands 1 and 2 with its own margin at 10–12, and R3 records that overrun as
+> established — both sections seat their margin by document order, so it costs nothing in
+> either. Line count is now 3–4, matching every other lede. **The left edge did not move**;
+> only the right edge travels, which is the axis this file nominates for differentiation.
+>
+> **The mark tracks the opener, and the optical correction survives by construction.** The
+> spec is "1.6 × the lede," and the lede this mark opens is no longer `--lede-size`. Left
+> pointing at the shared token it would have sat at 87.5px of ink beside a 78.4px lede —
+> 1.12× a lede capital, which is that rule's own stated fail condition. The mark stays
+> **3.2720×** whatever it opens, and the correction is written in `em` of the mark, so the
+> type size cancels out of the arithmetic entirely. **Re-measured: mark ink centre 195.49
+> against lede cap centre 195.74 at 1440 — 0.25px.**
+>
+> **The three left edges hold.** All **143** section × width edge sets are byte-identical
+> before and after — Legends included. It still runs mark at column 1, type at column 4,
+> margin at column 10. Nine of ten sections and the footer moved **0.00px** at every width.
+>
+> **Reported, not steered:** lede-to-body in this section is now **4.61× at 1440 and 5.25× at
+> 1920**, outside this file's stated 3–4× *target* though far above its 3× *minimum*. A
+> section deliberately leaving the shared tier cannot also sit inside the band that describes
+> it. Section height rose 749.69 → 882.36 at 1440; **no copy was added** and the section is
+> still abridged. Height spread is unchanged at 1920 and 1440 (2.58:1 and 1.87:1 including the
+> pivot) and moves 1.48 → 1.43 at 1280 only because Legends is no longer the shortest section
+> there.
 
 ### The entry-animation pattern (required for all scroll-driven motion)
 
@@ -1394,6 +1606,35 @@ includes an explicit confirmation step.
 `anchor-digital-standards.md` had `.co` marked as a placeholder and it leaked into a build
 verbatim.
 
+**React is registered for islands only (R0, September 9 2026).** `@astrojs/react` is
+installed alongside `react`, `react-dom` and `framer-motion` so that selected animated
+components can be adapted from 21st.dev. **The ten sections stay `.astro` and are not
+converted.** Three constraints, each derived in R0:
+
+> **`@astrojs/react` MUST stay pinned at `^4.4.2`.** npm's default resolves v6, which
+> targets Astro 6 and pulls top-level Vite 8 + rolldown while this build runs Astro 5.18.2
+> on nested Vite 6.4.3. Its `vite-react-refresh-wrapper` rolldown builtin crashes inside
+> the Vite 6 pipeline (`Missing field moduleType`), the JSX transform never runs, and SSR
+> fails with `React is not defined`. **`npx astro add react` reintroduces v6** — do not run
+> it in this project.
+>
+> **Islands hydrate on `client:media` with `(hover: hover) and (pointer: fine)`,** not
+> `client:visible`. Both are defensible for a below-the-fold component, and the media gate
+> is the one that agrees with "below 1280 the page has no motion at all." It also keeps
+> islands off the folio's scroll monopoly.
+>
+> **A clean build emits an unreferenced React chunk in `dist/_astro/`** (~224 KB at time of
+> writing). No HTML references it, so visitor page weight is unchanged, but it does deploy.
+> Accepted. Without the integration, `dist` contains zero JS.
+
+**`screenshot.mjs` is non-deterministic at `deviceScaleFactor: 2` (R0).** Three runs against
+a completely unchanged build produced differing PNG hashes at the same width, alternating
+between two stable states. Blocking Turnstile does not remove it; it disappears at
+`deviceScaleFactor: 1`. **Byte-identical capture MUST NOT be used as a pass criterion until
+this is fixed** — a matching hash is not evidence of safety and a differing one is not
+evidence of disturbance. Use instead: page height per width, dev-server HTML byte count, and
+`dist/index.html` byte count, all of which discriminated correctly in R0.
+
 ---
 
 ## Set aside from the Atelier direction
@@ -1730,8 +1971,8 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R12 | Folio marginalia | **Shipped September 8 2026.** `FolioMarginalia.astro` mounted, single scroll listener wired. Horizontal stability, active-section accuracy, quiet-over-pivot, and label integrity against every `<h2>` all verified and reviewed by Jackson on localhost at 1440 and at the 1280 collapse edge. Zero layout regression on the nine prior sections. |
 | R13 | Index row hover (weight shift) | **Shipped September 8 2026, and it is too quiet to see.** Built at `wght` 400 → 420 because 420 is `--fx-small`, the heaviest weight in the shipped optical system. All five criteria passed comfortably (0.00px row-height delta, 95.77px tightest `+` clearance, 0.00px left edge, 533-quantity zero-delta) precisely because a 20-unit move barely displaces anything. Correctly refused to exceed the system ceiling without a ruling. **Superseded by R13.1.** |
 | R13.1 | Index hover, widened | **Ruled by Jackson, September 8 2026: the 420 ceiling does not bind this interaction.** `wght` 400 → 700 on Index entry names ONLY; the ceiling is not raised anywhere else. Adds two counterweights so the row reads whole: the numeral shifts on the same hover, and the hairline rule thickens without changing row height. **Re-measure everything** — travel at 700 will be an order of magnitude past the 0.67–1.29px measured at 420, and the span-splitting kerning cost (0.09–0.27px at rest) scales with weight. The exception's failure condition is unchanged: fail items 1, 3 or 4 at any width and the hover is removed, not tuned. |
-| R14 | Contact on Obsidian | **Ruled in by Jackson, September 8 2026.** The page closes dark. Focus ring re-derived on Obsidian against the 3:1 floor (the 12.9:1 figure was measured on Porcelain and MUST NOT be ported), `.btn-solid` inverted and re-verified, gold still not spent, and **the footer joins the ground** including Anchor Digital's mark. See **Motion vocabulary**. |
-| R15 | Everyday Legends opener | **After launch.** Break the third consecutive type-opener. Composition judgment, Opus, screenshot before numbers. The three left edges do not move. See **Motion vocabulary**. |
+| R14 | Contact on Obsidian | **Shipped September 9 2026.** The page closes dark. Four measured ink tiers in one `.on-obsidian` block, mirroring the light ground's hierarchy factor rather than its hue. Focus ring re-derived: **13.43–13.58:1 measured** against 1.4.11's 3:1 (Smoked Slate, the naive port, is 1.60:1). `.btn-solid` inverted in a scoped rule; the global primitive and the page's other three buttons are untouched. Anchor's mark re-derived to **4.68:1**, `currentColor` mechanism intact. Gold **3 of 3 / 0 of 8** — zero spent. Seam 0.00px. All twelve Phase F items re-verified; **nine of ten sections and the footer 0.00px at all thirteen widths.** Fixed two pre-existing failures found by the re-derivation (field underlines 1.89:1, agency credit 3.21:1). **Introduced one defect, reported not fixed — the folio.** |
+| R15 | Everyday Legends opener | **Type half shipped September 9 2026; photograph half STOPPED and not built.** The opener leaves the shared lede pitch at the geometric mean of lede and pivot — one derived constant, √2.053 = 1.4329, from R7's own measured step — floored at `--lede-size` so it can never set smaller than its siblings and capped so it can never approach the pivot. `--quote-size` promoted to a token per R8.2; `FeatureQuote.astro` consumes it, rendering byte-identical at all thirteen widths. Lede window 4–9 → 4–11, which is `.win-edu-lede`'s existing window, not a new one. **All 143 section × width left-edge sets byte-identical.** The photograph requirement was refused against four rules in this file; see the R15 entry. |
 | R16 | Masthead | **Round A.** No masthead exists; the site has no navigation at all. Nothing renders over the Cover — her name is already enormous there. On scrolling past the Cover a thin bar arrives carrying her name small plus a jump to the Index, and withdraws on scrolling back. The arrival is the animation. **This is where the variable-font-hover mechanism belongs** — it is a nav component and the page finally has a nav. Depends on R12's listener; MUST NOT add a second. |
 | R17 | Feature Quote scrub | **Round A. The loudest single change available.** As the pivot enters, "Legacy" grows and its letter-spacing opens, driven by scroll position rather than elapsed time. Prefer CSS `animation-timeline: view()` so no listener is involved. The pivot is supposed to dominate the page and currently wins by a small margin; it should win by a mile. Gold budget unchanged — "Legacy" is already the third and last saturated accent, this changes its scale, not its colour. |
 | R18 | Round B — texture | **Do not schedule until Round A is reviewed.** Four entry animations tuned against each other in one pass: lede wipes on the seven type-openers, the R9.6 plate frame drawing itself from a corner, ghost numerals drifting in the margin band (parallax on type is permitted; on photographs it is not), and the Index rows staggering in. All four use the entry-animation pattern. Expect them to fight on shared section entry; that conflict is the reason this is one round. |

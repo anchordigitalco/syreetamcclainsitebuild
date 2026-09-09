@@ -183,7 +183,7 @@ const inquiries = [
 const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 ---
 
-<section class="sheet contact" id="sec-contact" aria-labelledby="contact-heading">
+<section class="sheet contact on-obsidian" id="sec-contact" aria-labelledby="contact-heading">
   <!--
     THE TEXT COLUMN — columns 1-5. One grid item carrying three
     registers on one left edge: the hairline head, the lede, and the
@@ -351,8 +351,15 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     height: 1px;
     margin: 0 0 var(--s2);
     border: 0;
-    background: var(--slate);
-    opacity: 0.38;
+    /* R14: --rule-hair, the decorative tier. Smoked Slate at 0.38 was
+       the Porcelain-ground hairline and does not carry -- Slate on
+       Obsidian is 1.6:1 before any knock-down, which is not a faint
+       rule, it is no rule. Porcelain at 0.22 measures 1.83:1 against
+       this ground where the light ground's hairline measured 1.86:1:
+       the same weight, mirrored. STILL NOT GOLD -- the 8 hairline-gold
+       contexts stand at 0 of 8 and R14 spends none of them, even
+       though gold is legal on this ground at 5.76:1. */
+    background: var(--rule-hair);
   }
 
   /* The kicker is the <h2>; the browser's heading margins and weight
@@ -370,7 +377,10 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     line-height: var(--baseline);
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: var(--slate);
+    /* R14: the quiet tier. 7.53:1, the same ratio Smoked Slate carried
+       against Porcelain, reached with the ground's own ink. */
+    color: var(--ink);
+    opacity: var(--a-quiet);
   }
 
   /* ---- LEDE ------------------------------------------------------
@@ -400,7 +410,7 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-size: var(--lede-size);
     line-height: var(--lede-lh);
     letter-spacing: -0.018em;
-    color: var(--obsidian);
+    color: var(--ink);   /* R14: 13.97:1 */
     /* balance, matching every other lede on the page. Progressive
        enhancement: an engine without it wraps normally. */
     text-wrap: balance;
@@ -427,11 +437,13 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     line-height: var(--baseline);
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--slate);
-    /* 0.82, not a lighter knock-down. Measured in R1: Slate on
-       Porcelain is 7.54:1 at full strength; at 0.78 the composite
-       falls to 4.45:1, under the floor. 0.82 composites to 4.90:1. */
-    opacity: 0.82;
+    /* R14: the faint tier, 4.73:1. The light-ground rule here was
+       Slate at 0.82 -- a colour knocked down by an opacity, two alphas
+       stacked to reach one number. On this ground the tier IS the
+       opacity and there is only one: 0.53 against full Porcelain.
+       Same floor (4.5:1), one value instead of two. */
+    color: var(--ink);
+    opacity: var(--a-faint);
   }
 
   /* .edu-link's treatment, reused rather than reinvented: lowercase
@@ -446,11 +458,15 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-size: 13px;
     line-height: 1.4;
     letter-spacing: 0.01em;
-    color: var(--obsidian);
+    color: var(--ink);                        /* R14: 13.97:1 */
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
-    text-decoration-color: rgba(71, 68, 64, 0.42);
+    /* --rule-ui, 3.44:1. A link's underline is what identifies it as a
+       link, so it is a 1.4.11 component and takes the 3:1 tier rather
+       than the decorative one. Slate at 0.42 was the light ground's
+       value and is 1.6:1 here. */
+    text-decoration-color: var(--rule-ui);
     transition:
       transform 260ms var(--ease),
       opacity   260ms var(--ease);
@@ -458,10 +474,14 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
 
   .contact-direct-link:hover{ transform: translateY(-1px); opacity: 0.7; }
   .contact-direct-link:active{ transform: translateY(0); opacity: 1; }
+  /* THE FOCUS RING, RE-DERIVED ON THIS GROUND. Not ported: CONTEXT.md
+     is explicit that 12.9:1 was measured against Porcelain, and R10
+     caught this exact defect once already at 2.4:1. Floor is WCAG
+     1.4.11's 3:1. Porcelain on Obsidian measures 13.97:1 nominal. */
   .contact-direct-link:focus-visible{
-    outline: 1px solid var(--obsidian);
+    outline: 1px solid var(--porcelain);
     outline-offset: 4px;
-    text-decoration-color: var(--obsidian);
+    text-decoration-color: var(--porcelain);
   }
 
   /* ================================================================
@@ -566,7 +586,8 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     line-height: var(--baseline);
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--slate);
+    color: var(--ink);            /* R14: quiet tier, 7.53:1 */
+    opacity: var(--a-quiet);
   }
 
   .field-input{
@@ -585,7 +606,17 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
        the same double-count the label's margin was making. */
     padding: 0 0 var(--s1);
     border: 0;
-    border-bottom: 1px solid var(--hair-strong);
+    /* R14 · --rule-ui, 3.44:1, AND THIS IS A FIX, NOT A PORT.
+       These controls have no border box and no fill, so THE UNDERLINE
+       IS THE ONLY THING IDENTIFYING THE CONTROL -- which makes it a
+       user-interface component under WCAG 1.4.11 and puts it under the
+       same 3:1 floor as the focus ring, not under the decorative
+       hairline tier. --hair-strong measured 1.89:1 on Porcelain and
+       has failed that floor since Phase F. Mirroring it here would
+       have carried the defect onto the new ground, which is exactly
+       what R14's instruction about the focus ring forbids. Reported
+       rather than silently reused. */
+    border-bottom: 1px solid var(--rule-ui);
     border-radius: 0;                 /* iOS adds one to text inputs */
     background-color: transparent;
     background-image: none;
@@ -602,25 +633,52 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
        is a reading line-height and real multi-line text sits on it. */
     line-height: 1.3;
     letter-spacing: 0.004em;
-    color: var(--obsidian);
+    color: var(--ink);            /* R14: 13.97:1 */
     transition: border-color 320ms var(--ease);
   }
 
   .field-input::placeholder{ color: transparent; }   /* never a label */
 
-  .field-input:hover{ border-bottom-color: var(--slate); }
+  /* The two states mirror the light ground's exactly: hover lifts the
+     rule to the quiet tier, focus takes it to full ink. Only the pole
+     each one points at has changed. */
+  .field-input:hover{ border-bottom-color: rgba(231, 226, 221, 0.71); }
 
   .field-input:focus{
     outline: 0;
-    border-bottom-color: var(--obsidian);
+    border-bottom-color: var(--porcelain);
   }
 
-  /* OBSIDIAN, NOT GOLD. Gold measures 2.4:1 on Porcelain (CONTEXT.md,
-     Feature Quote note) and a focus indicator needs 3:1 under WCAG
-     1.4.11; Obsidian is 12.9:1. It is also what .btn-solid and
-     .edu-link already focus in. */
+  /* ---- THE FOCUS RING, RE-DERIVED ON OBSIDIAN --------------------
+     R14, verbatim: "The focus ring's 12.9:1 was measured against
+     Porcelain. It must be re-derived on Obsidian against the 3:1
+     floor. This is the exact defect R10 caught with the gold ring at
+     2.4:1; do not reintroduce it by porting a number."
+
+     THRESHOLD: 3:1. WCAG 2.1 SC 1.4.11 Non-text Contrast, which is
+     what CONTEXT.md cites in both places it discusses this ring --
+     the R10 note ("under WCAG 1.4.11's 3:1 floor for a non-text
+     indicator") and the R14 ruling ("against the 3:1 floor").
+
+     WHAT THE RING IS MEASURED AGAINST: the ring sits at
+     `outline-offset: 5px`, so the colour on every side of it is the
+     OBSIDIAN GROUND showing through the offset gap. It is not
+     measured against the field's ink and not against the underline.
+
+     THE THREE CANDIDATES, ALL MEASURED ON THIS GROUND:
+         Porcelain #E7E2DD   13.97:1   PASS
+         Antique Gold #AF8C5C 5.76:1   PASS, but spends gold
+         Smoked Slate #474440  1.60:1  FAIL -- and this is what a
+                                       thoughtless port of "the page's
+                                       secondary ink" would have shipped
+
+     PORCELAIN. Gold clears the floor on this ground and is still not
+     spent: both budgets stand at 3 of 3 and 0 of 8, R14 says gold
+     "must still not be spent here," and at 5.76:1 it is the weaker of
+     the two passing options anyway. The budget and the measurement
+     agree, which is the only reason this is not a STOP. */
   .field-input:focus-visible{
-    outline: 2px solid var(--obsidian);
+    outline: 2px solid var(--porcelain);
     outline-offset: 5px;
   }
 
@@ -641,13 +699,23 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     appearance: none;
     -webkit-appearance: none;
     padding-right: 28px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%231A1613' stroke-width='1.2'/%3E%3C/svg%3E");
+    /* R14: THE CHEVRON'S STROKE IS RE-DERIVED, NOT LEFT. It was
+       hardcoded %231A1613 -- Obsidian -- inside a data URI, where no
+       token reaches it and no cascade would have caught it. On this
+       ground that is Obsidian on Obsidian: the arrow does not dim, it
+       DISAPPEARS, and the only affordance saying this control is a
+       dropdown goes with it. It is the dropdown indicator, so it is a
+       1.4.11 component: %23E7E2DD, 13.97:1. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%23E7E2DD' stroke-width='1.2'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 2px center;
     cursor: pointer;
   }
 
-  .field-select:invalid{ color: var(--slate); }   /* the "Choose one" state */
+  /* The "Choose one" state. Quiet tier at 7.53:1 -- it is placeholder-
+     LOOKING but it is a real <option>, so it stays above the 4.5:1
+     floor rather than taking the faint tier. */
+  .field-select:invalid{ color: rgba(231, 226, 221, 0.71); }
 
   /* Off-screen, not display:none. Never focusable, never announced. */
   .honeypot{
@@ -673,12 +741,24 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
   }
 
   /* --- Submit ----------------------------------------------------------
-     .btn-solid carries the fill, the type and the states: Obsidian
-     ground, Porcelain type at 12.9:1, square corners, transform and
-     opacity only, never ghost or outline and never gold. It is the
-     page's one button treatment and the other three buttons on the
-     page take it. What is left here is the two things a <button>
-     needs that an <a> does not. */
+     .btn-solid carries the fill, the type and the states. R14 INVERTS
+     IT ON THIS GROUND -- Porcelain fill, Obsidian type -- in one
+     scoped rule in global.css under .on-obsidian, so the Cover's,
+     Premier's and Everyday Legends' buttons cannot see it.
+
+     THE VERIFIED PHASE F PROPERTY IS RE-VERIFIED, NOT ASSUMED TO
+     CARRY. That property is "Obsidian, solid fill, never ghost, never
+     outline, never gold." Three of the four are colour-free and hold
+     untouched. The fourth said Obsidian because Obsidian was the
+     high-contrast pole AGAINST THE GROUND THE BUTTON SAT ON; on this
+     ground that pole is Porcelain. Fill and type invert together, so
+     the type's contrast against its own fill is 13.97:1 either way --
+     the same button, not a different treatment. Square corners,
+     transform and opacity only, and the focus ring re-derived at
+     13.97:1 on the ground showing through its 5px offset.
+
+     What is left here is the two things a <button> needs that an <a>
+     does not. */
   .contact-submit{
     border: 0;
     cursor: pointer;
@@ -712,7 +792,7 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-size: clamp(24px, 3vw, 40px);
     line-height: 1.24;
     letter-spacing: -0.012em;
-    color: var(--obsidian);
+    color: var(--ink);                       /* R14: 13.97:1 */
   }
 
   .form-status :global(.status-body){
@@ -721,11 +801,19 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     font-weight: 300;
     font-size: 15px;
     line-height: 1.75;
-    color: var(--slate);
+    /* Quiet tier as a flat rgba rather than color + opacity: an
+       opacity here would knock down the mailto: link nested inside
+       this paragraph along with it, and that link has to clear the
+       4.5:1 floor on its own. 7.53:1. */
+    color: rgba(231, 226, 221, 0.71);
   }
 
+  /* The error bar is the only thing distinguishing an error block from
+     the success block at a glance, so it takes --rule-ui's 3:1 tier
+     rather than the decorative hairline. --hair-strong is Obsidian at
+     0.30 and is invisible on this ground. */
   .form-status[data-state="error"]{
-    border-left: 2px solid var(--hair-strong);
+    border-left: 2px solid var(--rule-ui);
     padding-left: var(--s3);
   }
 
@@ -737,18 +825,22 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     line-height: 1.8;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--obsidian);
+    color: var(--ink);                       /* R14: 13.97:1 */
   }
 
+  /* The mailto: fallback every error state surfaces. Full ink, so it
+     clears 4.5:1 on its own regardless of the quiet paragraph it is
+     nested in, and its focus ring is re-derived like every other one
+     in this file. */
   .form-status :global(a){
-    color: var(--obsidian);
+    color: var(--porcelain);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
-    text-decoration-color: rgba(71, 68, 64, 0.42);
+    text-decoration-color: var(--rule-ui);
   }
-  .form-status :global(a:hover){ text-decoration-color: var(--obsidian); }
-  .form-status :global(a:focus-visible){ outline: 1px solid var(--obsidian); outline-offset: 4px; }
+  .form-status :global(a:hover){ text-decoration-color: var(--porcelain); }
+  .form-status :global(a:focus-visible){ outline: 1px solid var(--porcelain); outline-offset: 4px; }
 
   /* ---- BAND 3 · 751-1023 -----------------------------------------
      The section stacks; the primitives in global.css do that. What is
@@ -956,7 +1048,13 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
     window.onTurnstileLoad = function () {
       widgetId = window.turnstile.render('#turnstile-widget', {
         sitekey: sitekey,
-        theme: 'light',
+        // R14: the widget renders on Obsidian now. 'dark' is a render
+        // option matching its ground, not a change to any of the twelve
+        // verified Phase F behaviours -- the token field, the explicit
+        // render, the retained widget id and the reset-after-failure all
+        // work identically. Left at 'light' it is a 300x65 white slab,
+        // the single brightest object on the page's closing section.
+        theme: 'dark',
         action: 'contact'
       });
     };
