@@ -614,7 +614,9 @@ const blogHref = `#${blog.id}`;
      edges. */
   .idx-num {
     font-family: var(--display);
-    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 30, 'WONK' 0;
+    /* Literal value unchanged; it now reads from the token declared on
+       .idx-list so the resting and hovered ends cannot drift apart. */
+    font-variation-settings: var(--idx-num-rest);
     font-weight: 400;
     font-size: var(--idx-num-size);
     line-height: var(--idx-num-lh);
@@ -710,8 +712,30 @@ const blogHref = `#${blog.id}`;
     text-underline-offset: 0.2em;
   }
 
-  .idx-item:has(.idx-row:hover) {
+  /* FOCUS JOINS HOVER ON THE ROW-LEVEL STATES (R13.1).
+     R13 established that keyboard focus produces the same weight shift
+     as hover. R13.1 adds two more row-level responses, so focus has to
+     take them too — otherwise a keyboard user gets the numeral and the
+     rule thickening while the rule's COLOUR stays slate, which paints a
+     0.5px obsidian line on top of a 1px slate one. The colour rule's
+     trigger is extended rather than a second rule added, so the two
+     states cannot drift.
+
+     THE THICKENING IS INSTANT AND CARRIES NO TRANSITION. Every hover
+     state in this section is documented as instant, and a transition on
+     box-shadow would be a second animated property outside the scoped
+     exception, which covers font-variation-settings only. */
+  .idx-item:has(.idx-row:hover),
+  .idx-item:has(.idx-row:focus-visible) {
     border-bottom-color: var(--obsidian);
+    box-shadow: inset 0 calc(-1 * var(--idx-rule-add)) 0 0 var(--obsidian);
+  }
+
+  /* The numeral. Same trigger, same instant response, opposite
+     direction to the name. */
+  .idx-row:hover .idx-num,
+  .idx-row:focus-visible .idx-num {
+    font-variation-settings: var(--idx-num-hover);
   }
 
   .idx-row:focus-visible {
@@ -721,6 +745,130 @@ const blogHref = `#${blog.id}`;
 
   .idx-row:active {
     opacity: 0.7;
+  }
+
+  /* ---- R13 — THE WEIGHT SHIFT -------------------------------------
+     THE ONE SCOPED EXCEPTION IN THE BUILD. CONTEXT.md's Standing Rules
+     permit `font-variation-settings` to be transitioned on INDEX ENTRY
+     NAMES ONLY and nowhere else on the page, conditional on a measured
+     pass. It is a layout-affecting property; every other transition in
+     this file is opacity.
+
+     RESTING AND HOVERED VALUES ARE THE SYSTEM'S, NOT THE REFERENCE'S.
+     The 21st.dev component this mechanism is adapted from animates
+     'wght' 400 -> 700. 700 does not exist in this build's optical
+     system: the Fraunces table's body-adjacent/small row (opsz 9-24,
+     SOFT 60-80) states no weight at all, and the shipped tier for that
+     role, --fx-small, sits at wght 420. 420 is the heaviest weight
+     anywhere in the seven --fx-* tiers, whose whole range is 300-420.
+     So the move is 400 -> 420 and it is deliberately small. A larger
+     one is off-system and needs a ruling that widens the range, not a
+     constant chosen inside a build pass.
+
+     EVERY AXIS IS ENUMERATED AT BOTH ENDS. Per the permanent Fraunces
+     gotcha: an unstated axis is not inherited across a transition, it
+     reverts to the face's own default, and Fraunces defaults to SOFT
+     100 and WONK on. A transition naming only `wght` would silently
+     ship maximum roundness and flagged terminals at the hovered end.
+     opsz, SOFT and WONK are therefore restated at their RESTING values
+     on the hovered side and do not move: the brief animates weight,
+     and a second travelling axis changes letterform shape rather than
+     weight.
+
+     :global() IS LOAD-BEARING, NOT DEFENSIVE. `.idx-ch` is created by
+     the script at the foot of this file, so it never receives Astro's
+     data-astro-cid-* attribute and a scoped selector would silently
+     stop matching. This is the exact failure CONTEXT.md records twice
+     already (<Image> in E.5, the Phase F status line).
+
+     THE STAGGER IS AUTHORED AS DATA, NOT AS CSS. Each character span
+     carries --d, its integer distance from the centre of the string,
+     written once at split time. The delay is that distance times the
+     step, so the centre character leads and the two ends arrive last,
+     symmetrically. Nothing here re-measures on resize.
+     ---------------------------------------------------------------- */
+  .idx-list {
+    /* R13.1 — THE CEILING IS RULED UP, FOR THIS INTERACTION ONLY.
+       R13 shipped 400 -> 420 because 420 is --fx-small, the heaviest
+       weight in the shipped optical system, and the system's whole
+       range is 300-420. At reading size that move was invisible.
+       Jackson has ruled the ceiling up to 700 for INDEX ENTRY NAMES
+       ONLY. It does not raise the ceiling anywhere else on the page and
+       it does not alter --fx-small, which still governs every other
+       body-adjacent role. */
+    --idx-wght-rest:  'opsz' 24, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    --idx-wght-hover: 'opsz' 24, 'wght' 700, 'SOFT' 60, 'WONK' 0;
+
+    /* COUNTERWEIGHT 1 — THE NUMERAL MOVES THE OTHER WAY.
+       The numeral is a display-scale FIGURE at opsz 96, and the
+       optical system table puts a display role's weight band at
+       300-400. Its resting 400 is that band's CEILING, so the only
+       in-system travel available to it is downward. 300 is the band's
+       floor and --fx-hero's own weight.
+
+       That the only in-system direction is also the right one is not a
+       coincidence: on a printed contents page the entry you are about
+       to turn to gains weight and the marker beside it recedes. The
+       row transfers emphasis rather than simply getting louder, which
+       is what stops one word looking fat.
+
+       opsz, SOFT and WONK do not move here either. */
+    --idx-num-rest:  'opsz' 96, 'wght' 400, 'SOFT' 30, 'WONK' 0;
+    --idx-num-hover: 'opsz' 96, 'wght' 300, 'SOFT' 30, 'WONK' 0;
+
+    /* COUNTERWEIGHT 2 — THE RULE THICKENS BY HALF ITS OWN WEIGHT.
+       DERIVED, NOT PICKED. The name's stem width scales roughly with
+       wght, so a rule tracking the name proportionally would go
+       1 -> 1.75px and stop being a hairline. Half a pixel is the
+       smallest increment a 2x display can actually resolve (3 device
+       pixels against 2) and half the rule's own weight — a fraction of
+       the rule, which is what the brief asks for, rather than a
+       fraction of the name's travel.
+
+       IT IS AN INSET box-shadow, NOT A BORDER-WIDTH. The rule is
+       `border-bottom` on .idx-item, so thickening the border would add
+       0.5px to the item's height and fail the row-height criterion
+       outright. An inset shadow paints inside the padding box, sits
+       directly on top of the border, and contributes nothing to
+       layout. Verified at 0.00px in the pass report. */
+    --idx-rule-add: 0.5px;
+
+    --idx-ch-dur: 260ms;
+    --idx-ch-step: 30ms;
+  }
+
+  /* `display: inline` and nothing else. An inline-block would create a
+     line box per character and hand the browser a break opportunity at
+     every glyph, which is how this mechanism usually ships a name that
+     wraps mid-word. Inline spans add no break opportunities: breaking
+     is computed from the text content, which is unchanged. */
+  .idx-name :global(.idx-ch) {
+    display: inline;
+    font-variation-settings: var(--idx-wght-rest);
+    transition: font-variation-settings var(--idx-ch-dur) var(--ease);
+    transition-delay: calc(var(--d, 0) * var(--idx-ch-step));
+  }
+
+  /* FOCUS PRODUCES THE SAME SHIFT AS HOVER — the same declaration, not
+     a parallel one that can drift. Entry 04's row is a <summary> and is
+     focusable in its own right, so all five rows are reachable. */
+  .idx-row:hover .idx-name :global(.idx-ch),
+  .idx-row:focus-visible .idx-name :global(.idx-ch) {
+    font-variation-settings: var(--idx-wght-hover);
+  }
+
+  /* REDUCED MOTION: no stagger, no transition. The weight still resolves
+     on hover — the preference asks for no animation, not for no state.
+     Both the duration and the step go to zero, so the shift is instant
+     and every character arrives together. */
+  @media (prefers-reduced-motion: reduce) {
+    .idx-list {
+      --idx-ch-dur: 0s;
+      --idx-ch-step: 0s;
+    }
+    .idx-name :global(.idx-ch) {
+      transition: none;
+    }
   }
 
   /* ---- THE INDICATOR ----------------------------------------------
@@ -926,3 +1074,94 @@ const blogHref = `#${blog.id}`;
     }
   }
 </style>
+
+<script>
+  /* ---- R13 — CHARACTER SPLIT FOR THE WEIGHT SHIFT ------------------
+     The mechanism only, adapted from the 21st.dev React component named
+     in the brief: per-character wrapping with a transition delay
+     proportional to distance from the centre of the string. Written
+     natively. NO framer-motion, NO GSAP, no animation dependency — the
+     transition is CSS and this script's whole job is to write --d.
+
+     NO SCROLL LISTENER. The build has exactly one, R12's, and this adds
+     nothing to it. The only listener here is on a MediaQueryList.
+
+     ---- WHY THE STRING IS DUPLICATED --------------------------------
+     Splitting a string into per-character elements is the standard way
+     this effect breaks a screen reader: some engines stop treating the
+     run as one string and spell the name out letter by letter. So the
+     name ships twice —
+
+       .vh          the intact string, in the accessibility tree, clipped
+                    out of the visual render and out of flow
+       .idx-glyphs  the split characters, aria-hidden, carrying the ink
+
+     The link's accessible name is computed from its contents, so it
+     still resolves to the same string it did before this pass: the
+     numeral is already aria-hidden, .idx-glyphs is now aria-hidden, and
+     .vh supplies the name. Verified against the rendered accessibility
+     tree at every width, not asserted.
+
+     .vh is position:absolute with clip-path:inset(50%), so it
+     contributes no layout: it cannot move the left edge, the right edge
+     or the row height. That is why the intact copy is safe to add.
+
+     ---- WHY IT IS GATED ON (hover: hover) AND (pointer: fine) --------
+     Touch gets no hover state AND no wrapping side effects, so on a
+     touch device the script does not run at all and the markup is left
+     exactly as authored. Gating only the CSS would still ship the split
+     DOM to a phone, which is a side effect. The listener re-runs the
+     check if the capability changes under a hybrid device rather than
+     leaving it decided at first paint.
+
+     ---- SPACES ARE NOT WRAPPED --------------------------------------
+     A space stays a bare text node between two spans. Wrapping it would
+     put a non-breaking decision in the middle of the name's only legal
+     break point; leaving it bare keeps the break opportunities
+     byte-identical to the unsplit string, which is what holds the row
+     to one line and therefore holds the row height.
+
+     --d COUNTS OVER THE WHOLE STRING, SPACES INCLUDED, so the stagger
+     is geometric about the centre of the name rather than about the
+     centre of its letters.
+     ---------------------------------------------------------------- */
+  const FINE = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  function split() {
+    const names = document.querySelectorAll('#sec-index .idx-name');
+    names.forEach((el) => {
+      if (el.querySelector('.idx-glyphs')) return; // already split
+      const text = el.textContent ?? '';
+      const chars = Array.from(text);
+      const centre = (chars.length - 1) / 2;
+
+      const intact = document.createElement('span');
+      intact.className = 'vh';
+      intact.textContent = text;
+
+      const glyphs = document.createElement('span');
+      glyphs.className = 'idx-glyphs';
+      glyphs.setAttribute('aria-hidden', 'true');
+
+      chars.forEach((c, i) => {
+        if (c === ' ') {
+          glyphs.appendChild(document.createTextNode(' '));
+          return;
+        }
+        const s = document.createElement('span');
+        s.className = 'idx-ch';
+        s.style.setProperty('--d', String(Math.abs(i - centre)));
+        s.textContent = c;
+        glyphs.appendChild(s);
+      });
+
+      el.textContent = '';
+      el.append(intact, glyphs);
+    });
+  }
+
+  if (FINE.matches) split();
+  FINE.addEventListener('change', (e) => {
+    if (e.matches) split();
+  });
+</script>

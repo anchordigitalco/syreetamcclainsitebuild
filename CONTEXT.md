@@ -3,8 +3,15 @@
 Project-specific. Read alongside `CLAUDE.md` and `anchor-digital-standards.md`.
 Written after the design direction was chosen from mockups, per standard workflow.
 
-**Last updated:** September 8, 2026 — **all ten sections are built and R12 (folio
-marginalia) has shipped.** R10 + R10.1 shipped (Contact + footer, form rhythm), closing the
+**Last updated:** September 8, 2026 — **all ten sections are built; R12 (folio marginalia)
+and R13 (Index hover) have shipped.** R13 ships too quiet to see and is superseded by R13.1.
+R14 (Contact on Obsidian) is ruled in and not yet built. **The wipe-reveal ban is rescinded**
+— see the entry-animation pattern under Motion vocabulary, which now governs all
+scroll-driven motion. Post-launch motion is grouped into **Round A (R16 masthead + R17
+Feature Quote scrub)** and **Round B (R18 texture)**; Round B is not scheduled until Round A
+is reviewed.
+
+**Original R12 note:** all ten sections built and R12 shipped. R10 + R10.1 shipped (Contact + footer, form rhythm), closing the
 ten-`<h2>` structure at 10 of 10. R9 settled through R9.6, R8 through R8.2. **R11
 (`/privacy`) is deferred by Jackson — no privacy policy is being built for now; see the
 Launch clock entry.** The height-spread check ran at R10 and is **rescinded as
@@ -666,6 +673,14 @@ suppressed. Everything above is her own work; everything below is the funnel ind
 
 **Exactly one pull quote exists on this page.** A second dilutes the pivot.
 
+> **The pivot is no longer the page's only Obsidian ground (R14, ruled September 8 2026).**
+> Contact also takes Obsidian, giving the page a Porcelain / Obsidian / Porcelain / Obsidian
+> spine that closes dark. The pivot remains the page's **single structural pivot** — that
+> status rests on the pull quote, the full-bleed type scale and the folio going quiet, not
+> on ground colour exclusivity. **Do not "restore consistency" by reverting Contact to
+> Porcelain, and do not add a third Obsidian ground.**
+
+
 **Locked in R7, do not re-litigate:**
 
 - **Ground:** flat `#1A1613`, full bleed, type inset at columns 2–10 (2–7 of 8 in band 3,
@@ -790,10 +805,14 @@ of a moving one. Do not compensate with mobile-only effects.
 Four mechanisms were considered and fail rules already in this file. Recorded so the same
 ideas do not arrive again wearing different names.
 
-- **Clip-path or wipe reveals on entering type.** Fails for the same reason fade-up fails:
-  content clipped at load is invisible in full-page screenshot capture and in any
-  client-generated PDF. The trigger would also need either an `IntersectionObserver`
-  (banned) or a second scroll listener (banned).
+- ~~**Clip-path or wipe reveals on entering type.**~~ **RESCINDED September 8 2026.** This
+  was rejected on the grounds that clipped content is invisible to screenshot capture and to
+  any client PDF. That failure is real but it is avoidable, and the rejection was lazy:
+  **the animated state is applied by JS on load, not authored as the CSS default.** Anything
+  without JS — screenshot capture, PDF generation, a failed script — renders the finished
+  page. This is now the **standard pattern for all entry animation on this page**, and it is
+  the condition on which the fade-up ban itself rests. Fade-up as originally banned put
+  `opacity: 0` in the stylesheet; that stays banned. The pattern below does not.
 - **Paginated or coverflow Index.** The five destinations read at once by design. Paging
   them is strictly worse and breaks R8's numeral-to-lede-edge composition.
 - **Cycling the Cover role line.** "Educator · Consultant · Momager · Founder" animated in
@@ -802,8 +821,14 @@ ideas do not arrive again wearing different names.
 - **Hover-preview imagery on the Index rows.** No photography exists for Premier
   Leadership, Everyday Legends or the blog, and OSU clearance is still open for the
   brothers. It would ship as empty frames.
+- **Magnifying icon dock (macOS-style), proposed September 8 2026.** Wrong register — a toy
+  metaphor, and it would be the only playful object on an editorial spread for a school
+  principal and consultant. It also has no assets: there is no icon system and no brand mark
+  for Premier Leadership or the foundation, so it would require inventing five pieces of
+  visual identity to fill it. **The masthead instinct behind it is correct and survives as
+  R16.**
 
-### R13 — Index row hover ⚠️ BLOCKED ON A RULING
+### R13 — Index row hover — RULED IN, September 8 2026
 
 **Proposal.** On hover, an Index entry name shifts Fraunces `wght` from its resting weight
 to a heavier one, staggered per character from the centre of the word outward. No colour
@@ -825,24 +850,21 @@ tension with it:
   the row. Reflow is therefore probably contained, but *probably* is not this file's
   standard.
 
-**Two honest routes, Jackson picks one:**
+**Jackson's ruling: route 1.** A scoped exception to the transform/opacity rule for
+`font-variation-settings`, on Index entry names only, **conditional on a measured pass** —
+entry-name right-edge travel, `+` affordance position, and row height, captured at rest and
+at full weight, at all thirteen widths, with zero row-height change and no collision with
+the `+`. The exception is written into Standing Rules.
 
-1. **Rule an explicit, scoped exception** to the transform/opacity rule for
-   `font-variation-settings` on Index entries only, conditional on a measured pass: entry
-   name right-edge travel, `+` affordance position, and row height, captured at rest and at
-   full weight, at all thirteen widths, with zero row-height change and no collision with
-   the `+`.
-2. **Reject it** and leave the Index inert.
-
-**Do not let Claude Code arbitrate this.** It is a rule change, not an implementation
-detail. If the measurement in route 1 fails at any width, the answer is route 2, not a
-tuned constant.
+**The condition is not a formality.** If the measurement fails at any width, the hover is
+removed and the Index stays inert. It is not rescued with a tuned constant, and the
+exception does not extend to any other element or property.
 
 **If it ships:** every Fraunces axis must be enumerated at both ends of the transition, per
 the permanent Fraunces gotcha. A transition that names only `wght` will silently ship
 `SOFT` 100 and `WONK` on at the hovered end.
 
-### R14 — Contact on Obsidian ⚠️ BLOCKED ON A RULING
+### R14 — Contact on Obsidian — RULED IN, September 8 2026
 
 **Proposal.** Contact takes an Obsidian ground, giving the page a spine: Porcelain through
 the four pillars, Obsidian at the pivot, Porcelain through Index and blog, Obsidian at the
@@ -856,7 +878,11 @@ makes the pivot the first of a pair and gives the scroll a shape the eye can hol
 pivot is described as the page's **single** structural pivot; and a second full-bleed dark
 ground is exactly the kind of thing that dilutes a device the page spent R7 establishing.
 
-**If ruled in, three things are not optional:**
+**Jackson's ruling: in.** The page closes dark. The pivot keeps its status on type scale,
+the pull quote and the quiet folio, not on being the only dark ground — see the note under
+Feature Quote.
+
+**Four things are not optional:**
 
 - The submit button is `.btn-solid` on Porcelain. On Obsidian it inverts, and the verified
   Phase F property must be re-verified, not assumed to carry.
@@ -865,6 +891,11 @@ ground is exactly the kind of thing that dilutes a device the page spent R7 esta
   2.4:1; do not reintroduce it by porting a number.
 - Gold becomes legal on this ground (5.76:1). **It must still not be spent here.** The gold
   budget is pinned and the pivot's "Legacy" is the third and last saturated accent.
+- **The footer joins the Obsidian ground.** Derived, not optional: Contact full-bleed dark
+  with a Porcelain footer below it closes the page on a thin light sliver, which reads as an
+  accident rather than a composition. Every footer element must be re-verified on Obsidian —
+  copyright text, the privacy link, and **Anchor Digital's mark**, which is an SVG built for
+  a light ground and will need its fill re-derived rather than left to inherit.
 
 ### R15 — One opener that breaks pattern
 
@@ -883,6 +914,48 @@ to reject the first attempt; that is the pass working, not the pass failing.
 
 **Constraint:** the three established left edges are not in scope. The opener's *vertical*
 order changes; the edges do not move.
+
+### The entry-animation pattern (required for all scroll-driven motion)
+
+Ruled September 8 2026, on rescinding the wipe-reveal ban.
+
+**The finished state is the CSS default. JavaScript applies the animated state on load.**
+Never the reverse. A stylesheet that ships `opacity: 0` or a closed `clip-path` as the
+resting value fails, because screenshot capture, client-generated PDFs, and any session
+where the script does not run will render an empty page.
+
+Concretely: the element is fully visible and correctly placed in CSS. A script adds a class
+(e.g. `js-motion`) to `<html>` on load; the animation rules are scoped under that class.
+No class, no animation, finished page.
+
+This pattern is the condition on which scroll-driven motion is permitted at all. It does
+not reopen fade-up-on-scroll as originally banned, and it does not permit a second scroll
+listener — CSS scroll-driven animation (`animation-timeline: view()`) is preferred, and
+where a listener is genuinely required it MUST reuse R12's.
+
+**Parallax remains banned on photographs**, for the original reason: a `transform` promotes
+the image to its own layer and the `mix-blend-mode: multiply` treatment silently stops
+blending. **On type it is permitted** — that failure mode does not apply.
+
+### Post-launch motion rounds — Round A and Round B
+
+Six mechanisms were proposed together. They are grouped into two rounds rather than one
+pass, because they are six mechanisms in six files and a combined pass would land the easy
+four well and the hard two badly. Motion is also the one thing that cannot be measured into
+correctness: if the page reads busy or cheap with six new moving elements, there is no way
+to attribute it. R9 cost nine passes and it was one section.
+
+**Round A — the peak (R16 + R17).** The masthead and the Feature Quote scrub. Different
+regions of the page, so they cannot interfere, and together they answer the only question
+that matters: does the page have a peak now. **If Round A succeeds, Round B may not be
+needed at all.** Do not schedule Round B until Round A has been reviewed on localhost.
+
+**Round B — the texture (R18).** Lede wipes across the seven type-openers, the R9.6 plate
+frame drawing itself, ghost numerals drifting in the margin band, and the Index rows
+staggering in. All four are entry animation on the same mechanism, so they genuinely belong
+in one pass and must be tuned against each other. **Expect conflict:** lede wipe, numeral
+drift and row stagger can all fire on the same section entry. That is the reason this round
+exists as a unit rather than as four slices.
 
 ### Cover bottom band — verify before it becomes a slice
 
@@ -1043,6 +1116,16 @@ do the same in any PDF the client generates. All content visible on load. A prin
 magazine spread doesn't animate, so this costs nothing conceptually.
 
 **Animate `transform` and `opacity` only.** Never `transition-all`.
+
+> **One scoped exception, ruled by Jackson September 8 2026 (R13).**
+> `font-variation-settings` may be transitioned on **Index entry names only**, and nowhere
+> else on the page. It is a layout-affecting property, so the exception is **conditional on
+> a measured pass**: at all thirteen widths, row height MUST NOT change between rest and
+> hover, and the hovered name's right edge MUST NOT collide with the `+` affordance on
+> entry 04. **If the measurement fails at any width, the exception is void and the hover is
+> removed** — it is not rescued with a tuned constant. Do not extend this exception to any
+> other element, section, or property without a new ruling.
+
 
 **Drop cap math is solved against measured font metrics, not eyeballed.** Required ink
 cap-height = `(4 × body line-height) + body cap-height` for a 5-line span, computed
@@ -1645,9 +1728,13 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R10.1 | Contact — form rhythm + one privacy link | **Shipped September 8 2026.** One file, `Contact.astro`; `global.css` untouched, which is why the nine-section delta is structural rather than hopeful. Six declarations changed, three deleted with the link. Pairing ratio 1.33 (inverted) → 0.71; form height −72.94px; Contact 1011.94 → 880.31px, reported not steered. Predicted 40.04 / 56.31 / 0.71 before building, measured 40.03 / 56.30 / 0.71. |
 | R11 | `/privacy` | Phase G. **Deferred by Jackson, September 8 2026 — not being built for now.** Independent, can run whenever the client sends data-practice details and Jackson decides to resume it. |
 | R12 | Folio marginalia | **Shipped September 8 2026.** `FolioMarginalia.astro` mounted, single scroll listener wired. Horizontal stability, active-section accuracy, quiet-over-pivot, and label integrity against every `<h2>` all verified and reviewed by Jackson on localhost at 1440 and at the 1280 collapse edge. Zero layout regression on the nine prior sections. |
-| R13 | Index row hover (weight shift) | **After launch. ⚠️ Blocked on Jackson's ruling** — it needs a scoped exception to "animate `transform` and `opacity` only," conditional on a measured reflow pass. Concept, conflict and the two routes are written in **Motion vocabulary**. |
-| R14 | Contact on Obsidian | **After launch. ⚠️ Blocked on Jackson's ruling** — a second dark ground either gives the page a spine or dilutes the pivot. If ruled in, the focus ring must be re-derived on Obsidian and gold must still not be spent. See **Motion vocabulary**. |
+| R13 | Index row hover (weight shift) | **Shipped September 8 2026, and it is too quiet to see.** Built at `wght` 400 → 420 because 420 is `--fx-small`, the heaviest weight in the shipped optical system. All five criteria passed comfortably (0.00px row-height delta, 95.77px tightest `+` clearance, 0.00px left edge, 533-quantity zero-delta) precisely because a 20-unit move barely displaces anything. Correctly refused to exceed the system ceiling without a ruling. **Superseded by R13.1.** |
+| R13.1 | Index hover, widened | **Ruled by Jackson, September 8 2026: the 420 ceiling does not bind this interaction.** `wght` 400 → 700 on Index entry names ONLY; the ceiling is not raised anywhere else. Adds two counterweights so the row reads whole: the numeral shifts on the same hover, and the hairline rule thickens without changing row height. **Re-measure everything** — travel at 700 will be an order of magnitude past the 0.67–1.29px measured at 420, and the span-splitting kerning cost (0.09–0.27px at rest) scales with weight. The exception's failure condition is unchanged: fail items 1, 3 or 4 at any width and the hover is removed, not tuned. |
+| R14 | Contact on Obsidian | **Ruled in by Jackson, September 8 2026.** The page closes dark. Focus ring re-derived on Obsidian against the 3:1 floor (the 12.9:1 figure was measured on Porcelain and MUST NOT be ported), `.btn-solid` inverted and re-verified, gold still not spent, and **the footer joins the ground** including Anchor Digital's mark. See **Motion vocabulary**. |
 | R15 | Everyday Legends opener | **After launch.** Break the third consecutive type-opener. Composition judgment, Opus, screenshot before numbers. The three left edges do not move. See **Motion vocabulary**. |
+| R16 | Masthead | **Round A.** No masthead exists; the site has no navigation at all. Nothing renders over the Cover — her name is already enormous there. On scrolling past the Cover a thin bar arrives carrying her name small plus a jump to the Index, and withdraws on scrolling back. The arrival is the animation. **This is where the variable-font-hover mechanism belongs** — it is a nav component and the page finally has a nav. Depends on R12's listener; MUST NOT add a second. |
+| R17 | Feature Quote scrub | **Round A. The loudest single change available.** As the pivot enters, "Legacy" grows and its letter-spacing opens, driven by scroll position rather than elapsed time. Prefer CSS `animation-timeline: view()` so no listener is involved. The pivot is supposed to dominate the page and currently wins by a small margin; it should win by a mile. Gold budget unchanged — "Legacy" is already the third and last saturated accent, this changes its scale, not its colour. |
+| R18 | Round B — texture | **Do not schedule until Round A is reviewed.** Four entry animations tuned against each other in one pass: lede wipes on the seven type-openers, the R9.6 plate frame drawing itself from a corner, ghost numerals drifting in the margin band (parallax on type is permitted; on photographs it is not), and the Index rows staggering in. All four use the entry-animation pattern. Expect them to fight on shared section entry; that conflict is the reason this is one round. |
 **Preserved from the old build, do not rebuild:** the contact form (Phase F), the Fraunces
 optical system (Phase B), the locked palette, and the standing rules in this file.
 
