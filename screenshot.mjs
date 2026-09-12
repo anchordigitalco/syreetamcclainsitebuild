@@ -40,6 +40,24 @@ const page = await browser.newPage();
 await page.setViewport({ width: widthArg, height: 900, deviceScaleFactor: 2 });
 await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
 await page.evaluate(() => document.fonts.ready);
+
+// R17. CONTEXT.md standing rule: "Screenshot loop is static only. Animated,
+// scroll-driven, and interactive elements are excluded -- they cause infinite
+// correction cycles. Test motion manually."
+//
+// The page's motion is gated behind html.js-motion, per the entry-animation
+// pattern: the finished state is the CSS default and the animated state is
+// applied. Dropping the class puts the page in its finished state, which is
+// what a capture is a record of.
+//
+// This is not cosmetic. A fullPage capture rasterises the whole document at
+// scroll offset 0, and a scroll-driven animation resolves against that offset
+// -- so with the class left on, every section below the fold captures at the
+// START of its scrub. The Feature Quote would print at the page's lede pitch
+// in every screenshot and in every client-generated PDF. Removing the class is
+// how the capture and the printed object agree.
+await page.evaluate(() => document.documentElement.classList.remove('js-motion'));
+
 // settle page-load transitions so screenshots are deterministic
 await new Promise((r) => setTimeout(r, 1200));
 

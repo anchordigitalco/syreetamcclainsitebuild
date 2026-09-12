@@ -196,6 +196,50 @@
      None of them move. Only the place the number is written moves. */
   --quote-size: clamp(44px, 7.8vw, 128px);
 
+  /* THE PIVOT'S LINE-HEIGHT AND TRACKING, PROMOTED TO TOKENS (R17).
+
+     Same move R15 made on --quote-size, for the same reason and under
+     the same rule: R8.2's "a relationship that must hold is declared
+     against its counterpart, never left to fall out of two swept
+     values." Two things now depend on these numbers and NEITHER may
+     restate them:
+
+       - --quote-baseline below solves the scrub's transform-origin
+         out of the line-height. A literal 1.02 written there would be
+         a second copy of the tier, going stale the moment the tier
+         moves -- the Index-numeral shape exactly.
+       - .legacy-scrub restores the trailing letter-spacing that an
+         atomic inline-block drops. That compensation IS the tracking
+         value, so writing it as a literal would be a swept constant
+         standing in for a token that already exists.
+
+     THE VALUES ARE R7's, BYTE-FOR-BYTE. Nothing about the tier moves;
+     only the place the two numbers are written. Verified across all
+     thirteen widths: h2 height, the closing period's right edge and
+     "Legacy"'s left edge all 0.000px before and after.
+
+     R7 is not reopened. The value, the face, the four axes, the flat
+     ground and the absent quotation marks are untouched. */
+  --quote-lh: 1.02;
+  --quote-ls: -0.028em;
+
+  /* FRAUNCES' VERTICAL METRICS -- R9.6, MEASURED, CLOSED.
+
+     measureText() at ten sizes from 200px to 2000px, where Chrome's
+     whole-pixel rounding is negligible: ascent 0.97750em, descent
+     0.25500em, cap 0.70000em -- the same numbers at all ten sizes and
+     at all five shipped sizes. CONTEXT.md records the cap ratio as
+     confirmed by two independent methods and says to treat it as
+     closed; the ascent and descent come from the same pass.
+
+     They live here rather than in a component because they belong to
+     the FACE, not to any one tier. R6.3's warning still applies to
+     how they are USED -- an em constant cannot track a rounded font
+     metric, so these are for solving a RATIO that cancels, never for
+     modelling a pixel offset that has to land on something. */
+  --fr-asc:  0.9775;
+  --fr-desc: 0.2550;
+
   /* ----------------------------------------------------------
      THE EVERYDAY LEGENDS OPENER (R15)
 
@@ -253,6 +297,125 @@
   );
 
   /* ----------------------------------------------------------
+     R17 -- THE FEATURE QUOTE SCRUB (Round A)
+
+     TWO DERIVED QUANTITIES. ONE RELATIONSHIP. NO NEW CONSTANTS.
+
+     --pivot-scrub-from is the scale "Legacy" STARTS at as the pivot
+     enters the viewport. It is not picked and it is not swept: it is
+     the ratio between the page's shared lede pitch and the pivot's
+     own pitch, declared LIVE against both tokens.
+
+     In words -- the word enters at exactly the size every other lede
+     on the page is set at, and grows from there to the pivot. It
+     travels the page's whole display ladder in one move.
+
+     R7 measured that ladder and recorded one number for it: the pivot
+     "exceeds every lede by 2.05x." R15 took the SQUARE ROOT of that
+     same 2.053 to seat the Everyday Legends opener at the geometric
+     mean between the two tiers. R17 takes the WHOLE step. That is the
+     derivation, and it is why there is no third constant in this file
+     and nothing to re-sweep when either clamp moves -- which is the
+     entire reason it is written as a ratio of two tokens instead of
+     as 0.487. Rendered, in the two bands where the scrub runs:
+
+         1920   64.00 / 128.00 = 0.5000   travel 2.000x
+         1440   54.72 / 112.32 = 0.4872   travel 2.053x   <- R7's step
+         1280   52.00 /  99.84 = 0.5208   travel 1.920x
+
+     The travel varies across the band because --lede-size and
+     --quote-size floor and ceiling on different schedules. That is
+     not drift: at every width it is the page's OWN lede-to-pivot step
+     at that width, which is the quantity the move is about. Freezing
+     0.487 would ship the 1440 measurement to 1920 and to 1280, and
+     R8.2 is the fourth instance of why that goes wrong.
+
+     THE END SCALE IS 1 AND IS DELIBERATELY NOT A TOKEN. The finished
+     state is the CSS default, per the entry-animation pattern, so the
+     last keyframe is `transform: none` and the page at rest carries no
+     transform on the pivot at all -- there is nothing for a token to
+     name.
+
+     --quote-baseline is WHERE the word grows FROM. Type sits on a
+     baseline. A word that scales about its box centre or its box
+     bottom lifts off that baseline and settles back down onto it, and
+     that vertical drift is motion the composition never asked for --
+     the section's whole composition is one hard left edge and one
+     baseline. CSS has no `transform-origin: baseline`, so it is
+     solved from the face's metrics instead of eyeballed:
+
+         half-leading      = (lh - asc - desc) / 2
+         baseline from top = half-leading + asc
+         as a fraction     = (half-leading + asc) / lh
+
+     At the pivot's line-height that is 0.87125em of a 1.02em line box,
+     or 85.4167%. NOTHING IS HARDCODED -- it re-solves from --quote-lh
+     and the face metrics, so moving the tier moves the origin with it
+     rather than leaving a stale percentage behind. The ratio also
+     cancels the rendered size out entirely, which is what keeps R6.3's
+     "an em constant cannot track a rounded font metric" off it: this
+     is a fraction of the element's own box, not a modelled pixel
+     offset that has to land on something.
+     ---------------------------------------------------------- */
+  --pivot-scrub-from: calc(var(--lede-size) / var(--quote-size));
+
+  /* ----------------------------------------------------------
+     R18.1 -- THE SCRUB'S START MOVES ONE STEP FURTHER DOWN THE
+     SAME LADDER, AND --pivot-scrub-from IS NOT THE THING THAT
+     MOVES.
+
+     Jackson's review of the shipped R17 scrub: it reads correctly
+     and THE TRAVEL IS TOO SHORT. The correction must not introduce
+     a constant, and it does not: the page has exactly one measured
+     display-tier step and the corrected start is that step taken
+     TWICE.
+
+     WHY THE SQUARE IS A NEW TOKEN AND NOT A REDEFINITION OF
+     --pivot-scrub-from. R16 consumes that token as ONE rung:
+
+         --mast-name-size = --lede-size x --pivot-scrub-from
+
+     Squaring the token in place would silently take the masthead
+     name from 26.66px to 12.99px at 1440 -- under WCAG 1.4.3's
+     24px large-text boundary, under the 10.5px jump-link tier's
+     own basis, and straight through the contrast derivation R16
+     measured at 15.01:1. That is the "a box you did not author
+     still takes a track" family arriving through a token: a value
+     corrected for one consumer, silently applied to a second.
+     --pivot-scrub-from therefore KEEPS ITS MEANING -- it is the
+     ladder's step, one rung, and it is what the masthead takes
+     downward. --pivot-scrub-start is that same step taken twice.
+     One token still drives all four tiers.
+
+     WHERE THE SQUARE LANDS, AND IT IS NOT AN ARBITRARY DEPTH. The
+     entering word's rendered size is --quote-size x the start
+     scale, so at a start of step^2 that is
+
+         --quote-size x (--lede-size / --quote-size)^2
+             = --lede-size x (--lede-size / --quote-size)
+             = --lede-size x --pivot-scrub-from
+             = --mast-name-size,  exactly.
+
+     The word enters at THE MASTHEAD-NAME TIER -- the bottom rung of
+     the page's own ladder -- and travels the whole ladder end to
+     end. The identity is algebraic, not a coincidence of one
+     width, and it holds at every width because both sides are the
+     same two clamps.
+
+         1920   0.5000^2 = 0.250000   travel 4.000x   32.00px entering
+         1440   0.4872^2 = 0.237360   travel 4.213x   26.66px entering
+         1280   0.5208^2 = 0.271250   travel 3.687x   27.08px entering
+
+     THE END SCALE STAYS 1 AND STAYS UNTOKENISED. The finished state
+     remains `transform: none`.
+     ---------------------------------------------------------- */
+  --pivot-scrub-start: calc(var(--pivot-scrub-from) * var(--pivot-scrub-from));
+  --quote-baseline: calc(
+    (var(--fr-asc) + (var(--quote-lh) - var(--fr-asc) - var(--fr-desc)) / 2)
+    / var(--quote-lh)
+  );
+
+  /* ----------------------------------------------------------
      BASELINE
      16px body at 1.75 line-height = a 28px line box. That is the
      page's baseline unit. Margin content — captions, links, notes —
@@ -266,20 +429,259 @@
   --body-lh:   1.75;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* ----------------------------------------------------------
+     R18.1 — WHERE A SCROLL-DRIVEN ENTRY IS ALLOWED TO SPEND ITS
+     TRAVEL. One pair of anchors, shared by all three R18
+     mechanisms, so they cannot drift apart into three cadences.
+
+     THIS EXISTS BECAUSE R18 SHIPPED AND WAS INVISIBLE. The report
+     was "has no scroll behavior, it's super faint" and the
+     measurement agreed exactly: on `cover 0% -> 42%` with --ease,
+     About's lede had spent 89.5% of its 71.13px of travel by the
+     time its top edge reached y=700 in a 900px viewport, and
+     0.00 / 0.04 / 0.65px remained at y=500. The reader met every
+     lede already finished. Nothing was broken — the animation was
+     firing, on a real ViewTimeline, at playState running — and
+     that is precisely R13's shape: the pass and the invisibility
+     had one cause.
+
+     --r18-to: 50%. `cover 50%` is the exact scroll position at
+     which the element's centre sits on the viewport's centre. It
+     is not a tuned number and it is not viewport-dependent: it is
+     the page's OWN definition of where the reader is, taken from
+     R12, whose folio names the section occupying "the viewport's
+     vertical midpoint." The entry finishes where the folio says
+     the reader already is.
+
+     --r18-from: 15%. The start wants to be "once the element has
+     arrived", which is exactly `entry 100%` — but a named range
+     cannot be subdivided for the per-line stagger once its two
+     ends carry different names, so both ends are expressed in
+     `cover`. In cover units that position is h/(V+h), which runs
+     14.7%-35.2% across the plausible span of element heights
+     (190-380px) and band-1 viewport heights (700-1100px). 15% is
+     the floor of that range, so no element ever starts LATER than
+     it has arrived; the tallest start a little before, which for a
+     370px opener in a 900px viewport means beginning at y=736 —
+     still on screen. One constant, bounded by a measurement,
+     rather than a value per section.
+     ---------------------------------------------------------- */
+  --r18-from: 15%;
+  --r18-to:   50%;
+
+  /* ----------------------------------------------------------
+     THE PAGE GROUND, PROMOTED TO A TOKEN (R16)
+
+     Third promotion under R8.2's rule, after --quote-size (R15) and
+     --quote-lh / --quote-ls (R17): "a relationship that must hold is
+     declared against its counterpart, never left to fall out of two
+     swept values."
+
+     R16's masthead is position: fixed, so it cannot let the page
+     ground show through -- it has to occlude the type scrolling under
+     it or that type prints straight through her name. It therefore
+     PAINTS the page ground itself, and its ground must be the page's,
+     to the byte, or a 56px band of not-quite-Porcelain sits across
+     the top of every spread. A second copy of these three radials
+     written into the component is exactly the shape this rule exists
+     to forbid: it would agree today and go stale the first time
+     anyone touches the wash.
+
+     background-attachment: fixed is what makes one declaration serve
+     both elements. A fixed-attachment background is positioned
+     against the VIEWPORT, not the element's own box, so the masthead
+     paints the identical pixels the body would have painted in that
+     56px strip. Measured, not assumed -- see the R16 report.
+
+     THE VALUE IS UNCHANGED, BYTE-FOR-BYTE. Only the place it is
+     written moves.
+     ---------------------------------------------------------- */
+  --page-ground:
+    radial-gradient(120% 78% at 50% -14%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 58%),
+    radial-gradient(88% 60% at 8% 20%,   rgba(209,199,189,0.42) 0%, rgba(209,199,189,0) 62%),
+    radial-gradient(74% 54% at 96% 72%,  rgba(209,199,189,0.34) 0%, rgba(209,199,189,0) 60%);
+
+  /* ----------------------------------------------------------
+     R16 -- THE MASTHEAD (Round A)
+
+     TWO DERIVED QUANTITIES. NO NEW CONSTANTS, NO SWEPT PIXELS.
+
+     ---- --mast-h, the bar's height -------------------------------
+     --baseline is the page's baseline unit and this file's own rule
+     for it is "margin content -- captions, links, notes -- is set on
+     multiples of it." A running head is margin content by definition:
+     it lives in the page's top margin. So the bar is a WHOLE MULTIPLE
+     OF --baseline, and the multiple is forced rather than chosen.
+
+     The bar has to contain the name's ink. Fraunces' measured face
+     metrics (R9.6, closed) put ascender + descender at
+     0.9775 + 0.2550 = 1.2325em. The largest the name ever sets is
+     32.00px, at every width from 1684 up where --lede-size ceilings
+     -- so the tallest ink the bar must hold is 39.44px.
+
+         1 x --baseline = 28px   < 39.44   does not contain it
+         2 x --baseline = 56px   > 39.44   contains it, 8.28px of
+                                           half-leading each side
+
+     Two is the SMALLEST whole multiple of the page's own unit that
+     holds the name at the widest viewport. There is no third band and
+     nothing to sweep: move --lede-size and the arithmetic re-runs.
+
+     ---- --mast-name-size, and why it cannot compete with a lede ---
+     The page has exactly ONE measured display-tier step: R7's
+     lede-to-pivot 2.053x. R15 took its SQUARE ROOT upward to seat the
+     Everyday Legends opener at the geometric mean. R17 takes the
+     WHOLE step upward to scrub the pivot. R16 takes THE SAME WHOLE
+     STEP DOWNWARD, and it does it with R17's own token rather than a
+     second copy of the ratio:
+
+         --mast-name-size = --lede-size x --pivot-scrub-from
+
+     --pivot-scrub-from is --lede-size / --quote-size, declared live
+     against both clamps. So the ladder now reads, in one relationship
+     applied three times:
+
+         pivot          = lede x 2.053      (R7, measured)
+         legends opener = lede x 1.4329     (R15, sqrt of it)
+         LEDE
+         masthead name  = lede / 2.053      (R16, the inverse)
+
+     Rendered in band 1, with the ratio to --lede-size stated:
+
+         1920   64.00 x 0.5000 = 32.00px    0.5000 x lede
+         1440   54.72 x 0.4872 = 26.66px    0.4872 x lede
+         1280   52.00 x 0.5208 = 27.08px    0.5208 x lede
+
+     The name is never more than 52.1% of a lede and never less than
+     48.7% of one. It is also >= 24px at every band-1 width, which is
+     WCAG's large-text boundary -- see the R16 report's contrast
+     table for why that matters.
+
+     THE RATIO IS NOT FROZEN, DELIBERATELY. It varies across the band
+     because --lede-size and --quote-size floor and ceiling on
+     different schedules, exactly as R17 records. At every width it is
+     the page's OWN lede-to-pivot step at that width, taken downward.
+     Freezing 0.487 would ship the 1440 measurement to 1920 and to
+     1280 -- the R8.2 failure.
+
+     THIS TOKEN IS MEANINGFUL IN BAND 1 ONLY. --quote-size rides 7.8vw
+     and collapses far faster than --lede-size's 3.8vw, so below 1280
+     the ratio climbs and eventually inverts: 0.651 at 1024, 0.833 at
+     800, 1.182 at 390, where the "small" name would set LARGER than a
+     lede. That is the same clamp divergence R15 documents and it costs
+     nothing here, because the masthead does not render below 1280 and
+     nothing else consumes this token. DO NOT REUSE IT OUTSIDE BAND 1
+     WITHOUT A CLAMP; the value is only a derivation where the bar
+     exists.
+     ---------------------------------------------------------- */
+  --mast-h: calc(var(--baseline) * 2);
+  --mast-name-size: calc(var(--lede-size) * var(--pivot-scrub-from));
+
+  /* ----------------------------------------------------------
+     R19 -- --mast-row-size, THE PANEL'S CONTENTS ENTRIES.
+
+     THE BAR'S THIRD TYPE TIER, AND IT INTRODUCES NO NEW CONSTANT.
+     The page has exactly one measured display-tier step, R7's
+     2.053, and exactly one derived half of it, R15's
+     --legends-step = 1.4329 = sqrt(2.053). Four tiers already ride
+     those two numbers:
+
+         pivot            --lede-size x 2.053          (R7)
+         Legends opener   --lede-size x 1.4329         (R15)
+         LEDE             --lede-size x 1
+         masthead name    --lede-size / 2.053          (R16)
+
+     The contents rows take the HALF step down from the masthead
+     name, which is the same move R15 made upward from the lede,
+     read in the other direction:
+
+         --mast-row-size = --mast-name-size / --legends-step
+
+     Rendered across band 1, with the ratio to the name stated as
+     the masthead's own derivation requires:
+
+         1920   32.000 / 1.4329 = 22.333px   0.6979 x the name
+         1440   26.659 / 1.4329 = 18.606px   0.6979 x the name
+         1280   27.083 / 1.4329 = 18.902px   0.6979 x the name
+
+     THE RATIO IS CONSTANT BY CONSTRUCTION because it is a division,
+     not a sweep -- there is no width at which the rows approach the
+     name, and none at which they fall under the page's 16px body.
+     The non-monotonic step from 1440 to 1280 is --lede-size's own
+     clamp floor arriving at 1368, inherited rather than introduced.
+
+     BAND 1 ONLY, FOR THE SAME REASON AS ITS BASIS. It is derived
+     from --mast-name-size, which CONTEXT.md records as meaningful in
+     band 1 only because --quote-size's 7.8vw collapses faster than
+     --lede-size's 3.8vw. The inversion is inherited in full: at 390
+     the name is 1.182 x a lede, so the row would be 0.825 x one.
+     The masthead does not render below 1280 and nothing else
+     consumes either token. DO NOT REUSE THIS OUTSIDE BAND 1 EITHER.
+     ---------------------------------------------------------- */
+  --mast-row-size: calc(var(--mast-name-size) / var(--legends-step));
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
 
 html{ -webkit-text-size-adjust: 100%; }
 
+/* ============================================================
+   R18.1 — SMOOTH SCROLLING, PAGE-WIDE
+
+   Two in-page anchors exist and both are served by this: R16's
+   masthead jump to #sec-index (band 1 only, because the bar is
+   display:none below 1280) and the COVER BUTTON's #sec-contact, which
+   is present at every width. Gating this to band 1 would leave the
+   Cover button jumping instantly on a phone, so it is page-wide as
+   asked.
+
+   AND THAT IS NOT A BREACH OF "BAND 1 ONLY FOR ALL MOTION". That rule
+   governs the page's scroll-driven ENTRY vocabulary — the mechanisms
+   whose absence below 1280 CONTEXT.md justifies with "a phone is a
+   single stacked column of a printed object, not a reduced version of
+   a moving one." This is not ambient motion; it is the interpolation
+   of a jump the reader asked for by clicking, and it belongs with
+   hover and focus states, which the page ships at every width. Flagged
+   rather than decided quietly.
+
+   IT ADDS NO SCROLL LISTENER. `scroll-behavior` is a CSS property; the
+   build still has exactly one scroll listener, R12's folio.
+
+   (Deliberately NOT spelling the addEventListener call out here. The
+   standing audit for this build is a grep for that literal across src/
+   and dist/, and a comment containing it makes the count read 2 in a
+   file that registers nothing. Prose about a listener must not look
+   like a listener.)
+
+   NO scroll-margin-top IS ADDED HERE, AND NONE MAY BE. R16 measured
+   that `scroll-margin-top: var(--mast-h)` lands the reader 56px short
+   of the Index's top — back inside the Feature Quote, an Obsidian
+   spread where the bar is quiet by rule — so clicking the masthead's
+   own link made the masthead disappear. Smooth scrolling changes the
+   INTERPOLATION to a destination, never the destination, so R16's
+   finding is untouched by this rule. Re-verified by measuring the
+   landing scrollY with smooth on.
+
+   REDUCED MOTION. `scroll-behavior` is not an animation-duration or a
+   transition-duration, so the blanket `reduce` override further down
+   this file does NOT reach it — this needs its own query or it would
+   ship smooth scrolling to a reader who asked for none. Written as
+   no-preference so the DEFAULT is `auto`: with the query unsupported
+   or unmatched, nothing is smooth, which is the safe direction.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior: smooth; }
+}
+
 body{
   margin: 0;
   background-color: var(--porcelain);
-  /* Never a flat ground — layered washes in porcelain and cashmere */
-  background-image:
-    radial-gradient(120% 78% at 50% -14%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 58%),
-    radial-gradient(88% 60% at 8% 20%,   rgba(209,199,189,0.42) 0%, rgba(209,199,189,0) 62%),
-    radial-gradient(74% 54% at 96% 72%,  rgba(209,199,189,0.34) 0%, rgba(209,199,189,0) 60%);
+  /* Never a flat ground — layered washes in porcelain and cashmere.
+     The three radials are --page-ground, promoted in :root by R16 so
+     the fixed masthead can paint the identical ground rather than a
+     second copy of it. Value unchanged. */
+  background-image: var(--page-ground);
   background-attachment: fixed;
   color: var(--obsidian);
   font-family: var(--sans);
@@ -2880,4 +3282,548 @@ a{ color: inherit; }
 
 .on-obsidian .btn-solid:focus-visible{
   outline: 1px solid var(--porcelain);
+}
+
+/* ============================================================
+   R18 — ROUND B, THE TEXTURE. Entry animation, band 1 only.
+
+   THREE MECHANISMS SHIP HERE AND ONE WAS STOPPED. The lede line mask
+   (R18.1), the plate frame draw (R18.2) and the Index row stagger
+   (R18.4). The ghost numerals (R18.3) were stopped against four rules
+   in CONTEXT.md and nothing was substituted for them -- the R15
+   precedent, where the photograph half was refused and no image was
+   placed. See the pass report.
+
+   ---- THE ENTRY-ANIMATION PATTERN IS THE CONDITION ---------------
+   CONTEXT.md permits scroll-driven motion on this page ONLY on this
+   pattern: the finished state is the CSS DEFAULT and the ANIMATED
+   state is what gets applied. Every rule below is inside all four
+   gates, and every one of them is additive:
+
+     html.js-motion   BaseLayout adds it in <head>, inline and
+                      synchronous. No JavaScript, no class, no rule
+                      here matches, and the page renders as R15/R16/R17
+                      shipped it. This is what makes a screenshot
+                      capture and a client-generated PDF correct.
+     @supports        an engine without scroll-driven animation never
+                      parses the block, rather than running these
+                      keyframes off the document timeline and playing
+                      the whole page's entry on a stopwatch.
+     min-width 1280   below 1280 the page has no motion at all. Same
+                      threshold as the folio's and R16's and R17's.
+     no-preference    written INTO the media query, not left to the
+                      blanket `animation-duration: 0.001ms !important`
+                      above -- duration is not what drives a
+                      scroll-driven animation and that override does
+                      not reliably stop one. Under `reduce` these
+                      blocks do not apply at all, which means no mask,
+                      no clip and no transform: the exact bytes R17
+                      left behind.
+
+   NO `opacity: 0` RESTING STATE ANYWHERE BELOW. The original fade-up
+   ban stands. R18.1 and R18.2 are transform-only and never touch
+   opacity at all; R18.4 sets it inside a keyframe, which is the
+   animated state the pattern explicitly permits, and never in a rule.
+
+   NO SECOND SCROLL LISTENER. R12's folio owns the page's entire scroll
+   budget. Every trigger below is `animation-timeline: view()`, which
+   involves no listener at all. framer-motion's `useScroll` would add
+   one and is banned in this build.
+
+   LONGHANDS, NEVER THE `animation` SHORTHAND. The shorthand resets
+   animation-timeline to `auto` and animation-range to `normal`, so a
+   shorthand above them silently detaches the animation from its
+   timeline and one below them silently discards both. R17 established
+   this; it holds here.
+   ============================================================ */
+
+/* NO `astro-island { display: contents }` RULE HERE, DELIBERATELY.
+   Astro already emits exactly that declaration itself, inline, next to
+   the first island on the page --
+   `astro-island,astro-slot,astro-static-slot{display:contents}`.
+   Writing a second copy into this file is the shape R8.2 forbids: two
+   declarations of one relationship that agree today and go stale the
+   first time the framework changes its own. Verified present in the
+   dev-server HTML and in dist/index.html rather than assumed.
+
+   What it buys R18.1: the <astro-island> wrapping each lede generates
+   no box, so the line spans are the <p>'s own block children and the
+   <p> breaks lines exactly as it did around a bare text node.
+
+   Astro also hoists its runtime <style> and <script> next to that
+   first island, which for this build is INSIDE About's lede <p>. Both
+   are display:none and neither generates a box; About's geometry is
+   measured with them in place rather than reasoned about. */
+
+/* The intact string, which is what the island renders server-side and
+   whenever it is not split. Generates no box, so the <p> breaks lines
+   exactly as it did with a bare text node in it. */
+.lede-raw{ display: contents; }
+
+/* ONE LINE, ONE BLOCK — AND THIS IS STRUCTURAL, NOT MOTION, SO IT SITS
+   OUTSIDE THE GATES. Each span holds exactly the text the browser put
+   on one line box, so as blocks they reproduce that layout exactly.
+   Left INLINE they do the opposite: the runs rejoin, re-wrap on their
+   own, and the paragraph reflows. MEASURED, not reasoned about — with
+   these two declarations inside the min-width:1280 gate, About's lede
+   set five lines at 800 instead of four and the page lost 61.36px at
+   every width below 1280. The mask needs blocks; so does simply not
+   moving the page. */
+.lede-ln, .lede-ln-i{ display: block; }
+
+/* ============================================================
+   R18.1 — THE LEDE LINE MASK
+
+   Per LINE, never per word and never per character. R13 measured
+   character splitting at a shaping loss of 1.34-4.36px across the
+   thirteen widths and R13.1 re-measured it at weight 700; a line
+   boundary falls at a space, which is already a break opportunity, so
+   no kern pair is split and nothing reshapes.
+
+   THE MASK IS A CLIP THAT DOES NOT ANIMATE, PLUS A TRANSFORM THAT
+   DOES. `clip-path` is not in the transform/opacity allowance and is
+   therefore STATIC here: it defines the window, and the only thing
+   that moves is a translateY on the inner span. That is what keeps
+   this mechanism inside "animate transform and opacity only" while
+   still being a mask rather than a fade.
+
+   THE CLIP IS EXPANDED, IT IS ASYMMETRIC, AND BOTH EDGES ARE DERIVED.
+   --lede-lh is 1.18 and Fraunces' closed face metrics (R9.6, measured
+   twice by two methods) put ascender + descender at
+   0.9775 + 0.2550 = 1.2325em. The ink is therefore TALLER than its own
+   line box by (1.2325 - 1.18) / 2 = 0.02625em at each edge, so a clip
+   at the box edge would shave the ascenders and descenders of every
+   lede on the page -- a change to the finished state, which is the one
+   thing this round may not make.
+
+   THE TWO EDGES DO NOT DO THE SAME JOB, SO THEY ARE NOT THE SAME SIZE.
+   The line only ever travels DOWNWARD out of its home position, so:
+
+     BOTTOM  is the working edge. It is what hides the line during the
+             wipe, and it is also what would clip a descender. It has
+             to be the SMALLEST value that clears the ink, because
+             every unit of it is a unit the line is visible early.
+     TOP     hides nothing, ever -- nothing paints above the home
+             position at any point in the animation -- so expanding it
+             is free and it is expanded generously.
+
+   0.04em WAS TRIED FIRST AND MEASURED AS A FAILURE. It follows from
+   the face metrics and it is not enough: measured ink clearance came
+   out at 0.080px at 1280, 0.189px at 1440 and 0.560px at 1920. R8.2
+   fixed this page's rule-placement tolerance at 3px and stated it may
+   not be tightened, because the quantity is computed from Chrome's
+   WHOLE-PIXEL-ROUNDED ascent and swings up to 0.65px between adjacent
+   viewport widths with no layout change at all; R6.3 measured the same
+   rounding at up to 1.27px on this face. A 0.080px margin is inside
+   that jitter, so it is not a pass -- it is a width away from clipping
+   the tops of the page's largest type, and it would have shipped
+   looking fine at the three widths anyone checks.
+
+   0.12em is the shipped value: 6.24px at the lede's 52px floor and
+   7.68px at its 64px ceiling, against a modelled requirement of
+   0.02625em + 1.27px of rounding = 2.64px and 2.95px. Clears at both
+   ends of the clamp with more than R8.2's 3px tolerance to spare, and
+   is written in em so it tracks the type rather than one width.
+
+   HORIZONTALLY THE CLIP IS OPEN (-1em). The wipe is vertical; a
+   horizontal edge here could only ever clip something it was not
+   meant to.
+   ============================================================ */
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
+  @supports (animation-timeline: view()){
+
+    /* The timeline is the LEDE's own arrival, declared on the <p>.
+       view-timeline has no layout, paint or compositing effect -- it is
+       not a transform, and R1.1 is not in play. Named rather than
+       anonymous so the line spans reference their PARAGRAPH's progress
+       and not their own: a single line box is ~65-76px of scroll, which
+       is a flinch, not a reveal. Same correction R17 made when it moved
+       the pivot's timeline off the word and onto the section. */
+    html.js-motion .about-lede,
+    html.js-motion .edu-lede,
+    html.js-motion .prem-lede,
+    html.js-motion .legends-lede,
+    html.js-motion .ath-lede,
+    html.js-motion .idx-lede,
+    html.js-motion .chg-lede{
+      /* CONTACT IS NOT IN THIS LIST, AS OF R18.2. Its lede reveal was
+         ruled out on Jackson's review — a reading judgement, not a
+         measured defect. The island is not mounted on that paragraph
+         any more (see Contact.astro), so a timeline declared here would
+         be a timeline with no consumer. Removed with its consumer
+         rather than left behind.
+
+         `.idx-lede` STAYS IN THE LIST AND THAT IS NOT AN OVERSIGHT. It
+         is still wired to the mechanism; it simply sets one line at
+         every band-1 width, so the island leaves it intact and it
+         carries no mask. Seven ledes wired, six masked after R18.2. */
+      view-timeline-name: --lede;
+      view-timeline-axis: block;
+    }
+
+    html.js-motion .lede-ln{
+      /* top right bottom left. Negative expands outward. */
+      clip-path: inset(-0.5em -1em -0.12em -1em);
+    }
+
+    html.js-motion .lede-ln-i{
+      animation-name: lede-line-in;
+      /* LINEAR, AND THIS IS HALF THE R18.1 FIX. --ease is
+         cubic-bezier(0.22, 0.61, 0.36, 1) — a hard ease-OUT, which
+         front-loads travel: most of the 71px was gone in the first
+         fraction of the range, compounding the range error above.
+         R17 already settled this for scroll-driven motion on this page
+         and shipped `animation-timing-function: linear` on the pivot
+         scrub, for the stated reason that the reader's scroll IS the
+         timing. An easing curve on a scroll-driven animation is a
+         second timing function fighting the first. Same choice here,
+         same reason — it is the page's existing precedent, not a new
+         preference. */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --lede;
+
+      /* THE STAGGER. Both ends are written by the island, which
+         computes them from the line's index and the line COUNT so the
+         last line always lands on the same share of the paragraph's
+         progress whether it sets three lines or four. Nothing here is
+         a constant to sweep.
+
+         `cover`, NOT `entry`, AND THE REASON IS MEASURED. `entry` runs
+         from the element first touching the bottom trim to the element
+         being fully on screen, so for a 194px lede in a 1000px viewport
+         it is SPENT by the time the lede's top reaches y=800 -- the
+         bottom fifth of the screen. Captured at that setting every lede
+         was already settled before it was anywhere near readable: the
+         reveal ran in peripheral vision at the screen edge and the
+         reader arrived after it. `cover` spans the element's whole
+         transit of the scrollport, so a window inside it can complete
+         where the type is actually being read. It also self-normalises
+         for element height -- Legends' 370px opener and About's 194px
+         lede finish in the same part of the screen without either being
+         given a number of its own. */
+      animation-range-start: cover var(--ln-from, 0%);
+      animation-range-end:   cover var(--ln-to, 42%);
+    }
+
+    /* FROM below its own mask, TO the CSS default. The last keyframe is
+       `none` rather than translateY(0) so the finished state is
+       literally the absence of a transform.
+
+       THE 0.12em MATCHES THE CLIP'S BOTTOM EXPANSION EXACTLY, and that
+       is the only reason it is written here: at 100% alone the line's
+       top edge would sit 0.12em inside the window and its ascenders
+       would be visible as a sliver before the wipe begins. The two
+       values are the same quantity and must move together -- if the
+       clip's bottom changes, this changes with it. */
+    @keyframes lede-line-in{
+      from{ transform: translateY(calc(100% + 0.12em)); }
+      to  { transform: none; }
+    }
+  }
+}
+
+/* ============================================================
+   R18.2 — THE PLATE FRAME DRAW
+
+   The R9.6 plate traces in behind a curtain that clears across it. The
+   curtain is a SIBLING of the photograph inside .plate-img, painted
+   above both treatment layers, and it is the only thing that moves.
+
+   ---- WHY A TRANSFORM AND NOT A CLIP PROGRESSION -----------------
+   The 21st.dev component this is adapted from runs
+   `inset(0 100% 0 0)` -> `inset(0 0% 0 0)`: a left-to-right reveal.
+   That progression is what was taken. Its PROPERTY was not, because
+   clip-path is outside "animate transform and opacity only" and this
+   file has exactly one scoped exception to that rule (R13's
+   font-variation-settings, Index entry names only). A curtain
+   translated across the plate is the same progression expressed in the
+   one property that is allowed, and it composites rather than
+   re-rasterising a clip each frame.
+
+   ---- WHY ONE AXIS AND NOT TWO -----------------------------------
+   "Traces in from a corner" reads as a two-axis exit, and a two-axis
+   translate leaves a MEASURABLE ARTIFACT: a curtain moved by
+   (100%, 100%) has cleared the plate's leading edges long before it has
+   cleared the trailing corner, so the last thing on screen is a
+   rectangle of page ground sitting in one corner of the photograph.
+   That reads as a missing corner, not as a draw. One axis has no such
+   remainder. Reported rather than decided quietly.
+
+   ---- WHICH PLATES CARRY IT, AND WHY NOT THE COVER (R18.1) -------
+   R18 built this for the R9.6 plate only, because the brief named that
+   plate. R18.1 extends it to Premier's plate and to BOTH of Athletic's
+   frames. It is deliberately NOT on the Cover portrait, and the reason
+   is measured rather than assumed:
+
+     The Cover sits at document top, so the LOWEST view-progress it can
+     ever reach is the one it has at scrollY 0. Measured: cover 55.6%
+     at 1920x1080, 55.6% at 1440x900, 55.4% at 1280x700 — flat, because
+     the section is specced at ~80svh so the figure is ~0.8 of the
+     viewport and V/(V+0.8V) is 55.6% by construction.
+
+   Against a range that ends at cover 50% that means the curtain is
+   ALREADY retracted at every scroll position a reader can reach: the
+   draw would be dead code on the page's first impression. And the
+   margin is 5.6 points. CONTEXT.md still has the Cover bottom band
+   open ("verify before it becomes a slice"), so anything that changes
+   the Cover's height can push that figure under 50% — at which point a
+   curtain paints over the hero portrait at first paint, which is the
+   exact flash the entry-animation pattern exists to prevent, on the
+   one frame the whole print campaign drives traffic to. Excluded.
+
+   ---- SIZE AND DIRECTION -----------------------------------------
+   The curtain is inset(0) over .plate-img, which already carries
+   overflow: hidden, so it is clipped to the frame on its way out and
+   can never paint on the page.
+
+   THE DIRECTION IS DERIVED PER SECTION, NOT SHARED. Four identical
+   horizontal wipes is one trick repeated four times, which is the
+   sameness failure this file names as the primary failure mode. The
+   rule: A PLATE OPENS FROM THE EDGE THAT FACES ITS OWN TYPE COLUMN, so
+   the image unfolds away from the words rather than toward them.
+
+     Charging It   type 3-8,  photo 9-12   -> type is LEFT  -> exit right
+     Premier       plate 1-4, type 5-11    -> type is RIGHT -> exit left
+     Athletic det. detail 4-6, type 8-12   -> type is RIGHT -> exit left
+
+   ONE EXCEPTION, AND IT OVERRIDES THE RULE: A FRAME THAT BLEEDS OFF A
+   TRIM OPENS FROM THAT TRIM. Athletic's frame is `bleed-left`, which
+   the Image tiers table calls "the page's single spread moment and the
+   only place the page gutter is broken." Run by the type-facing rule it
+   exits left, which reveals the frame from its RIGHT edge and lands the
+   bleed LAST — so for most of the draw the page's one spread reads as a
+   narrow vertical sliver floating short of the trim, and the gesture
+   that gives the section its identity is the part still hidden.
+   Screenshotted, not reasoned about; that capture is what changed it.
+   It exits RIGHT, so the frame arrives from off the left trim inward,
+   which is what a bleed means.
+
+     Athletic      frame 1-7 off the LEFT trim              -> exit right
+
+   Both readings are off the Composition table rather than chosen, and
+   the page ends up with two directions instead of one.
+   ============================================================ */
+.plate-curtain{
+  position: absolute;
+  inset: 0;
+  /* ABOVE BOTH TREATMENT LAYERS. .plate-img::before (the 0.24 gold
+     multiply) is z-index 1 and ::after (the seating gradient) is 2, so
+     3 puts the curtain over the FINISHED composite. It covers the
+     photograph; it is never part of the blend, and removing it changes
+     no pixel of the frame. */
+  z-index: 3;
+  pointer-events: none;
+
+  /* The page's own ground, not a second copy of it. See R16. */
+  background-color: var(--porcelain);
+  background-image: var(--page-ground);
+  background-attachment: fixed;
+
+  /* THE FINISHED STATE, AND IT IS THE DEFAULT. Fully retracted, so with
+     no JavaScript, no @supports, below 1280 or under `reduce` the
+     curtain is already off the plate and the photograph is whole. This
+     is the entry-animation pattern stated in one declaration: the
+     element ships in its finished position and the animation is what
+     puts it back. NOT opacity: 0 and NOT display: none — the first is
+     the resting state this file bans and the second would stop the
+     background resolving at all.
+
+     --curtain-exit is +1 or -1 and is set on the FIGURE by each
+     section, so this one declaration serves both directions and the
+     `from` keyframe below stays a single rule. Defaulting to +1 means a
+     curtain added without a direction still resolves to a finished
+     state rather than sitting on the plate. */
+  transform: translateX(calc(var(--curtain-exit, 1) * 100%));
+}
+
+/* ============================================================
+   R18.4 — THE INDEX ROW STAGGER — REMOVED AT R18.2
+
+   Ruled out September 10 2026. The mechanism, its keyframes, its
+   `--idx-row` view-timeline and the `:not(:has(:focus-visible))` clip
+   release are all gone; nothing is substituted for it.
+
+   WHY, IN ONE LINE, SO IT IS NOT RE-PROPOSED. A view timeline resolves
+   against the viewport, so an element below the fold sits at its range
+   start by definition and NO `animation-range` finishes it for a reader
+   who arrived by hash — R18.1 proved that requirement unsatisfiable by
+   range rather than fixing it. The Index is the page's only hash target
+   and its rows were 6 of the 9 measured failures at 1440. Removing the
+   mechanism removes the symptom at zero machinery.
+
+   THE CLIP RELEASE WENT WITH IT AND THAT IS DELIBERATE. It existed only
+   because a clip could clip a focus ring. With no clip it is dead code,
+   and dead code left behind reads as a live constraint to the next
+   session.
+
+   NOTHING ELSE MOVED. R18.1 measured all five rows byte-identical at
+   rest at every width, so the clip contributed no layout and its
+   removal moves nothing — re-measured at R18.2 and still 0.000px.
+   R13.1's row hover is untouched: it transitions
+   `font-variation-settings` on `.idx-ch`, a different property on a
+   different element, and it never depended on this.
+
+   THE SHARED GATES ARE NOT REMOVED WITH THIS CONSUMER. Six ledes, four
+   plate curtains, R16 and R17 still sit behind
+   `html.js-motion` + `@supports (animation-timeline: view())` + the
+   band query. Removing one consumer is not removing the pattern.
+   ============================================================ */
+
+
+/* ============================================================
+   R18.2 — THE CURTAIN'S MOTION. Same four gates.
+   ============================================================ */
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
+  @supports (animation-timeline: view()){
+
+    /* Declared on the FIGURE, not on the plate and not on the curtain.
+       view-timeline has no layout, paint or compositing effect and is
+       not a transform, so R1.1 is not in play — but the figure is the
+       outermost box that is NOT an ancestor of the blended image inside
+       .plate-img, and keeping every new property off that chain is the
+       point of this whole mechanism.
+
+       `.plate-draw` is an explicit opt-in written into each figure's
+       class list. A blanket `figure:has(.plate-img)` would have swept
+       the Cover in silently; making it opt-in means the Cover's
+       exclusion is visible in the markup and has to be undone
+       deliberately rather than by a selector widening. */
+    html.js-motion .plate-draw{
+      view-timeline-name: --plate;
+      view-timeline-axis: block;
+    }
+
+    /* ---- ATHLETIC DRAWS AS ONE GESTURE, NOT TWO ----------------
+       Athletic is the only section with two plates, and they OVERLAP:
+       the detail crop is the page's single `inset` tier and it laps
+       upward onto the bleed frame. On separate timelines they retract
+       at different times, and a screenshot of that is unambiguous —
+       the bleed frame arrives fully revealed with a pale rectangle
+       punched into it where the detail's curtain is still sitting.
+       That reads as a rendering fault, not as a draw. It is also
+       exactly what CONTEXT.md's overlap rule forbids: "an overlap is
+       unambiguous or it is absent."
+
+       So the detail surrenders its own timeline and both curtains run
+       on the BLEED FRAME's, hoisted to the section with timeline-scope
+       — R16's mechanism, used here for R16's reason: a name declared
+       on one element that a sibling subtree needs to see. Both also
+       exit the same way (--curtain-exit: 1), so the two frames sweep
+       together as one movement across the spread rather than two
+       rectangles crossing in opposite directions.
+
+       The detail's `view-timeline-name: none` UNDOES the declaration
+       .plate-draw makes above; without it the lookup would stop at the
+       detail's own figure and never reach the section. */
+    html.js-motion #sec-athletics{
+      timeline-scope: --ath-plate;
+    }
+    html.js-motion #sec-athletics .win-ath-bleed{
+      view-timeline-name: --ath-plate;
+    }
+    html.js-motion #sec-athletics .win-ath-detail{
+      view-timeline-name: none;
+    }
+    html.js-motion #sec-athletics .plate-curtain{
+      animation-timeline: --ath-plate;
+    }
+
+    html.js-motion .plate-draw .plate-curtain{
+      animation-name: plate-draw;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --plate;
+      animation-range-start: cover var(--r18-from);
+      animation-range-end: cover var(--r18-to);
+    }
+
+    /* FROM covering the plate, TO its retracted default. The last
+       keyframe restates the resting transform rather than saying
+       `none`, because here the FINISHED state IS a transform — the
+       curtain lives off to the right and is only ever on the plate
+       while the animation is running. */
+    @keyframes plate-draw{
+      from{ transform: translateX(0); }
+      to  { transform: translateX(calc(var(--curtain-exit, 1) * 100%)); }
+    }
+  }
+}
+
+
+/* ============================================================
+   R19 — CONSTRAINT 7. THE ARRIVAL RULE.
+
+   Route 2, ruled September 10 2026: a section that is the `:target`
+   suppresses its own animated descendants. Pure CSS. No listener, no
+   observer, no addition to the JavaScript budget — R12's single scroll
+   listener is untouched and so is every `animation-range` on the page.
+
+   ---- WHAT IT IS FOR, IN ONE PARAGRAPH ----------------------------
+   A view timeline resolves against the VIEWPORT. An element the reader
+   arrives at by hash has not transited the scrollport, so its progress
+   is whatever its landed position says it is — and for a window like
+   `cover 15% -> 50%` that is frequently 0. R18.1 proved this
+   unsatisfiable by moving the range: there is no window that both
+   completes for a scrolling reader and is already complete for one who
+   jumped. R18.2 removed the two mechanisms whose freeze was most
+   visible. R19 adds eight jump targets at once, so the remaining
+   mechanisms need a rule rather than eight more removals.
+
+   ---- WHY THE SUPPRESSION LANDS ON THE FINISHED STATE -------------
+   `animation-name: none` does not blank anything. Every animated
+   element in this build declares its FINISHED state as its CSS default
+   and lets the animation put it back — R16's bar, R17's scrub, the lede
+   lines (no transform at rest) and the plate curtains (retracted at
+   rest, `translateX(100%)` declared, not inherited from a keyframe).
+   Dropping the animation therefore paints exactly what a reader sees
+   after the reveal has run. This is R18.2's null-timeline finding
+   arriving through the cascade instead of through a timeline: the
+   browser that cannot resolve the timeline and the section that
+   suppresses its animation land on the same pixels, and that is the
+   same guarantee `@supports` and `js-motion` already give.
+
+   ---- THE SCOPE IS THE SECTION'S OWN SUBTREE ----------------------
+   `main > section:target *` and not a wider selector, because the rule
+   ruled in is "its own animated descendants." A section the reader did
+   not jump to keeps its mechanism: a lede two sections down, half on
+   screen at the bottom trim, is mid-reveal for a reader who jumped to
+   exactly the same pixel as a reader who scrolled there. Suppressing it
+   would make the jump differ from the scroll in the other direction.
+
+   ---- WHAT KIND OF RULE THIS IS, SAID PLAINLY SO IT IS INHERITED ---
+   IT IS A BLANKET, NOT A LIST. The selector is `*`, so a section that
+   gains an animation later is covered the day it gains it, with no edit
+   here and nothing to keep in agreement. That is the whole reason it is
+   written this way: CONTEXT.md records the alternative — discovering
+   the same freeze once per mechanism — as the thing R19 exists to stop.
+
+   IT IS UNGATED, AND DELIBERATELY NOT BEHIND THE THREE GATES ITS
+   CONSUMERS SIT BEHIND. A suppression must not be conditional on the
+   same conditions as the thing it suppresses, or a mechanism added
+   later behind a different gate escapes it silently. Ungated it costs
+   nothing: with no `js-motion`, no `@supports`, below 1280 or under
+   `reduce` there is no animation for it to remove.
+
+   `!important` IS LOAD-BEARING AND IS NOT A SHORTCUT. The consumers are
+   `html.js-motion .plate-draw .plate-curtain` (0,3,1) and
+   `html.js-motion #sec-athletics .plate-curtain` (1,2,1). No selector
+   built from `main > section:target` reaches either — the best is
+   (0,2,4), which loses on the class count — so without it the rule
+   would parse, match, and lose, which is the failure mode that looks
+   like a browser bug. The honest alternatives are an id-per-section
+   list, which is the enumeration this rule exists to avoid, or a
+   specificity hack that a future consumer silently outgrows. A blanket
+   override that must outrank every present AND FUTURE consumer is what
+   `!important` is for.
+
+   ---- THE ACCEPTED COST, RECORDED AT THE RULE ---------------------
+   A section jumped to does not animate again in that page life, because
+   the hash persists until another one replaces it. Weighed and taken at
+   the ruling; do not "fix" it. The fix would need to know that the
+   reader has since scrolled away, which is a listener.
+   ============================================================ */
+main > section:target,
+main > section:target *{
+  animation-name: none !important;
 }

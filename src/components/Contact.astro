@@ -180,7 +180,7 @@ const inquiries = [
 // component no longer renders a privacy link, so it no longer declares
 // the path — an unused const here would be the next pass's invitation to
 // re-add the second link.
-const inbox = 'premierleadersllc' + '@' + 'gmail.com';
+const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
 ---
 
 <section class="sheet contact on-obsidian" id="sec-contact" aria-labelledby="contact-heading">
@@ -203,6 +203,32 @@ const inbox = 'premierleadersllc' + '@' + 'gmail.com';
          same face, same four axes, same clamp as every other lede on
          the page — --lede-size flat, exactly as R9.5 left Charging's.
          Set verbatim from COPY.md. -->
+    <!-- R18.2 — THE LEDE REVEAL IS REMOVED FROM THIS SECTION, AND IT IS
+    REMOVED AT THE MOUNT RATHER THAN SUPPRESSED IN CSS. Ruled out on
+    Jackson's review: Contact is the page's shortest section, the only
+    one carrying an interactive element, and it closes the page on
+    Obsidian. A reading judgement, not a measured defect.
+
+    WHY THE MOUNT AND NOT THE STYLESHEET. Suppressing the timeline in
+    CSS would leave the island hydrating: this paragraph would still be
+    split into per-line block spans, still be wrapped in an
+    astro-island, and `.lede-ln` would still carry its clip — three
+    boxes and a clip doing nothing, which is the box-you-did-not-author
+    gotcha R18 recorded. Removing the mount is the only form of this
+    removal that leaves nothing behind.
+
+    WHAT CSS SUPPRESSION WOULD *NOT* DO, MEASURED RATHER THAN ASSUMED.
+    It would not blank the paragraph. With `view-timeline-name: none`
+    the animation's timeline resolves to null and Chrome renders the
+    element untransformed — measured translateY 0.00px on all three
+    lines, before and after suppression — so the type stays visible and
+    finished. Written down because the opposite is the intuitive guess
+    (`animation-fill-mode: both` looks like it should hold the `from`
+    keyframe) and it is wrong.
+
+    The paragraph keeps its class, its placement and its box; the text
+    node returns to where it was before R18. Set verbatim from
+    COPY.md. The other six ledes are untouched. -->
     <p class="contact-lede">Speaking, consulting, partnership, and press inquiries.</p>
 
     <!-- The direct address. COPY.md's "Direct email" line, and the

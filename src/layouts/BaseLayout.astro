@@ -26,6 +26,30 @@ const { title } = Astro.props;
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Montserrat:wght@300;400;500&display=swap"
     rel="stylesheet"
   />
+
+  <!-- THE ENTRY-ANIMATION PATTERN'S SWITCH (R17).
+
+       CONTEXT.md permits scroll-driven motion on this page only on one
+       condition: "The finished state is the CSS default. JavaScript applies
+       the animated state on load. Never the reverse." This one line IS that
+       mechanism, and it is the only thing it does.
+
+       Every motion rule on the page is scoped under html.js-motion. With no
+       JavaScript there is no class, no rule matches, and the page renders
+       finished -- which is what makes a screenshot capture, a client-generated
+       PDF and a failed script all correct rather than blank or half-scrubbed.
+
+       IT IS NOT A LISTENER. R12's folio owns the page's one and only scroll
+       listener and a second one MUST NOT be added; this adds a class and
+       returns. R17's scrub is CSS scroll-driven animation and involves no
+       JavaScript at all beyond this switch.
+
+       IN <head>, INLINE, AND SYNCHRONOUS, so the class lands before first
+       paint. Deferred or at the end of <body> it would paint the finished
+       pivot and then snap it to its start scale -- a flash of the finished
+       state, which is the failure the pattern exists to prevent, arriving
+       from the other direction. -->
+  <script is:inline>document.documentElement.classList.add('js-motion');</script>
 </head>
 <body>
   <slot />

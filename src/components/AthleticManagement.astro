@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * ATHLETIC MANAGEMENT — slice R6.
  *
@@ -158,7 +159,7 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
     photographs as often as below them — and the B5 ruling makes it
     the SECTION's one caption rather than either photograph's.
   -->
-  <figure class="win-ath-bleed ath-bleed" aria-labelledby="ath-caption">
+  <figure class="win-ath-bleed ath-bleed plate-draw" style="--curtain-exit: 1" aria-labelledby="ath-caption">
     <!--
       THE BLEED FRAME. `bleed-left` tier — the only one on the page.
 
@@ -208,6 +209,29 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
         loading="eager"
         decoding="sync"
       />
+        <!--
+      R18.2 — THE PLATE FRAME DRAW. A CURTAIN, AND IT IS A SIBLING OF
+      THE PHOTOGRAPH, NEVER A WRAPPER ROUND IT.
+
+      R1.1 is the whole reason this element exists in this shape. A
+      transform on the img promotes it to its own compositing layer
+      and .plate-img::before's mix-blend-mode: multiply silently stops
+      blending — measured then at R-B falling from 8 to -1 and
+      luminance returning to the raw source value, and CONTEXT.md
+      records that the transformed element itself breaks it too, not
+      only an ancestor. So the thing that moves is neither the img nor
+      any ancestor of it: it is this div, painted OVER the finished
+      composite at z-index 3. The multiply is re-measured on every
+      plate after this ships rather than reasoned about.
+
+      It paints the page's own ground via --page-ground with
+      background-attachment: fixed — R16's mechanism, for R16's
+      reason: a fixed-attachment background is positioned against the
+      VIEWPORT, so this box paints the pixels the body would have
+      painted behind it. aria-hidden and pointer-events: none: it is
+      a transient covering, not content.
+    -->
+    <div class="plate-curtain" aria-hidden="true"></div>
     </div>
   </figure>
 
@@ -253,7 +277,16 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
       <p class="ath-subtitle">Momager &middot; Athletic Manager to the McClain Brothers</p>
     </div>
 
-    <p class="ath-lede">Long before NIL, there were early mornings, long drives, and decisions no one else saw.</p>
+    <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+    paragraph; it does not replace it. The paragraph is the grid item
+    and carries this section's placement, and Astro wraps a hydrated
+    island in a real astro-island element — so an island mounted in
+    the paragraph's place would become the grid item itself and move a
+    left edge, which is the one thing this round may not do. Classes,
+    placement and box are untouched. Only the text node moves into the
+    island, and the island renders that same string verbatim until it
+    has measured the rendered line boxes. Copy is COPY.md's. -->
+    <p class="ath-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Long before NIL, there were early mornings, long drives, and decisions no one else saw." /></p>
 
     <div class="ath-body">
       <p>As the mother of three football players moving through the high school and Division I levels, Dr. McClain&rsquo;s role grew organically from motherhood into strategy.</p>
@@ -321,7 +354,7 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
   -->
   <p class="win-ath-caption plate-caption ath-caption" id="ath-caption"><span class="ath-caption-line">Three sons, three programs</span></p>
 
-  <figure class="win-ath-detail ath-detail">
+  <figure class="win-ath-detail ath-detail plate-draw" style="--curtain-exit: 1">
     <!--
       THE DETAIL CROP. `inset` tier — the only one on the page, and
       already counted by CONTEXT.md as one of the two SPENT overlaps.
@@ -406,6 +439,29 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
         loading="eager"
         decoding="sync"
       />
+        <!--
+      R18.2 — THE PLATE FRAME DRAW. A CURTAIN, AND IT IS A SIBLING OF
+      THE PHOTOGRAPH, NEVER A WRAPPER ROUND IT.
+
+      R1.1 is the whole reason this element exists in this shape. A
+      transform on the img promotes it to its own compositing layer
+      and .plate-img::before's mix-blend-mode: multiply silently stops
+      blending — measured then at R-B falling from 8 to -1 and
+      luminance returning to the raw source value, and CONTEXT.md
+      records that the transformed element itself breaks it too, not
+      only an ancestor. So the thing that moves is neither the img nor
+      any ancestor of it: it is this div, painted OVER the finished
+      composite at z-index 3. The multiply is re-measured on every
+      plate after this ships rather than reasoned about.
+
+      It paints the page's own ground via --page-ground with
+      background-attachment: fixed — R16's mechanism, for R16's
+      reason: a fixed-attachment background is positioned against the
+      VIEWPORT, so this box paints the pixels the body would have
+      painted behind it. aria-hidden and pointer-events: none: it is
+      a transient covering, not content.
+    -->
+    <div class="plate-curtain" aria-hidden="true"></div>
     </div>
   </figure>
 </section>

@@ -78,9 +78,21 @@ import ChargingItToTheGame from '../components/ChargingItToTheGame.astro';
 import Contact from '../components/Contact.astro';
 import PageFooter from '../components/PageFooter.astro';
 import FolioMarginalia from '../components/FolioMarginalia.astro';
+import Masthead from '../components/Masthead.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
+  {/* R16. MOUNTED BEFORE <main>, unlike the folio. It is site chrome
+      that sits at the top of the viewport, so DOM order, visual order
+      and tab order agree; and its one link reaches the tab order
+      before the page's content rather than after the footer. It is
+      display:none by default and position:fixed when it renders, so it
+      contributes no layout in either state and mounting it here costs
+      <main> nothing. It carries NO SCRIPT — the folio's own history of
+      being mounted before <main> and capturing an empty section list
+      does not apply, because there is nothing here to capture. */}
+  <Masthead />
+
   <main>
     <Cover />
     <About />

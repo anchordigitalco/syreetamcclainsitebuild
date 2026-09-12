@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * EDUCATIONAL LEADER — slice R3.
  *
@@ -99,7 +100,16 @@
     <p class="edu-subtitle">Alternative Education High School Principal</p>
   </div>
 
-  <p class="win-edu-lede edu-lede">Education should not require students to fit into systems. Strong systems evolve to fit the students.</p>
+  <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+  paragraph; it does not replace it. The paragraph is the grid item
+  and carries this section's placement, and Astro wraps a hydrated
+  island in a real astro-island element — so an island mounted in
+  the paragraph's place would become the grid item itself and move a
+  left edge, which is the one thing this round may not do. Classes,
+  placement and box are untouched. Only the text node moves into the
+  island, and the island renders that same string verbatim until it
+  has measured the rendered line boxes. Copy is COPY.md's. -->
+  <p class="win-edu-lede edu-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Education should not require students to fit into systems. Strong systems evolve to fit the students." /></p>
 
   <div class="win-edu-body edu-body">
     <p>For more than two decades, Dr. McClain has built her career around students whose potential does not show up in traditional measures.</p>

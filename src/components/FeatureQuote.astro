@@ -94,8 +94,8 @@
 
 <section class="sheet quote" id="sec-quote">
   <blockquote class="win-quote quote-block">
-    <h2 class="quote-line">Every decision is viewed through a larger lens: <em
-        class="legacy">Legacy</em>.</h2>
+    <h2 class="quote-line">Every decision is viewed through a larger lens: <span
+        class="legacy-scrub"><em class="legacy">Legacy</em>.</span></h2>
   </blockquote>
 </section>
 
@@ -247,8 +247,16 @@
        shipped the Index numeral holding its ratio at 1440 and losing it at
        1024. */
     font-size: var(--quote-size);
-    line-height: 1.02;
-    letter-spacing: -0.028em;
+    /* --quote-lh and --quote-ls, promoted to tokens in global.css by R17,
+       for the same reason and under the same rule as --quote-size in R15:
+       the scrub's transform-origin is solved FROM the line-height and its
+       inline-block compensation IS the tracking value, so neither number
+       may be restated here. THE VALUES ARE R7's, BYTE-FOR-BYTE -- 1.02 and
+       -0.028em, verified 0.000px at all thirteen widths on h2 height, the
+       closing period's right edge and "Legacy"'s left edge. Only the place
+       the numbers are written has moved. */
+    line-height: var(--quote-lh);
+    letter-spacing: var(--quote-ls);
     color: var(--porcelain);
     text-wrap: balance;
   }
@@ -306,5 +314,186 @@
      floor moves with it. */
   @media (max-width: 1023px){
     .quote{ padding-block: clamp(116px, 14.67vw, 150px); }
+  }
+
+  /* ================================================================
+     R17 -- THE SCRUB.  Round A.  ADDITIVE, BAND 1 ONLY.
+
+     Nothing above this comment is edited by R17 except the two token
+     consumptions in `.quote-line`, whose values are R7's byte-for-byte.
+     The whole of the motion lives in this one gated block, so reverting
+     R17 is deleting one contiguous region plus one <span>.
+
+     ---- WHAT MOVES, AND WHAT IT IS DERIVED FROM -------------------
+     "Legacy" enters at the page's shared lede pitch and grows to the
+     pivot's own pitch as the section enters the viewport. The start
+     scale is --pivot-scrub-from in global.css: a live ratio of
+     --lede-size to --quote-size, 0.4872 at 1440, which is R7's own
+     measured 2.053x lede-to-pivot step taken in one move. The end scale
+     is 1. The full derivation is written above the token.
+
+     ---- WHY A TRANSFORM AND NOT A SIZE ---------------------------
+     The pivot's fixed vertical padding is the Rhythm column, not type
+     scale, and it is the largest on the page. Growing this word is not
+     allowed to change the band's height or push a neighbour. A
+     `font-size` or `letter-spacing` animation is layout-affecting by
+     definition and would do both; a transform affects no layout at all,
+     so the h2 wraps identically at every frame of the scrub and the
+     section is the same height at rest, mid-scrub and finished.
+
+     It is also the only property this page allows. CONTEXT.md: "animate
+     transform and opacity only," with exactly one scoped exception --
+     font-variation-settings on Index entry names -- which is recorded
+     as not extensible to any other element or property without a new
+     ruling.
+
+     ---- NO PHOTOGRAPH IS INSIDE THE TRANSFORM --------------------
+     R1.1: a transform on or above an <img> promotes it to its own
+     compositing layer and its mix-blend-mode treatment silently stops
+     blending. The transform here is scoped to `.legacy-scrub`, which
+     holds one word and a full stop. Its only ancestor that R17 touches
+     at all is `.quote`, which takes a `view-timeline-name` -- a
+     declaration with no layout, paint or compositing effect. This
+     section carries no photograph in the first place, per the
+     Composition table, and the scope is written so the rule cannot be
+     violated by a later slice adding one to the section.
+
+     ---- WHY `.legacy-scrub` EXISTS AND WRAPS THE FULL STOP --------
+     A transform does not apply to a non-replaced inline box, so the
+     scaled element has to be an atomic inline. Two consequences, both
+     measured rather than assumed:
+
+       1. THE FULL STOP HAS TO TRAVEL WITH THE WORD. Scaling the <em>
+          alone leaves the sentence's closing period at full size and
+          full position while the word shrinks away from it -- a 132px
+          gap at 1440 with a period floating on the end of it. The span
+          wraps `Legacy` AND the period, so the sentence ends as one
+          object. `.legacy` keeps the gold and is otherwise untouched:
+          the string is COPY.md's, verbatim, and the h2's text content
+          is character-for-character what R7 shipped.
+
+       2. AN ATOMIC INLINE DROPS ITS TRAILING LETTER-SPACING, and
+          --quote-ls is negative, so the box measured 1.34-3.88px wide
+          across the thirteen widths and pushed the period right by the
+          same amount. `margin-inline-end: var(--quote-ls)` puts it
+          back. This is a COMPENSATION DECLARED AGAINST THE VALUE IT
+          COMPENSATES FOR, not a swept pixel: it is the same token the
+          tracking is set from, so it cannot drift from it. Measured
+          with it in place: h2 height, the period's right edge and
+          "Legacy"'s left edge are 0.000px against the pre-R17 build at
+          all thirteen widths.
+
+     ---- THE TIMELINE ---------------------------------------------
+     `view()` on the SECTION, not on the word. The word's own view
+     progress would run the whole scrub across 114px of scroll -- the
+     height of one line box -- which is a flinch, not a scrub. The
+     section is 605-643px tall in band 1, and `entry 0%` to `entry 100%`
+     is exactly its own extent: the growth begins the instant the band's
+     top edge appears at the foot of the viewport and completes at the
+     moment the whole band has arrived. The range is the element's own
+     size, so there is no duration, no distance and no constant to tune
+     -- the reader's scroll IS the timing, which is what makes this a
+     scrub rather than an animation that happens to be triggered.
+
+     NO SECOND SCROLL LISTENER, AND NO LISTENER AT ALL. R12's folio owns
+     the page's entire scroll budget. This is CSS scroll-driven
+     animation, which CONTEXT.md's motion budget names as the preferred
+     mechanism precisely because it involves none.
+
+     LONGHANDS, NOT THE `animation` SHORTHAND. The shorthand resets
+     animation-timeline to `auto` and animation-range to `normal`, so a
+     shorthand written above them silently detaches the animation from
+     its timeline and a shorthand written below them silently discards
+     both. It also sets animation-duration, which for a scroll-driven
+     animation must stay at its `auto` initial value in order to fill
+     the range. Every part is a longhand here so none of that can
+     happen.
+
+     ---- THE ENTRY-ANIMATION PATTERN, WHICH IS THE CONDITION -------
+     CONTEXT.md permits scroll-driven motion on this page ONLY on this
+     pattern: the finished state is the CSS default and the ANIMATED
+     state is what gets applied. Everything in this block is applied,
+     nothing is subtracted, and there are three independent gates. If
+     any one of them is not met the pivot renders exactly as R7 shipped
+     it -- full size, no transform, not even an inline-block:
+
+       html.js-motion   BaseLayout adds this in <head>. No JavaScript,
+                        no class, no rule in this block matches. A
+                        screenshot capture, a client-generated PDF and
+                        a failed script all get the finished page.
+       @supports        an engine without scroll-driven animation never
+                        parses the block, rather than running the
+                        keyframes off the document timeline and
+                        animating the pivot on a stopwatch.
+       min-width 1280   below 1280 the page has no motion at all and
+                        that is correct -- a phone is a single stacked
+                        column of a printed object, not a reduced
+                        version of a moving one. Same threshold as the
+                        folio's, for the same reason.
+
+     prefers-reduced-motion is the fourth. It is written into the media
+     query rather than left to global.css's blanket
+     `animation-duration: 0.001ms !important`, because duration is not
+     what drives a scroll-driven animation and that override does not
+     reliably stop one. Under `reduce` this block does not apply, which
+     means not merely a stopped animation but no transform and no
+     inline-block either: the exact bytes R7 shipped.
+     ================================================================ */
+  @media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
+    @supports (animation-timeline: view()){
+
+      /* Declared on the section so the word's timeline is the BAND's
+         arrival. view-timeline has no layout, paint or compositing
+         effect -- it is not a transform, and R1.1 is not in play. */
+      :global(html.js-motion) .quote{
+        view-timeline-name: --pivot;
+        view-timeline-axis: block;
+      }
+
+      :global(html.js-motion) .legacy-scrub{
+        display: inline-block;
+        /* Restores the trailing tracking an atomic inline drops. Same
+           token the tracking is set from -- see the walk above. */
+        margin-inline-end: var(--quote-ls);
+        /* Grow from the baseline, not from the box. Solved in
+           global.css from --quote-lh and the face's R9.6 metrics. */
+        transform-origin: 0 calc(var(--quote-baseline) * 100%);
+
+        animation-name: pivot-scrub;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --pivot;
+        animation-range: entry 0% entry 100%;
+      }
+
+      /* FROM the masthead-name tier, TO the CSS default. The last
+         keyframe is `none` and not `scale(1)` so that the finished
+         state is literally the absence of a transform.
+
+         R18.1 MOVED THIS ONE RUNG DOWN AND THE TOKEN NAME CHANGED
+         WITH IT. R17 started at --pivot-scrub-from, one step of the
+         page's single measured display ladder, which put the word in
+         at the shared lede pitch. Jackson's review: correct, and the
+         travel is too short. --pivot-scrub-start is that same step
+         SQUARED -- two rungs -- and it resolves, algebraically and at
+         every width, to exactly --mast-name-size on the page. The word
+         now enters at the size the running head sets her name at and
+         grows the whole ladder to the pivot.
+
+         --pivot-scrub-from IS STILL THE ONE-RUNG STEP AND MUST STAY
+         SO: R16's --mast-name-size consumes it. See the derivation in
+         global.css.
+
+         The cost, accepted in advance per CONTEXT.md's R17 amendment:
+         a transform affects no layout, so the line box stays at the
+         finished width the whole way and the empty run between
+         `lens:` and the word is wider at a smaller start. That gap is
+         the mechanism, not a defect, and it already existed at
+         0.487. */
+      @keyframes pivot-scrub{
+        from{ transform: scale(var(--pivot-scrub-start)); }
+        to  { transform: none; }
+      }
+    }
   }
 </style>

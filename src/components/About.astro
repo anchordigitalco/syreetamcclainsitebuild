@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * ABOUT — slice R2.
  *
@@ -67,7 +68,16 @@
   -->
   <h2 class="vh">About</h2>
 
-  <p class="win-about-lede about-lede">Two decades of seeing possibility in young people, and rebuilding the systems that serve them.</p>
+  <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+  paragraph; it does not replace it. The paragraph is the grid item
+  and carries this section's placement, and Astro wraps a hydrated
+  island in a real astro-island element — so an island mounted in
+  the paragraph's place would become the grid item itself and move a
+  left edge, which is the one thing this round may not do. Classes,
+  placement and box are untouched. Only the text node moves into the
+  island, and the island renders that same string verbatim until it
+  has measured the rendered line boxes. Copy is COPY.md's. -->
+  <p class="win-about-lede about-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Two decades of seeing possibility in young people, and rebuilding the systems that serve them." /></p>
 
   <div class="win-about-body about-body">
     <p><span class="dropcap">D</span>r. Syreeta McClain is a high school principal, an educational consultant, and the co-founder of a foundation built to honor the people who show up when no one is watching.</p>

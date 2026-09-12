@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * CHARGING IT TO THE GAME — slice R9.
  *
@@ -172,7 +173,16 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     split is a beside-arrangement change; the stacked composition is
     untouched and re-measured to prove it.
   -->
-  <p class="win-chg-lede chg-lede">There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard.</p>
+  <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+  paragraph; it does not replace it. The paragraph is the grid item
+  and carries this section's placement, and Astro wraps a hydrated
+  island in a real astro-island element — so an island mounted in
+  the paragraph's place would become the grid item itself and move a
+  left edge, which is the one thing this round may not do. Classes,
+  placement and box are untouched. Only the text node moves into the
+  island, and the island renders that same string verbatim until it
+  has measured the rendered line boxes. Copy is COPY.md's. -->
+  <p class="win-chg-lede chg-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard." /></p>
 
   <!--
     THE TYPE COLUMN. One block, one left edge, three registers now:
@@ -250,7 +260,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     the type. Here the frame has one intrinsic shape at every width
     and never competes for the row's height.
   -->
-  <figure class="win-chg-frame chg-figure">
+  <figure class="win-chg-frame chg-figure plate-draw" style="--curtain-exit: 1">
     <div class="plate-img chg-frame">
       <!--
         `sizes` DESCRIBES THE <img> BOX, NOT THE PLATE. This crop
@@ -292,6 +302,30 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
         loading="eager"
         decoding="sync"
       />
+
+        <!--
+      R18.2 — THE PLATE FRAME DRAW. A CURTAIN, AND IT IS A SIBLING OF
+      THE PHOTOGRAPH, NEVER A WRAPPER ROUND IT.
+
+      R1.1 is the whole reason this element exists in this shape. A
+      transform on the img promotes it to its own compositing layer
+      and .plate-img::before's mix-blend-mode: multiply silently stops
+      blending — measured then at R-B falling from 8 to -1 and
+      luminance returning to the raw source value, and CONTEXT.md
+      records that the transformed element itself breaks it too, not
+      only an ancestor. So the thing that moves is neither the img nor
+      any ancestor of it: it is this div, painted OVER the finished
+      composite at z-index 3. The multiply is re-measured on every
+      plate after this ships rather than reasoned about.
+
+      It paints the page's own ground via --page-ground with
+      background-attachment: fixed — R16's mechanism, for R16's
+      reason: a fixed-attachment background is positioned against the
+      VIEWPORT, so this box paints the pixels the body would have
+      painted behind it. aria-hidden and pointer-events: none: it is
+      a transient covering, not content.
+    -->
+    <div class="plate-curtain" aria-hidden="true"></div>
     </div>
 
   </figure>

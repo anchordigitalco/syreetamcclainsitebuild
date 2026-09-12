@@ -11,7 +11,27 @@ pitch. Its photograph half was STOPPED and not built — see the R15 entry.** **
 — see the entry-animation pattern under Motion vocabulary, which now governs all
 scroll-driven motion. Post-launch motion is grouped into **Round A (R16 masthead + R17
 Feature Quote scrub)** and **Round B (R18 texture)**; Round B is not scheduled until Round A
-is reviewed.
+is reviewed. **R17 shipped its SCALE half September 9 2026 — the pivot now has a peak.
+Its TRACKING half was STOPPED: "letter-spacing opens" conflicts with the standing
+transform/opacity-only rule and needs a ruling, not a build. See the R17 entry.**
+**`js-motion` and `screenshot.mjs`'s stripping of it are now page-level machinery that R18
+depends on.**
+**R16 shipped September 9 2026 — the page has a masthead, and Round A is complete and ready
+for review on localhost. It introduced one new device behaviour that is not in any prior
+entry and needs Jackson's eye: the bar does not print on the Obsidian spreads. That is
+forced by measurement, not chosen — see the R16 entry — and it is the same rule Route 3
+recommends for the folio.**
+
+**ROUND A IS REVIEWED AND ACCEPTED. ROUND B RAN. R18 built three of its four mechanisms
+and is NOT accepted — R18.1 is the correction pass and its prompt is written.** The lede
+reveals read as no scroll behaviour and too faint, the plate frame draw fires on one plate
+of five, and the Index row stagger is ruled in and stays. **Ghost numerals were STOPPED
+and remain unruled.** Page-wide smooth scrolling is ruled in and rides along with R18.1.
+See the R18 entry for what that round established that outlives its output.
+
+**Three items are waiting on a Jackson ruling and none of them blocks R18.1:** the folio
+over Contact (Route 3 recommended and now recommended twice), R17's tracking half, and R18's
+ghost numerals.
 
 **Original R12 note:** all ten sections built and R12 shipped. R10 + R10.1 shipped (Contact + footer, form rhythm), closing the
 ten-`<h2>` structure at 10 of 10. R9 settled through R9.6, R8 through R8.2. **R11
@@ -34,8 +54,15 @@ passes read `COPY.md`; layout passes do not need it. Do not duplicate copy here.
 
 ## ⚠️ Launch clock
 
-**KNOW Women gala: October 6, 2026.** Roughly five weeks out. The printed spread
+**KNOW Women gala: October 6, 2026.** Roughly three and a half weeks out. The printed spread
 lists her URL; print copies are already circulating.
+
+**Repo state, September 11 2026.** `HEAD` sat at R14/R15 while **R16, R17, R18, R18.1, R18.2
+and R19 all existed only in the working tree**, along with the rebuilt harness. Six rounds of
+accepted work with no git history behind it, found while measuring for R18.3. **Committed
+September 11 2026, not pushed.** The standing rule stands and is now underlined: **measure the
+working tree, never `HEAD`** — and commit, because for three rounds running the file was behind
+the tree and nobody could tell which.
 
 **Active blockers — none of these are code tasks except G and H:**
 
@@ -48,27 +75,42 @@ lists her URL; print copies are already circulating.
 3. **Meta / Open Graph / favicon not built (Phase H).** Deferred by Jackson, but print
    is driving traffic and people will share the URL. With no OG image, every share
    renders as a blank card. **Reconsider the deferral.**
-4. **KNOW Women reuse rights** — written client confirmation for the adapted Q&A.
+4. **KNOW Women reuse rights — RESOLVED September 7 2026, and the answer is no.** The
+   client confirmed that nothing from the magazine may be used until it publishes, the
+   headshot they used included. **Nothing sourced from the magazine ships.** The Cover's
+   credit line naming the honour is a statement of recognition rather than reuse of their
+   content, and it stands. She has purchased additional frames from the same shoot for site
+   use; chasing those files is deliberately not scheduled.
 5. **OSU photo clearance** — unresolved. Interim rule in force (see Photography).
-6. **Contact form inquiry options unconfirmed.** Phase F shipped six `<select>` options
-   that Claude Code derived, because this file requires a native `<select>` but never
-   enumerated the options. Needs client sign-off. Also confirm whether Everyday Legends
-   inquiries should route to `premierleadersllc@gmail.com` or elsewhere — it is a
-   separate legal entity.
+6. **Contact form inquiry options — RESOLVED September 7 2026.** The client reviewed the
+   six `<select>` options Phase F shipped and changed none of them; they ship as written.
+   She answered the routing question: **Everyday Legends Foundation inquiries go to
+   `info@everydaylegend.com`, all five other options to `mcclain@premierleadersllc.com`.**
+   Routing by field value is a Formspree account setting. It is not page copy and not a
+   build slice. See item 7.
 7. **Formspree free tier is 50 submissions/month.** Price a paid tier before the gala.
-   Confirm at signup that CAPTCHA is on the free plan.
+   Confirm at signup that CAPTCHA is on the free plan. **Also confirm conditional routing by
+   `<select>` value**, which item 6 now requires. If it is gated behind a paid tier, that
+   settles the tier question by itself.
 7b. **The build ships Cloudflare's TEST sitekey and TEST secret.** The widget renders
    *"For testing only. If seen, report to site owner"* in red on the live page, and the
    form's endpoint is still `formspree.io/f/your_form_id`. **Swap both to live credentials
    and re-verify the four states against the real endpoint.** Not a build slice — a launch
    task, and the most visible one on this list. Never mix a test sitekey with a live secret.
-8. **Pillars wording** — "education, athletics, and service" vs. "education, sports,
-   and community." Site uses the former. Needs explicit client confirmation.
-9. **Two pieces of Claude-written copy are shipping unsigned.** The Athletic caption
-   `THREE SONS, THREE PROGRAMS` (which also wants two characters out — it is the binding
-   crossover constraint at 1.54px / 0.65%) and the Index lede `Where the work continues.`
-   Neither is in `COPY.md`. **Jackson's sign-off, both, before launch.** *(R9's
-   `OFF THE CLOCK` caption was a third; it no longer ships — see Photography.)*
+8. **Pillars wording — RESOLVED September 7 2026.** The client ruled **"education, sports,
+   and community,"** reversing the earlier decision for "education, athletics, and service."
+   In shipping copy the triad appears in exactly one place, **Index entry 02**. Carried by
+   C1. See `COPY.md`.
+9. **Four pieces of Claude-written copy are shipping unsigned.** R19 added a fourth on
+   September 11 2026: the masthead disclosure label **`Contents`**, which is not in `COPY.md`
+   and has never been judged. The other three are the Athletic caption
+   `THREE SONS, THREE PROGRAMS` (which also wants two characters out; it is the binding
+   crossover constraint at 1.54px / 0.65%), the Index lede `Where the work continues.`, and
+   **the Everyday Legends opening statement `Recognition rarely finds the people who earn it
+   most.`** The third was written September 11 2026 to replace a line the client asked to
+   lose, and Jackson approved it the same day. The first two are not in `COPY.md`; the third
+   is, and is flagged there. **The first two still need Jackson's sign-off before launch.**
+   *(R9's `OFF THE CLOCK` caption was a fourth; it no longer ships. See Photography.)*
 11. **Safari and Firefox are untested across the entire build.** Athletic's foot
     (`align-self: last baseline`) and the Index's row group both rest on grid baseline
     alignment inside a subgrid chain, verified in headless Chrome only; R9 no longer depends
@@ -81,8 +123,10 @@ lists her URL; print copies are already circulating.
     linked; Cam's serves a launch page and ships as plain text. **Re-check all three close
     to the gala** — see Site Structure.
 
-Resolved and no longer blocking: contact recipient (now `premierleadersllc@gmail.com`),
-Turnstile provider (Formspree). Refund status with the prior designer must not be allowed
+Resolved and no longer blocking: contact recipient (**now `mcclain@premierleadersllc.com`**,
+client decision September 7 2026, superseding `premierleadersllc@gmail.com`; the mailbox must
+be confirmed to receive mail before it ships), Turnstile provider (Formspree), inquiry options
+and their routing, pillars wording, KNOW Women reuse. Refund status with the prior designer must not be allowed
 to block domain/asset handoff.
 
 ---
@@ -817,17 +861,39 @@ preferences.
 The corollary from `principles`: effects layered onto a concept-free page produce a
 concept-free page with effects. The concept comes first or the pass does not run.
 
-### The motion budget: three things, total
+### The motion budget — superseded September 9 2026
 
-1. **The folio (R12).** The page's only scroll-driven element, and its entire scroll
-   budget. It already carries the numeral and the section name, so section identity is a
-   solved problem the moment R12 mounts — it does not need inventing.
-2. **Hover on the Index rows (R13).** Pointer-driven, not scroll-driven. See below.
-3. **Nothing else.**
+**This section previously read "three things, total," ending in "Nothing else." That was
+written before the wipe-reveal ban was rescinded and before Round A was ruled in, and it is
+now contradicted by this file's own R16, R17 and R18 entries.** Recorded rather than deleted
+because the reasoning behind the original ceiling still governs what is allowed to join it.
+
+**The scroll budget is one listener, and R12 owns it.** This has not changed and is the
+constraint that matters most. Anything new either reuses the folio's listener or uses CSS
+scroll-driven animation (`animation-timeline: view()` / `scroll()`). **A second scroll
+listener MUST NOT be added.**
+
+The budget as it now stands:
+
+1. **The folio (R12).** The page's only JS scroll listener, and its entire scroll budget. It
+   already carries the numeral and the section name, so section identity is solved the
+   moment R12 mounts — it does not need inventing.
+2. **Hover on the Index rows (R13, widened at R13.1).** Pointer-driven, not scroll-driven.
+3. **Round A — R16 masthead and R17 Feature Quote scrub.** Both scroll-position-driven, both
+   CSS. See the build-order table.
+4. **Round B — R18 texture.** Four entry animations tuned against each other in one pass.
+   **Not scheduled until Round A is reviewed on localhost, and possibly not needed at all.**
+5. **Nothing else without a ruling recorded in this file.** The ceiling is gone; the
+   requirement that each addition be derived and written down is not.
+
+Every item in 3 and 4 is conditional on **the entry-animation pattern** below: the finished
+state is the CSS default and JS applies the animated state on load. That pattern is the
+condition on which scroll-driven motion is permitted at all.
 
 The folio hides below 1280px. **Below 1280 the page has no motion at all, and that is
 correct** — a phone is a single stacked column of a printed object, not a reduced version
-of a moving one. Do not compensate with mobile-only effects.
+of a moving one. Do not compensate with mobile-only effects. This applies to Round A and
+Round B exactly as it applied to R12 and R13.
 
 ### Rejected in concept — do not re-propose
 
@@ -856,6 +922,63 @@ ideas do not arrive again wearing different names.
   for Premier Leadership or the foundation, so it would require inventing five pieces of
   visual identity to fill it. **The masthead instinct behind it is correct and survives as
   R16.**
+
+**21st.dev component library — evaluated September 9 2026, five taken, six rejected.** The
+library was brought in specifically to source motion mechanisms rather than styling; in
+every case what is adopted is the mechanism, and the visual treatment is re-derived from
+this file. Recorded so the same components do not arrive again under different names.
+
+*Adopted, all pending their own rounds:*
+
+- **`text-reveal`, line mode only.** Cover entry and the section lede reveals (R18). **`per`
+  MUST be `line`, never `word` or `char`** — character splitting drops kerning across span
+  boundaries, the exact cost R13 measured and paid for. Line mode has none.
+- **The clip-wipe from `parallax-scroll-feature-section`.** Photograph reveals (R18).
+  **Rewritten, not copied** — the source calls React hooks inside a loop and will not run.
+  The wipe MUST sit on a sibling overlay, never on the blended image or any ancestor
+  containing it.
+
+*Rejected:*
+
+- **`story-scroll` (GSAP `FlowArt`).** Pins every section to `100vh`, which flattens the
+  5:1 word-budget spread that the composition depends on being visible as section height.
+  It also registers its own ScrollTrigger against R12's monopoly, and it rotates a wrapper
+  containing the photographs — a transform on that ancestor promotes the layer and
+  `mix-blend-mode: multiply` silently stops blending. Fails three rules at once.
+- **`wave-text`.** Per-letter hover stagger, superficially R13.1. Rejected because the
+  shipped native implementation already does more: center-out stagger, all four Fraunces
+  axes enumerated at both ends, the numeral counterweight, and the hairline as an inset
+  `box-shadow` contributing no layout. The source also applies `scale: 1.2` and `y: -4`,
+  both of which would break the 0.00px row-height and left-edge results. **Adopting it
+  would be a downgrade.**
+- **`circle-menu`.** Icons radiating from a trigger button. Same rejection as the
+  magnifying icon dock above, for the same two reasons: wrong register, and it needs five
+  brand marks that do not exist.
+- **`liquid-morph-floating-menu`.** A yellow pill fixed over the composition that expands
+  into a dark panel. The pill and the morph are the whole idea; strip them and nothing
+  remains. **The letter-roll mechanism inside it — each character flipping to a duplicate
+  beneath it on a staggered per-letter delay, pure CSS, no framer-motion — was held as a
+  candidate for the masthead name and is now RETIRED (September 9 2026).** R16 measured the
+  case against it: the name is 26.66px in a 56px bar, which is motion at a size nobody
+  reads it at. It is not a candidate for the Index rows either — R13.1's native
+  implementation owns that interaction and does more. **Do not re-propose.**
+- **`navigation-menu-05` and `navigation-menu-4`.** Horizontal nav bars, the second with
+  dropdowns, a mobile popover and sign-in buttons. Both are chrome for a multi-page site.
+  The hub is one scroll and the Index section already does the navigating.
+
+**The pattern in all six rejections:** every nav component in the library assumes multiple
+pages. R16 is a thin bar carrying one name and one jump link.
+
+> **NARROWED September 10 2026.** The sentence that stood here read *"anything with a
+> dropdown is wrong by construction."* That was too broad, and it would have rejected R19 on
+> a word rather than on a reason. What is wrong by construction is a **nav menu**: a
+> component that assumes routes, carries sign-in, and duplicates navigation this site does
+> not have. A **section jump list** is a different object — it addresses anchors that already
+> exist inside one document, and it is the Index's own function moved into the running head.
+> **Ruled in as R19.** The six rejected components stay rejected as components; none of them
+> is the source for R19, and the `dropdown-menu` component evaluated on September 10 is
+> rejected with them — it animates `filter: blur()` and `backgroundColor`, imports
+> `framer-motion`, and needs `lucide-react` for a chevron on a page carrying no icons.
 
 ### R13 — Index row hover — RULED IN, September 8 2026
 
@@ -1149,6 +1272,1083 @@ where a listener is genuinely required it MUST reuse R12's.
 the image to its own layer and the `mix-blend-mode: multiply` treatment silently stops
 blending. **On type it is permitted** — that failure mode does not apply.
 
+### R16 — the masthead — SHIPPED September 9 2026
+
+**Round A, second half.** The page has a running head. What follows is the derivation, the
+mechanism, and the one behaviour that is new to this file.
+
+#### The route, and why it is not the listener
+
+**CSS scroll-driven animation. No listener, and no second listener.** The motion budget
+offers two mechanisms and names this one preferred, reserving R12's listener for "where a
+listener is genuinely required." It is not required here, and the deciding reason is not
+that CSS is tidier — it is that **a listener cannot express this without a constant.** A
+listener needs two comparisons and, to stop the bar chattering at the boundary, a
+hysteresis value. A view-timeline range is read in both directions, so **the arrival and
+the withdrawal are the same boundary and cannot drift apart.** There is no withdraw
+threshold in this build; there is a range, and the withdraw threshold is its mirror.
+
+Verified: exactly **one** `addEventListener('scroll')` in `src/` and one in `dist/` —
+R12's folio, byte-identical. Zero `IntersectionObserver`, zero `transition-all`, zero
+`opacity: 0` resting states.
+
+#### The two derived quantities
+
+**The height is `2 x --baseline` = 56px, and the multiple is forced.** `--baseline` is the
+page's own unit and this file's rule for it is that margin content sits on multiples of it;
+a running head is margin content by definition. The bar must hold the name's ink, which at
+its largest — 32.00px, from 1684 up where `--lede-size` ceilings — is
+`(0.9775 + 0.2550) x 32 = 39.44px` on R9.6's closed face metrics. One baseline is 28px and
+does not contain it. Two is the smallest that does. There is no third band and nothing to
+sweep.
+
+**The name is `--lede-size x --pivot-scrub-from`, which is R7's step taken downward.** The
+page has exactly one measured display-tier step. R15 took its square root upward. R17 takes
+the whole step upward. R16 takes the same whole step **down**, using R17's own token rather
+than a second copy of the ratio, so the ladder is one relationship applied three times:
+
+| Tier | Against the lede | At 1440 |
+|---|---|---|
+| Pivot (R7) | x 2.053 | 112.32px |
+| Everyday Legends opener (R15) | x 1.4329 | 78.40px |
+| **LEDE** | x 1 | 54.72px |
+| **Masthead name (R16)** | **/ 2.053** | **26.66px** |
+
+Rendered, with the ratio to `--lede-size` stated as required: **0.5000 at 1920, 0.4872 at
+1440, 0.5208 at 1280.** The name is never more than 52.1% of a lede and never less than
+48.7% of one — one whole tier down, on the page's own ladder, at every width the bar
+exists. That is the answer to "must not compete with any lede."
+
+> **The token is meaningful in band 1 only, and this is written down because it inverts.**
+> `--quote-size` rides 7.8vw against `--lede-size`'s 3.8vw, so below 1280 the ratio climbs —
+> 0.651 at 1024, 0.833 at 800, **1.182 at 390**, where the "small" name would set larger
+> than a lede. It costs nothing because the masthead does not render below 1280 and nothing
+> else consumes the token. **Do not reuse it outside band 1 without a clamp.**
+
+The name centres itself: `line-height: var(--mast-h)` puts the half-leading either side of
+the ink, and the cap-to-baseline block lands **0.30px** off the bar's centre at 1440,
+0.36px at 1920 — solved from the face, with no offset to go stale.
+
+#### Contrast, and the one behaviour that is new
+
+Measured on the rasterised page with the grain sheet, not modelled. The harness reproduced
+Obsidian display type on Porcelain at **13.70:1** against this file's documented 12.9:1 —
+**it reads about 6% high**, because it estimates the ground from the median of a clear
+region rather than the grain's darkest pass. Every figure below is from that harness, so
+they are all consistent with each other and all slightly optimistic against R14's numbers.
+
+| Element | Size | Measured | Threshold | Where the threshold comes from |
+|---|---|---|---|---|
+| Name, on Porcelain | 26.66–32px | **15.01:1** | 3:1 | WCAG 2.1 SC 1.4.3, large text (>=24px). It also clears 4.5:1. |
+| Jump link, on Porcelain | 10.5px | **6.86:1** | 4.5:1 | 1.4.3 normal text — the same floor R14 measured the agency credit against at 10px |
+| Focus ring | — | **15.11:1** | 3:1 | SC 1.4.11, the floor R14 re-derived the ring against on Obsidian |
+| Trim hairline | 1px | 1.41:1 | none | decorative, the family `--rule-hair` (1.83:1) and `--hair-light` (1.86:1) already sit in |
+| **Name, on Obsidian** | — | **1.01:1** | 3:1 | **counterfactual — the bar does not print there** |
+
+**THE BAR DOES NOT PRINT ON THE OBSIDIAN SPREADS, AND THAT IS FORCED BY MEASUREMENT.** A
+fixed bar must occlude what scrolls under it or display type prints through a 27px name, so
+it carries a ground; and a bar that crosses both grounds needs one ink that survives both.
+**No such ink exists in the locked palette.** The best any single colour could do is
+**3.72:1** against both, at relative luminance 0.167 — and no locked colour is near it.
+Scored on the weaker of its two grounds:
+
+| Ink | Relative luminance | vs Porcelain | vs Obsidian | **Worse of the two** |
+|---|---|---|---|---|
+| *(theoretical optimum)* | 0.167 | 3.72:1 | 3.72:1 | *3.72:1* |
+| Antique Gold | 0.286 | 2.41:1 | 5.76:1 | **2.41:1** — best of the five, still fails |
+| Smoked Slate | 0.057 | 7.53:1 | 1.84:1 | **1.84:1** (1.60:1 rasterised, R14) |
+| Cashmere | 0.581 | 1.28:1 | 12.1:1 | **1.28:1** |
+| Obsidian | 0.008 | 13.8:1 | 1.00:1 | **1.00:1** |
+| Porcelain | 0.758 | 1.00:1 | 13.8:1 | **1.00:1** |
+
+Not one clears 3:1 on both, and the one that comes closest is the one the gold budget
+forbids spending. Colour is also not animatable here.
+
+So the bar does on the dark spreads what the folio already does over the pivot: it goes
+quiet. **The rule is "print on the Porcelain spreads, quiet on the Obsidian ones"** — which
+is the rule **Route 3 recommends for the folio** in the Design Direction entry, arriving
+independently from a different constraint. It withdraws by the same gesture and the same
+56px of travel as the arrival, at the pivot's top trim and at Contact's, and returns at the
+pivot's foot.
+
+> **THIS IS NEW BEHAVIOUR AND IT NEEDS JACKSON'S EYE, NOT A RULING TO PROCEED.** It was not
+> in the brief. It was built rather than reported because the alternative was shipping a
+> **text link at 1.6:1**, which is a live WCAG 1.4.3 failure — unlike the folio's own defect,
+> which is `aria-hidden` and decorative and which this file could therefore leave standing.
+> **If Route 3 is ruled in for the folio, the two devices then obey one rule.** If Jackson
+> would rather the bar crossed the dark spreads, the only routes are an opaque Obsidian band
+> across every light spread (colour volume the direction forbids) or a second ink tier
+> cross-faded on opacity (legal, more machinery).
+
+#### Two measured failures found inside the round, fixed rather than shipped
+
+- **A transform silently degrades `background-attachment: fixed`.** The bar paints the page
+  ground so the band is invisible over Porcelain, and `fixed` attachment should have made it
+  paint the identical pixels. It does not: a transformed element is a containing block for
+  fixed descendants, and Chrome degrades the attachment to `scroll` inside one, so the
+  positioning area became the bar's own 1440 x 56 box and the white radial's 78% radius
+  resolved against 56px instead of 900. Measured in the right gutter, where no ink exists at
+  any scroll position: **up to 16/255 darker at the bar's foot.** Fixed by declaring the
+  positioning area — `background-size: 100% 100vh`, `background-position: left top` — which
+  depends on no attachment behaviour at all. **Re-measured: 0/255 on every channel, grain on
+  and grain off.** This is R1.1's lesson arriving through paint instead of blending: a
+  transform on the element itself silently breaks a mechanism declared somewhere else.
+- **`scroll-margin-top` landed the jump inside the pivot's withdrawal zone.** The reflex
+  declaration put the reader 56px short of the Index's top — 56px back inside the Feature
+  Quote, an Obsidian spread — so clicking the masthead's link made the masthead disappear.
+  Measured: scrollY 5774 at 1440, bar bottom at viewport 0.00. **Removed.** The target now
+  lands flush and the bar is at rest, with 52.6–53.9px of the Index's own 110px top padding
+  as clearance. **That dependency is real:** if the Index's top padding ever falls below
+  `--mast-h`, this needs a scroll margin again and the landing scroll needs re-checking
+  against the pivot's withdrawal range at the same time.
+
+#### The entry-animation pattern, verified by rendered state
+
+The masthead's CSS default is **`display: none`** — the page exactly as R15 and R17 shipped
+it. That is not the hidden resting state the fade-up ban forbids, and the distinction is
+content: **the bar carries nothing that is not already on the page.** Her name is the
+Cover's `<h1>`; the Index is a section with its own `<h2>`. The inverse would break the
+brief outright — a bar whose default is "present" renders over the Cover at scroll 0 with
+JavaScript off, and "must not appear over the Cover" is not conditional on a script running.
+
+| Condition | Masthead | R17's `.legacy-scrub` |
+|---|---|---|
+| As shipped, scroll 0 | `display: flex`, `translateY(-56px)` — **0 rendered px** | 133.84px, the 0.4872 start state |
+| **JavaScript disabled** | **`display: none`** ✓ | **274.72px, finished** ✓ |
+| **`js-motion` stripped (screenshot.mjs)** | **`display: none`** ✓ | **274.72px, finished** ✓ |
+| **`@supports` unsatisfiable** | **`display: none`** ✓ | **274.72px, finished** ✓ |
+| **`prefers-reduced-motion: reduce`** | **`display: none`** ✓ | **274.72px, finished** ✓ |
+
+Nine of ten sections and the footer are identical under every one of those conditions; the
+tenth is Contact, 7px shorter with JavaScript off because Turnstile does not mount — a
+pre-existing Phase F behaviour, not R16's.
+
+#### What did not move
+
+- **Page height, all ten section tops and heights, the footer, and 130 section x width
+  left-edge sets: 0.000px at all thirteen widths.** The three left edges hold across all ten
+  sections. The bar is `position: fixed`, never sticky, and reserves no layout space in
+  either state.
+- **Zero rendered pixels over the Cover**, measured at scroll = the Cover's last pixel, at
+  1920, 1440 and 1280. The Cover's bottom and About's top are the same coordinate (720.000
+  at every band-1 width), and the arrival's range starts at About's `exit 0%` — so the
+  travel cannot begin until the Cover is gone. It is not a near miss; it is 0.00px by
+  construction.
+- **Gold: 3 of 3 saturated type accents, 0 of 8 hairline rule contexts.** Re-measured on
+  both bases off the rendered page: Cover tagline "Legacy", About drop cap, pivot "Legacy" —
+  the exact three this file names. The only gold fills are the five `.plate-img::before`
+  treatment layers, which sit on neither basis per R7. **R16 spends zero.** The trim
+  hairline is `--hair`, and R16 is that token's first consumer in the rebuild.
+- **No photograph is inside a transform, and none moved.** The only transform R16 creates is
+  on the bar, a sibling of `<main>` containing no image. Cover plate sampled with R16's
+  declarations live and inert: **max channel delta 1/255 over 1720 samples, mean R−B
+  identical at 11.65** — the multiply is live and unchanged. The five `.plate-img` wrappers
+  still carry only their pre-existing `isolation: isolate`.
+- **R17 is untouched.** `--pivot` is consumed via `timeline-scope` rather than duplicated,
+  because a second `view-timeline-name` on `.quote` would replace R17's rather than join it.
+  The scrub's start scale is **0.487179 at 1440**, and the h2's height is 343.64px, before
+  and after.
+- **Zero `box-shadow` introduced.** The built CSS's six hits are Tailwind's preflight
+  variables, a `none`, a transition list, and R13.1's Index hairline.
+
+#### The one thing deliberately not built
+
+**No hover treatment, by instruction** — not the 21st.dev letter-roll, not anything, on
+either element. `focus-visible` is built regardless: it is not a hover treatment, and a link
+without a focus indicator fails SC 2.4.7 outright. **This does conflict with `CLAUDE.md`'s
+"every clickable element needs hover, focus-visible, and active states. No exceptions."**
+The brief is the later and more specific instruction and it wins, but the conflict is
+recorded rather than silently resolved. **Recommendation: the bar wants one line of hover,
+`opacity: 0.7` on the link with a 260ms transition, matching `.edu-link` minus its
+translate.** The letter-roll is a different question and stays not ruled in — on a name that
+sets at 26.66px in a 56px bar it would be motion nobody asked for at a size nobody reads it
+at.
+
+### R17 — the Feature Quote scrub — SCALE SHIPPED, TRACKING STOPPED
+
+**Round A, September 9 2026.** The pivot now has a peak. What follows is the derivation,
+the measurements, and the one half of the brief that was **not** built.
+
+#### The scale, and where the number comes from
+
+"Legacy" enters at the page's shared lede pitch and grows to the pivot's own pitch as the
+band arrives. The start scale is **not a chosen number and not a swept one**:
+
+```
+--pivot-scrub-from: calc(var(--lede-size) / var(--quote-size));
+```
+
+It is the ratio between two tokens that already existed, resolved live at every width. In
+words — the word enters at exactly the size every other lede on the page is set at, and
+travels the page's whole display ladder in one move. R7 measured that ladder and recorded
+one number for it, *"it exceeds every lede by 2.05×"*; R15 took the **square root** of that
+same 2.053 to seat the Everyday Legends opener at the geometric mean. **R17 takes the whole
+step.** There is no third constant, and nothing to re-sweep when either clamp moves.
+
+| vw | `--lede-size` | `--quote-size` | start scale | travel |
+|---|---|---|---|---|
+| 1920 | 64.00 | 128.00 | 0.5000 | 2.000× |
+| 1440 | 54.72 | 112.32 | **0.4872** | **2.053×** ← R7's own step |
+| 1280 | 52.00 | 99.84 | 0.5208 | 1.920× |
+
+The travel varies across the band because the two clamps floor and ceiling on different
+schedules. **That is not drift.** At every width it is the page's own lede-to-pivot step
+*at that width*, which is the quantity the move is about; freezing 0.487 would ship the
+1440 measurement to 1920 and to 1280, which is the R8.2 failure exactly.
+
+**The end scale is 1 and is deliberately not a token.** The finished state is the CSS
+default, so the last keyframe is `transform: none` and the page at rest carries no
+transform on the pivot at all.
+
+**The word grows from its baseline, not from its box.** `--quote-baseline` solves the
+origin out of `--quote-lh` and R9.6's closed face metrics — `(half-leading + asc) / lh`,
+0.87125em of a 1.02em line box, 85.4167%. Measured origin at 1440: **97.842px against
+97.855px predicted, 0.013px out.** Verified across the whole scrub: **the rendered baseline
+Y and the left edge X do not move at any scrub position, at any width.**
+
+> **AMENDED September 10 2026 — the start moves one further step down the same ladder.**
+> Jackson's review of the shipped scrub: it reads correctly and **the travel is too short.**
+> The correction MUST NOT introduce a constant, and it does not have to. The page has exactly
+> one measured display-tier step and this file already applies it three times — R7 up, R15 at
+> its square root, R16 down. **The corrected start takes it down twice: `--pivot-scrub-from`
+> squared.** That seats the entering word at the **masthead-name tier**, the bottom rung of
+> the page's own ladder, and makes the travel the full ladder end to end. No third constant,
+> nothing to re-sweep when either clamp moves, and the same token drives all four tiers.
+>
+> **The end scale stays 1 and stays untokenised.** The finished state remains
+> `transform: none`.
+>
+> **The known cost, accepted in advance.** A transform affects no layout, so the line box stays
+> at the finished width the whole way and the empty run between `lens:` and the word is wider
+> at a smaller start than it was at 0.487. That gap is the mechanism, not a defect, and it
+> already existed. **Whether it reads as anticipation or as a hole is a screenshot judgement,
+> not a measurement** — R18.1 captures 0%, 50% and 100% and Jackson rules on the images before
+> the table.
+>
+> R18.1 measures and reports the start scale and total travel at all thirteen widths, and
+> re-confirms R17's own result that the rendered baseline Y and left edge X do not move at any
+> scrub position at any width. **Stop and report** if the squared start puts the rendered word
+> below any legibility or contrast floor already in this file, or if the h2's height moves at
+> any width.
+
+#### The tracking half — STOPPED, NOT PICKED
+
+The brief is *"'Legacy' grows **and its letter-spacing opens**."* The scale half is built.
+**The tracking half is not, because every route to it fails against a rule already in this
+file, and the round's instruction is to stop and report rather than arbitrate.**
+
+The derivation itself is not the problem — it falls out of the same single relationship.
+Holding the *rendered* inter-letter gap constant in absolute px while the glyphs grow gives
+
+```
+T_start = --quote-ls × (--quote-size / --lede-size)
+```
+
+i.e. **−0.028em opening from −0.05748em at 1440** (−0.0560em at 1920, −0.0538em at 1280):
+the em tracking opens by exactly the scale ratio, one derivation driving both axes, zero
+new constants. That is the number. What has no legal implementation is the *motion*:
+
+| Route | Why it fails |
+|---|---|
+| Animate `letter-spacing` | **"Animate `transform` and `opacity` only."** The one exception is `font-variation-settings` on **Index entry names**, recorded as not extensible "to any other element, section, or property without a new ruling." `letter-spacing` changes glyph advance widths — the same layout-affecting objection R13 was ruled on. |
+| Per-character `translateX` (transform-only, legal) | Requires splitting the word into six atomic inlines. **Measured: shaping loss of 1.34–4.36px across the thirteen widths** — the kerning goes. Restoring it needs a 5-pair × 13-width lookup, which is the hardcoded swept shape this file has deleted **four** times (`--p1-lines`, the R4.1 crossover, R6.3's lap, R8.2's numeral). It also moves R7's locked finished state. |
+| `scaleX` on the word | Distorts the glyphs. R7 locks the face and the four axes. |
+| A width/tracking font axis | Fraunces has none, and the R13 exception is Index-only. |
+
+**This needs Jackson's ruling, not a build.** The cheapest route in is widening the R13
+exception to cover `letter-spacing` on this one element — but R13's exception was made
+*conditional on a measured pass* and explicitly non-extensible, so widening it is a new
+ruling by construction. **The scale half stands on its own and does not depend on it.**
+
+#### The mechanism, and the three gates
+
+CSS scroll-driven animation on a **named view-timeline declared on the section**, consumed
+by the word. `view()` on the word itself would run the whole scrub across 114px of scroll —
+the height of one line box — which is a flinch, not a scrub. `entry 0%` → `entry 100%` is
+the *section's own extent*, 605–643px in band 1, so **there is no duration, no distance and
+no constant to tune**: the reader's scroll is the timing.
+
+**No listener, and no second listener.** Verified: exactly **one** `addEventListener('scroll')`
+in `src/` and one in `dist/` — R12's folio, unchanged. Zero `IntersectionObserver`, zero
+`transition-all`, zero `opacity: 0` resting states (every grep hit for all three is a
+comment forbidding them).
+
+> **`.legacy-scrub` wraps the closing full stop, and this is not cosmetic.** A transform
+> does not apply to a non-replaced inline box, so the scaled element must be an atomic
+> inline — and scaling the `<em>` alone leaves the sentence's period at full size and full
+> position while the word shrinks away from it, **a 132px gap at 1440 with a period floating
+> on the end of it.** The span takes `Legacy` *and* the period. `.legacy` keeps the gold and
+> is otherwise untouched; the h2's text content is character-for-character COPY.md's.
+>
+> **An atomic inline drops its trailing letter-spacing**, and `--quote-ls` is negative, so
+> the box measured 1.34–3.88px wide and pushed the period right by the same amount.
+> `margin-inline-end: var(--quote-ls)` puts it back — **a compensation declared against the
+> very token it compensates for**, not a swept pixel. With it in place, h2 height, the
+> period's right edge and "Legacy"'s left edge are **0.000px** against the pre-R17 build at
+> all thirteen widths.
+
+**`--quote-lh` and `--quote-ls` are now tokens**, promoted for the same reason and under the
+same rule as `--quote-size` in R15: the transform-origin is solved *from* the line-height
+and the compensation *is* the tracking value, so neither may be restated. **R7's values,
+byte-for-byte.** `--fr-asc` / `--fr-desc` carry R9.6's measured face metrics.
+
+**Longhands, never the `animation` shorthand.** The shorthand resets `animation-timeline`
+to `auto` and `animation-range` to `normal`, so written above them it silently detaches the
+animation from its timeline and written below them it silently discards both. It also sets
+`animation-duration`, which must stay `auto` for a scroll-driven animation to fill its
+range. **This is a new gotcha and it is written here because R18 will hit it four times.**
+
+#### The entry-animation pattern, verified by rendered ink
+
+Three independent gates — `html.js-motion`, `@supports (animation-timeline: view())`, and
+`min-width: 1280px` — plus `prefers-reduced-motion: no-preference` written into the media
+query rather than left to global.css's blanket `animation-duration: 0.001ms !important`,
+**because duration is not what drives a scroll-driven animation and that override does not
+reliably stop one.** If any gate is unmet the pivot renders exactly as R7 shipped it: full
+size, no transform, not even an inline-block.
+
+Verified by scanning gold ink inside the Obsidian band on a full-page capture at scroll 0 —
+**measured, not read off the code.** Finished size is 270px:
+
+| Condition | Rendered gold ink | |
+|---|---|---|
+| `js-motion` on, scrub live | 131px | the derived start state, 0.487 × 270 |
+| **JavaScript disabled** | **270px** | finished ✓ |
+| **`@supports` unsatisfiable** | **270px** | finished ✓ |
+| `screenshot.mjs` (class stripped) | **270px** | finished ✓ |
+
+> **`screenshot.mjs` now drops `js-motion` before capturing, and this was not optional.** A
+> `fullPage` capture rasterises the whole document at scroll offset 0, and a scroll-driven
+> animation resolves against that offset — so with the class left on, **every section below
+> the fold captures at the start of its scrub.** The pivot would have printed at lede pitch
+> in every screenshot and every client-generated PDF. This is the standing rule "screenshot
+> loop is static only" made true rather than assumed, and **R18 depends on it.**
+
+#### What did not move
+
+- **Page height, all ten section heights and tops, and 507 section × width left-edge cells:
+  0.000px at all thirteen widths.** The three left edges hold across all ten sections.
+- **The Feature Quote's own height is unchanged at every width** — the fixed padding is the
+  Rhythm column and a transform affects no layout, so growing the word cannot touch it.
+- **Gold: 3 of 3 saturated type accents, 0 of 8 hairline rule contexts.** Re-measured on
+  both bases off the rendered page: Cover tagline "Legacy", About drop cap, pivot "Legacy" —
+  the exact three this file names. R17 spends zero. The five `.plate-img::before` treatment
+  layers sit on neither basis, as recorded in R7.
+- **No photograph is inside a transform.** The transform is scoped to one word and a full
+  stop; the only ancestor R17 touches is `.quote`, which takes a `view-timeline-name` — a
+  declaration with no layout, paint or compositing effect. The section carries no photograph
+  at all, and the scope is written so a later slice adding one cannot break R1.1.
+
+#### The known defect, reported not fixed
+
+R7's rule *"the pivot exceeds every lede"* is **already false at 390 and 360** in the
+shipped build: pivot 44px against a 52px lede, **0.846×**. Reproduced exactly, and **R17
+leaves it alone** — the scrub does not run below 1280 and the finished state is unchanged,
+so the ratio is 0.846 before and after. Not fixed in this round, by instruction. It holds at
+the other eleven widths (1.125× at 750 rising to 1.433× from 1023 up).
+
+### R18 — Round B texture — THREE OF FOUR SHIPPED, ONE STOPPED, CORRECTION PENDING
+
+Built September 9 2026. **Reviewed on localhost and NOT accepted — R18.1 is the correction
+pass and is written.** Recorded now rather than after the correction, because the build's
+findings are durable even where its output is not.
+
+**Item 1 — lede reveals — BUILT, REJECTED ON REVIEW.** Per-line mask wipe, built as a React
+island. Jackson's verdict: *"has no scroll behavior, it's super faint."* **Cause not yet
+determined.** Two failures produce that report and they need opposite fixes: the animation
+is not firing on scroll at all, or it fires and the travel is imperceptible. **R18.1 must
+diagnose before tuning.** This is R13's shape exactly — shipped, passed every criterion,
+invisible — and R13's pass and invisibility had the same cause.
+
+**Item 2 — plate frame draw — BUILT IN CSS, FIRES ON ONE PLATE OF FIVE.** The build reported
+all five plates measuring 0.00 on every scanline. Jackson sees the draw on one. Something
+gates the other four and R18.1 must find it before fixing it.
+
+**Item 3 — ghost numerals — STOPPED, NOT BUILT, STILL UNRULED.** The stop was correct and
+its reasoning is worth keeping whatever Jackson decides:
+
+> New marginalia is **composition**, and R18's own charter says the round is texture and
+> does not change composition. The ghosted-monogram mechanic is recorded as *available but
+> unapproved* and requires explicit sign-off in the session that uses it. A numeral in the
+> margin would be a **fourth numbering device** against three that MUST NOT be made to
+> agree — a bug class this file has flagged four times. **R12 deleted `RunningHead.astro`
+> for precisely this**: a folio marks the page and a running head marks the section, and
+> they do not repeat each other. There is also no numeral in the margin band to animate —
+> the band holds About's closing line, Edu's district link, Premier's topics and Legends'
+> handle, and it is dead below the pivot.
+
+Nothing was substituted, following R15's precedent when its photograph half was refused.
+
+**Item 4 — Index row stagger — BUILT IN CSS, RULED IN, then RULED OUT.** The build flagged it
+as the one it would cut if anything read busy. Jackson's verdict at R18 review was that it
+works and it stays. **SUPERSEDED September 10 2026 — see R18.2.** The build's own instinct
+was right and it took two rounds and a hash-jump proof to get there.
+
+#### What R18 established that outlives its output
+
+**Island vs CSS, decided per item rather than by policy.** Lede reveals earn React: measure
+rendered line boxes, map to character offsets, wrap, recompute on resize and on
+`document.fonts.ready`, write per-line stagger windows. That is a stateful lifecycle. The
+plate draw is one div and one keyframe, and the Index rows already exist as `<li>`s —
+React would add an `<astro-island>` and no behaviour. **Both shipped as CSS.**
+
+> **An island MUST nest inside the existing element, never replace it.** Astro wraps a
+> hydrated island in a real `<astro-island>` element. Mounted in a paragraph's place it
+> becomes the grid item and the `.win-*` placement moves with it. Nested inside, the `<p>`
+> keeps its classes, its box and its placement. **This is the same family as the
+> `::details-content` and `.plate-panel` gotchas: a box you did not author still takes a
+> track.**
+
+**Line detection is derived from rendered line boxes, not from the string.** The 21st.dev
+component splits on an authored newline; these ledes carry none and wrap by width. A Range
+walks one character at a time and each character is assigned to the line box its own client
+rect sits on, grouped by rect top. **Reassembly is checked against the source string and
+the split is abandoned rather than shipped if it does not match.**
+
+**Split delta: 0.000px** — ink width, ink left and right, line count and box height, across
+all eight ledes at all thirteen widths. Against R13's measured 1.34–4.36px for
+per-character splitting. **This is why the per-line rule exists and it is now measured, not
+argued.**
+
+**`framer-motion` is installed but not imported, and is absent from `dist` entirely.**
+`useScroll` adds a scroll listener and is banned. React owns DOM structure, line splitting
+and stagger orchestration; **it MUST NOT own scroll observation.** Listener count held at
+one in `src/` and one in `dist/`, R12's folio. React's three scroll sites are
+synthetic-event delegation, armed only by an `onScroll` prop no component passes.
+
+**The bottom-trim failure, and why `cover` is the right range.** All three mechanisms first
+fired at the bottom trim: a 123px Index row's entire animation fit inside the bottom 123px
+of the viewport, so the reader met everything already settled. Switched to `cover`, which
+**self-normalises for element height** — Legends' 370px opener and About's 194px lede land
+in the same place with no per-section constant. They now complete with the element's top at
+42–50% of viewport for ledes, 43% for the plate, 62% for rows.
+
+**A mask clearance that followed from face metrics still measured as a false pass.** 0.04em
+followed correctly from R9.6's metrics and measured 0.080px of ink clearance at 1280 —
+inside the 0.65px jitter R8.2 records for that quantity. Now asymmetric, -0.5em top and
+-0.12em bottom, giving 24–30px and 5.13–6.20px. **A derivation being correct does not make
+its result outside the noise floor.**
+
+**Sequencing is structural, not indexed.** Each mechanism runs on its own element's view
+timeline, so whatever sits higher animates first. No index, no `nth-child` ladder, nothing
+to re-sweep. **Exactly one offset is hand-set and is flagged as such:** the Charging It
+plate starts at `cover 10%` against the lede's 0%, so type leads and the photograph
+follows, which is that section's reading order.
+
+**Seven ledes animate, not eight, and the number was measured rather than chosen.**
+`.idx-lede` sets one line at every band-1 width, so the island leaves it intact and it
+carries no mask. All eight are wired to one mechanism and the line count decides. The
+spec's "seven type-openers" predates R15, which corrected the same count to eight.
+
+**Index stagger and Index hover do not fight.** Different elements — clip on `.idx-item`,
+weight on `.idx-ch` inside it. R13's shipped conditions re-run with the stagger present:
+row-height change 0.000px at all thirteen widths, name-to-`+` gap 96.50px. **The clip
+releases around any focused descendant via `:not(:has(:focus-visible))`**, so the focus ring
+is never clipped.
+
+**Photograph blending intact.** `chg-frame` mean R−B 8.90 → 8.90, mean luminance 81.41 →
+81.41, all five plates 0.00 on every scanline. **The curtain is a sibling of the `<img>` at
+`z-index: 3`**, so R1.1's failure never fires.
+
+**Page weight changed and the number is recorded.** R0 logged the React chunk as
+unreferenced. **It is referenced now: +226 KB of JS on band-1 desktop, 0 bytes on touch** —
+`client:media` genuinely gates the download. Reported rather than flagged, because Jackson
+ruled bundle size is not an objection.
+
+**Verification held everywhere it was checked.** Page height, ten section tops and heights,
+footer, and 3,799 left-edge cells all 0.000px at all thirteen widths, on the dev server and
+on `astro build` + `astro preview`. Gold 3 of 3 and 0 of 8, zero spent. Entry pattern by
+rendered state: no-JS, no-motion and reduce all give identical ink. R16 withdraws and
+arrives at `translateY(-56px) → 0`, R17 starts at exactly 0.4872, R13.1 settles all 17
+characters at wght 700 across all four axes.
+
+> **The lesson this round repeats for the third time.** R13, R17's tracking half and now
+> R18's ledes all passed every measurement and failed on sight. **Judge the screenshot
+> before the numbers** is already a working agreement; this file now has three independent
+> confirmations that the numbers cannot substitute for it.
+
+### R18.1 — Round B correction — FOUR ITEMS CLOSED, TWO STOPPED AND REPORTED
+
+Measured September 10 2026. **Diagnosis first, repair second**, per the round's own
+instruction. Two of the seven items turned out to need no repair, one turned out to be
+another's symptom, one is provably unsatisfiable as written, and one repair is correct
+and measured but **does not do what it was asked to do** — that last is the finding that
+outlives this round.
+
+#### Item 1 — the lede reveals were ADVANCING. The report was right and the cause was not.
+
+`"has no scroll behavior, it's super faint"` had two candidate causes needing opposite
+fixes. **Measured off the live DOM, not off the source:** every `.lede-ln-i` carries
+`animation-timeline: --lede` resolving to a real `ViewTimeline`, `playState: running`,
+`animation-duration: auto`, and per-line ranges written by the island
+(`cover 15% -> 43.44%`, `18.28% -> 46.72%`, `21.56% -> 50%` for a three-line lede).
+Nine scroll samples across About's cover range:
+
+    cover      0     .15    .25    .325   .40    .50   .65   .85   1.0
+    line 0   71.13  71.13  46.21  27.46   8.70   0     0     0     0
+    line 1   71.13  71.13  54.42  35.67  16.91   0     0     0     0
+    line 2   71.13  71.13  62.62  43.87  25.12   0     0     0     0
+
+**Not identical, therefore advancing.** 71.13px of travel per line at 1440, staggered.
+All three gates satisfied at capture time: `html.js-motion` present, `@supports
+(animation-timeline: view())` true, `min-width: 1280` matched. **No travel value was
+increased**, and none needed to be.
+
+> **THE FIX WAS ALREADY IN THE WORKING TREE AND UNCOMMITTED.** `--r18-from: 15%` /
+> `--r18-to: 50%` and `animation-timing-function: linear` were sitting on disk against an
+> `HEAD` that still had `cover 0% -> 42%` with `--ease`. Jackson reviewed the shipped
+> build; the tree had moved. **`git show HEAD:` is not the file on disk in this repo** —
+> whole phases live uncommitted here, and a diagnosis that reads HEAD diagnoses a build
+> nobody is running.
+
+#### Item 2 — the plate draw fires on FOUR, and the fifth is excluded by measurement
+
+All four curtains advance, on real ViewTimelines, in the correct direction:
+
+| Figure | Timeline | translateX across its subject's cover range |
+|---|---|---|
+| `win-prem-plate` | `--plate` | 0 -> -120.4 -> -210.4 -> -301.2 -> **-421.3** (exits left) |
+| `win-ath-bleed` | `--ath-plate` | 0 -> 233.6 -> 409.2 -> 584.8 -> **819.3** (exits right) |
+| `win-ath-detail` | `--ath-plate` | 0 -> 88.4 -> 154.8 -> 221.3 -> **310.0** (same timeline) |
+| `win-chg-frame` | `--plate` | 0 -> 120.8 -> 211.1 -> 301.4 -> **421.3** (exits right) |
+
+**There is no fifth curtain and there must not be.** The page has five plates; the Cover's
+is deliberately without one. Re-measured rather than taken from R18: the Cover figure is
+720px in a 900px viewport at document top, so its **lowest reachable cover progress is
+55.6%** — already past a range that ends at 50%. A curtain there is dead code at every
+scroll position a reader can occupy, and only 5.6 points from painting over the hero
+portrait at first paint. **"Make all five behave identically" is refused on that
+measurement**, and the refusal is the same one R18 made.
+
+Nothing gated the other three: the `--plate` name is declared on each `.plate-draw` figure
+and resolves per-figure; Athletic's two share `--ath-plate` through `timeline-scope` so the
+spread draws as one gesture. The one hand-set offset R18 recorded on the Charging It plate
+is **not in the tree** — all four run `cover var(--r18-from)` to `cover var(--r18-to)`.
+
+#### Item 3 — HASH-JUMP ARRIVAL. STOPPED AND REPORTED. NO RANGE CAN SATISFY IT.
+
+The requirement as written — *after an instant hash jump to any section id, every element
+whose box intersects the viewport must measure at its finished state* — **is unsatisfiable
+by any `animation-range`, and this is a proof rather than a measurement.**
+
+For an element of height `h` in a viewport of height `V` at cover progress `q`, its top
+sits at `y = V - q(V + h)`. The element **intersects the viewport if and only if
+`0 < q < 1`**. "Finished" requires `q >= range_end`. Satisfying the requirement for every
+intersecting element therefore requires `range_end <= cover 0%` — **which is zero travel.**
+A straddling element is the case that kills it: an element crossing the bottom trim is
+intersecting by definition and, under any range with travel left, unfinished by definition.
+
+Measured, at 1440x900, instant jumps, counting elements intersecting the viewport but not
+at progress 1:
+
+| Range | Hash-jump failures | Index rows complete at | Ledes complete at |
+|---|---|---|---|
+| **`cover 15% -> 50%` (shipped)** | **9** | **45% of viewport** | **47%** |
+| `cover 15% -> entry 100%` | 3 | **84-85%** | 77% |
+| `entry 0% -> entry 100%` | 3 | **88%** | 77% |
+
+**Both alternatives cut the failures to 3 and neither reaches 0** — the three survivors are
+plate curtains taller than the viewport, which `entry 100%` cannot finish at all. And both
+buy that reduction by moving the Index rows' completion from 45% of viewport to 84-88%,
+which **is the bottom-trim failure R18 switched to `cover` to escape**: the reader meets the
+rows already settled at the screen edge. Per width, at `cover 15% -> 50%`:
+
+    1920   sec-about 1   sec-athletics 5   sec-index 6   charging-it 1   = 13
+    1440                 sec-athletics 2   sec-index 6   charging-it 1   = 9
+    1280                 sec-athletics 2   sec-index 6   charging-it 1   = 9
+
+**THREE ROUTES, NOT ARBITRATED HERE.**
+
+1. **Narrow the requirement to "fully inside the viewport."** That version *is* satisfiable
+   (`range_end: entry 100%`), and it costs the 45% -> 85% regression above. It is a
+   trade, stated honestly: hash arrivals get clean, ordinary scrolling gets worse.
+2. **`:target`, pure CSS, no JS and no observer.** `#sec-index:target .idx-item > *
+   { animation-name: none }` renders the jumped-to section finished, on arrival, with the
+   ordinary `cover 15% -> 50%` intact everywhere else. Costs: the hash persists, so a
+   jumped-to section never animates again in that page life; and it covers the target
+   section only, not a short section's neighbours below it.
+3. **Leave it, and let R19 not create the problem.** The requirement exists because R19
+   turns one jump link into nine. The Index's own rows are the worst case *because the
+   Index is the only current jump target*. R19 could land each target at a scroll position
+   its section's ranges have already cleared, which is a landing-position question rather
+   than an animation question — and R16 already owns landing positions.
+
+**Route 2 is the only one that costs nothing elsewhere, and it is the one this file
+recommends** — but the "animates once per page life" cost is a composition judgement and
+the round's instruction is not to pick. **Nothing was changed for Item 3.**
+
+> **RULED September 10 2026, and it is none of the three.** Jackson took a fourth route:
+> **remove the mechanism from the affected sections rather than suppress it on arrival.** The
+> Index row stagger and the Contact lede reveal both come out — see R18.2. The proof above
+> stands and is why: an animation that cannot be finished for a reader who arrives by hash
+> is an animation that section cannot carry.
+>
+> **This closes the symptom, not the requirement.** **CORRECTED September 11 2026: the
+> sentence that stood here was wrong.** It read that removing the Index stagger made every
+> arrival on the current page correct, on the reasoning that the Index was the only hash
+> target. The Index is the only *trigger*. It jumps to every other section, so the residue
+> R18.2 measured is live on the shipped page today: **7 frozen elements at 1920, 3 at 1440
+> and 1280**, in Athletic, Charging It and About's `edu-lede`. Jackson reported it from the
+> built site on September 11 2026, unprompted, from the Index. **R19 turns one target into
+> nine**, and the seven sections that keep their ledes and plate draws land mid-animation
+> exactly as the Index did, but the defect did not wait for R19. **CORRECTED AGAIN the same
+> day, against the tree rather than the file: Route 2 was already built.** It sits in
+> `global.css` under an R19 constraint 7 header and measures **0 frozen at 1920, 1440 and
+> 1280** on all eight reachable targets. The September 11 plan to pull it forward into R18.3
+> is withdrawn; it shipped inside R19. **Item 3 is closed in code, not only on paper.**
+>
+> **RULED September 10 2026: Route 2 is in, as part of R19.** `:target` suppression, pure CSS,
+> no listener and no observer. Its price — a jumped-to section does not animate again in that
+> page life — was weighed and accepted: a reader who used the nav has declared they want to be
+> somewhere, not to watch it arrive. **Item 3 is now closed.** Its proof stands as the reason
+> Route 1 was never viable.
+
+#### Item 4 — NOT A SEPARATE DEFECT. It is Item 3, seen.
+
+Rows 03 and 04 rendering with their text bisected by a hairline is the **visible symptom of
+the frozen stagger**, and the test that settles it is whether a finished row is correctly
+seated. Measured with the Index fully traversed, so every row is at progress 1:
+
+| | 1920 | 1440 | 1280 |
+|---|---|---|---|
+| item height, rows 01-04 | 130.906 | 122.891 | 118.359 |
+| numeral bottom to rule | 47.31 | 48.06 | 46.08 |
+| body bottom to rule | 23.16 | 22.44 | 22.23 |
+| transform | `matrix(1,0,0,1,0,0)` | identical | identical |
+
+**All five rows byte-identical at every width**, row 05 differing only by the 1px rule it
+does not carry. The content and the rule do not move independently — the clip is on the
+`<li>` that owns the border, and at rest the children carry no transform at all. Mid-stagger
+the ink is translated up to `3 x --idx-name-size` and crosses that rule, which is exactly
+the reported appearance. **Fix Item 3 and Item 4 is gone. There is nothing else to fix, and
+fixing it separately would be fixing a symptom twice.**
+
+#### Item 5 — the squared start is BUILT AND CORRECT, and it is measurably NOT the lever
+
+`--pivot-scrub-start`, the ladder step taken twice. The identity is algebraic:
+
+    --quote-size x (--lede-size / --quote-size)^2  =  --lede-size x --pivot-scrub-from  =  --mast-name-size
+
+so the entering word seats at the masthead-name tier **by construction, at every width**.
+Measured, `entering px - --mast-name-size` = **0.00 at 1920, 1440 and 1280**.
+
+| width | lede | quote | mast name | start scale | travel | entering px |
+|---|---|---|---|---|---|---|
+| 1920 | 64.00 | 128.00 | 32.00 | 0.250000 | **4.000x** | 32.00 |
+| 1440 | 54.72 | 112.32 | 26.66 | 0.237344 | **4.213x** | 26.66 |
+| 1280 | 52.00 | 99.84 | 27.08 | 0.271267 | **3.686x** | 27.08 |
+| 1279 and below | — | — | — | **1.000** | **1x** | scrub does not run |
+
+Holds, at all thirteen widths: **left edge X drift 0.000px, rendered baseline Y drift
+0.000px, h2 height delta 0.000px.** R17 measured its origin 0.013px out; this measures
+0.000. h2 height at rest is 343.641px at 1440 — R16 and R17's number, unmoved. No
+legibility or contrast floor is crossed: the entering word IS the masthead name's size,
+which R16 measured at 15.01:1 and >= 24px at every band-1 width, and gold on Obsidian is
+5.76:1. **Neither stop condition fired.**
+
+> **AND IT CHANGES ALMOST NOTHING THE READER SEES. THIS IS THE ROUND'S REAL FINDING.**
+>
+> The scrub runs `animation-range: entry 0% entry 100%` on `.quote`, and the `<h2>` sits
+> well down inside that section. Measured: **the word is below the fold until entry 57-64%,
+> and not fully on screen until entry 73-77%.** By the time it can be read at all the scale
+> is already 0.68-0.73; the screenshots at the requested 0% and 50% contain no word at all.
+>
+>     visible travel at 1440   old start 0.4872 -> 0.882 at first full visibility -> 1.0
+>                              new start 0.2373 -> 0.8245 at first full visibility -> 1.0
+>
+> **The whole first half of the scrub plays where nobody is looking.** Squaring the start
+> made the off-screen half bigger. Jackson's "the travel is too short" is correct, and the
+> start scale is not what is short — **the range is.** The lever is moving the scrub's
+> range so its travel is spent while the word is on screen (the ledes and plates already
+> learned this in R18 and it is why they run `cover`, not `entry`). That is a composition
+> change to R7's locked pivot and is **not made here.**
+>
+> This is the fourth time this file has recorded the same shape: **R13, R17's tracking half,
+> R18's ledes, and now R18.1's scrub all passed every measurement and failed on sight.**
+> Judge the screenshot before the numbers.
+
+**`--pivot-scrub-from` was NOT redefined, and that is load-bearing.** R16 consumes it as
+ONE rung — `--mast-name-size = --lede-size x --pivot-scrub-from`. Squaring the token in
+place would have taken the masthead name from 26.66px to 12.99px at 1440: under WCAG
+1.4.3's 24px large-text boundary and straight through R16's 15.01:1 derivation, silently.
+**A value corrected for one consumer and silently applied to a second is the
+box-you-did-not-author gotcha arriving through a token.** The step stays one rung; the
+square is a second token derived from it; one token still drives all four tiers.
+
+#### Item 6 — smooth scrolling verified, and it is NOT what makes anything pass
+
+`scroll-behavior: smooth` inside `@media (prefers-reduced-motion: no-preference)`, page-wide.
+Measured at 1920 / 1440 / 1280 / 1024 / 750 / 390, with and without `reduce`:
+
+- **`smooth` under no-preference, `auto` under `reduce`**, at every width. The blanket
+  `animation-duration` override does not reach `scroll-behavior`, so this needs its own
+  query and has one.
+- **Landing error 0px at every width.** R16's removal of `scroll-margin-top` is untouched —
+  smooth changes the interpolation, never the destination.
+- **R16's masthead fires cleanly at both boundaries.** 0.00 rendered px at scroll 0 and at
+  the Cover's last pixel; withdrawn to **0.00px across 20-80% of the pivot** and re-arrived
+  at 55.92px by the Index's top; never `display: none` mid-jump.
+- **Item 3 was tested with instant jumps throughout**, exactly so smooth could not be what
+  passes it — and it does not pass.
+
+#### Item 7 — preserved, re-measured
+
+- **Index row stagger: in, unchanged.** **SUPERSEDED the same day — R18.2 removes it.** The
+  re-measurement below is retained because it is the pre-removal baseline R18.2 measures
+  against.
+- **R13.1 re-measures unchanged.** Row-height change **0.000px at all thirteen widths**,
+  rest to hover, with the stagger present. Tightest `+` clearance on entry 04 at rest is
+  **96.50px at 360** — the recorded figure, to the hundredth; under hover at `wght` 700 it
+  is 85.61px, name growth 10.82-15.22px, no collision at any width. 18 character spans.
+  The clip releases to `none` around any focused descendant at 1920/1440/1280 and does not
+  exist below 1280.
+- **Ghost numerals: still not built, nothing substituted.**
+
+#### Verification
+
+- **Page height, ten section tops and heights, the footer, and 533 left-edge cells per
+  condition: 0.000px** between `shipped`, `js-motion` stripped, and `prefers-reduced-motion:
+  reduce`, at all thirteen widths. **JavaScript disabled: 0.000px on every left edge and
+  every section except Contact, which is 7px shorter because Turnstile does not mount** —
+  the pre-existing Phase F behaviour R16 recorded, not this round's.
+- **Run twice: on the dev server AND on `astro build` + `astro preview`.** Both give the
+  same table. Compared directly against each other as well — page height, every section top
+  and height, the footer and all 533 left-edge cells are **0.000px dev against built at all
+  thirteen widths**, and `--pivot-scrub-start` resolves to the identical rendered scale in
+  both (0.250000 / 0.237344 / 0.271267 in band 1, exactly 1 below 1280). The token survives
+  minification; it is not a dev-server artefact.
+
+  > **The preview run needed a retry to be trustworthy, and the reason is recorded so it is
+  > not mistaken for a page fault.** `astro preview` serves the built page fast enough that
+  > a measurement occasionally raced frame teardown and threw `Attempted to use detached
+  > Frame`. That is a harness fault. A verification harness that reports a thrown navigation
+  > as a geometry result is worse than no harness — it retries now, and it re-navigates
+  > before retrying rather than measuring a half-torn-down document.
+- **Listeners: exactly one in `src/` and one in `dist/`.** R12's folio. Zero
+  `IntersectionObserver` (the single grep hit is a comment forbidding it). `framer-motion`
+  installed, never imported, absent from `dist`. JS weight 226,474 bytes on band-1 desktop.
+- **`transition-all`: zero elements use it.** `dist` carries one hit and it is a **Tailwind
+  utility DEFINITION, not a usage** — Tailwind v4's scanner reads the five prose comments
+  forbidding `transition-all` as class-name candidates and emits the rule. Harmless, and
+  the same shape as the comment in `global.css` that deliberately does not spell out
+  `addEventListener` so the standing audit does not read 2. **Recorded so a later session
+  does not "fix" a usage that does not exist.**
+- **`opacity: 0` resting states: ONE, and the standing claim of zero is wrong.**
+  `.folio-inner` in `FolioMarginalia.astro` is `opacity: 0` with an `is-visible` class at
+  0.75 — R12's shipped folio, `aria-hidden`, decorative, and predating this round. R17's
+  entry claims "every grep hit is a comment forbidding them"; that was true before R12 was
+  mounted and has not been true since. **R18.1 introduces none.**
+- Gold **3 of 3 saturated type accents, 0 of 8 hairline rule contexts** — R18.1 spends zero;
+  its only change is a scale on an already-gold word.
+
+**Screenshots:** `screenshot-705..713` (Item 5 at the requested 0/50/100, three widths —
+the word is absent at 0 and 50 and that is the finding), `714..721` (new start against old
+start at entry 64/77/90/100, 1440), `722..725` (Item 1, About's lede mid-wipe), `726..734`
+(Item 2, all four plates mid-draw).
+
+### R18.2 — two mechanisms removed — SHIPPED AND ACCEPTED September 10 2026
+
+**A removal pass. Nothing is added, nothing substituted, no number tuned.** Two scroll-driven
+mechanisms come out on Jackson's review verdict.
+
+| # | Mechanism | Was | Now |
+|---|---|---|---|
+| 1 | Index row stagger (R18 item 4) | ruled in at R18 review | **OUT** |
+| 2 | Contact lede reveal (one of R18's seven) | shipped with the other six | **OUT** |
+
+**Why the Index one goes.** R18.1's Item 3 proof: a view timeline resolves against the
+viewport, so an element below the fold sits at range start by definition and no
+`animation-range` finishes it for a reader who arrived by hash. The Index is the only hash
+target on the page, its rows were 6 of the 9 measured failures at 1440, and Item 4's bisected
+rows were that freeze made visible. Removing the mechanism removes the symptom completely at
+zero machinery. **R18.1 measured all five rows byte-identical at rest at every width**, so the
+clip contributes no layout and its removal MUST move nothing.
+
+**Why the Contact one goes.** Jackson's verdict on review. Contact is the page's shortest
+section at roughly 20 words, it is the only section carrying an interactive element, and it
+closes the page on Obsidian. It is also the second target R19 would add. **This is a reading
+judgement, not a measured defect** — recorded as such so a later session does not go looking
+for the measurement that justified it.
+
+**What comes out with them.** The `:not(:has(:focus-visible))` clip release exists only
+because a clip could clip a focus ring; with no clip it is dead code and goes with the
+mechanism. Any gate left guarding nothing goes too. **The shared `js-motion` / `@supports` /
+band gates stay** — removing one consumer is not removing the pattern, and five ledes, four
+plate curtains, R16 and R17 all still consume them.
+
+**Nothing is substituted for either**, following R15's and R18's precedent when a half was
+refused.
+
+> **The lede count moves again and the number is measured, not chosen.** R18 recorded eight
+> ledes wired to one mechanism with **seven animating**, because `.idx-lede` sets one line at
+> every band-1 width and the island leaves a single-line lede intact. R18.2 takes Contact out,
+> **so the expected count is six — and it MUST be confirmed against the DOM rather than
+> assumed.** Contact's opening statement is short enough that it may already be single-line
+> and therefore already unanimated at some band-1 widths, in which case part of this removal
+> is a no-op and the report must say so.
+
+#### What R18.2 measured — SHIPPED, accepted on review
+
+**The census answered the open question and the stop condition did not fire.** Contact's lede
+is **three lines and masked at 1920, 1440 and 1280 alike**, never single-line, so no part of
+the removal was a no-op. **Seven masked before, six after** — and the earlier "eight wired,
+seven animating" figure was corrected to seven wired in the same pass. Below 1280 no lede was
+ever masked, the island's own `min-width: 1280` gate, so there was nothing to remove at the
+other ten widths.
+
+**All four removal targets existed on disk and were absent from `HEAD`.** R18.1's repo lesson
+held for the second consecutive round: measure the working tree, never `git show HEAD:`.
+
+**The Index carried ten animated targets, not five** — five `.idx-num` and five `.idx-body`,
+all on `--idx-row` at `cover 15% -> 50%`, with the clip `inset(0px -32px)` on `.idx-item`.
+Ownership was confirmed separate before anything was cut: clip on `.idx-item`, stagger on
+`.idx-row > *`, hover on `.idx-ch` via `transition-property: font-variation-settings`.
+Different elements, different properties.
+
+**Nothing moved.** Page height, ten section tops and heights, footer and 533 left-edge cells
+per condition: **0.000px**, four conditions x thirteen widths, dev and `astro build` +
+`astro preview`. Index row heights 0.000px on every row at every width. R13.1 re-measured
+whole, including the 96.50px `+` clearance at 360 to the hundredth and all four Fraunces axes
+still transitioning. Listeners 1 and 1, JS weight delta 0. Gold 3 of 3, 0 of 8.
+
+> **The one non-zero number, and it is the point.** Ink-to-rule at scroll 0 moved **84px at
+> 1920 and 1440, 74.88px at 1280 — exactly `3 x --idx-name-size`** at the clamp ceiling and
+> at 1.95vw. That is the removed `from` keyframe, and the after-values (47.31 / 48.06 / 46.08)
+> land on R18.1's recorded rest positions exactly. **The removal is visible in precisely one
+> measurement and it is the one that should have moved.**
+
+**Item 5, the thing that was bought.** All five rows fully present and correctly seated on
+arrival, 03 and 04 included. **Jumped against scrolled: 0.000px** on row height, ink-to-rule
+and transform, at every width, on both targets.
+
+> **The round improved its own test, and the improvement matters.** The brief's
+> `prefers-reduced-motion: reduce` version passes for a reason wider than the removal — reduce
+> switches off the whole no-preference block, so the surviving ledes and curtains are inert and
+> the test cannot fail. **The sharper run leaves motion live and makes the jump instant by
+> setting scroll directly**, six ledes and four curtains active, and it passes identically.
+> **A test that cannot fail is not evidence.** Use the direct-scroll version from here on.
+
+**What R19 inherits, measured rather than assumed:**
+
+| hash-jump failures | before | after |
+|---|---|---|
+| 1920 | 13 | **7** |
+| 1440 | 9 | **3** |
+| 1280 | 9 | **3** |
+
+**Index 6 -> 0 and Contact 3 -> 0 at every width.** The residue is Athletic's curtains and
+ledes, Charging It's curtain, and About's `edu-lede` at 1920. **Item 3 is closed for the two
+sections that had it and open for the rest.**
+
+#### Two findings that outlive R18.2
+
+- **Unmounting beats CSS suppression when the goal is "leave nothing behind."** Contact was
+  removed at the mount. CSS suppression would have kept the island hydrating, the paragraph
+  split into block spans, and an `<astro-island>` still wrapping it. `astro-island` count in
+  `dist` went **8 -> 7**; Contact's paragraph now carries **0 lede spans and 0 islands**. Same
+  family as R18's box-you-did-not-author rule, arriving from the other direction.
+- **A null timeline renders untransformed, and the intuitive guess is wrong.** The round had
+  asserted in a comment that CSS suppression would leave the paragraph permanently blank. It
+  tested that rather than leaving it asserted: with `view-timeline-name: none` the timeline
+  resolves to null and Chrome renders the element **untransformed**, `translateY` 0.00px on all
+  three lines. **This is why the entry pattern is safe** — a browser that cannot resolve the
+  timeline paints the finished state, which is the same guarantee `@supports` gives. Recorded
+  because the guess was wrong in the direction that would have looked catastrophic.
+
+### C1 — client copy pass — RULED IN September 11 2026, NOT BUILT
+
+**Not a design round, recorded here for one consequence.** The client returned the copy deck
+on September 7 2026 with **eleven comments and zero tracked changes**. `COPY.md` was rewritten
+September 11 2026 to fold them in and is the only source for the strings. Five change: the
+four Premier Leadership speaking topics, the Everyday Legends opening statement, Index entry
+02's description, Index entry 01's name if it still carries the LLC suffix, and Contact's
+direct email with its `mailto:` href.
+
+**The composition consequence.** Her four speaking topics run two to four words against the
+previous six to ten, so **the Premier Leadership margin at columns 10 to 12 loses roughly two
+thirds of its length.** The pass is instructed not to compensate: no padding change, no size
+change, no added item, no re-balancing. Screenshot, report, and Jackson rules on it.
+Everything outside Premier Leadership, Everyday Legends, Index and Contact measures **0.000px
+at all thirteen widths by pass condition**, and any non-zero is a fail rather than something
+to correct.
+
+**`COPY.md`'s word budget rule applies unchanged.** The September 7 edits only shorten. That
+is not an invitation to add copy back.
+
+**Model: Sonnet.** String replacement and measurement.
+
+### R18.3 — the masthead name link — RULED IN September 11 2026, NOT BUILT
+
+**Rescoped September 11 2026 to one change.** It was written as two. Change 1, `:target`
+suppression, was found already built under R19's constraint 7 and measuring 0 frozen at all
+three band-1 widths, so it is struck from this round. What remains is the name link.
+
+**The masthead name becomes a link to the top of the document.** `href="#top"`, band 1 only.
+**No new id, and `#sec-portrait` is refused.** `#top` is the spec's document-top fragment when
+nothing carries that id, it lands at document top rather than at the Cover's box top, and **it
+matches no `:target`, so the arrival rule never fires off it.** Both halves were verified on
+September 11 2026: `id="top"` has 0 occurrences in `dist/index.html`, and navigating to `#top`
+from scrollY 4000 at 1440 returns `:target` null and `main > section:target` false, where
+`#sec-portrait` returns the section.
+
+**RULED — the link treatment, because neither candidate in the bar works.** `summary.mast-jump`
+is not a link and deliberately carries no hover under constraint 6, so matching it cannot
+deliver the hover and active states `CLAUDE.md` requires. `.mast-row` is the bar's only true
+link treatment but it is 10.5px sans panel rows against a 26.66px Fraunces name, and copying it
+would visibly disagree. **Use the page's own link idiom instead: `opacity: 0.7` at 260ms on
+hover, matching `.edu-link` minus its translate. Active `opacity: 0.55`, same duration.
+`focus-visible` matches the bar's existing treatment.** Opacity is scale-free, which is
+precisely why it survives the tier difference that rules `.mast-row` out. **No transform and no
+movement**, because the name MUST measure 0.000px. This rules R16's `opacity: 0.7`
+recommendation in **for the name link only**. It is not ruled in for `summary.mast-jump`, which
+stays as R19 built it.
+
+**RULED — `aria-hidden`. Do not remove it.** R16 set `aria-hidden="true"` on `.mast-name`
+because her name is already the Cover's `<h1>`, and removing it changes what the bar announces,
+which is R16 composition and outside this round. A focusable element inside an `aria-hidden`
+subtree is a live ARIA violation, but the violation only exists when `aria-hidden` sits on an
+**ancestor** of the focusable element. **Wrap outside it and give the link its own name:**
+
+    <a href="#top" aria-label="Back to top">
+      <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span>
+    </a>
+
+This is the standard icon-button pattern, it is legal, it keeps R16's reasoning intact, and it
+gives the link a functional name rather than repeating the `<h1>`.
+
+**Expected and correct, not a defect:** clicking the name lands the reader at the top, where the
+bar renders zero pixels over the Cover, so it withdraws. This is the inverse of the R16 case at
+constraint 5, where clicking the bar's own link made it vanish mid-page.
+
+**The name MUST NOT move.** `--mast-name-size` is 26.66px and R18.1's Legacy scrub is seated
+against that tier by construction. Wrapping the name in an anchor is a **0.000px change at 1920,
+1440 and 1280** or it is a fail.
+
+**Model: Sonnet.**
+
+### R19 — the masthead section list — RULED IN September 10 2026, NOT BUILT
+
+**Scope.** The masthead's `INDEX` link becomes a trigger that opens a list of in-page
+destinations. Everything else R16 shipped is untouched.
+
+**Why this is not the nav menu this file rejected.** The rejection above was written against
+components that assume routes. R19 addresses anchors inside one document and moves the
+Index's own function into the running head. The rejection is narrowed rather than reversed,
+and the narrowing is recorded at the rejection itself.
+
+**Seven constraints, settled here so the build does not arbitrate them.** The seventh,
+arrival behaviour, was briefly moved out to R18.3 on September 11 2026 and **moved straight
+back the same day**: the tree showed it already built here. Documentation was behind the tree,
+which is the standing lesson of this project arriving from a third direction.
+
+1. **The list inherits R16's suppression exactly.** It prints on the Porcelain spreads and
+   goes quiet on the Obsidian ones, because it lives inside a bar that does. **This means the
+   pivot, Contact and the footer carry no navigation.** Accepted: the Index section sits
+   above all three and already navigates. Recorded rather than discovered on review.
+2. **Band 1 only.** The bar does not render below 1280 and R19 does not change that.
+   `--pivot-scrub-from` inverts below band 1 and the bar's own token is documented as
+   meaningful in band 1 only. Bringing the masthead down the bands is a separate slice and is
+   not scheduled.
+3. **No React island, and no 21st.dev component.** `<details>` / `<summary>`, CSS only.
+   `framer-motion` stays installed and unimported. An island would nest an `<astro-island>`
+   inside the bar for no behaviour, which is the box-you-did-not-author gotcha R18 recorded
+   alongside `::details-content` and `.plate-panel` — and `::details-content` is the specific
+   one this slice will meet.
+4. **Contents: `sections.ts`, in page order, minus the Cover and minus the pivot.** Those two
+   are exactly the sections that deliberately carry no folio entry, and the list is the folio's
+   labels made clickable. Labels MUST match under the same
+   `Buffer.compare(sections.ts label, rendered <h2>)` = 0 rule the heading structure already
+   enforces. **It MUST NOT carry the Index's own 01–05 numbering.** That would be a **fourth
+   numbering device** against three that MUST NOT be made to agree.
+5. **Every jump target inherits R16's landing check.** R16 removed `scroll-margin-top` because
+   the reflex declaration put the reader 56px back inside the pivot and clicking the masthead's
+   own link made the masthead vanish. R19 multiplies one target into nine. **Each target's
+   landing scroll MUST be measured against the pivot's and Contact's withdrawal ranges**, and
+   against the Index's 110px top padding dependency R16 flagged.
+6. **No hover treatment on the trigger beyond R16's recommendation.** `opacity: 0.7` at 260ms
+   on the link, matching `.edu-link` minus its translate, if that recommendation is ruled in.
+   Nothing else. `focus-visible` is required regardless under SC 2.4.7, and the panel needs
+   Escape-to-close and focus return.
+7. **Arrival behaviour: Route 2, `:target` suppression. RULED September 10 2026. BUILT, and
+   measured passing September 11 2026.** `global.css`, under the header
+   *R19 — CONSTRAINT 7. THE ARRIVAL RULE.* The shipped rule is **blanket, not a list**:
+   `main > section:target, main > section:target * { animation-name: none !important }`. The
+   `!important` is derived against `html.js-motion #sec-athletics .plate-curtain` at
+   specificity (1,2,1) and the reasoning is preserved in the file header. Pure CSS. **No
+   listener, no observer, no addition to the 226,474-byte budget**, and R12's single-listener
+   monopoly survives untouched. Ordinary scrolling is unaffected. **The accepted cost: a
+   section jumped to does not animate again in that page life**, because the hash persists.
+   Weighed and taken. **Measured 0 frozen elements at 1920, 1440 and 1280** on all eight
+   reachable targets, instant jumps, motion live. See the re-baseline note below: the 7 / 3 / 3
+   figure this constraint used to quote is retired.
+
+**Sequencing: R19 is BUILT and NOT REVIEWED.** R18.2 shipped and was accepted on review, Item
+3 was ruled the same day, and R19 was then built without being recorded as built. It was found
+on disk on September 11 2026 while measuring for R18.3, and Jackson had been using it for at
+least a day without knowing which round he was clicking. **What is on disk:** a
+`<details class="mast-index">` with `<summary class="mast-jump">Contents</summary>` and a
+`<nav class="mast-panel">` carrying eight `.mast-row` links. The `INDEX` link R16 shipped is
+**gone**, replaced by that summary. **R19 has never been reviewed and the composition decision
+it was specced to carry has never been judged.** That review is now the open item, not the
+build. R18.3 is rescoped to the masthead name link alone. The history matters for anyone reading backwards: R18.1 did **not**
+fix hash-jump arrival, it proved the requirement unsatisfiable by range and stopped; R18.2
+removed the two mechanisms that made it visible; Route 2 covers the eight targets R19 adds.
+**R19 is the first round that both builds a mechanism and carries a rule for how every other
+mechanism behaves under it.** That is deliberate — the alternative was discovering the same
+freeze nine times.
+
+**Model: Opus.** New structure and a composition-adjacent decision about what chrome this page
+carries.
+
+#### Measured September 11 2026, against the working tree, and three figures change
+
+**The 7 / 3 / 3 residue baseline is RETIRED. The measured figure is 21 / 24 / 25** at 1920,
+1440 and 1280 (20 / 24 / 25 counting in-viewport only), taken by building the working tree,
+stripping the single arrival rule from the built CSS, and re-running the census. **Neither
+counting basis reconciles with the old number and it is not a discrepancy to resolve: the
+mechanism changed underneath it.** R18.2 counted *masked* ledes. The ledes now animate on
+transform (`lede-line-in`, `from { translateY(calc(100% + 0.12em)) }`, linear,
+`cover var(--ln-from)` to `cover var(--ln-to, 42%)`, island-computed stagger). **Any future
+round quoting 7 / 3 / 3 as a pass condition is quoting a dead number.**
+
+**The residue is in seven sections, not the three R18.2 recorded.** `sec-about`,
+`sec-education`, `sec-pillar` and `sec-legends` on `span.lede-ln-i`; `sec-athletics` on
+2 plate curtains plus 5 lede lines; `charging-it-to-the-game` on 3 lede lines plus 1 curtain;
+and **`sec-quote` on R17's `legacy-scrub`**, which was never in R18.2's residue at all.
+
+**The Index is not the only linker, and never was.** Three linkers and eight reachable targets:
+
+| Target | Section | Linked from |
+|---|---|---|
+| `sec-about` | About | masthead panel |
+| `sec-education` | Educational Leader | masthead panel |
+| `sec-pillar` | Premier Leadership | masthead panel |
+| `sec-legends` | Everyday Legends | masthead panel |
+| `sec-athletics` | Athletic Management | masthead panel |
+| `sec-index` | Index | masthead panel |
+| `charging-it-to-the-game` | Charging It to the Game | masthead panel **and** the Index's blog row |
+| `sec-contact` | Contact | masthead panel **and** the Cover's `.btn-solid` CTA |
+
+`sec-portrait` and `sec-quote` carry ids that **nothing links to**, so no reader can arrive at
+them by hash. They are deliberately absent from `sections.ts`. **Eight reachable targets is the
+number any arrival pass measures against, not ten.** The Index's other five rows are external
+URLs.
+
+#### The harness, rebuilt September 11 2026 — carry this forward
+
+R18.1 found that `astro preview` could race frame teardown and the harness would silently
+convert a thrown navigation into a geometry result. The guard put in then was a raw
+`framenavigated` counter, which **false-positives on the expected same-document fragment
+change** every hash test makes. It has been replaced with a **document-identity sentinel**: a
+random token planted on `window`, re-asserted after every measurement, plus a cross-document
+check that strips the hash before comparing. A torn-down document loses the sentinel and
+**aborts the run rather than returning geometry**. It fired on its first run, exit 2.
+
+The harness also **refuses to run** unless `js-motion` is present and
+`prefers-reduced-motion: reduce` is unmatched, so a test that cannot fail is rejected up front
+rather than passing quietly. Jumps are made instant by setting scroll directly, twice across
+rAF pairs, to defeat page-wide `scroll-behavior: smooth`.
+
 ### Post-launch motion rounds — Round A and Round B
 
 Six mechanisms were proposed together. They are grouped into two rounds rather than one
@@ -1168,6 +2368,33 @@ staggering in. All four are entry animation on the same mechanism, so they genui
 in one pass and must be tuned against each other. **Expect conflict:** lede wipe, numeral
 drift and row stagger can all fire on the same section entry. That is the reason this round
 exists as a unit rather than as four slices.
+
+> **ROUND A REVIEWED AND ACCEPTED, September 9 2026. ROUND B IS SCHEDULED.** The gate above
+> said Round B may prove unnecessary if Round A succeeded. Jackson reviewed R16 and R17 on
+> localhost and ruled that the page should go further: **texture is wanted, and R18 runs.**
+> Round B is no longer conditional.
+>
+> **What R18 is being asked to do, stated plainly so a later session does not over-read
+> it.** R18 is *texture*, not *structure*. It makes the page feel crafted as it is scrolled
+> through. **It does not change the composition**, and composition is what the diagnosis of
+> September 8 named as the reason the page read quiet — everything at one size, gold
+> rationed to three uses, nothing bleeding. R15 broke the one-size problem in a single
+> section. The rest of that read is still on the table and still undismissed. **R18
+> succeeding does not close it.**
+>
+> **The four-in-one-pass structure has a cost that has to be accepted before the round
+> runs.** The working agreement is vertical slices, one thing end to end, and R18
+> deliberately breaks it because lede wipe, numeral drift and row stagger fire on the same
+> section entry and cannot be tuned apart. The consequence: **if the result reads busy or
+> cheap, attribution is hard.** The correct response is to kill one of the four, not to
+> tune all four. Decide which one is load-bearing before starting: the lede wipes are the
+> round's spine; the other three are ornament on top of it.
+>
+> **The 21st.dev letter-roll is now retired, not merely unruled.** R16 measured the case
+> against it: the masthead name is 26.66px in a 56px bar, and a per-character roll there is
+> motion at a size nobody reads it at. Do not re-propose it for the masthead. It is not a
+> candidate for the Index rows either — R13.1's native implementation already owns that
+> interaction and does more.
 
 ### Cover bottom band — verify before it becomes a slice
 
@@ -1816,7 +3043,10 @@ challenge · secret `1x0000000000000000000000000000000AA` always passes. Test si
 a dummy token only test secrets validate — **never mix a test sitekey with a live secret.**
 
 Spec, as built:
-- Recipient `premierleadersllc@gmail.com`.
+- Recipient **`mcclain@premierleadersllc.com`**, client decision September 7 2026,
+  superseding `premierleadersllc@gmail.com`. **Everyday Legends Foundation inquiries route to
+  `info@everydaylegend.com`**; routing by `<select>` value is a Formspree account setting, not
+  a build task. C1 carries the displayed address and the `mailto:` fallback only.
 - Client-side `fetch` POST, response rendered inline. No native form navigation, no
   redirect to a third-party success page. **Zero main-frame navigations** — verified.
 - Honeypot as a second layer, off-screen, `tabindex="-1"`, `aria-hidden="true"`. Verified:
@@ -1973,9 +3203,11 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R13.1 | Index hover, widened | **Ruled by Jackson, September 8 2026: the 420 ceiling does not bind this interaction.** `wght` 400 → 700 on Index entry names ONLY; the ceiling is not raised anywhere else. Adds two counterweights so the row reads whole: the numeral shifts on the same hover, and the hairline rule thickens without changing row height. **Re-measure everything** — travel at 700 will be an order of magnitude past the 0.67–1.29px measured at 420, and the span-splitting kerning cost (0.09–0.27px at rest) scales with weight. The exception's failure condition is unchanged: fail items 1, 3 or 4 at any width and the hover is removed, not tuned. |
 | R14 | Contact on Obsidian | **Shipped September 9 2026.** The page closes dark. Four measured ink tiers in one `.on-obsidian` block, mirroring the light ground's hierarchy factor rather than its hue. Focus ring re-derived: **13.43–13.58:1 measured** against 1.4.11's 3:1 (Smoked Slate, the naive port, is 1.60:1). `.btn-solid` inverted in a scoped rule; the global primitive and the page's other three buttons are untouched. Anchor's mark re-derived to **4.68:1**, `currentColor` mechanism intact. Gold **3 of 3 / 0 of 8** — zero spent. Seam 0.00px. All twelve Phase F items re-verified; **nine of ten sections and the footer 0.00px at all thirteen widths.** Fixed two pre-existing failures found by the re-derivation (field underlines 1.89:1, agency credit 3.21:1). **Introduced one defect, reported not fixed — the folio.** |
 | R15 | Everyday Legends opener | **Type half shipped September 9 2026; photograph half STOPPED and not built.** The opener leaves the shared lede pitch at the geometric mean of lede and pivot — one derived constant, √2.053 = 1.4329, from R7's own measured step — floored at `--lede-size` so it can never set smaller than its siblings and capped so it can never approach the pivot. `--quote-size` promoted to a token per R8.2; `FeatureQuote.astro` consumes it, rendering byte-identical at all thirteen widths. Lede window 4–9 → 4–11, which is `.win-edu-lede`'s existing window, not a new one. **All 143 section × width left-edge sets byte-identical.** The photograph requirement was refused against four rules in this file; see the R15 entry. |
-| R16 | Masthead | **Round A.** No masthead exists; the site has no navigation at all. Nothing renders over the Cover — her name is already enormous there. On scrolling past the Cover a thin bar arrives carrying her name small plus a jump to the Index, and withdraws on scrolling back. The arrival is the animation. **This is where the variable-font-hover mechanism belongs** — it is a nav component and the page finally has a nav. Depends on R12's listener; MUST NOT add a second. |
-| R17 | Feature Quote scrub | **Round A. The loudest single change available.** As the pivot enters, "Legacy" grows and its letter-spacing opens, driven by scroll position rather than elapsed time. Prefer CSS `animation-timeline: view()` so no listener is involved. The pivot is supposed to dominate the page and currently wins by a small margin; it should win by a mile. Gold budget unchanged — "Legacy" is already the third and last saturated accent, this changes its scale, not its colour. |
-| R18 | Round B — texture | **Do not schedule until Round A is reviewed.** Four entry animations tuned against each other in one pass: lede wipes on the seven type-openers, the R9.6 plate frame drawing itself from a corner, ghost numerals drifting in the margin band (parallax on type is permitted; on photographs it is not), and the Index rows staggering in. All four use the entry-animation pattern. Expect them to fight on shared section entry; that conflict is the reason this is one round. |
+| R16 | Masthead | **SHIPPED September 9 2026 (Round A).** A 56px bar arrives as the Cover clears and withdraws on scrolling back, carrying her name at `--lede-size` taken one full R7 step DOWNWARD (`--lede-size x --pivot-scrub-from`, 0.487-0.521 x a lede) plus a jump to the Index. **CSS scroll-driven animation; no listener and no second listener** — exactly one `addEventListener('scroll')` in `src/` and in `dist/`, R12's folio, unchanged. Height is `2 x --baseline`, the smallest whole multiple of the page's own unit that holds the name's ink (39.44px at its largest). **Zero rendered pixels over the Cover at every band-1 width**, measured at the last scroll position the Cover occupies. Entry-animation pattern verified by rendered state, not by reading code: JS disabled, `js-motion` stripped, `@supports` unsatisfiable and `prefers-reduced-motion: reduce` all render `display: none` and the page exactly as R15/R17 shipped it. **Page height, all ten section tops and heights, the footer and 130 left-edge sets: 0.000px at all thirteen widths.** Gold **3 of 3 / 0 of 8** — zero spent. Two measured failures found and fixed inside the round: a transform silently degraded `background-attachment: fixed`, and `scroll-margin-top` landed the jump inside the pivot's withdrawal zone. **The bar does not print on the Obsidian spreads** — new behaviour, reported. |
+| R17 | Feature Quote scrub | **SCALE HALF SHIPPED September 9 2026 (Round A). TRACKING HALF STOPPED — it conflicts with a standing rule and needs a ruling; see the R17 entry.** "Legacy" enters at the page's shared lede pitch and grows to the pivot's, scrubbed on `animation-timeline: view()` with **no listener and no second listener** — the start scale is `--lede-size / --quote-size`, a live ratio of two existing tokens, 0.4872 at 1440, which is R7's own measured 2.053× step taken in one move. Band 1 only; **scale is 1.000 at 1279, 1024 and 390**. Entry-animation pattern verified by measuring rendered ink, not by reading code: **JS disabled 270px, `@supports` unsatisfiable 270px** — both the finished size. **Page height, all ten section heights and tops, and 507 left-edge cells: 0.000px at all thirteen widths.** Gold **3 of 3 / 0 of 8** — zero spent. The 390/360 pivot-under-lede defect is **unchanged at 0.846**. |
+| R18 | Round B — texture | **THREE OF FOUR BUILT September 9 2026; REVIEWED AND NOT ACCEPTED. See the R18 entry.** Lede reveals (React island, per-line, **0.000px split delta** against R13's 1.34–4.36px for per-character) and the plate frame draw and Index row stagger (both CSS — React would add an `<astro-island>` and no behaviour). **Ghost numerals STOPPED and still unruled**: new marginalia is composition, the ghosted-monogram mechanic needs explicit sign-off, a margin numeral is a fourth numbering device against three that MUST NOT agree, and R12 deleted `RunningHead.astro` for exactly this. Listener count held at 1 in `src/` and 1 in `dist/`; `framer-motion` installed but never imported and absent from `dist`. Page height, ten section tops and heights, footer and 3,799 left-edge cells **0.000px at all thirteen widths**, dev and preview. Gold **3 of 3 / 0 of 8**. **+226 KB of JS on band-1 desktop, 0 bytes on touch.** |
+| R18.1 | Round B correction | **Measured September 10 2026. Four items closed, two stopped and reported, one refused.** Items 1 and 2 needed no repair — the fix was already in the uncommitted working tree; the ledes measured 71.13px of travel advancing on a real ViewTimeline, and all four plate curtains draw (the fifth plate is the Cover, excluded on a re-measured **55.6% floor** on its reachable cover progress). **Item 3 is provably unsatisfiable by any range** — intersecting the viewport *is* `0 < q < 1`, so finishing every intersecting element requires zero travel; measured 9 failures at `cover 15%->50%` against 3 at `entry 100%`, bought by moving Index completion from 45% to 88% of viewport, which is the bottom-trim failure returning. Three routes proposed, none picked. **Item 4 is Item 3's symptom** — all five rows byte-identical at rest at every width. Item 5 built: `--pivot-scrub-start`, the step squared, seating the entering word at `--mast-name-size` to **0.00px** at all three band-1 widths, travel 3.686-4.213x, left edge / baseline / h2 height **0.000px** at all thirteen — **and measurably not the lever: the word is below the fold until entry 57-64%, so the whole first half of the scrub plays unseen.** `--pivot-scrub-from` deliberately NOT redefined; R16's masthead name consumes it as one rung and squaring in place would have shipped 12.99px under WCAG's 24px floor. Item 6 verified (`smooth`/`auto` on `reduce`, 0px landing error, masthead clean at both boundaries). Item 7 preserved — row height **0.000px**, `+` clearance **96.50px** at rest. Listeners 1 and 1; 533 left-edge cells 0.000px under stripped and reduce, **dev and `astro preview`, and 0.000px dev against built**. |
+| R18.2 | Two mechanisms removed | **SHIPPED AND ACCEPTED September 10 2026.** Jackson's fourth route on Item 3: remove the mechanism from the affected sections rather than suppress it on arrival. The **Index row stagger** and the **Contact lede reveal** both came out. The census answered the open question and the stop condition did not fire: Contact's lede is **three lines and masked at 1920, 1440 and 1280 alike**, never single-line, so no part of the removal was a no-op. **Seven masked ledes before, six after**, and the earlier "eight wired, seven animating" figure was corrected to seven wired in the same pass. Below 1280 no lede was ever masked, the island's own `min-width: 1280` gate. **All four removal targets existed on disk and were absent from `HEAD`**, so R18.1's repo lesson held a second consecutive round. **The Index carried ten animated targets, not five**: five `.idx-num` and five `.idx-body` on `--idx-row` at `cover 15% -> 50%`, with the clip `inset(0px -32px)` on `.idx-item`; clip, stagger and hover were confirmed separately owned before anything was cut. **Nothing moved**: page height, ten section tops and heights, footer and 533 left-edge cells **0.000px**, four conditions x thirteen widths, dev and `astro build` + `astro preview`, Index row heights 0.000px on every row at every width. The one number that should have moved did: ink-to-rule at scroll 0 shifted **84px at 1920 and 1440, 74.88px at 1280, exactly `3 x --idx-name-size`**, the removed `from` keyframe. `astro-island` count in `dist` **8 -> 7**. Listeners 1 and 1, JS weight delta 0. Gold 3 of 3, 0 of 8. **Residue knowingly left. The 7 / 3 / 3 recorded here is a snapshot of the mechanism as it stood, counting masked ledes; it was retired September 11 2026 and re-measured at 21 / 24 / 25 after the ledes moved to transform. Covered by R19's constraint 7, built and measuring 0 frozen at all three widths.** |
 **Preserved from the old build, do not rebuild:** the contact form (Phase F), the Fraunces
 optical system (Phase B), the locked palette, and the standing rules in this file.
 

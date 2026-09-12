@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * EVERYDAY LEGENDS FOUNDATION — slice R5.
  *
@@ -109,7 +110,16 @@
   -->
   <div class="win-legends-mark legends-mark" aria-hidden="true">*</div>
 
-  <p class="win-legends-lede legends-lede">Some of the most extraordinary people will never become household names.</p>
+  <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+  paragraph; it does not replace it. The paragraph is the grid item
+  and carries this section's placement, and Astro wraps a hydrated
+  island in a real astro-island element — so an island mounted in
+  the paragraph's place would become the grid item itself and move a
+  left edge, which is the one thing this round may not do. Classes,
+  placement and box are untouched. Only the text node moves into the
+  island, and the island renders that same string verbatim until it
+  has measured the rendered line boxes. Copy is COPY.md's. -->
+  <p class="win-legends-lede legends-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Recognition rarely finds the people who earn it most." /></p>
 
   <div class="win-legends-body legends-body">
     <p>The educators, coaches, mentors, and parents who quietly show up and open doors. Everyday Legends was created to honor them, and to continue their work through scholarships, mentorship, and community partnership.</p>

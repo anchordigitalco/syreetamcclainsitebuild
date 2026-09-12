@@ -1,4 +1,5 @@
 ---
+import LedeReveal from './LedeReveal.tsx';
 /**
  * PREMIER LEADERSHIP — slice R4.
  *
@@ -111,7 +112,7 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     button. The button stays the last thing in the section, which is
     why it is a grid item of its own rather than a child of the body.
   -->
-  <figure class="win-prem-plate prem-plate">
+  <figure class="win-prem-plate prem-plate plate-draw" style="--curtain-exit: -1">
     <!--
       THE PLATE. `column` tier — half the page or less, inside the
       body window. It CANNOT bleed: the bleed-left tier is spent on
@@ -182,6 +183,29 @@ import portraitSeated from '../assets/portrait-seated.jpg';
         loading="eager"
         decoding="sync"
       />
+        <!--
+      R18.2 — THE PLATE FRAME DRAW. A CURTAIN, AND IT IS A SIBLING OF
+      THE PHOTOGRAPH, NEVER A WRAPPER ROUND IT.
+
+      R1.1 is the whole reason this element exists in this shape. A
+      transform on the img promotes it to its own compositing layer
+      and .plate-img::before's mix-blend-mode: multiply silently stops
+      blending — measured then at R-B falling from 8 to -1 and
+      luminance returning to the raw source value, and CONTEXT.md
+      records that the transformed element itself breaks it too, not
+      only an ancestor. So the thing that moves is neither the img nor
+      any ancestor of it: it is this div, painted OVER the finished
+      composite at z-index 3. The multiply is re-measured on every
+      plate after this ships rather than reasoned about.
+
+      It paints the page's own ground via --page-ground with
+      background-attachment: fixed — R16's mechanism, for R16's
+      reason: a fixed-attachment background is positioned against the
+      VIEWPORT, so this box paints the pixels the body would have
+      painted behind it. aria-hidden and pointer-events: none: it is
+      a transient covering, not content.
+    -->
+    <div class="plate-curtain" aria-hidden="true"></div>
     </div>
   </figure>
 
@@ -203,7 +227,16 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     <p class="prem-subtitle">Founder &amp; CEO</p>
   </div>
 
-  <p class="win-prem-head prem-lede">Leadership is not a position. It is the responsibility to move people, ideas, and organizations forward.</p>
+  <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
+  paragraph; it does not replace it. The paragraph is the grid item
+  and carries this section's placement, and Astro wraps a hydrated
+  island in a real astro-island element — so an island mounted in
+  the paragraph's place would become the grid item itself and move a
+  left edge, which is the one thing this round may not do. Classes,
+  placement and box are untouched. Only the text node moves into the
+  island, and the island renders that same string verbatim until it
+  has measured the rendered line boxes. Copy is COPY.md's. -->
+  <p class="win-prem-head prem-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Leadership is not a position. It is the responsibility to move people, ideas, and organizations forward." /></p>
 
   <div class="win-prem-body prem-body">
     <p>Twenty years of leading schools, building programs, and navigating complex systems. Premier Leadership brings that experience beyond the schoolhouse to help others turn vision into action.</p>
@@ -233,10 +266,10 @@ import portraitSeated from '../assets/portrait-seated.jpg';
   <div class="win-prem-margin prem-margin">
     <p class="prem-margin-label">Speaking topics</p>
     <ul class="prem-topics">
-      <li>Building schools that adapt to students, not the reverse</li>
-      <li>Alternative education and student engagement</li>
-      <li>Leadership development for educators and administrators</li>
-      <li>Raising and managing student-athletes in the NIL era</li>
+      <li>Alternative &amp; Non-Traditional Education</li>
+      <li>Leadership Development</li>
+      <li>Parenting Athletes</li>
+      <li>NIL Management</li>
     </ul>
   </div>
 

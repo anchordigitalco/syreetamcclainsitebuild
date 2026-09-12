@@ -1,0 +1,862 @@
+---
+/**
+ * R16 — THE MASTHEAD. Round A, second half.
+ *
+ * The site has no navigation and did not have any before this slice.
+ * Nothing renders over the Cover: her name is already enormous there,
+ * and CONTEXT.md's Composition table gives the Cover no folio, no
+ * kicker and no section numeral for the same reason. On scrolling PAST
+ * the Cover a thin bar arrives carrying her name small plus a jump to
+ * the Index, and withdraws on scrolling back. THE ARRIVAL IS THE
+ * ANIMATION — there is nothing else moving in this file.
+ *
+ * ROUTE TAKEN: CSS SCROLL-DRIVEN ANIMATION. NO LISTENER, AND NO SECOND
+ * LISTENER. CONTEXT.md's motion budget offers exactly two mechanisms
+ * — "anything new either reuses the folio's listener or uses CSS
+ * scroll-driven animation" — and names the second as preferred,
+ * reserving the first for "where a listener is genuinely required."
+ * It is not required here. Four reasons, in order of weight:
+ *
+ *   1. It adds ZERO JavaScript and does not open R12's shipped
+ *      component. The folio's listener stays byte-identical.
+ *   2. The reader's scroll IS the timing, so there is no duration, no
+ *      distance and no easing constant to tune — the same property
+ *      that made R17's scrub derivation-free.
+ *   3. The arrival and the withdrawal are ONE range read in two
+ *      directions, so the withdraw threshold cannot drift from the
+ *      arrive threshold. A listener would need two comparisons and,
+ *      to avoid chatter at the boundary, a hysteresis constant — a
+ *      swept pixel this file has deleted four times.
+ *   4. R17 already built the three-gate pattern this depends on. This
+ *      is its second consumer, so the gates are precedent rather than
+ *      invention.
+ *
+ * THE ENTRY-ANIMATION PATTERN, AND WHAT "FINISHED" MEANS HERE. The
+ * pattern is "the finished state is the CSS default; JavaScript
+ * applies the animated state." The masthead's CSS default is
+ * `display: none` — the page exactly as R15 and R17 shipped it, with
+ * no navigation. That is not a hidden resting state of the kind the
+ * fade-up ban forbids, and the distinction is content:
+ *
+ *   THE BAR CARRIES NO CONTENT THAT IS NOT ALREADY ON THE PAGE. Her
+ *   name is the Cover's <h1>. The Index is a section with its own
+ *   <h2> and its own five entries. Nothing is lost when the bar does
+ *   not render — a screenshot capture, a client-generated PDF and a
+ *   failed script all get the finished page, which is the whole point
+ *   of the pattern.
+ *
+ * The inverse would break the brief outright: a bar whose CSS default
+ * is "present" renders over the Cover at scroll 0 with JavaScript off,
+ * and "MUST NOT appear over the Cover at any scroll position" is not
+ * conditional on a script running. Verified by rendered ink, not by
+ * reading this comment — see the R16 report.
+ *
+ * NO LAYOUT SPACE, EVER. position: fixed, never sticky. Page height,
+ * all ten section heights and all ten section tops are 0.000px against
+ * the pre-R16 build at all thirteen widths.
+ *
+ * NO TRANSFORM TOUCHES A PHOTOGRAPH. R1.1: a transform on or above an
+ * <img> promotes it to its own compositing layer and its
+ * mix-blend-mode treatment silently stops blending. The only
+ * transform R16 creates is on this element, which is a sibling of
+ * <main> and contains no image. The three sections it borrows
+ * timelines from — About, the Feature Quote and Contact — carry no
+ * photograph at all per the Composition table, and view-timeline-name
+ * is a declaration with no layout, paint or compositing effect in any
+ * case. It is not a transform.
+ *
+ * NO NEW HEADING AND NO NEW LANDMARK. The ten-<h2> structure is
+ * locked and is untouched. The name is aria-hidden — it is a running
+ * head, a decorative repeat of the <h1> two screens up, and the folio
+ * is aria-hidden for the same reason. The jump is a bare <a>, not a
+ * <nav>: one link is not a navigation landmark, and adding one would
+ * change a landmark structure R14 verified.
+ *
+ * COLLAPSE, ALL FOUR BANDS — stated here rather than retrofitted:
+ *
+ *   >=1280    band 1 : rendered
+ *   1024-1279 band 2 : NOT rendered
+ *   751-1023  band 3 : NOT rendered
+ *   <=750     band 4 : NOT rendered
+ *
+ * BAND 1 ONLY, and the threshold is the folio's 1280 for the folio's
+ * reason: "below 1280 the page has no motion at all, and that is
+ * correct — a phone is a single stacked column of a printed object,
+ * not a reduced version of a moving one." THIS IS NOT A MOBILE NAV.
+ * It is not a nav at all below 1280; it does not exist there.
+ *
+ * ===================================================================
+ * R19 — THE SECTION LIST. The INDEX link becomes a disclosure whose
+ * panel carries every in-page destination.
+ *
+ * THE CONTENTS ARE src/data/sections.ts, IMPORTED RATHER THAN RETYPED.
+ * CONTEXT.md's constraint 4: "sections.ts, in page order, minus the
+ * Cover and minus the pivot," with the labels byte-identical to the
+ * rendered <h2>s under the same Buffer.compare = 0 rule the heading
+ * structure already enforces. Those two sections are exactly the two
+ * that carry no entry in that file — verified on the live DOM before
+ * this slice was written, all eight remaining comparisons 0 — so
+ * iterating the file IS the constraint, and no hand-copied literal can
+ * drift out of agreement with it. This is the file sections.ts was
+ * created to stop being copied.
+ *
+ * THE LIST IS EIGHT ROWS, NOT NINE. CONTEXT.md's constraint 5 says R19
+ * "multiplies one target into nine" and the brief says eight new
+ * targets. Measured: ten sections, minus the Cover and minus the pivot,
+ * is EIGHT — and one of those eight (#sec-index) is R16's existing
+ * target, so seven are new. Both figures in the brief derive from the
+ * same single off-by-one (ten minus the pivot, with the Cover subtracted
+ * only once). The CONTENT rule is unambiguous and is what is built;
+ * the count is reported rather than reconciled.
+ *
+ * NO NUMBERING, AND THE <ul> IS PART OF THAT. Constraint 4: the list
+ * MUST NOT carry the Index's 01-05, because the page already runs three
+ * numbering devices that MUST NOT be made to agree. An <ol> would make
+ * the markup itself a fourth one — a screen reader announces "1 of 8"
+ * from an <ol> whatever list-style says. The Index section uses <ol>
+ * precisely because its numerals ARE its numbering; this list has none,
+ * so it is a <ul> with role="list" (the role restores the semantics
+ * Safari drops when list-style is none).
+ *
+ * THE TRIGGER READS "Contents", AND THAT IS THE ONE STRING THIS SLICE
+ * AUTHORS. Constraint 4 puts the Index's own label in the list, under
+ * the byte-identical rule, so the trigger cannot also read "Index"
+ * without opening a panel whose sixth row repeats it — which reads as a
+ * defect on sight whatever it measures. The constraint binds the
+ * trigger's POSITION, not its string. "Contents" is the printed
+ * object's word for a list of destinations, which is the register the
+ * whole page is arguing for. Reversible in one word; flagged in the
+ * report rather than slipped in.
+ *
+ * HOW THE PANEL INHERITS R16'S OBSIDIAN SUPPRESSION — THROUGH THE BAR,
+ * NOT THROUGH A SECOND RULE. R16's suppression is not a selector. It is
+ * the bar's own `transform: translateY(-100%)`, attached four times
+ * across two keyframe rules, and the only thing that "goes quiet" is
+ * the element carrying that transform. So the panel has to be INSIDE
+ * THE BAR'S OWN BOX: the bar's height is intrinsic and the open panel
+ * deepens it, so one translateY carries the name, the trigger and the
+ * contents off the sheet together. There is no second rule to keep in
+ * agreement, and nothing in R16's four attachments is edited.
+ *
+ * The alternative was an absolutely positioned panel, and it FAILS
+ * measurably: a 280px panel hung below a 56px bar is at viewport y
+ * 56-336, and the bar's withdrawal moves it to 0-280 — fully visible,
+ * in Obsidian display type's way, on exactly the spreads R16 proved no
+ * palette ink survives. Same family as R16's own background-attachment
+ * finding: a transform governs its subtree and nothing outside it.
+ *
+ * WHAT THAT COSTS, STATED: while the panel is open the bar's travel is
+ * its open height rather than 56px, over the same 56px of scroll. The
+ * bar leaves faster than it arrived. That is the safe direction — more
+ * suppression, not less — and it cannot happen at the Cover, where the
+ * panel is closed by default and the bar is 56px exactly.
+ *
+ * ::details-content, NAMED BY R18 AND MET HERE. Chrome 148 resolves it
+ * to `content-visibility: hidden` closed and `visible` open, display
+ * block, position static. Two consequences this file depends on:
+ *
+ *   1. THE CLOSED PANEL CONTRIBUTES NO HEIGHT AND NO A11Y TREE. That
+ *      is why the bar is 56px closed with no rule of its own saying so,
+ *      and why the <nav> landmark exists only while the panel is open.
+ *   2. IT CANNOT BE OPENED ON TRANSFORM AND OPACITY ALONE. The box's
+ *      open/close IS content-visibility plus block-size; every recipe
+ *      for animating it reaches for block-size or grid-template-rows,
+ *      and CONTEXT.md allows transform and opacity only. So THE BOX IS
+ *      NOT ANIMATED — reported rather than worked around, and no
+ *      forbidden property is reached for. Animating the contents
+ *      against a box that has already snapped would read as a loading
+ *      state, not a reveal; R18.2 removed the Index row stagger on this
+ *      page for an adjacent reason. The panel's only motion is the
+ *      opacity on a pressed row, which is .idx-row's, verbatim.
+ *
+ * WHY THERE IS NOW A SCRIPT IN THIS FILE, AND EXACTLY WHAT IT IS FOR.
+ * R16 carried none. Two of this slice's requirements cannot be
+ * expressed in CSS on a <details> at all, and both were measured rather
+ * than assumed — Chrome 148 leaves `open` true on Escape:
+ *
+ *   ESCAPE-TO-CLOSE WITH FOCUS RETURN. Required by CONTEXT.md's
+ *   constraint 6. <details> has no Escape behaviour in any engine, and
+ *   a disclosure whose content is hidden under the focused element
+ *   drops focus to <body>.
+ *
+ *   CLOSE ON JUMP. Required BY constraint 5, transitively: every
+ *   target's landing is measured against the bar at rest, and a panel
+ *   left open occludes the top 280px of the section it just landed on.
+ *   Outside-click was the alternative the brief offered and is NOT
+ *   taken: it needs a document-level listener for a case Escape and the
+ *   trigger's own toggle already cover.
+ *
+ * It is `is:inline`, so it is eight lines in index.html and zero bytes
+ * in the bundle — the 226,474-byte budget is untouched. It adds no
+ * scroll listener and no observer; R12's monopoly is intact. THE LIST
+ * DOES NOT DEPEND ON IT: with JavaScript disabled the page has no bar
+ * at all (R16's entry pattern, unchanged), and with the bar forced
+ * visible and scripts off the disclosure still opens and closes, which
+ * is the whole reason constraint 3 chose <details>. See the report.
+ * ===================================================================
+ */
+import { sections } from '../data/sections';
+---
+
+<div class="masthead">
+  <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span>
+
+  {/* ONE DISCLOSURE, SO "ONE THING OPEN AT A TIME" IS STRUCTURAL. No
+      `name` attribute: the exclusive-accordion grouping it provides
+      needs two or more <details> to mean anything, and a second
+      disclosure in a 56px running head is not something this slice
+      should make possible. */}
+  <details class="mast-index">
+    <summary class="mast-jump">Contents</summary>
+
+    {/* THE LANDMARK IS INSIDE THE PANEL, NOT AROUND THE BAR. R16
+        declined a <nav> on the stated ground that "one link is not a
+        navigation landmark"; eight in-page destinations are one, so the
+        reason has expired rather than been overruled. Placed inside
+        ::details-content it inherits content-visibility: hidden, so the
+        landmark — and R14's verified landmark structure — is unchanged
+        while the panel is closed, and the navigation exists exactly
+        while it is on screen. Verified against the rendered
+        accessibility tree, not asserted. */}
+    <nav class="mast-panel" aria-label="Sections">
+      <ul class="mast-list" role="list">
+        {sections.map((s) => (
+          <li><a class="mast-row" href={`#${s.id}`}>{s.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </details>
+</div>
+
+<script is:inline>
+  /* R19. The two behaviours CSS cannot express on a <details>; see the
+     note at the head of this file. Nothing here is required for the
+     list to open, close or navigate. */
+  (function () {
+    var d = document.querySelector('.mast-index');
+    if (!d) return;
+    var s = d.querySelector('summary');
+    d.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && d.open) { d.open = false; s.focus(); }
+    });
+    d.addEventListener('click', function (e) {
+      if (e.target.closest('.mast-row')) d.open = false;
+    });
+  })();
+</script>
+
+<style>
+  /* ================================================================
+     THE RESTING STATE IS NOT RENDERED.
+
+     This declaration is the entry-animation pattern's whole no-JS
+     answer, and it is deliberately the FIRST thing in this file.
+     Everything below is inside three gates and is ADDED on top of it;
+     nothing anywhere subtracts from a visible default.
+     ================================================================ */
+  .masthead{ display: none; }
+
+  /* ---- THE TYPE --------------------------------------------------
+     The bar is a miniature of the page's own pairing: Fraunces for
+     the name, Montserrat for the label — a lede beside a kicker, at
+     one twentieth of the size. That is what keeps it from reading as
+     site chrome bolted onto an editorial spread.
+
+     THE NAME IS SET AT --mast-name-size, WHICH IS --lede-size TAKEN
+     ONE FULL R7 STEP DOWNWARD (0.4872-0.5208 x a lede across band 1).
+     The derivation is written above the token in global.css. In the
+     bar it is 26.66-32.00px against a lede's 52-64px: one whole tier
+     apart, on the page's own ladder, at every width — which is the
+     answer to "MUST NOT compete with any lede."
+
+     ALL FOUR FRAUNCES AXES ARE STATED. Fraunces defaults to wght 900,
+     WONK on and SOFT 100 when unspecified, and a rule that leaves an
+     axis out ships a decision nobody made. This tier is not in the
+     optical table's five rows, so it is placed against the table's
+     own logic rather than by borrowing a row that means something
+     else: at 27px the name is READ AT A GLANCE, not SEEN at display
+     scale, so it takes the legibility end of the axis — opsz 24 and
+     SOFT 60 are the sharp end of the table's "body-adjacent / small"
+     band (opsz 9-24, SOFT 60-80), which is where 27px belongs. wght
+     400 rather than the display tiers' 340: a 27px face needs the
+     weight the 96px faces can do without. WONK 0, as everywhere on
+     the page except the pivot's italic.
+
+     line-height: var(--mast-h) IS AN OPTICAL CENTRING, SOLVED FROM
+     THE FACE, NOT A NUDGE. Setting the line box to the bar's own
+     height puts the half-leading either side of the ink, so the
+     name's cap-to-baseline block centres itself: measured against the
+     R9.6 metrics it lands 0.30px off the bar's centre at 1440 and
+     0.36px off at 1920. There is no magic offset here to go stale,
+     and R6.3's "an em constant cannot track a rounded font metric"
+     does not bite — nothing is being modelled, the line box is doing
+     it. */
+  .mast-name{
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 24, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    font-size: var(--mast-name-size);
+    line-height: var(--mast-h);
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
+    white-space: nowrap;
+  }
+
+  /* ---- THE JUMP --------------------------------------------------
+     The kicker register, verbatim: Montserrat 400 at 10.5px on 0.26em,
+     uppercase, line-height on the baseline lattice. It is the page's
+     established small-label voice and the bar has no business
+     inventing a second one.
+
+     OBSIDIAN, NOT THE KICKER'S SLATE. A kicker is a label and this is
+     the page's only link that is not inside a section — it is the one
+     interactive object in the bar, and the page's own link primitive
+     (.edu-link) is Obsidian. The underline is .edu-link's too,
+     rgba(71, 68, 64, 0.42) at a 4px offset: a non-colour affordance,
+     per 1.4.1, and the offset rather than a border so nothing is
+     struck through.
+
+     NO HOVER TREATMENT, BY INSTRUCTION. The 21st.dev letter-roll is
+     not ruled in and this round builds no hover of any kind — not on
+     the name, not on the link. focus-visible is NOT a hover treatment
+     and is built: a link with no focus indicator fails WCAG 2.1 SC
+     2.4.7 outright, and the ring below is the page's own, measured on
+     Porcelain in R10 and re-derived on Obsidian in R14. See the R16
+     report for the one-line hover this bar should probably have and
+     deliberately does not. */
+  .mast-jump{
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: var(--baseline);
+    letter-spacing: 0.26em;
+    /* half the tracking, so the trailing letter-space does not push
+       the label off the page's right trim — the same compensation
+       .kicker makes on the left. */
+    margin-right: -0.26em;
+    text-transform: uppercase;
+    color: var(--obsidian);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
+  }
+
+  .mast-jump:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* ---- R19. THE DISCLOSURE -----------------------------------------
+     THE <details> TAKES THE REMAINING WIDTH AND THE <summary> SEATS
+     ITSELF AT THE RIGHT TRIM INSIDE IT. The trigger cannot be the flex
+     item any more, because the flex item is now the thing that owns the
+     panel; so the item stretches and the trigger right-aligns inside it
+     with an auto margin. The rendered x of the label is unchanged —
+     `margin-right: -0.26em` resolves the same against a block's
+     over-constrained margin equation as it did against a flex end, and
+     it is measured, not reasoned: 0.000px at all three band-1 widths.
+
+     min-width: 0 because a flex item's automatic minimum size is its
+     content's min-content width, and the panel's longest label would
+     otherwise be able to push the bar wider than the viewport. */
+  .mast-index{
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* The trigger. EVERY TYPE DECLARATION IS R16'S, UNTOUCHED — the rule
+     above still sets all of it, and this adds only the box. The element
+     changed from <a> to <summary> and the register did not.
+
+     height: var(--mast-h) KEEPS THE NAME ROW AT TWO BASELINES. It is
+     the row, not the bar, that is 56px now, and this is the
+     declaration that says so. The label's own 28px line box centres in
+     it, which is the same 14px offset `align-items: center` produced on
+     a 56px bar — identical, and measured as such.
+
+     THE MARKER COMES OFF IN BOTH ENGINES, exactly as summary.idx-row
+     already does it in Index.astro. `display: flex` alone would drop
+     the ::marker by taking the box out of `list-item`, but the
+     -webkit- pseudo needs saying for older WebKit and list-style: none
+     for anything that honours neither. Three lines, one behaviour,
+     copied from the precedent in this build rather than invented. */
+  summary.mast-jump{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: var(--mast-h);
+    width: fit-content;
+    margin-inline-start: auto;
+    list-style: none;
+    cursor: pointer;
+  }
+  summary.mast-jump::-webkit-details-marker{
+    display: none;
+  }
+
+  /* THE OPEN STATE IS THE UNDERLINE GOING OBSIDIAN — R16's own
+     focus-visible treatment, reused rather than a second affordance
+     invented. NOT A HOVER TREATMENT: CONTEXT.md's constraint 6 permits
+     none on the trigger beyond a recommendation that is not ruled in,
+     and this is a disclosure's expanded state, which a control that
+     opens something is required to show. The native `open` attribute
+     carries it to the accessibility tree; this carries it to the eye. */
+  .mast-index[open] > .mast-jump{
+    text-decoration-color: var(--obsidian);
+  }
+
+  /* ---- R19. THE PANEL ----------------------------------------------
+     IT HAS NO GROUND, NO BORDER, NO RADIUS AND NO SHADOW, AND THAT IS
+     THE WHOLE DESIGN ARGUMENT. The bar already paints the page's own
+     --page-ground sized to the viewport, so a deeper bar paints the
+     identical pixels the body would have painted in that strip — the
+     band stays invisible over the seven Porcelain spreads and what
+     prints is type in the sheet's top margin. A panel with an edge of
+     its own would be a dropdown on a printed spread. THE SHEET'S HEAD
+     SIMPLY OPENS: two baselines closed, twelve open.
+
+     padding-block IS ONE BASELINE TOP AND BOTTOM, so the open bar is
+     2 + 1 + 8 + 1 = 12 x --baseline = 336px exactly, and every edge in
+     it lands on the page's own vertical unit. Nothing here is a chosen
+     pixel; the only quantity is the page's lattice, used four times.
+
+     R16's trim hairline is UNTOUCHED and needs no edit: it is an
+     ::after at bottom: 0 of the bar, so it rules off the head wherever
+     the head now ends. One hairline, not two — the page's hairline-rule
+     contexts are a counted quantity and this slice adds none. */
+  .mast-panel{
+    padding-block: var(--baseline);
+  }
+
+  /* ONE COLUMN OF EIGHT, FLUSH RIGHT, ENDING ON THE RIGHT TRIM.
+
+     TWO COLUMNS OF FOUR WERE BUILT FIRST AND WERE REJECTED ON SIGHT,
+     WHICH IS THE ONLY WAY THAT DEFECT COULD HAVE BEEN CAUGHT — it
+     measures correctly at every width. Two flush-right columns put
+     column one's right edge 24px from column two's ragged left edge,
+     so every visual line reads as a run-on: "Premier Leadership
+     Charging It to the Game" is one line to the eye, not two entries.
+     Widening the gap to the page trim's 64px reduced it and did not
+     remove it — the reader still has to work out that it is two
+     columns. One column has no such state. Captures of all three are
+     in the report.
+
+     WHAT IT COSTS, STATED PLAINLY: the open head is 336px rather than
+     224px — 12 x --baseline instead of 8, about a third of a 1080px
+     viewport. Bought deliberately. The panel is a transient state that
+     closes on the jump it exists to perform, and the emptiness to the
+     left of the list is the sheet's top margin, which is this page's
+     own argument rather than a hole in it.
+
+     WHY FLUSH RIGHT AND NOT FLUSH LEFT. R16's claim is that the bar
+     "introduces NO fourth edge: the edge it uses is one of the three
+     that already exist." A flush-left list would introduce a new left
+     edge inside the head and break that claim — and a left edge one
+     column off an existing one is the failure CONTEXT.md's
+     Three-left-edges rule names by name. Flush right keeps the bar's
+     only left edge at --gutter, where the name is, and hangs the list
+     from the right trim the trigger already sits on, so the panel reads
+     as belonging to the control that opened it. Measured: the rows'
+     right edge and the trigger's rendered ink share one x at all three
+     band-1 widths.
+
+     grid-auto-rows: var(--baseline) LOCKS THE PITCH TO THE PAGE'S
+     LATTICE rather than letting it fall out of the type's line box, so
+     the panel's depth stays a count of baselines if the row size ever
+     moves. DOM order, visual order and tab order are one sequence;
+     there is no positive tabindex and nothing kept in agreement by
+     hand. */
+  .mast-list{
+    display: grid;
+    grid-auto-rows: var(--baseline);
+    justify-items: end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* THE ROWS. Fraunces, at --mast-row-size — the bar's name taken one
+     HALF R7 step down, on R15's own measured constant. The derivation
+     is written above the token in global.css. 18.61-22.33px across band
+     1, against the name's 26.66-32.00px: subordinate to it by an
+     unmistakable amount, and still the largest thing in the panel.
+
+     FRAUNCES, NOT THE SANS, AND THAT IS THE CALL THIS PANEL LIVES OR
+     DIES ON. Eight rows of tracked uppercase Montserrat is a site
+     navigation and would announce itself as one; the page's argument is
+     a printed spread. The Index section's own entry names are Fraunces
+     and this list is that section's function moved into the running
+     head, so the two devices speak with one voice. The bar now carries
+     three registers and they are the page's three: a lede (the name),
+     a contents entry (the rows), a kicker (the trigger).
+
+     ALL FOUR AXES STATED, per the rule that a Fraunces rule leaving an
+     axis out ships a decision nobody made. wght 400, SOFT 60, WONK 0
+     are the name's, verbatim — one voice, two sizes. opsz is the one
+     that moves: 18 rather than 24, because opsz tracks the rendered
+     tier and 18.6-22.3px is lower in the table's body-adjacent band
+     (opsz 9-24, SOFT 60-80) than the name's 27-32px. Same band, one
+     notch sharper.
+
+     line-height: var(--baseline) puts the rows on the page's lattice at
+     1.25-1.50 — and the row pitch IS the baseline, so the panel's depth
+     is a count of baselines rather than a measured block.
+
+     NO UNDERLINE AT REST, UNDERLINE ON HOVER. This is .idx-row's
+     vocabulary exactly (Index.astro), which is the page's own answer
+     for a list whose every row is a link: the list context carries the
+     affordance, and eight resting underlines in a 336px head would read
+     as a sitemap. SC 1.4.1 is about links inside a block of text, which
+     this is not. Carried over verbatim rather than re-derived, so the
+     two lists cannot drift. */
+  .mast-row{
+    display: block;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 18, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    font-size: var(--mast-row-size);
+    line-height: var(--baseline);
+    color: var(--obsidian);
+    text-decoration: none;
+    /* Only opacity transitions here, as in the Index. Never
+       transition-all, and never a colour transition. */
+    transition: opacity 140ms var(--ease);
+  }
+
+  /* HOVER AND FOCUS TAKE THE SAME RESPONSE, which is R13.1's finding on
+     the Index rows: keyboard focus earns what the mouse earns. */
+  .mast-row:hover,
+  .mast-row:focus-visible{
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  /* THE RING IS R16'S, AT TWO PIXELS OF OFFSET RATHER THAN FOUR, AND
+     THE TWO IS MEASURED — INCLUDING THE WIDTH WHERE THE SLACK RUNS OUT.
+     The rows sit on the lattice, so the row box IS the 28px pitch and
+     there is no gap between one row's box and the next. What varies is
+     the rendered text box inside it:
+
+         1280   18.90px type   text box 23px   half-leading 2.50px
+         1440   18.61px type   text box 23px   half-leading 2.50px
+         1920   22.33px type   text box 28px   half-leading 0.00px
+
+     So at 1280 and 1440 a 2px offset lands inside the half-leading and
+     clears the next row's text box; AT 1920 THERE IS NO HALF-LEADING AND
+     ANY POSITIVE OFFSET CROSSES INTO IT. That is not a defect and it is
+     written down rather than hidden: only ONE row is ever focused, so
+     two rings are never drawn at once, and the ring's own contrast is
+     measured against the ground it actually sits on (13.55-13.85:1, see
+     the report) rather than against a neighbour. Four pixels would have
+     put the ring through the adjacent row's INK at every width; two puts
+     it through empty leading at two widths and through the neighbour's
+     box but not its glyphs at the third.
+
+     NOTHING CLIPS IT. Verified rather than assumed — every ancestor from
+     the row up to <body> carries overflow: visible and clip-path: none —
+     because R13.1 shipped a clip that had to be released for exactly
+     this reason. */
+  .mast-row:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 2px;
+  }
+
+  .mast-row:active{
+    opacity: 0.7;
+  }
+
+  /* ================================================================
+     THE THREE GATES, AND THE ONE MECHANISM.
+
+     Identical to R17's, deliberately — the masthead is the second
+     consumer of a pattern that already shipped, not a second pattern:
+
+       html.js-motion   BaseLayout adds this in <head>, inline and
+                        synchronous. No JavaScript, no class, no rule
+                        in this block matches, and the page renders
+                        exactly as R15 and R17 shipped it.
+       @supports        an engine without scroll-driven animation
+                        never parses the block, rather than running
+                        the keyframes off the document timeline and
+                        sliding a bar in on a stopwatch.
+       min-width 1280   band 1 only. The folio's threshold, for the
+                        folio's reason.
+
+     prefers-reduced-motion is the fourth and is written INTO the
+     media query rather than left to global.css's blanket
+     `animation-duration: 0.001ms !important`, because duration is not
+     what drives a scroll-driven animation and that override does not
+     reliably stop one (R17). Under `reduce` the bar does not render
+     at all — which is the right answer and not a compromise: the
+     arrival IS the masthead, the page had no navigation before this
+     slice, and the Index section still does the navigating.
+     ================================================================ */
+  @media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
+    @supports (animation-timeline: view()){
+
+      /* ---- THE TIMELINES ------------------------------------------
+         Declared HERE, on other components' sections, and that is
+         deliberate. The masthead owns its own mechanism; About, the
+         Feature Quote and Contact know nothing about it and none of
+         those three files is opened by this slice. A view-timeline
+         name has no layout, paint or compositing effect — verified
+         0.000px on every section at all thirteen widths.
+
+         timeline-scope hoists the names to :root because the bar is a
+         sibling of <main>, not a descendant of any section, and
+         timeline-name lookup walks ancestors only. --pivot is R17's
+         OWN timeline on the same element, consumed rather than
+         duplicated: a second view-timeline-name declaration on .quote
+         would replace R17's rather than join it, and this file is not
+         allowed to move R17's finished state. Verified: the pivot's
+         scrub start-scale is unchanged, 0.487179 at 1440, with the
+         name hoisted. */
+      :global(html.js-motion){
+        timeline-scope: --page-turn, --pivot, --close;
+      }
+      :global(html.js-motion) :global(.about){
+        view-timeline-name: --page-turn;
+        view-timeline-axis: block;
+      }
+      :global(html.js-motion) :global(#sec-contact){
+        view-timeline-name: --close;
+        view-timeline-axis: block;
+      }
+      /* NO scroll-margin-top ON THE JUMP'S TARGET, AND THAT IS THE
+         MEASURED ANSWER, NOT AN OMISSION.
+
+         `scroll-margin-top: var(--mast-h)` is the reflex here and it
+         was built first. It is wrong, and only a measurement shows
+         why: it lands the reader 56px SHORT of the Index's top, which
+         is 56px back inside the Feature Quote — and the Feature Quote
+         is an Obsidian spread, where this bar is quiet by rule. So
+         clicking the masthead's own link made the masthead disappear.
+         Measured: scrollY 5774 at 1440, bar bottom at viewport 0.00.
+         Self-consistent, and it reads as a bug.
+
+         With no scroll margin the target lands flush: the Index's top
+         trim on the viewport's top trim, at the exact scroll position
+         where the pivot's return completes, so the bar is present and
+         at rest. Nothing is occluded either — the Index's own top
+         padding is 110px against the bar's 56, leaving 54px of
+         clearance before the section's first ink. THAT DEPENDENCY IS
+         REAL AND IS WRITTEN DOWN HERE: if the Index's top padding ever
+         falls below --mast-h, this needs a scroll margin again, and
+         the landing scroll needs re-checking against the pivot's
+         withdrawal range at the same time. */
+
+      /* ---- THE BAR ------------------------------------------------
+         FIXED, NEVER STICKY. Sticky reserves layout space and would
+         change the page's height and every section top below it.
+
+         IT PAINTS THE PAGE'S OWN GROUND. --page-ground plus
+         background-attachment: fixed, which positions a background
+         against the viewport rather than the element's box — so the
+         bar paints the identical pixels the body would have painted
+         in that 56px strip, and over the seven Porcelain spreads the
+         BAND IS INVISIBLE. What prints is her name, the label and one
+         hairline, sitting in the sheet's top margin. That is the
+         whole design: a running head, not a panel.
+
+         IT HAS TO PAINT SOMETHING. A groundless fixed bar lets display
+         type scroll straight through a 27px name. Occlusion is not
+         decoration here, it is the reason the bar is legible at all —
+         and painting the page ground is the only fill that costs the
+         composition nothing. CONTEXT.md: "drama comes from type scale
+         and negative space, never from colour volume."
+
+         z-index 50 sits above the folio's 40 and below the grain
+         sheet's 60, so the page's grain runs over the masthead
+         exactly as it runs over everything else. The bar is part of
+         the printed sheet, not a layer floating above it.
+
+         NO box-shadow. R14 measured "zero box-shadow on the page,
+         still" and this slice keeps that true — the hairline is an
+         ::after, which draws no box and contributes no layout, rather
+         than a border, which would eat 1px out of the derived 56px. */
+      :global(html.js-motion) .masthead{
+        /* R19. THREE CHANGES, AND ALL THREE ARE FORCED BY "THE PANEL
+           INHERITS THE SUPPRESSION THROUGH THE BAR."
+
+           `align-items: flex-start`, not `center`. With the panel in
+           flow the bar is 336px tall while open, and `center` would
+           drop the name and the trigger to the middle of THAT box.
+           Flush-start is identical when closed and nowhere else: the
+           name's line box is --mast-h (R16's optical centring, below)
+           and the trigger's box is --mast-h too, so in a 56px bar
+           `center` and `flex-start` put both at y 0. Measured 0.000px
+           on the name's and the trigger's rendered boxes.
+
+           NO `height`, AND THAT IS THE MECHANISM. The bar's height is
+           now intrinsic: the trigger's --mast-h row closed, that row
+           plus the panel open. A declared height would leave the panel
+           overflowing a 56px box — visible, but OUTSIDE the box the
+           withdrawal's `translateY(-100%)` is measured against, which
+           is precisely the Obsidian failure this slice must not ship.
+           Closed, the intrinsic height is 56.000px, measured at all
+           three band-1 widths.
+
+           NO `justify-content`. There are two flex items and the second
+           one now owns the panel, so it takes the remaining width
+           (`flex: 1`, below) and seats its own trigger at the right
+           trim with an auto margin. `space-between` on a stretched
+           second item does nothing, so it is removed rather than left
+           to read as live. */
+        display: flex;
+        align-items: flex-start;
+        position: fixed;
+        inset-block-start: 0;
+        inset-inline: 0;
+        z-index: 50;
+        /* The page trim. The name's left edge lands on --gutter,
+           which is the grid's column 1 — the kicker's edge, the
+           outermost edge the page already has. The bar introduces NO
+           fourth edge: it is not inside a section, and the edge it
+           uses is one of the three that already exist. */
+        padding-inline: var(--gutter);
+
+        /* ---- THE GROUND, AND WHY IT IS NOT background-attachment ----
+           MEASURED FAILURE, FIXED. This first shipped as
+           `background-attachment: fixed`, which positions a background
+           against the viewport and should have made the bar paint the
+           identical pixels the body paints in that strip. It does not,
+           because THIS ELEMENT CARRIES A TRANSFORM: a transformed
+           element is a containing block for fixed descendants, and
+           Chrome degrades `background-attachment: fixed` to `scroll`
+           inside one. The positioning area silently became the bar's
+           own 1440 x 56 box, so the white radial's 78% radius resolved
+           against 56px instead of 900px and the wash fell out of the
+           bar over its own height. Measured in the right gutter, where
+           no ink exists at any scroll position: the bar's ground ran up
+           to 16/255 darker than the page's at the bar's foot, and
+           agreed only at its very top row. Not visible in a thumbnail,
+           very visible as a band once you know to look.
+
+           This is R1.1's lesson arriving through paint instead of
+           blending: a transform on the element itself silently breaks a
+           mechanism that is declared somewhere else entirely.
+
+           THE FIX DECLARES THE POSITIONING AREA INSTEAD OF INHERITING
+           IT. The bar is fixed at the viewport's top-left, so sizing
+           the background to the viewport and pinning it to the box's
+           origin reproduces exactly what the body resolves the gradient
+           against — with no dependence on background-attachment at all,
+           and therefore nothing for a transform to take away. Width is
+           `100%`, the bar's own width, not `100vw`: the fixed
+           containing block excludes a classic scrollbar and `100vw`
+           does not. Re-measured: 0 of 255 on every channel. */
+        background-color: var(--porcelain);
+        background-image: var(--page-ground);
+        background-repeat: no-repeat;
+        background-position: left top;
+        background-size: 100% 100vh;
+
+        /* THE RESTING TRANSFORM, held over the Cover. Also the
+           animation's own `from`, so the two cannot disagree. */
+        transform: translateY(-100%);
+
+        /* ---- THE FOUR ATTACHMENTS ----------------------------------
+           ONE PROPERTY — translateY — AND TWO KEYFRAME RULES, ATTACHED
+           FOUR TIMES. Later in the list wins where two are live, which
+           is what lets a bare 0%/100% pair express four boundaries
+           with nothing swept.
+
+           LONGHANDS, NEVER THE `animation` SHORTHAND. R17 records this
+           as a gotcha and it is the second hit: the shorthand resets
+           animation-timeline to `auto` and animation-range to
+           `normal`, so above them it silently detaches the animation
+           from its timeline and below them it silently discards both.
+           It also sets animation-duration, which must stay `auto` for
+           a scroll-driven animation to fill its range.
+
+           1. ARRIVE, on About's view timeline.
+              `exit 0%` is the instant About's top edge reaches the
+              viewport's top edge — which is the instant the Cover's
+              LAST PIXEL leaves it, because the Cover's bottom and
+              About's top are the same coordinate (measured: 720.000
+              and 720.000 at every band-1 width). So the bar's travel
+              cannot begin until the Cover is gone. Measured at 1440:
+              the bar's own bottom edge is at viewport y = 0.00 at
+              scroll 720 — ZERO RENDERED PIXELS over the Cover, at the
+              last scroll position the Cover occupies.
+
+              The travel is --mast-h and it runs over --mast-h OF
+              SCROLL. One quantity, used twice: the bar descends at
+              exactly the rate the reader scrolls, which is the only
+              rate the page already has. There is no duration and no
+              easing curve, and there is nothing to tune.
+
+              fill-mode BOTH: backwards fill holds the `from` over the
+              whole Cover, forwards fill holds the finished state for
+              the rest of the page. A view timeline stays active after
+              its subject has left the scrollport — measured to the
+              document's last scrollable pixel.
+
+           2 and 3. WITHDRAW AND RETURN, on the Feature Quote's.
+           4.      WITHDRAW, on Contact's.
+              THE BAR DOES NOT PRINT ON THE OBSIDIAN SPREADS. This is
+              forced by measurement, not chosen — see the R16 report's
+              contrast table. The short version: the locked palette has
+              five colours and NONE of them clears 3:1 against both
+              Porcelain and Obsidian; the best any single colour could
+              do against both grounds is 3.72:1, and no palette colour
+              is near it. A bar that prints on both grounds is
+              therefore illegible on one of them, and colour is not an
+              animatable property here — "animate transform and
+              opacity only."
+
+              So the bar does on the dark spreads what the folio
+              already does over the pivot and what CONTEXT.md's own
+              Route 3 recommends for the folio over Contact: it goes
+              quiet. The rule is "print on the Porcelain spreads, quiet
+              on the Obsidian ones," which is a rule rather than an
+              exception. It withdraws by the same gesture and the same
+              --mast-h of travel as the arrival — one move, in both
+              directions, at all four boundaries.
+
+              fill-mode FORWARDS on 2, 3 and 4, never `both`: a
+              backwards fill on any of them would hold its `from`
+              across the whole page above its own range and hide the
+              bar everywhere. Forwards-only contributes nothing before
+              its range, which is what lets the four compose. */
+        animation-name: mast-arrive, mast-withdraw, mast-arrive, mast-withdraw;
+        animation-timing-function: linear;
+        animation-fill-mode: both, forwards, forwards, forwards;
+        animation-timeline: --page-turn, --pivot, --pivot, --close;
+        animation-range:
+          exit 0% exit var(--mast-h),
+          exit 0% exit var(--mast-h),
+          exit calc(100% - var(--mast-h)) exit 100%,
+          exit 0% exit var(--mast-h);
+      }
+
+      /* The trim rule. Smoked Slate's hairline family (--hair is
+         Obsidian at 0.16 and is the page's light-ground hairline
+         token), NOT gold: the gold budget is 3 of 3 saturated accents
+         and 0 of 8 hairline contexts, and R16 spends nothing from
+         either. Absolutely positioned so it draws no box and takes no
+         part in the derived 56px. */
+      :global(html.js-motion) .masthead::after{
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        bottom: 0;
+        height: 1px;
+        background: var(--hair);
+      }
+
+      /* FROM off the trim, TO the CSS default — and back. The finished
+         states are `none` rather than `translateY(0)` so that at rest
+         the bar carries no transform at all. */
+      @keyframes mast-arrive{
+        from{ transform: translateY(-100%); }
+        to  { transform: none; }
+      }
+      @keyframes mast-withdraw{
+        from{ transform: none; }
+        to  { transform: translateY(-100%); }
+      }
+    }
+  }
+</style>
