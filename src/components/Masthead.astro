@@ -199,7 +199,28 @@ import { sections } from '../data/sections';
 ---
 
 <div class="masthead">
-  <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span>
+  {/* R18.3. THE NAME LINKS TO THE TOP OF THE DOCUMENT.
+
+      `#top` AND NOT `#sec-portrait`, AND THE DIFFERENCE IS TWO THINGS.
+      `#top` is the HTML spec's document-top fragment for the case where
+      no element carries that id, so it lands at DOCUMENT top rather
+      than at the Cover's box top; and it matches no `:target`, so
+      R19's constraint-7 arrival rule never fires off it. Both halves
+      are verified by measurement in the R18.3 report, not asserted.
+      NOTHING carries id="top" and nothing is to be given it.
+
+      THE ANCHOR WRAPS THE SPAN RATHER THAN REPLACING IT. R16 hid the
+      name from the accessibility tree because it is already the
+      Cover's <h1>, and that reasoning is untouched: the aria-hidden
+      stays exactly where it was. The ARIA rule it could have broken —
+      a focusable element INSIDE an aria-hidden subtree — is not
+      engaged, because the hidden subtree is the span and the focusable
+      element is its PARENT. This is the icon-button pattern, and the
+      aria-label gives the link a functional name instead of repeating
+      the heading. */}
+  <a class="mast-home" href="#top" aria-label="Back to top">
+    <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span>
+  </a>
 
   {/* ONE DISCLOSURE, SO "ONE THING OPEN AT A TIME" IS STRUCTURAL. No
       `name` attribute: the exclusive-accordion grouping it provides
@@ -299,6 +320,62 @@ import { sections } from '../data/sections';
     letter-spacing: -0.01em;
     color: var(--obsidian);
     white-space: nowrap;
+  }
+
+  /* ---- R18.3. THE NAME'S ANCHOR ------------------------------------
+     `display: flex` IS THE WHOLE REASON THE NAME DOES NOT MOVE, and it
+     is not a style choice. The span was a direct flex item of .masthead
+     and was therefore BLOCKIFIED; the anchor now takes that slot. If
+     the anchor were left inline it would generate a line box of its
+     own, and that box's height would be set by the anchor's STRUT —
+     .masthead's inherited font and line-height, not the name's — so
+     the 26.66px ink would be re-seated against a strut it has nothing
+     to do with. As a flex container the anchor establishes no line box
+     at all: the span is blockified exactly as before, at offset 0 in a
+     parent with no padding, border or margin. Measured 0.000px on the
+     name's rendered INK at 1920, 1440 and 1280, with the ink taken
+     from a Range over the text node rather than from the element box,
+     because an element box can change shape while the ink stays put
+     and only the ink is the thing that must not move.
+
+     COLOUR AND UNDERLINE ARE NEUTRALISED EXPLICITLY. The UA sheet
+     gives an anchor its own colour and a text-decoration, and either
+     one would be a visible change to a name that R18.1's Legacy scrub
+     is seated against by construction. `color: inherit` rather than a
+     second copy of var(--obsidian): .mast-name already declares its
+     own colour, so this only stops the UA value from existing.
+
+     OPACITY, AND WHY NOT THE BAR'S OTHER TWO TREATMENTS. This is
+     .edu-link's hover minus its translate — the page's own link
+     primitive, per CONTEXT.md's R18.3 ruling. It is NOT
+     summary.mast-jump's, which is not a link and carries no hover by
+     construction under R19's constraint 6; and it is NOT .mast-row's,
+     which is a 10.5px sans panel row against a 26.66px Fraunces name.
+     Opacity is scale-free and survives that tier gap; an underline
+     would not.
+
+     transition-property NAMES opacity ONLY. Never transition-all. */
+  .mast-home{
+    display: flex;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 260ms var(--ease);
+  }
+
+  .mast-home:hover{ opacity: 0.7; }
+  .mast-home:active{ opacity: 0.55; }
+
+  /* R16'S RING, AT ITS OWN FOUR PIXELS OF OFFSET. The bar carries two
+     focus treatments and they agree on the ring — 1px solid Obsidian —
+     differing only in offset, where .mast-row's two is a documented
+     deviation forced by the panel's 28px lattice ("THE RING IS R16'S,
+     AT TWO PIXELS OF OFFSET RATHER THAN FOUR"). The name sits on no
+     lattice, so it takes the unmodified original, which is also
+     byte-identical to .edu-link's. No text-decoration-color: the name
+     carries no underline for one to apply to. */
+  .mast-home:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
   }
 
   /* ---- THE JUMP --------------------------------------------------
