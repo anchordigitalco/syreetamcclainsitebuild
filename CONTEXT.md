@@ -2292,7 +2292,7 @@ flush to the viewport top, matched exactly rather than introduced. Three of four
 visible, so SC 2.4.7 holds. **Recorded because a future round may want R16's bar to reserve ring
 clearance, and that is a composition decision.**
 
-### R19 — the masthead section list — RULED IN September 10 2026, NOT BUILT
+### R19 — the masthead section list — BUILT September 11 2026, **NEVER REVIEWED**
 
 **Scope.** The masthead's `INDEX` link becomes a trigger that opens a list of in-page
 destinations. Everything else R16 shipped is untouched.
@@ -2552,6 +2552,41 @@ and 390, where paragraph 1 changed line count; 0.000px at every other width.
 > cap's box and dark ink inside the coda's box** before accepting the file. That is the
 > assert-what-you-captured rule from R18.3, applied.
 
+
+### PASS B — the `/privacy` route — RULED IN September 16 2026, NOT BUILT
+
+**This is R11**, the slice `index.astro` has carried as deferred since the rebuild began. The
+footer has linked to a 404 the whole time. Copy is `PRIVACY.md` at the repo root, which
+inherits `COPY.md`'s set-verbatim rule.
+
+**Ruled here so the build does not arbitrate it:**
+
+1. **No masthead, no folio. Footer only.** The masthead's panel is `sections.ts`, the hub's
+   in-page anchors, and on `/privacy` every one is dead; making them work means rewriting
+   R19's component, **which has never been reviewed.** The masthead's mechanism is also keyed
+   to the Cover clearing and the pivot withdrawing, neither of which exists here. The folio is
+   a scroll listener tracking sections that do not exist. **`sections.ts` gains no entry.**
+2. **Her name is the way back.** Footer-only is a dead end: `PageFooter` carries no link home.
+   `PRIVACY.md`'s standfirst already reads *Dr. Syreeta McClain*, so **that line links to
+   `/`**, in the masthead name's register, reusing `.mast-home`'s four declarations without
+   importing the masthead. No copy added, no navigation device invented.
+3. **The measure is capped at About's `39.4118em`.** Band 1 still has no ceiling and this page
+   is long body copy; uncapped it ships a 98-character privacy policy. Same body tier, same
+   78-character ceiling, so a second swept number would be a second thing to keep in
+   agreement. **Confirmed by measurement, and a stop rather than a second cap if it fails.**
+4. **One `<h1>`, "Privacy Policy"**, then one `<h2>` per section of `PRIVACY.md`. The hub's
+   locked ten-`<h2>` structure is the hub's; this is a different document.
+5. **Zero JavaScript.** No island, no script, no listener, no new `dist` chunk.
+6. **`[[DATE]]` is September 16 2026** — "last updated" means last changed.
+7. **Porcelain throughout.** No Obsidian ground, no photograph, no spread.
+
+**Reported and not fixed:** on this route the footer's own Privacy Policy link points at the
+current page. `PageFooter` is shared and a self-link is not worth a hub regression.
+
+**Building is not gated on the TEST sitekey; PUBLISHING is.** The page describes Turnstile
+protecting the contact form, and the form still ships a test key.
+
+**Model: Opus.** A new document layout.
 
 ### Post-launch motion rounds — Round A and Round B
 

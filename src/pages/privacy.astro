@@ -1,0 +1,335 @@
+---
+/**
+ * /privacy — R11, Pass B. THIS BRIEF IS THE SPEC; CONTEXT.md carries no
+ * entry for this round. See the Pass B prompt for the ruling behind
+ * every decision below.
+ *
+ * NOT A HUB SECTION. No id in src/data/sections.ts, no folio entry, no
+ * masthead, no place in the ten-<h2> structure. One document in one
+ * column, Porcelain throughout — no Cover, no pivot, no photograph, no
+ * Obsidian ground. Chrome is FOOTER ONLY: Masthead and FolioMarginalia
+ * are neither imported nor touched, and this file adds no entry to
+ * sections.ts, because every one of the masthead's and the folio's
+ * anchors resolves against the hub's own sections and every one of them
+ * is dead here.
+ *
+ * COPY IS SET VERBATIM FROM PRIVACY.md. Two blanks it left open are
+ * resolved by the Pass B brief, not invented here: [[DATE]] is
+ * "September 16 2026" (the date the policy was written; "last updated"
+ * tracks changes to the policy, not to the calendar), and the contact
+ * address is mcclain@premierleadersllc.com, already written into the
+ * file. Nothing else is reworded, added, or cut.
+ *
+ * THE STANDFIRST IS THE PAGE'S ONLY WAY BACK. Footer-only chrome is a
+ * dead end otherwise. PRIVACY.md's standfirst already names her — "Dr.
+ * Syreeta McClain. Last updated [[DATE]]." — so the fix is to link the
+ * name that is already there, not to invent a navigation device. Set in
+ * the masthead name's own register (Fraunces, opsz 24 / wght 400 /
+ * SOFT 60 / WONK 0, at --mast-name-size — a page-level token, not scoped
+ * to Masthead.astro) and given .mast-home's own interactive treatment,
+ * copied rather than imported: color: inherit, text-decoration: none,
+ * opacity 0.7 on hover, 0.55 on active, 260ms, opacity only, and R16's
+ * own focus ring (1px solid Obsidian, 4px offset). Masthead.astro is not
+ * opened for this — its <style> is component-scoped and importing the
+ * component would mount the whole bar, which this route must not carry.
+ *
+ * THE MEASURE IS CAPPED AT max-width: 39.4118em, PASS A's VALUE,
+ * BYTE-FOR-BYTE. .win-body (the page's own generic body window) gives
+ * up to nine columns in band 1, which is far past a comfortable
+ * measure at 1920 with no cap — exactly the defect Pass A fixed in
+ * About. The em is written on .privacy-body, which also carries
+ * font-size: var(--bio-size), so it resolves against the same 17px
+ * context Pass A measured against (670px), not against some ancestor's
+ * font-size. THIS SWEEP IS NOT RE-RUN — the ruling says confirm it
+ * holds for this copy and STOP AND REPORT if it does not; see the Pass
+ * B report for the per-paragraph, per-width table.
+ *
+ * NO grid-column IS HAND-SET. .win-body is the one primitive this file
+ * needs — a single column of text with no live margin — reused exactly
+ * as it already exists in global.css rather than adding a page-specific
+ * one. h1, the standfirst, the opening statement, and each section
+ * entry are its only children, seated in the same window every hub
+ * section's body copy already uses.
+ *
+ * ONE <h1>, "Privacy Policy". Then one <h2> per PRIVACY.md section, in
+ * its order. This is a different document from the hub's ten spreads
+ * and takes its own heading structure; nothing here is added to satisfy
+ * the hub's locked structure, because that structure does not apply to
+ * this route.
+ *
+ * ZERO JAVASCRIPT ON THIS ROUTE. No island, no script, no listener.
+ * BaseLayout's inline `js-motion` switch and the grain sheet are shared
+ * page infrastructure mounted on every route already; nothing new is
+ * added here, and this file imports no island and adds no client
+ * directive, so it contributes no new JS chunk and no new
+ * <astro-island>.
+ *
+ * GOLD: ZERO. The one rule per section entry is Smoked Slate at 0.38,
+ * the same hairline every other section on the site draws — CONTEXT.md
+ * routes every new rule to Slate; the saturated-accent budget (3 of 3)
+ * is untouched because nothing here is gold at all.
+ *
+ * OUT OF SCOPE, NOT TOUCHED: Masthead.astro, FolioMarginalia.astro,
+ * sections.ts, PageFooter.astro, every hub component, COPY.md,
+ * PRIVACY.md, CONTEXT.md. PageFooter is mounted exactly as it ships on
+ * the hub, including its hardcoded `on-obsidian` ground and its
+ * self-referential Privacy Policy link on this page — both reported in
+ * the Pass B report, neither fixed here, per the brief's instruction
+ * that a shared component's regression risk is not worth this page's
+ * fix.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageFooter from '../components/PageFooter.astro';
+---
+
+<BaseLayout title="Privacy Policy — Dr. Syreeta McClain">
+  <main>
+    <section class="sheet privacy">
+      <h1 class="win-body privacy-h1">Privacy Policy</h1>
+
+      <p class="win-body privacy-standfirst">
+        <a class="privacy-home" href="/">Dr. Syreeta McClain</a>. Last updated September 16 2026.
+      </p>
+
+      <p class="win-body privacy-lede">This site collects almost nothing. Here is exactly what it does collect, where it goes, and what you can ask us to do about it.</p>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">What this site is</h2>
+        <div class="privacy-body">
+          <p>drsyreetamcclain.com is a set of static pages. There are no accounts to create, nothing to buy, no advertising, no analytics, and no tracking cookies. You can read every page on this site without giving us anything at all.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">What you can give us</h2>
+        <div class="privacy-body">
+          <p>The only place this site accepts information is the contact form. It asks for four things: your name, your email address, the type of inquiry you are making, and your message. That is the whole list. We do not ask for anything else and we do not collect anything else from you.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Where an inquiry goes</h2>
+        <div class="privacy-body">
+          <p>When you send the form, it is handled by Formspree, a form processing service, which delivers it to us by email. Inquiries about the Everyday Legends Foundation go to the Foundation at info@everydaylegend.com, because it is a separate organization. Every other inquiry goes to mcclain@premierleadersllc.com.</p>
+          <p>We use what you send us to answer you. That is all. We do not sell it, we do not share it for advertising, and we will not add you to a mailing list.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Spam protection</h2>
+        <div class="privacy-body">
+          <p>The contact form uses Cloudflare Turnstile to tell a person from a bot. There is no puzzle to solve. Your browser sends Cloudflare technical signals about the request so it can make that judgment. Cloudflare's own privacy policy governs what it does with them.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Hosting</h2>
+        <div class="privacy-body">
+          <p>The site is hosted by Vercel. Like any web host, Vercel records standard technical information about requests, including IP address, browser type, the page requested, and the time. This keeps the site running and secure. We do not use it to build a profile of you.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">How long we keep inquiries</h2>
+        <div class="privacy-body">
+          <p>We keep messages for as long as we need them to respond and to keep a reasonable record of the conversation. If you would like your message deleted, write to us and we will delete it.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Your choices</h2>
+        <div class="privacy-body">
+          <p>You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Write to mcclain@premierleadersllc.com and we will take care of it. Some information may need to be kept where the law requires it.</p>
+          <p>If you live somewhere with specific privacy laws, including the European Union and California, those laws may give you additional rights. We honor them where they apply.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Children</h2>
+        <div class="privacy-body">
+          <!-- The sentence a district reader looks for. PRIVACY.md marks it
+               bold in source; <strong> carries that emphasis into the
+               render. font-weight is stated explicitly below because body
+               sets font-synthesis-weight: none — a bare <strong> at the UA
+               default (bolder / 700) has no loaded weight to render and no
+               synthesis to fall back on, so it would sit at the browser's
+               nearest match and look identical to the paragraph around it.
+               500 is the heaviest Montserrat weight this page loads. -->
+          <p>This site is not directed to children under 13 and does not knowingly collect information from them. <strong>No student information is collected through this site</strong>, and nothing here is connected to any school or district system. If you believe a child has sent us information, write to us and we will delete it.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Links to other sites</h2>
+        <div class="privacy-body">
+          <p>This site links out to premierleadersllc.com, everydaylegend.com, the district website, and the McClain brothers' sites. Those are separate sites with their own privacy practices. Read theirs before sharing anything with them.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Changes</h2>
+        <div class="privacy-body">
+          <p>If this policy changes, the date at the top changes with it.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Contact</h2>
+        <div class="privacy-body">
+          <p>Questions about this policy, or about information you have sent us? Write to mcclain@premierleadersllc.com.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <PageFooter />
+</BaseLayout>
+
+<style>
+  /* Standalone route, standard rhythm — the same value About and Contact
+     both carry. Not one of the ten hub sections, so the Composition
+     table's "sections MUST NOT share a padding token" does not bind
+     here; reusing 96 is a choice of restraint, not a collision. */
+  .privacy{
+    padding-block: 96px;
+  }
+
+  /* ---- H1 ----------------------------------------------------------
+     --fx-display, the page's own prominent-heading token (Cover's name,
+     the blog's kicker head), stated with its own weight the same way
+     every other consumer of this token does — Fraunces defaults to
+     wght 900 if a rule leaves it unstated. */
+  .privacy-h1{
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-display);
+    font-weight: 340;
+    font-size: clamp(40px, 4.2vw, 58px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--obsidian);
+  }
+
+  /* ---- STANDFIRST ----------------------------------------------------
+     The masthead name's own register: opsz 24 / wght 400 / SOFT 60 /
+     WONK 0 at --mast-name-size, a page-level token. Not the masthead's
+     line-height (--mast-h is a 56px bar height, not a paragraph
+     leading) — 1.3 is ordinary running-text leading at this size. */
+  .privacy-standfirst{
+    margin: var(--s2) 0 0;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 24, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    font-size: var(--mast-name-size);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
+  }
+
+  /* .mast-home, copied rather than imported — four declarations plus
+     its two interaction states and its focus ring, all byte-identical
+     to R18.3's values. Transform and opacity only; never transition-all. */
+  .privacy-home{
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 260ms var(--ease);
+  }
+  .privacy-home:hover{ opacity: 0.7; }
+  .privacy-home:active{ opacity: 0.55; }
+  .privacy-home:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 4px;
+  }
+
+  /* ---- OPENING STATEMENT ---------------------------------------------
+     The page's lede tier, verbatim — --fx-lede, the same face, axes,
+     weight, clamp, line-height and letterfit every section's opening
+     statement already carries. Display type, so the measure ceiling
+     this file states below does not apply to it, the same exemption
+     About's own lede carries. */
+  .privacy-lede{
+    margin: var(--s5) 0 0;
+    font-family: var(--display);
+    font-variation-settings: var(--fx-lede);
+    font-weight: 350;
+    font-size: clamp(52px, 3.8vw, 64px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--obsidian);
+    text-wrap: balance;
+  }
+
+  /* One rhythm value between every section entry, including the first —
+     margin-top only, so gaps never stack across a grid formatting
+     context (grid items do not collapse adjoining margins the way block
+     boxes do). */
+  .privacy-entry{
+    margin: var(--s6) 0 0;
+  }
+
+  /* The hairline head, Educational Leader's and Contact's own idiom:
+     rule, then heading. Smoked Slate at 0.38 — the same weight every
+     hairline on the site uses. NOT GOLD: CONTEXT.md routes every new
+     rule to Slate: "the budget is spent. Add none." */
+  .privacy-rule{
+    width: 100%;
+    height: 1px;
+    margin: 0 0 var(--s2);
+    border: 0;
+    background: var(--slate);
+    opacity: 0.38;
+  }
+
+  /* ---- H2 ------------------------------------------------------------
+     A third tier, between the lede and the body — the same coordinates
+     About's and Educational Leader's coda already carry (opsz 96 /
+     SOFT 35 / wght 400), reused rather than re-derived because this
+     page's headings are exactly that register: display type, clearly
+     subordinate to an opening statement, clearly senior to body copy. */
+  .privacy-h2{
+    margin: 0 0 var(--s3);
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;
+    font-weight: 400;
+    font-size: clamp(24px, 2vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--obsidian);
+  }
+
+  /* ---- BODY, AND THE MEASURE CAP --------------------------------------
+     --bio-size / --bio-lh, the page's body tokens, unchanged — and
+     max-width: 39.4118em on the SAME rule that sets font-size, so the
+     em resolves against this element's own 17px, not an ancestor's.
+     That is what makes it Pass A's exact 670px rather than a
+     coincidentally similar number in a different font context. */
+  .privacy-body{
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: var(--bio-size);
+    line-height: var(--bio-lh);
+    letter-spacing: 0.004em;
+    color: var(--slate);
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+    max-width: 39.4118em;
+  }
+
+  .privacy-body strong{
+    font-weight: 500;
+  }
+
+  .privacy-body p{ margin: 0; }
+  .privacy-body p + p{ margin-top: 1.5em; }
+</style>
