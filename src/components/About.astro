@@ -227,9 +227,39 @@ import LedeReveal from './LedeReveal.tsx';
      the ones R1 carried forward in global.css with the note "the drop
      cap solve (R2) keys off these". The solve below does exactly that.
 
-     NO max-width. Measure is controlled by the column span and by
-     nothing else — a max-width here is the thing CONTEXT.md's layout
-     rules forbid, and the old build had one (62ch). */
+     PASS A — THE MEASURE IS CAPPED, AND IT IS A max-width, AGAINST
+     CONTEXT.md's STANDING RULE. That rule reads "Measure is controlled
+     by column span, never by max-width on the text element." It was
+     overridden for About ONLY, by Jackson's ruling of September 16
+     2026, because no span solves it: band 1 has no breakpoint above
+     1280, so one span must hold 1280 through 1920, and
+       6 columns   884px at 1920   98 characters  (the defect)
+       5 columns   733px at 1920   82 characters  (still over)
+       4 columns   368px at 1280   ~43 characters (under the floor)
+     A span that fixed 1920 would need a new breakpoint, which the pass
+     forbids. The column span still places the block; the cap only
+     stops it growing past the ceiling. Nothing about the ancestor rule
+     is touched: this is a leaf text block, and a max-width on it
+     collapses no placement anywhere.
+
+     670px IS MEASURED, NOT ESTIMATED. Swept 1px at a time from 560 to
+     900 with the window held wider than every candidate:
+       paragraph 1 holds <= 78 characters to 738px under the three-line
+       cap and to 708px under the two-line cap
+       paragraph 2 holds <= 78 characters to 670px; 671 renders 80
+     so 670 is the widest measure at which BOTH paragraphs hold the
+     ceiling. It is also the measure the 750px single-column threshold
+     already ships (750 holds 78, 751 renders 80) — the same number
+     reached from the other end of the page by a separate measurement.
+     Paragraph 1 renders three lines at 670 under both caps.
+
+     Written in em so it rides the body size: 670 / 17 = 39.4118em.
+     It binds only where columns 1-6 are wider than 670px — above ~1500
+     in band 1. 1440 and every narrower width render exactly as before.
+
+     THIS IS COPY-DEPENDENT. The sweep measured today's two paragraphs.
+     C1 owns copy and has not run; when it does, re-sweep, do not
+     recalculate. */
   .about-body{
     font-family: var(--sans);
     font-weight: 300;
@@ -240,6 +270,7 @@ import LedeReveal from './LedeReveal.tsx';
     text-wrap: pretty;
     orphans: 3;
     widows: 3;
+    max-width: 39.4118em;
   }
 
   .about-body p{ margin: 0; }
@@ -467,6 +498,13 @@ import LedeReveal from './LedeReveal.tsx';
      exactly N lines — the box can then never reach into line N+1, and
      no trial-and-error line-height is involved at any breakpoint.
 
+     ==== SUPERSEDED BY PASS A, September 16 2026 ====================
+     Everything from here to the end of this comment is the R2/R3
+     record, kept because its reasoning still stands. Its CONCLUSION
+     does not: N is 2 now, not 3, and "N is 3 at every width" was false
+     from 1807px up — see the PASS A block directly above `.about`.
+     =================================================================
+
      N, MEASURED FROM THE RENDERED DOM AT EVERY BREAKPOINT, capped at
      3 per R2's brief. Re-measured in full after R3 re-banded the
      sheet, because N is a function of the MEASURE and R3 moved the
@@ -528,16 +566,74 @@ import LedeReveal from './LedeReveal.tsx';
 
      If a future pass widens the measure below 1024 past roughly 670px,
      the two-line case comes back and this comment is the warning. */
+
+  /* ---- PASS A — THE CAP IS TWO LINES, SOLVED AGAINST ROUNDED METRICS
+     THE REQUIREMENT IS TWO ALIGNMENTS AND NOTHING ELSE:
+       1. the cap's cap-height top on line 1's cap-height
+       2. the cap's baseline on line 2's baseline
+     Two lines rather than three because paragraph 1 runs three lines
+     or more at every width once the measure is capped (see BODY), so a
+     two-line cap leaves line 3 onward running full measure UNDERNEATH
+     the letter — which is what makes it a drop cap rather than a block
+     pushed sideways.
+
+     SIZE. Unchanged formula, N = 2:
+         ink = (N - 1) x body line-height + body cap-height
+             = 1 x 30.6 + 0.700 x 17 = 42.5px
+         F   = 42.5 / 0.700           = 60.714px
+     0.700 is closed: R2's pixel scan, R9.6's measureText() sweep, and
+     the served woff2s (Fraunces 1400/2000, Montserrat 700/1000). The
+     same formula gives 104.443px at N = 3, which is what shipped.
+     Written from the tokens, so it cannot drift from the body tier.
+
+     LINE-HEIGHT stays 0.72058 (= 2 x b1 - 1, the value that seats the
+     float's box bottom on its own baseline, which is what releases
+     line 3).
+
+     MARGIN-TOP — THE ROUNDING RE-SOLVE, AND WHY THE SMOOTH FORMULA
+     MISSED. The smooth solve gave 7.851px and landed at -1.01px (top)
+     and -0.75px (baseline) at every width. The cause is Chrome's line
+     layout, which does not use the face's metrics as fractions:
+       - it rounds the ascent and the descent to whole pixels, each on
+         its own, and
+       - it FLOORS the half-leading to a whole pixel before adding it.
+     So a line box's baseline sits at
+         B = round(asc x F) + floor((lh - round(asc x F) - round(desc x F)) / 2)
+     The body proves the model: Montserrat 968/-251 at 17px on 30.6px
+     gives 16 + floor(5.3) = 21, the 21.000px --body-baseline has
+     always measured. Fraunces 1956/-510 (0.978 / 0.255) at 60.714px
+     on 0.72058 x 60.714 = 43.749px gives
+         59 + floor((43.749 - 59 - 15) / 2) = 59 + floor(-15.125) = 43
+     where the smooth formula assumed 43.749. That 0.749px IS the
+     measured -0.75px. So the margin is solved against B, not against
+     the box:
+         margin-top = (line 2 baseline) - B_cap
+                    = (--body-baseline + 30.6) - 43 = 8.6px
+     Measured at 1920, 1440 and 1280: baseline 0.000px, cap-height top
+     -0.256px — that remainder is antialiasing on the glyph's top edge,
+     not position, and it is inside the 1.0px tolerance.
+
+     THE ROUNDING IS WRITTEN IN CSS, not typed in as 8.6px, so a change
+     to --bio-size or --bio-lh re-solves it with the same arithmetic
+     Chrome uses. round() needs Chrome 125 / Safari 15.4 / Firefox 118.
+     Firefox does not round font metrics the same way, so it may land
+     up to about 1px off; it is still a two-line cap.
+
+     NO BREAKPOINT, NO LOOKUP. One set of values at every width, which
+     is the shape CONTEXT.md requires after deleting two lookups. */
   .about{
     /* Body baseline offset inside its own line box. MEASURED with a
        zero-size inline-block probe: 21.000px, and constant at every
        width because the body tier is a fixed 17px / 30.6px. */
     --body-baseline: 21px;
 
-    /* N = 3 */
-    --cap-size:  104.443px;
+    /* N = 2 — PASS A. Derivation in the block above. */
+    --cap-size:  calc((var(--bio-size) * var(--bio-lh) + 0.7 * var(--bio-size)) / 0.7);
     --cap-lh:    0.72058;
-    --cap-top:   6.941px;
+    --cap-asc:   round(nearest, 0.978 * var(--cap-size), 1px);
+    --cap-desc:  round(nearest, 0.255 * var(--cap-size), 1px);
+    --cap-base:  calc(var(--cap-asc) + round(down, (var(--cap-lh) * var(--cap-size) - var(--cap-asc) - var(--cap-desc)) / 2, 1px));
+    --cap-top:   calc(var(--body-baseline) + var(--bio-size) * var(--bio-lh) - var(--cap-base));
     /* Space to the text it is set into. Fraunces' D already carries a
        right sidebearing; this is the optical remainder on top of it. */
     --cap-right: 0.045em;

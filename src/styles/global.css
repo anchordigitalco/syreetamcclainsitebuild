@@ -890,13 +890,39 @@ a{ color: inherit; }
      <= 750     1 / -1.
 
    .win-about-close   the closing line.
-     >= 1280    columns 10-12, in the SAME GRID ROW as the body and
+     >= 1280    columns 8-10, in the SAME GRID ROW as the body and
                 bottom-aligned within it by a computed baseline snap
                 in About.astro, so its last baseline sits on body
                 paragraph 2's last baseline.
-     1024-1279  columns 10-12, IDENTICAL. It is anchored to the
-                lede's right edge, and the lede holds 1-9 at both
-                desktop widths.
+     1024-1279  columns 9-11. The body holds 1-7 here, one column
+                wider than band 1, so the closing line moves one
+                column with it.
+
+     PASS A MOVED IT IN FROM 10-12, and the rule it now follows is
+     ONE EMPTY COLUMN BETWEEN THE BODY'S WINDOW AND THE CLOSING LINE.
+     R2 hung it off the lede's right edge at 10-12. Built, that left
+     it 478px from the body at 1920 — three empty columns, the largest
+     gap in the section — and Jackson's verdict was "too far right,
+     too isolated." PASS A's measure cap then moved the body's right
+     edge left, which made the gap 692px.
+       - Column 7 is ruled out: R2 set it there, one gutter from the
+         body, and it read as a second column of body copy.
+       - Column 8 is the nearest track that keeps a whole empty
+         column between them (Everyday Legends already does this:
+         body 4-8, margin 10-12, column 9 empty). It is also the ONLY
+         track that brings the 1920 gap below where it started:
+         8 -> 389px, 9 -> 541px, 10 -> 692px.
+       - The same rule gives column 9 in band 2, and that makes the
+         gap continuous across the band boundary: 122px at 1280
+         (body 1-6, close at 8) and 122px at 1279 (body 1-7, close at
+         9). Left at 10 in band 2, it would jump from 122 to 220.
+     It keeps its three-column width and its row, so R2's
+     bottom-alignment to paragraph 2's last baseline is unchanged —
+     that alignment is the composition. The gap is between the BODY'S
+     WINDOW and the closing line; above ~1500px the body's text stops
+     at its 670px measure cap inside that window, so the visible gap
+     there is wider than one column. Jackson rules on the screenshot.
+
      751-1023   1 / -1. IT IS NOT PROMOTED INTO THE NEW LIVE MARGIN,
                 and that is a decision rather than an omission. It
                 collapses inline in reading order here exactly as it
@@ -939,7 +965,7 @@ a{ color: inherit; }
    what seats the closing line in the body's row. See the walk above. */
 .win-about-lede    { grid-column: 1 / 10; }
 .win-about-body    { grid-column: 1 / 7;  }
-.win-about-close   { grid-column: 10 / 13; }
+.win-about-close   { grid-column: 8 / 11; }
 
 /* ============================================================
    R3 — EDUCATIONAL LEADER.  Entrance A, the hairline head.
@@ -1892,12 +1918,18 @@ a{ color: inherit; }
   .win-body  { grid-column: 1 / 11; }
   .win-margin{ grid-column: 11 / 13; }
 
-  /* About: the lede, the body AND the closing line are all unchanged
-     by R3. The closing line already held 10-12 in this band — it is
-     absent from this block and always was, because R2 anchored it to
-     the lede's right edge rather than to the body's. No line count
-     was needed to keep it there and none was introduced. */
+  /* About: the lede and the body are unchanged by R3. The closing line
+     was absent from this block until PASS A, because R2 anchored it to
+     the lede's right edge at 10-12; PASS A re-anchors it to the body's
+     window, so it now follows the body here (below). No line count is
+     involved either way. */
   .win-about-body { grid-column: 1 / 8; }
+
+  /* PASS A. One empty column after the body's window, as in band 1:
+     the body holds 1-7 here, so the closing line takes 9-11. Same
+     row, so the bottom-alignment is unchanged. See .win-about-close
+     above. */
+  .win-about-close { grid-column: 9 / 12; }
 
   /* R3 — Educational Leader. The HEAD, the LEDE, the RULE, the BODY
      and the CLOSING LINE are all unchanged from band 1's values or
