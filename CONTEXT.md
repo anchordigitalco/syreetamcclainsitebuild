@@ -583,6 +583,14 @@ against.
   void at 1023 read as a margin instead.
 - **Measure is controlled by column span, never by `max-width` on the text element.** Body
   copy MUST NOT exceed ~66 characters; if a span runs wider, narrow the span.
+- **OVERRIDDEN FOR ABOUT ONLY, by Jackson's ruling of September 16 2026.** `.about-body`
+  carries `max-width: 39.4118em` (670px). **No span solves band 1**: there is no breakpoint
+  above 1280, so one span must hold 1280 through 1920, and six columns gives 98 characters at
+  1920, five gives 82, and four drops 1280 to about 43 — under the 45-character floor. A span
+  that fixed 1920 would need a new breakpoint. **The ancestor rule is untouched and is a
+  different rule**: this is a leaf text block, and a `max-width` on it collapses no placement.
+  The exception is About's alone and does not generalise; **the next section to hit this comes
+  back for its own ruling.**
 - **Live margin: a real column at every width from 751 up. There is no margin breakpoint
   below 1280 any more.** *(Resolved R3, September 6 2026 — this entry is the amendment the
   previous version called for.)* It used to blink: column ≥1280, suppressed 1024–1279,
@@ -658,6 +666,16 @@ inserting an 8-column band and moving the single-column threshold down to 750.
 - **Working ceiling is 78 characters, not 66.** The ~66 figure above is the target. 78 is
   the enforced maximum, set by what the fluid 12-column grid already ships at 1279 (77)
   and accepted there. Band 3 lands 49–69 at every width.
+- **CORRECTED September 16 2026: "enforced" was aspirational above 1440, and nothing enforces
+  it.** The 78 figure was derived at 1279 and the band is fluid with no ceiling, so the measure
+  keeps growing with the viewport. Measured on the built tree: **About's body runs about 98
+  characters at 1920**, 25% over the stated maximum, and the overrun is what collapses its
+  paragraph 1 to two lines and breaks the drop cap (see the drop-cap rule). **Band 1 needs an
+  actual cap, not a stated one.** Pass A builds it for About. **MEASURED September 16 2026 by Pass A, and they all overrun:** Educational Leader **84**,
+  Premier Leadership **83**, Everyday Legends **80**, Athletic Management **85**, and
+  **Charging It to the Game 102** characters at 1920. Index and Contact carry no body
+  paragraph to measure. **The ceiling is a page-wide slice and it is not scheduled.** Pass A
+  fixed About only, by ruling, and reported the rest without touching it.
 - **Cost, accepted:** at 900 and below the lede and body share columns 1–6, so About's
   right-edge jog — its composition, since it has no kicker or rule — survives only from
   901 to 1023.
@@ -2177,7 +2195,7 @@ is not an invitation to add copy back.
 
 **Model: Sonnet.** String replacement and measurement.
 
-### R18.3 — the masthead name link — RULED IN September 11 2026, NOT BUILT
+### R18.3 — the masthead name link — SHIPPED AND ACCEPTED September 11 2026
 
 **Rescoped September 11 2026 to one change.** It was written as two. Change 1, `:target`
 suppression, was found already built under R19's constraint 7 and measuring 0 frozen at all
@@ -2225,6 +2243,54 @@ against that tier by construction. Wrapping the name in an anchor is a **0.000px
 1440 and 1280** or it is a fail.
 
 **Model: Sonnet.**
+
+#### What R18.3 measured — SHIPPED, accepted on review
+
+`<a class="mast-home" href="#top" aria-label="Back to top">` wrapping the untouched span, plus
+four rules. **Two hunks, one file, 78 insertions.** The span, its class, its text and its
+`aria-hidden` are byte-identical.
+
+**`display: flex` on the anchor is load-bearing and is the whole reason the name does not
+move.** The span was a direct flex item of `.masthead` and was therefore blockified. An inline
+anchor would generate a line box of its own whose height comes from the ANCHOR'S STRUT —
+`.masthead`'s inherited font and line-height, not the name's — re-seating the 26.66px ink
+against a strut it has nothing to do with. As a flex container the anchor establishes no line
+box, so the span is blockified exactly as before. **Colour and underline are neutralised
+explicitly**, because the UA sheet supplies both and either would be a visible change.
+
+**Name ink: 0.000px on left, top, width and height at 1920, 1440 and 1280**, taken from a
+**Range over the text node rather than the element box**, because a box can change shape while
+the ink stays put. Independently corroborated: **the rest-state viewport captures are
+byte-identical before and after at all three widths.** Not 0.000px by measurement, the same
+pixels.
+
+**Nothing else moved.** Page height, ten section tops and heights, the footer and **1,885
+left-edge cells: 0.000px at all thirteen widths**, zero non-zero entries. Listeners 1 and 1,
+`astro-island` count 7, `dist` JS **226,474 bytes before and after, zero growth**. Accessible
+name computes to `Back to top` from the accessibility tree; the link is reached at **Tab #1**,
+so DOM, visual and tab order agree and it precedes the Contents trigger.
+
+**`#top` verified, not asserted.** From scrollY 4000 at 1440: lands at scrollY 0,
+`document.querySelector(':target')` is null, `main > section:target` is false, no element
+carries `id="top"`. `#sec-portrait` returns the section, for contrast. **R19's arrival rule
+cannot fire off the name link.**
+
+> **A third harness fault, and the pattern is now the finding.** The first capture pass
+> returned all six images byte-identical: **Puppeteer's `clip` is page-relative, not
+> viewport-relative**, so a clip at y 0 with the page scrolled to 3000 captures the top of the
+> DOCUMENT — the Cover — rather than the bar. The harness now takes its clip origin from the
+> live `scrollY` and **asserts the bar's rendered box falls inside the strip before it writes a
+> file.** That is the same class of fault as R18.1's `astro preview` race and R18.3's own
+> `framenavigated` false positive: **three rounds, three harnesses quietly returning something
+> that looked like evidence.** The standing rule that comes out of it: **a harness MUST assert
+> that the thing it claims to have measured was actually in frame.**
+
+**One thing measured and deliberately not changed.** The focus ring runs y −5 to y 61 against a
+bar at 0→56, so its top 5px sits above the viewport. **`summary.mast-jump` is byte-identical**
+— same ringTop, same ringBottom, same 4px offset — so this is R16's existing behaviour for a bar
+flush to the viewport top, matched exactly rather than introduced. Three of four sides are
+visible, so SC 2.4.7 holds. **Recorded because a future round may want R16's bar to reserve ring
+clearance, and that is a composition decision.**
 
 ### R19 — the masthead section list — RULED IN September 10 2026, NOT BUILT
 
@@ -2348,6 +2414,144 @@ The harness also **refuses to run** unless `js-motion` is present and
 `prefers-reduced-motion: reduce` is unmatched, so a test that cannot fail is rejected up front
 rather than passing quietly. Jumps are made instant by setting scroll directly, twice across
 rAF pairs, to defeat page-wide `scroll-behavior: smooth`.
+
+### PASS A — About: the measure, the drop cap and the closing line — SHIPPED AND ACCEPTED September 16 2026
+
+**One round, three changes, and they are one round because they interact.** Written first as
+two changes and stopped before building: the stop was correct and the brief was wrong. The
+drop-cap half could not be built as specified, and the stop was not scoped, so the closing line
+did not get built either. Both corrections are in this entry.
+
+**Change 1. Cap About's body measure in band 1.** The band is fluid and uncapped, so the body
+runs about **98 characters at 1920** against the file's own 78-character maximum. That overrun
+collapses paragraph 1 to two lines at every width from 1807 up, which is what breaks the cap.
+**The number and the mechanism are derived in the build, not ruled here**, against two pass
+conditions: **paragraph 1's longest line MUST NOT exceed 78 characters, and paragraph 1 MUST
+render at least three lines, at all thirteen widths.** No new breakpoint, no hand-set
+`grid-column`, no copy change. **The lede is untouched** — it is display type and this file
+already exempts display type from the measure ceiling.
+
+**Change 2. The cap goes from three lines to two.** It follows change 1 and MUST be measured
+after it. "Intentional" is two alignments and they are the whole job: the cap's **cap-height top
+on line 1's cap-height**, and the cap's **baseline on line 2's baseline**, both within 1.0px at
+1920, 1440 and 1280.
+
+> **The arithmetic is already solved and re-derived from the served font files, so the build
+> re-measures rather than re-invents.** Fraunces' woff2 carries **2000 upem with a 1400 cap**
+> and Montserrat's **1000 with 700**: both exactly **0.700**, which is now the THIRD independent
+> confirmation of that figure after R2's pixel scan and R9.6's `measureText()` sweep. **Treat
+> 0.700 as closed and stop re-deriving it.**
+>
+> For N=2: required ink = `1 x 30.6 + 0.700 x 17` = **42.5px**; font-size `42.5 / 0.700` =
+> **60.714px**; line-height **0.72058 unchanged**, since `L = 2b1 - 1` is what puts the float's
+> box bottom on its own ink baseline; margin-top **7.851px**. The same formula reproduces
+> today's 104.443px for N=3, which is the check that it is the right formula.
+>
+> **Measured at those values, both alignments land at −1.01px and −0.75px — the top misses the
+> 1.0px tolerance by 0.01px, at every width identically.** The residual is Chrome rounding the
+> face's ascent and descent to whole pixels at 60.7px, where the formula is smooth. **It is a
+> re-solve against the rounded metrics, not a tuned nudge, and the round MUST do it rather than
+> ship the approximation.**
+
+**Change 3. The closing line is too isolated.** Jackson's verdict: it sits too far right. At
+1920 the body's ink ends at x 948 and the coda starts at x 1426 — a **478px gap, three empty
+columns**, the largest gap in the section. **It MUST stay separated**: it is a coda, `COPY.md`
+sets it apart deliberately, and gluing it to the body is a failure, not a fix.
+
+> **This is why the three are one round.** Change 1 moves the body's right edge LEFT at 1920,
+> which makes the gap BIGGER, not smaller. **The track MUST therefore be chosen against the
+> capped body, after changes 1 and 2 land**, or it is chosen against geometry that no longer
+> exists. Ordering is a pass condition, not a preference.
+>
+> **Column 7 is ruled out and the reason is on the record.** R2 built the coda there and it read
+> as a second column of body copy rather than as a closing statement. The build picks from the
+> tracks the section already establishes, states which and why before building it, and **Jackson
+> rules on the screenshot.** R2's bottom-alignment to paragraph 2's last baseline is the
+> composition and MUST survive.
+
+**Report-only, not in scope:** the character count of every other section's body at 1920. If
+the other bodies overrun too, the ceiling is a page-wide slice rather than an About one, and
+this round is not it.
+
+**Model: Opus.** Composition at every one of the three changes.
+
+#### What Pass A measured — SHIPPED, accepted on review
+
+**Two files, seven hunks, and most of the added lines are comment.** `About.astro` and
+`global.css`. Nothing else in `src/` moved.
+
+**The measure cap is 670px and it was SWEPT, not calculated.** 1px at a time from 560 to 900,
+with the window held wider than every candidate: paragraph 1 holds ≤78 characters to 738px
+under the three-line cap and to 708px under the two-line cap, but **paragraph 2 holds only to
+670px — 671 renders 80.** So 670 is the widest measure at which BOTH paragraphs hold the
+ceiling, and paragraph 1 alone would have shipped paragraph 2 at 82. **It is also the measure
+the 750px single-column threshold already carries** (750 holds 78, 751 renders 80): the same
+number reached from the other end of the page by an unrelated measurement. Written in `em`
+(670 / 17 = 39.4118em) so it rides the body tier. **It binds only above roughly 1500**; 1440
+and every narrower width render exactly as before. **The number is copy-dependent — re-sweep
+when About's copy changes, do not recalculate.** C1 does not touch About, so C1 does not
+invalidate it.
+
+**Paragraph 1 now runs ≥3 lines and ≤74 characters at all thirteen widths**, counted two
+independent ways — per-character rendered position, and the engine's own line boundaries
+walked with the selection API — **agreeing at every width.** The round found and fixed a fault
+in its own second method first: it stopped at the floated cap.
+
+> **THE CHROME ROUNDING MODEL, AND IT IS THE FINDING THAT OUTLIVES THIS ROUND.** The smooth
+> solve put the cap at −1.01px and −0.75px, identically at every width, and the cause is that
+> **Chrome does not place a baseline from the face's metrics as fractions.** It rounds ascent
+> and descent to whole pixels, each on its own, and then **floors the half-leading** before
+> adding it:
+>
+>     B = round(asc x F) + floor((lh - round(asc x F) - round(desc x F)) / 2)
+>
+> **The body proves the model rather than the model being assumed**: Montserrat 968/−251 at
+> 17px on 30.6px gives `16 + floor(5.3) = 21`, which is the 21.000px `--body-baseline` this
+> file has measured since R2. Applied to the cap, Fraunces at 60.714px on 43.749px gives
+> `59 + floor(-15.125) = 43` where the smooth formula assumed 43.749 — **and that 0.749px IS
+> the measured −0.75px.** Margin-top is therefore solved against B: `(21 + 30.6) - 43 =
+> 8.600px`.
+>
+> **The rounding is written in CSS with `round()`, not typed in as 8.6px**, so a change to
+> `--bio-size` or `--bio-lh` re-solves it with the arithmetic Chrome actually uses. **This
+> model applies to every baseline registration on this page** and R2's, R9.6's and R16's
+> optical seatings were all solved smooth; any of them that ever measures a sub-pixel residual
+> should be re-read against this before anything is tuned.
+>
+> **Browser cost, recorded:** `round()` needs Chrome 125 / Safari 15.4 / Firefox 118, and
+> **Firefox does not round font metrics the same way**, so the cap may sit up to about 1px off
+> there. It is still a two-line cap. Firefox has never been opened on this build.
+
+**Measured at all thirteen widths, not the three required: baseline delta 0.000px and
+cap-height-top delta −0.256px, identical everywhere.** The −0.256 is antialiasing on the
+glyph's top edge, not position. Line 3 starts at the section's left edge at every width.
+
+**The closing line took column 8 in band 1 and column 9 in band 2**, on a rule the build
+derived and stated before building: **one empty column between the body's window and the
+coda.** Column 7 was ruled out on the record. **Column 8 is the only track that brings the
+1920 gap below where it started** — 8 gives 389px, 9 gives 541px, 10 gives 692px against an
+original 478px. The band-2 value keeps the gap continuous across the boundary: **122px at 1280
+and 122px at 1279**, where leaving it at 10 would have jumped 122 to 220. **R2's
+bottom-alignment to paragraph 2's last baseline is identical to the hundredth at every width**,
+including the pre-existing −1.27px at 1024.
+
+> **Open, and Jackson has seen it: the 1920 gap is 389px, not one column.** The body's text now
+> stops at its 670px cap inside a wider window, so the visible gap is wider than the track
+> rule implies. Better than 478px and accepted; **not resolved.**
+
+**Nothing else moved.** Every section other than About: **0.000px height delta and 0.000px
+left-edge delta at all thirteen widths**, 1,807 left-edge cells, zero mismatches. Listeners 1
+and 1, islands 7, `dist` JS **226,474 bytes before and after**. **Gold 1 saturated / 0 hairline
+in About, before and after.** About's own height moves +61.19px at 1920 and −30.59px at 1280
+and 390, where paragraph 1 changed line count; 0.000px at every other width.
+
+> **A third capture fault, found and fixed inside the round.** The "lede settled" assertion
+> tested for `transform: none`, but **a finished animation reports an identity matrix**, so the
+> check failed on a page that was in fact settled. Fixed to accept both. The round also framed
+> its captures below the masthead and **decoded every saved PNG to assert gold ink inside the
+> cap's box and dark ink inside the coda's box** before accepting the file. That is the
+> assert-what-you-captured rule from R18.3, applied.
+
 
 ### Post-launch motion rounds — Round A and Round B
 
@@ -2601,6 +2805,36 @@ separately at each breakpoint. Re-solved once already (Bodoni Moda → Fraunces)
 > there is nothing to protect. The *rule* below still stands — the arithmetic to avoid is
 > the shape, not the variable name.
 >
+> **CORRECTED September 16 2026. "N is 3 at every width on the page" IS FALSE, AND HAS BEEN
+> SINCE 1920 JOINED THE VERIFICATION LIST.** Measured two independent ways on the built
+> working tree: **About's paragraph 1 renders TWO lines at every width from 1807 up**, 1920
+> included. The three-line cap therefore **hangs 21.00px below its own paragraph at 1920 and
+> clears paragraph 2 by 4.50px** — precisely the failure case the drop-cap rule exists to
+> prevent, shipped and unnoticed. The R3 census above runs from 1440 downward and **1920 was
+> never in it**: R8.2 added the width to the verification list and no census that predates
+> R8.2 was re-run against it.
+>
+> **The cause is the measure, not the cap.** Band 1 gives About's body columns 1–6, which is a
+> FLUID window: 644px at 1440 and **884px at 1920, about 98 characters against this file's own
+> enforced 78-character maximum.** Nothing caps it above 1440. Shrinking the cap does not fix
+> it, because lines 1 and 2 sit beside the cap in every version and their wrap is unchanged —
+> verified by applying the N=2 values in a test page at 1920, where both lines still sat beside
+> the letter and nothing ran underneath. **Pass A caps the measure; the cap follows from it.**
+>
+> **THE STANDING LESSON, AND IT IS GENERAL.** A width added to the verification list does not
+> retroactively verify anything. **Every census that predates the addition MUST be re-run
+> against the new width, or it certifies a build that is already failing there** — which is
+> the exact argument R8.2 made when it added 1920, applied to itself and found wanting. Two
+> censuses predate it: the drop cap's N table and the 78-character ceiling. Both were wrong
+> above 1440 for three months.
+>
+> **CLOSED September 16 2026 by Pass A. N IS 2, AND THE MEASURE IS CAPPED.** `--cap-size` is
+> now written from the body tokens rather than typed (`(30.6 + 0.7 x 17) / 0.7` = 60.714px),
+> `--cap-lh` is unchanged at 0.72058, and `--cap-top` is **solved against Chrome's rounded
+> baseline rather than the smooth one** — see the Pass A entry, which carries the model and the
+> proof. **One set of values at every width. No band, no lookup**, which is the shape this rule
+> exists to enforce. **The N table above is history and its conclusion is void.**
+
 > **Do not re-introduce this shape anywhere it can be avoided.** R2's closing-line snap
 > first carried a *five*-band `--p1-lines` lookup of exactly this kind, for the same
 > reason. Re-anchoring that alignment from the grid row's END rather than its start
@@ -3208,6 +3442,8 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R18 | Round B — texture | **THREE OF FOUR BUILT September 9 2026; REVIEWED AND NOT ACCEPTED. See the R18 entry.** Lede reveals (React island, per-line, **0.000px split delta** against R13's 1.34–4.36px for per-character) and the plate frame draw and Index row stagger (both CSS — React would add an `<astro-island>` and no behaviour). **Ghost numerals STOPPED and still unruled**: new marginalia is composition, the ghosted-monogram mechanic needs explicit sign-off, a margin numeral is a fourth numbering device against three that MUST NOT agree, and R12 deleted `RunningHead.astro` for exactly this. Listener count held at 1 in `src/` and 1 in `dist/`; `framer-motion` installed but never imported and absent from `dist`. Page height, ten section tops and heights, footer and 3,799 left-edge cells **0.000px at all thirteen widths**, dev and preview. Gold **3 of 3 / 0 of 8**. **+226 KB of JS on band-1 desktop, 0 bytes on touch.** |
 | R18.1 | Round B correction | **Measured September 10 2026. Four items closed, two stopped and reported, one refused.** Items 1 and 2 needed no repair — the fix was already in the uncommitted working tree; the ledes measured 71.13px of travel advancing on a real ViewTimeline, and all four plate curtains draw (the fifth plate is the Cover, excluded on a re-measured **55.6% floor** on its reachable cover progress). **Item 3 is provably unsatisfiable by any range** — intersecting the viewport *is* `0 < q < 1`, so finishing every intersecting element requires zero travel; measured 9 failures at `cover 15%->50%` against 3 at `entry 100%`, bought by moving Index completion from 45% to 88% of viewport, which is the bottom-trim failure returning. Three routes proposed, none picked. **Item 4 is Item 3's symptom** — all five rows byte-identical at rest at every width. Item 5 built: `--pivot-scrub-start`, the step squared, seating the entering word at `--mast-name-size` to **0.00px** at all three band-1 widths, travel 3.686-4.213x, left edge / baseline / h2 height **0.000px** at all thirteen — **and measurably not the lever: the word is below the fold until entry 57-64%, so the whole first half of the scrub plays unseen.** `--pivot-scrub-from` deliberately NOT redefined; R16's masthead name consumes it as one rung and squaring in place would have shipped 12.99px under WCAG's 24px floor. Item 6 verified (`smooth`/`auto` on `reduce`, 0px landing error, masthead clean at both boundaries). Item 7 preserved — row height **0.000px**, `+` clearance **96.50px** at rest. Listeners 1 and 1; 533 left-edge cells 0.000px under stripped and reduce, **dev and `astro preview`, and 0.000px dev against built**. |
 | R18.2 | Two mechanisms removed | **SHIPPED AND ACCEPTED September 10 2026.** Jackson's fourth route on Item 3: remove the mechanism from the affected sections rather than suppress it on arrival. The **Index row stagger** and the **Contact lede reveal** both came out. The census answered the open question and the stop condition did not fire: Contact's lede is **three lines and masked at 1920, 1440 and 1280 alike**, never single-line, so no part of the removal was a no-op. **Seven masked ledes before, six after**, and the earlier "eight wired, seven animating" figure was corrected to seven wired in the same pass. Below 1280 no lede was ever masked, the island's own `min-width: 1280` gate. **All four removal targets existed on disk and were absent from `HEAD`**, so R18.1's repo lesson held a second consecutive round. **The Index carried ten animated targets, not five**: five `.idx-num` and five `.idx-body` on `--idx-row` at `cover 15% -> 50%`, with the clip `inset(0px -32px)` on `.idx-item`; clip, stagger and hover were confirmed separately owned before anything was cut. **Nothing moved**: page height, ten section tops and heights, footer and 533 left-edge cells **0.000px**, four conditions x thirteen widths, dev and `astro build` + `astro preview`, Index row heights 0.000px on every row at every width. The one number that should have moved did: ink-to-rule at scroll 0 shifted **84px at 1920 and 1440, 74.88px at 1280, exactly `3 x --idx-name-size`**, the removed `from` keyframe. `astro-island` count in `dist` **8 -> 7**. Listeners 1 and 1, JS weight delta 0. Gold 3 of 3, 0 of 8. **Residue knowingly left. The 7 / 3 / 3 recorded here is a snapshot of the mechanism as it stood, counting masked ledes; it was retired September 11 2026 and re-measured at 21 / 24 / 25 after the ledes moved to transform. Covered by R19's constraint 7, built and measuring 0 frozen at all three widths.** |
+| R18.3 | Masthead name link | **SHIPPED AND ACCEPTED September 11 2026.** `.mast-name` wrapped in `<a class="mast-home" href="#top" aria-label="Back to top">`; the span, its class, its text and its `aria-hidden` are byte-identical. **`display: flex` on the anchor is load-bearing**: the span was a direct flex item of `.masthead` and was blockified, and an inline anchor would generate a line box sized by the ANCHOR'S strut rather than the name's. Colour and underline neutralised explicitly against the UA sheet. Hover 0.7 / active 0.55 at 260ms, opacity only, chosen over `.mast-row`'s treatment because opacity is scale-free and survives the 10.5px-to-26.66px tier gap; `focus-visible` is R16's ring exactly. **Name ink 0.000px on all four metrics at 1920 / 1440 / 1280**, taken from a Range over the text node rather than the element box, and **the rest-state captures are byte-identical before and after** at all three. Page height, ten section tops and heights, footer and **1,885 left-edge cells 0.000px at all thirteen widths**, zero non-zero. Listeners 1 and 1, islands 7, `dist` JS **226,474 before and after**. `#top` verified to land at scrollY 0, match no `:target` and resolve to no element. Accessible name `Back to top`, reached at Tab #1. **Third harness fault found and fixed: Puppeteer's `clip` is page-relative, so the first capture pass photographed the Cover and returned six byte-identical images.** Focus ring overhangs the viewport top by 5px, byte-identical to `summary.mast-jump`'s, matched rather than introduced. |
+| PASS A | About: measure, drop cap, closing line | **SHIPPED AND ACCEPTED September 16 2026.** Three changes in one round because they interact. **The measure is capped at `max-width: 39.4118em` (670px), overriding this file's span-only rule for About alone on Jackson's ruling** — no span solves band 1, which has no breakpoint above 1280. **670 was swept 1px at a time**: paragraph 1 holds 78 characters to 708px under the new cap but **paragraph 2 only to 670**, and 670 is also the measure the 750px threshold already carries, reached independently. **The cap is two lines**, size written from the body tokens at 60.714px, **margin-top solved against Chrome's ROUNDED baseline** `round(asc) + floor(half-leading)` rather than the smooth one — the model is proven on the body's own 21.000px and the 0.749px it predicts IS the measured miss. **Baseline 0.000px and cap-top −0.256px at all thirteen widths**, not the three required. **The closing line moved to column 8 / band 2 column 9** on a derived one-empty-column rule, cutting the 1920 gap 478 → 389 and holding 122px continuous across the 1280/1279 boundary; R2's bottom-alignment identical to the hundredth. Paragraph 1 now ≥3 lines and ≤74 characters everywhere, counted two agreeing ways. **Nothing else moved**: 0.000px on every other section, 1,807 left-edge cells, thirteen widths. Listeners 1/1, islands 7, JS 226,474 unchanged, gold 1/0 unchanged. **Reported and not fixed: every other section's body overruns the ceiling at 1920** (84 / 83 / 80 / 85 / 102). **Open: the 1920 gap is 389px, not one column.** |
 **Preserved from the old build, do not rebuild:** the contact form (Phase F), the Fraunces
 optical system (Phase B), the locked palette, and the standing rules in this file.
 
