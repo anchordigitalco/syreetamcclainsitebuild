@@ -361,21 +361,26 @@ import LedeReveal from './LedeReveal.tsx';
      17px/30.6px.
 
      B_coda is the same quantity for the closing line, and it cannot be
-     a constant because the coda's size is fluid. It comes from the box
-     metrics instead: a first baseline sits at half-leading plus
-     ascent, which reduces to
+     a constant because the coda's size is fluid.
 
-         B = lh/2 + (ascent - descent)/2 x font-size
+     PASS D — B_coda IS SOLVED AGAINST CHROME'S ROUNDED BASELINE, the
+     model PASS A proved on the drop cap and on the body's own 21px:
 
-     and Fraunces' ascent - descent measured 0.72058em. Hence
-     0.5lh + 0.36029em in the element's own units, so it re-resolves at
-     every width with no second measurement.
+         B = round(asc x F) + floor((lh - round(asc x F) - round(desc x F)) / 2)
 
-     RESIDUAL, stated because it is real: Chrome rounds a font's ascent
-     and descent to whole pixels and then floors the baseline, so the
-     rendered B_coda steps where the formula is smooth. Measured
-     residuals per width are in the R2 report. They are under the 2x
-     pixel scan's own resolution.
+     with Fraunces' 0.978 / 0.255. R2 wrote it smooth, as
+     lh/2 + 0.36029em, and every residual it shipped is that
+     difference and nothing else — predicted before measuring:
+         1920  F 32.00  B 32  smooth 32.33   -0.33 measured -0.328
+         1440  F 31.68  B 32  smooth 32.01   -0.01 measured -0.016
+         1280  F 28.16  B 28  smooth 28.45   -0.45 measured -0.438
+         1024  F 26.00  B 25  smooth 26.27   -1.27 measured -1.266
+     so the "pre-existing -1.27px at 1024" was never a separate fault.
+     Written with round() in the element's own em and lh, so a change
+     to the coda's size re-solves it with no second measurement and no
+     new custom property. The lede is in a different grid row and
+     cannot reach this arithmetic: the residuals above are identical to
+     the thousandth with the lede at 1-9 and at 1-11.
 
      Below 1024 none of this applies — the section is one stacked
      column, there is no body block beside the closing line and so no
@@ -385,7 +390,8 @@ import LedeReveal from './LedeReveal.tsx';
     align-self: end;
     margin: 0 0 calc(
               var(--bio-size) * var(--bio-lh) - var(--body-baseline)
-              - (0.5lh - 0.36029em)
+              - (1lh - round(nearest, 0.978em, 1px)
+                     - round(down, (1lh - round(nearest, 0.978em, 1px) - round(nearest, 0.255em, 1px)) / 2, 1px))
             );
     font-family: var(--display);
     font-variation-settings: 'opsz' 96, 'wght' 400, 'SOFT' 35, 'WONK' 0;

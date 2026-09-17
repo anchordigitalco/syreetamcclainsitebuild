@@ -856,14 +856,24 @@ a{ color: inherit; }
    photograph to carry it.
 
    .win-about-lede    the opening statement.
-     >= 1280    columns 1-9. Full body width. Its RIGHT edge is
-                load-bearing: the closing line hangs off it from
-                columns 10-12.
-     1024-1279  columns 1-9, UNCHANGED. This is why .win-body could
-                not be reused: .win-body returns the margin's four
-                columns to the measure at this width and the lede
-                must not take them — they are the closing line's
-                window.
+     >= 1280    columns 1-11.
+     1024-1279  columns 1-11, UNCHANGED.
+
+     PASS D. R2 held it at 1-9 so the closing line could hang off its
+     right edge at 10-12; PASS A moved the closing line to the body's
+     window, and nothing has hung off that edge since. It now takes
+     THE PAGE'S LEDE RIGHT EDGE, which is not About's: in both
+     12-column bands every lede set on the sheet's own grid ends on
+     column 11 and leaves column 12 as the only air at the right trim
+     — .win-edu-lede 4-11, .win-prem-head 5-11, .win-legends-lede
+     4-11, .idx-body 4-11, .win-chg-lede 3-11. The only 12-column
+     ledes that stop at 9 are the two in a STACKED photograph
+     arrangement (Premier at <= 1121, Charging at <= 1254), where the
+     lede takes the stacked plate's width. About has no photograph
+     and never stacks, so the base rule is the one that applies.
+     The closing line is in the BODY's row, not the lede's, so the
+     lede's line count cannot reach its registration; see the walk
+     at the end of this block.
      751-1023   columns 1-6. The full body width of the 8-column
                 band, stopping at the live margin's edge. Display
                 type, so no measure ceiling applies to it.
@@ -943,10 +953,10 @@ a{ color: inherit; }
    ROWS ARE NOT DECLARED FOR ANY OF THE THREE ABOUT WINDOWS above
    1024. Auto-placement already produces the wireframe, without a
    row number a later slice could contradict: the lede takes row 1
-   columns 1-9 and leaves the cursor at row 1 column 10; the body
+   columns 1-11 and leaves the cursor at row 1 column 12; the body
    wants column 1, behind the cursor, so it drops to row 2; the
-   closing wants column 10, ahead of the cursor and free, so it
-   lands in row 2 beside the body. In bands 3 and 4 all three span
+   closing wants column 8 (9 in band 2), ahead of the body's end in
+   row 2 and free, so it lands in row 2 beside the body. In bands 3 and 4 all three span
    the full width, none fits beside another, and they fall into
    three auto rows in source order.
 
@@ -963,7 +973,7 @@ a{ color: inherit; }
 
 /* R2 — About. Columns only; rows come from auto-placement, which is
    what seats the closing line in the body's row. See the walk above. */
-.win-about-lede    { grid-column: 1 / 10; }
+.win-about-lede    { grid-column: 1 / 12; }
 .win-about-body    { grid-column: 1 / 7;  }
 .win-about-close   { grid-column: 8 / 11; }
 

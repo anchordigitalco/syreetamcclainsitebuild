@@ -13,23 +13,21 @@
  * anchors resolves against the hub's own sections and every one of them
  * is dead here.
  *
- * COPY IS SET VERBATIM FROM PRIVACY.md. Two blanks it left open are
- * resolved by the Pass B brief, not invented here: [[DATE]] is
- * "September 16 2026" (the date the policy was written; "last updated"
- * tracks changes to the policy, not to the calendar), and the contact
- * address is mcclain@premierleadersllc.com, already written into the
- * file. Nothing else is reworded, added, or cut.
+ * COPY IS SET VERBATIM FROM PRIVACY.md, including the standfirst's
+ * literal date, which lives in the source rather than as a token the
+ * build substitutes. Nothing is reworded, added, or cut. Section order
+ * is PRIVACY.md's order.
  *
  * THE STANDFIRST IS THE PAGE'S ONLY WAY BACK. Footer-only chrome is a
  * dead end otherwise. PRIVACY.md's standfirst already names her — "Dr.
- * Syreeta McClain. Last updated [[DATE]]." — so the fix is to link the
+ * Syreeta McClain. Last updated September 16 2026." — so the fix is to link the
  * name that is already there, not to invent a navigation device. Set in
  * the masthead name's own register (Fraunces, opsz 24 / wght 400 /
- * SOFT 60 / WONK 0, at --mast-name-size — a page-level token, not scoped
- * to Masthead.astro) and given .mast-home's own interactive treatment,
- * copied rather than imported: color: inherit, text-decoration: none,
- * opacity 0.7 on hover, 0.55 on active, 260ms, opacity only, and R16's
- * own focus ring (1px solid Obsidian, 4px offset). Masthead.astro is not
+ * SOFT 60 / WONK 0) at the coda tier's size (Pass B.1), with a resting
+ * underline from PageFooter's link treatment and .mast-home's own
+ * interaction, copied rather than imported: opacity 0.7 on hover, 0.55
+ * on active, 260ms, opacity only, and R16's own focus ring (1px solid
+ * Obsidian, 4px offset). Masthead.astro is not
  * opened for this — its <style> is component-scoped and importing the
  * component would mount the whole bar, which this route must not carry.
  *
@@ -103,6 +101,14 @@ import PageFooter from '../components/PageFooter.astro';
 
       <div class="win-body privacy-entry">
         <hr class="privacy-rule" />
+        <h2 class="privacy-h2">Do Not Track</h2>
+        <div class="privacy-body">
+          <p>Some browsers send a Do Not Track signal, and some send a Global Privacy Control signal, asking a site not to follow you from one website to the next. This site does not follow you anywhere, and no advertiser or analytics service watches you here, so there is nothing for those signals to switch off. We honor them.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
         <h2 class="privacy-h2">What you can give us</h2>
         <div class="privacy-body">
           <p>The only place this site accepts information is the contact form. It asks for four things: your name, your email address, the type of inquiry you are making, and your message. That is the whole list. We do not ask for anything else and we do not collect anything else from you.</p>
@@ -144,6 +150,14 @@ import PageFooter from '../components/PageFooter.astro';
 
       <div class="win-body privacy-entry">
         <hr class="privacy-rule" />
+        <h2 class="privacy-h2">How your message is held</h2>
+        <div class="privacy-body">
+          <p>This site keeps no database and has no accounts, so nothing you send is stored on the site itself. Your message lives in the same protected mailboxes as the rest of our correspondence, and only the people who need to answer you read it.</p>
+        </div>
+      </div>
+
+      <div class="win-body privacy-entry">
+        <hr class="privacy-rule" />
         <h2 class="privacy-h2">Your choices</h2>
         <div class="privacy-body">
           <p>You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Write to mcclain@premierleadersllc.com and we will take care of it. Some information may need to be kept where the law requires it.</p>
@@ -179,7 +193,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Changes</h2>
         <div class="privacy-body">
-          <p>If this policy changes, the date at the top changes with it.</p>
+          <p>If this policy changes, we post the new version on this page and change the date at the top. There is no mailing list here, so this page is the notice. Check the date to see whether anything has moved since you last read it.</p>
         </div>
       </div>
 
@@ -222,26 +236,38 @@ import PageFooter from '../components/PageFooter.astro';
   }
 
   /* ---- STANDFIRST ----------------------------------------------------
-     The masthead name's own register: opsz 24 / wght 400 / SOFT 60 /
-     WONK 0 at --mast-name-size, a page-level token. Not the masthead's
-     line-height (--mast-h is a 56px bar height, not a paragraph
-     leading) — 1.3 is ordinary running-text leading at this size. */
+     PASS B.1: the masthead name's register (opsz 24 / wght 400 / SOFT 60
+     / WONK 0, -0.01em) at the CODA TIER's size, clamp(26px, 2.2vw, 32px)
+     — About's and Educational Leader's closing line.
+
+     NOT --mast-name-size. That token is --lede-size x (--lede-size /
+     --quote-size); below 1280 the pivot's clamp floors and the ratio
+     rises past 1, so the name grew as the viewport shrank — 61.45px
+     against a 52px lede at 390. The coda tier covers the masthead name's
+     own band-1 range (26-32 against 26.66-32), holds still below 1280,
+     and sits between the lede (>=52) and the body (17) at every width. */
   .privacy-standfirst{
     margin: var(--s2) 0 0;
     font-family: var(--display);
     font-variation-settings: 'opsz' 24, 'wght' 400, 'SOFT' 60, 'WONK' 0;
-    font-size: var(--mast-name-size);
+    font-size: clamp(26px, 2.2vw, 32px);
     line-height: 1.3;
     letter-spacing: -0.01em;
     color: var(--obsidian);
   }
 
-  /* .mast-home, copied rather than imported — four declarations plus
-     its two interaction states and its focus ring, all byte-identical
-     to R18.3's values. Transform and opacity only; never transition-all. */
+  /* .mast-home's interaction, copied rather than imported, PLUS a resting
+     underline — hover opacity alone left the link undiscoverable in
+     running text. The underline is PageFooter's .foot-privacy treatment
+     (1px, 4px offset); its colour there is --rule-ui, which exists only
+     under .on-obsidian, so this takes that treatment's own light-ground
+     value, Slate at 0.42 (.edu-link, .mast-jump). Opacity only. */
   .privacy-home{
     color: inherit;
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(71, 68, 64, 0.42);
     transition: opacity 260ms var(--ease);
   }
   .privacy-home:hover{ opacity: 0.7; }

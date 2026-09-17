@@ -35,8 +35,8 @@ ghost numerals.
 
 **Original R12 note:** all ten sections built and R12 shipped. R10 + R10.1 shipped (Contact + footer, form rhythm), closing the
 ten-`<h2>` structure at 10 of 10. R9 settled through R9.6, R8 through R8.2. **R11
-(`/privacy`) is deferred by Jackson — no privacy policy is being built for now; see the
-Launch clock entry.** The height-spread check ran at R10 and is **rescinded as
+(`/privacy`) SHIPPED September 16 2026 as PASS B, corrected by PASS B.1; see the PASS B
+entry.** The height-spread check ran at R10 and is **rescinded as
 specified** — see the Rhythm entry. **The R13 motion concept is now written** (see Motion
 vocabulary); R13–R15 are post-launch and two of them are blocked on Jackson's ruling. Copy
 rewrite approved, wireframe approved (Variant A), photo placement approved.
@@ -67,11 +67,11 @@ the tree and nobody could tell which.
 **Active blockers — none of these are code tasks except G and H:**
 
 1. **Domain control unresolved.** Nobody has confirmed who owns/controls the DNS.
-2. **Privacy policy — deferred by Jackson, September 8 2026.** `/privacy` still 404s and
-   the footer still links to it. This is a **known, chosen gap**, not an oversight — Jackson
-   has decided not to build R11 for now. CalOPPA still technically requires this for any
-   site with a contact form; the decision is his to make and is recorded here so it is not
-   mistaken for something that fell through.
+2. **Privacy policy — BUILT September 16 2026 (PASS B + PASS B.1), not yet publishable.**
+   `/privacy` returns 200 and the footer link reaches it. **The remaining gate is the TEST
+   sitekey**: the page describes Turnstile protecting the form, so it MUST NOT go live while
+   the test key ships. `PRIVACY.md` was also revised after the build and the page is short by
+   three sections until **C-PRIV** runs.
 3. **Meta / Open Graph / favicon not built (Phase H).** Deferred by Jackson, but print
    is driving traffic and people will share the URL. With no OG image, every share
    renders as a blank card. **Reconsider the deferral.**
@@ -2553,7 +2553,7 @@ and 390, where paragraph 1 changed line count; 0.000px at every other width.
 > assert-what-you-captured rule from R18.3, applied.
 
 
-### PASS B — the `/privacy` route — RULED IN September 16 2026, NOT BUILT
+### PASS B — the `/privacy` route — SHIPPED AND ACCEPTED September 16 2026 (with PASS B.1)
 
 **This is R11**, the slice `index.astro` has carried as deferred since the rebuild began. The
 footer has linked to a 404 the whole time. Copy is `PRIVACY.md` at the repo root, which
@@ -2587,6 +2587,138 @@ current page. `PageFooter` is shared and a self-link is not worth a hub regressi
 protecting the contact form, and the form still ships a test key.
 
 **Model: Opus.** A new document layout.
+
+**SHIPPED. All seven rulings above held as written.** The route returns 200, the footer link
+reaches it, the copy set verbatim, no masthead and no folio, `sections.ts` untouched, zero
+JavaScript, Porcelain throughout.
+
+**PASS B.1 — two corrections, both to this file's brief rather than to the build.**
+
+1. **The standfirst was leaving the display tier.** Ruling 2 put her name in "the masthead
+   name's register" and gave **no ordering rule**, so the build set the standfirst at display
+   scale and the page's loudest line became her name plus a date. **Administrative metadata
+   MUST NOT hold a display slot.** The page's grammar is the hub's: a small section label, then
+   one large sentence, and on this page **the large sentence is the opening statement.**
+   Required ordering, at every width: **opening statement > standfirst > body.**
+2. **`.mast-home` is hover-only and that does not travel.** In a 56px bar the name is
+   self-evidently the way home. Set in running text it reads as a headline and the affordance
+   is discoverable only by hovering. **The link now carries a resting affordance that is
+   visible without hover and does not rely on colour alone**, taken from the footer's existing
+   link treatment. Navigation was never broken; the affordance was.
+
+> **The lesson, and it is a prompt lesson, not a build one.** Both defects were this file
+> ruling a *register* ("the masthead name's") without ruling the *ordering* it had to satisfy.
+> A register names a size. It does not say what the size must beat. **When a brief moves an
+> element into an existing tier, state the ordering condition that MUST hold after the move.**
+
+> **One round was spent on a stop that should never have fired.** B.1's precondition said "any
+> file modified outside `privacy.astro` — STOP." `CONTEXT.md` is modified by hand every round,
+> so it stopped on the one file that is always dirty. **`CONTEXT.md`, `COPY.md` and
+> `PRIVACY.md` are hand-maintained and MUST be excluded from any modified-file stop; that stop
+> covers `src/`, `public/` and config only.** The same run also disproved a reported hub
+> regression: cleared `.astro` and the Vite cache, loaded cold, **all ten sections rendered,
+> `sec-index` at 939px.** A missing section in a warm dev server is a cache report, not a
+> measurement.
+
+### C-PRIV — the `/privacy` copy pass — RULED IN September 16 2026, NOT BUILT
+
+`PRIVACY.md` was revised after PASS B shipped, on a compliance read of the built copy. Three
+sections were added and one body replaced, so the page's `<h2>` sequence is **short by three.**
+String replacement and byte comparison only. **No layout work, no new CSS. Model: Sonnet.**
+
+1. **`Do Not Track`**, after `What this site is`. **This is the one disclosure CalOPPA names by
+   title.** The obligation attaches to sites that follow a visitor across third-party sites,
+   which this one does not, so it very likely does not bite — and it is one section, and it is
+   what a reader checking compliance looks for. **Do not delete it to save a heading.**
+2. **`How your message is held`**, after `How long we keep inquiries`. The smallest honest
+   security statement: no database, no accounts, mailbox sign-in. **MUST NOT be expanded into
+   encryption or security-practice claims.** Over-promising on security is the failure mode
+   here, and this is the one section that can be made false by writing more.
+3. **`Changes` body replaced.** CalOPPA asks an operator to describe how it *notifies* people
+   of a material change; a bare date change is thinner than that, so the section now states
+   that the page itself is the notice.
+4. **`[[DATE]]` is resolved in the source, not substituted by the build.** `PRIVACY.md` now
+   carries the literal `September 16 2026`. Copy is set verbatim and byte-compared, so a token
+   in the source and a date on the page cannot both be true. **No `[[` may appear in `src/` or
+   `dist/`.**
+
+**Two things that are not code and are not prompts.** **Verify Vercel Analytics and Speed
+Insights are OFF** before publishing — the copy states there are no analytics, and both are
+opt-in products on the hosting account, so the repo cannot prove it. And **CCPA/CPRA do not
+apply** (thresholds are ~$26.6M revenue, 100,000 California consumers, or half of revenue from
+selling data) and **GDPR does not apply** (no EU targeting), so the hedge in `Your Choices`
+stays as written rather than becoming a claim.
+
+### PASS D — About's wide-width composition — RULED IN September 16 2026, NOT BUILT
+
+**Supersedes the September 16 ruling that made this round the closing line alone.** That brief
+was written from an About capture on its own. **Compared side by side with Premier at the same
+width, the diagnosis changed**, and the correction is recorded here rather than dropped because
+the superseded version is the more obvious reading and a later session will arrive at it again.
+
+**The comparison is the evidence.** At wide width **Premier composes and About does not**, on
+the same page, the same grid and the same widths:
+
+| | Premier | About |
+|---|---|---|
+| Lede | runs nearly the full page | stops around halfway |
+| Right column | speaking topics, four entries | two short lines of coda |
+| Bottom | CTA anchors it | nothing |
+
+**So the hole is not the page's.** It is About's, and it has two causes: **the lede takes a
+narrower span than Premier's, and the right column carries almost nothing.** The upper gap, the
+one beside the lede, is the larger of the two.
+
+> **This narrows what this file recorded a day earlier.** The superseded note read the 1920 gap
+> and the page-wide 78-character overrun as one defect, and proposed a page-level width ceiling
+> as the derived fix. **Premier disproves the composition half of that**: a section that uses
+> the width does not leave a hole at any page width, so no page-level container is needed to
+> close About's. **The measure-ceiling half still stands** — five sections still overrun 78
+> characters at 1920 (84 / 83 / 80 / 85 / **102**) and that is still unscheduled. The two are
+> separate problems and were merged on one section's evidence.
+
+**Two changes, About only, in ONE round, because they interact.** Widening the lede is likely
+to drop it from three lines to two at wide widths, which moves the section's vertical, which
+moves what the closing line registers against. Shipping the coda first would solve it against a
+geometry the next round changes. **This is PASS A's own precedent.** **Opus.**
+
+1. **The lede's span is RE-DERIVED against Premier's, not assigned.** Measure what Premier's
+   lede actually spans at each width and what About's spans, report both, and bring About's to
+   the same rule. **MUST NOT type in a span, and MUST NOT invent a rule that only About
+   carries** — PASS A already holds one About-only override and a second would make the section
+   a special case twice over. **If the two ledes cannot share a rule, STOP AND REPORT** with
+   both measurements.
+2. **The closing line moves up one EXISTING tier.** MUST NOT invent a tier, a variable or a
+   one-off `font-size`. If no tier exists between the lede and body, **STOP.** **It MUST NOT
+   reach or exceed the lede**: the lede rule gives a section one display-scale sentence, and two
+   display blocks in one section is exactly what PASS B.1 corrected on `/privacy`. Required at
+   all thirteen widths: **lede > closing line > body.**
+
+**Both changes carry their own registration work:**
+
+- **R2's bottom alignment is RE-SOLVED against the NEW geometry, not preserved and not re-solved
+  against today's.** Paragraph 2's last baseline may move when the lede's line count changes.
+  Solve against **Chrome's rounded baseline** per the PASS A model and **write it with `round()`
+  in CSS rather than typing a pixel value.** The pre-existing −1.27px at 1024 stays.
+- **The column is RE-DERIVED, not assumed.** PASS A's column 8 / band 2 column 9 came from the
+  one-empty-column rule against the old size. Same rule, report what it now gives, and report
+  the 1920 gap and the 1280 / 1279 continuity.
+- **Paragraph line counts are OUTPUT, not constraints.** PASS A asserted paragraph 1 at ≥3 lines
+  and ≤74 characters; a wider lede does not touch the body's 670px cap, so those MUST still
+  hold. **If they move, STOP** — that means the change reached further than the lede.
+
+**3. Orphans — MEASURE FIRST, and change nothing unless one exists.** Reported at wide width
+and not at narrow, which is expected: line count changes the remainder, so a paragraph that
+breaks cleanly at 1280 can strand a word at 1920. **A short last line is not an orphan. A single
+word alone on a last line is.** Count them across all thirteen widths in About and report the
+count with the line. **Only if a true single-word last line exists**, apply `text-wrap: pretty`
+to body paragraphs and re-verify PASS A's assertions. **MUST NOT insert a `<br>`** — this file
+records a `<br>` proposal that would have forced breaks at five widths where the string fit.
+**If `pretty` moves paragraph 1's line count or its 74-character maximum, STOP AND REPORT.**
+This change is **scoped to itself**: a stop here MUST NOT stop 1 or 2.
+
+**What this still does not fix:** the band below the section, which has never been measured and
+may be About's padding or the next section's. **Do not write a slice for it from a screenshot.**
 
 ### Post-launch motion rounds — Round A and Round B
 
@@ -3401,9 +3533,15 @@ inverted. Form height 761.25 → 688.31px, pitch per field −17.8%. **The separ
 by 5.89px while the form got tighter — the air was moved, not deleted.** `.form-status`
 keeps `var(--s4)`: it is a state gap, not resting rhythm.
 
-**Privacy policy:** required standard deliverable (CalOPPA). **Not drafted; `/privacy`
-404s today.** Must name the contact form as a collection point. Client supplies and warrants
-her own data-practice details.
+**Privacy policy:** required standard deliverable (CalOPPA). **Drafted and built September 16
+2026.** Copy lives in **`PRIVACY.md` at the repo root**, a third governing file beside this one
+and `COPY.md`, and it inherits `COPY.md`'s **set-verbatim** rule. It names the contact form as
+the only collection point and names Formspree, Cloudflare and Vercel as the processors.
+**Responsible party is Dr. Syreeta McClain personally, not Premier Leadership, LLC**, and the
+voice is "we" because inquiries route to two organisations. **MUST NOT be replaced by the
+Anchor Digital policy**, which is scoped to a different domain and describes a portal, billing
+and portfolio permissions that do not exist here. Client supplies and warrants her own
+data-practice details. **Not published while the TEST sitekey ships.**
 
 **Footer:**
 - Left: `© 2026 Dr. Syreeta McClain. All rights reserved.`
@@ -3466,7 +3604,7 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R9.6 | Charging It — frame registration | **Shipped September 8 2026. R9 is settled.** Frame top trim registered to the turn's cap height via `--chg-frame-register`, k = 0.31125. Residual ≤0.75px against a 3px tolerance, two methods. Clearance −1.48px → +70px. `text-wrap: balance` measured both ways and ruled to stay. Stacked arrangement byte-identical, 20 quantities × 10 widths, zero differences. |
 | R10 | Contact + footer | **Shipped September 8 2026.** Form ported into the rebuilt grid, not rebuilt; text 1–5, form 7–11, column 6 left open as a measured empty channel (175.3px at 1920 → 100.7px at 1024). Stacking derived text-above-form. All twelve Phase F items re-verified with method. Height-spread check run and rescinded. **Carried fix: the Cover CTA pointed at `#contact` against an id of `sec-contact` — the page's primary call to action had been a dead click since R1.** Precedent: R7 carried the Cover's id, R8 carried the `sections.ts` change. |
 | R10.1 | Contact — form rhythm + one privacy link | **Shipped September 8 2026.** One file, `Contact.astro`; `global.css` untouched, which is why the nine-section delta is structural rather than hopeful. Six declarations changed, three deleted with the link. Pairing ratio 1.33 (inverted) → 0.71; form height −72.94px; Contact 1011.94 → 880.31px, reported not steered. Predicted 40.04 / 56.31 / 0.71 before building, measured 40.03 / 56.30 / 0.71. |
-| R11 | `/privacy` | Phase G. **Deferred by Jackson, September 8 2026 — not being built for now.** Independent, can run whenever the client sends data-practice details and Jackson decides to resume it. |
+| R11 | `/privacy` | **SHIPPED AND ACCEPTED September 16 2026 as PASS B**, corrected by **PASS B.1**. One static route, one column, Porcelain throughout, **no masthead and no folio** (`sections.ts` gains no entry, the folio tracks sections that do not exist there), **zero JavaScript**, copy set verbatim from `PRIVACY.md`, measure capped at About's `39.4118em`. **The standfirst is the way home**: her name links to `/`, since `PageFooter` carries no link back. B.1 corrected two defects in the brief rather than the build — the standfirst was left in the display tier so metadata outweighed the opening statement, and `.mast-home`'s hover-only treatment gave the link no resting affordance outside a 56px bar. **Reported and not fixed:** on this route the footer's own privacy link points at the current page; `PageFooter` is shared and a self-link is not worth a hub regression. **C-PRIV pending** — `PRIVACY.md` gained three sections after the build. |
 | R12 | Folio marginalia | **Shipped September 8 2026.** `FolioMarginalia.astro` mounted, single scroll listener wired. Horizontal stability, active-section accuracy, quiet-over-pivot, and label integrity against every `<h2>` all verified and reviewed by Jackson on localhost at 1440 and at the 1280 collapse edge. Zero layout regression on the nine prior sections. |
 | R13 | Index row hover (weight shift) | **Shipped September 8 2026, and it is too quiet to see.** Built at `wght` 400 → 420 because 420 is `--fx-small`, the heaviest weight in the shipped optical system. All five criteria passed comfortably (0.00px row-height delta, 95.77px tightest `+` clearance, 0.00px left edge, 533-quantity zero-delta) precisely because a 20-unit move barely displaces anything. Correctly refused to exceed the system ceiling without a ruling. **Superseded by R13.1.** |
 | R13.1 | Index hover, widened | **Ruled by Jackson, September 8 2026: the 420 ceiling does not bind this interaction.** `wght` 400 → 700 on Index entry names ONLY; the ceiling is not raised anywhere else. Adds two counterweights so the row reads whole: the numeral shifts on the same hover, and the hairline rule thickens without changing row height. **Re-measure everything** — travel at 700 will be an order of magnitude past the 0.67–1.29px measured at 420, and the span-splitting kerning cost (0.09–0.27px at rest) scales with weight. The exception's failure condition is unchanged: fail items 1, 3 or 4 at any width and the hover is removed, not tuned. |
@@ -3478,7 +3616,7 @@ horizontal pass across the whole page.** Each slice is a fresh session.
 | R18.1 | Round B correction | **Measured September 10 2026. Four items closed, two stopped and reported, one refused.** Items 1 and 2 needed no repair — the fix was already in the uncommitted working tree; the ledes measured 71.13px of travel advancing on a real ViewTimeline, and all four plate curtains draw (the fifth plate is the Cover, excluded on a re-measured **55.6% floor** on its reachable cover progress). **Item 3 is provably unsatisfiable by any range** — intersecting the viewport *is* `0 < q < 1`, so finishing every intersecting element requires zero travel; measured 9 failures at `cover 15%->50%` against 3 at `entry 100%`, bought by moving Index completion from 45% to 88% of viewport, which is the bottom-trim failure returning. Three routes proposed, none picked. **Item 4 is Item 3's symptom** — all five rows byte-identical at rest at every width. Item 5 built: `--pivot-scrub-start`, the step squared, seating the entering word at `--mast-name-size` to **0.00px** at all three band-1 widths, travel 3.686-4.213x, left edge / baseline / h2 height **0.000px** at all thirteen — **and measurably not the lever: the word is below the fold until entry 57-64%, so the whole first half of the scrub plays unseen.** `--pivot-scrub-from` deliberately NOT redefined; R16's masthead name consumes it as one rung and squaring in place would have shipped 12.99px under WCAG's 24px floor. Item 6 verified (`smooth`/`auto` on `reduce`, 0px landing error, masthead clean at both boundaries). Item 7 preserved — row height **0.000px**, `+` clearance **96.50px** at rest. Listeners 1 and 1; 533 left-edge cells 0.000px under stripped and reduce, **dev and `astro preview`, and 0.000px dev against built**. |
 | R18.2 | Two mechanisms removed | **SHIPPED AND ACCEPTED September 10 2026.** Jackson's fourth route on Item 3: remove the mechanism from the affected sections rather than suppress it on arrival. The **Index row stagger** and the **Contact lede reveal** both came out. The census answered the open question and the stop condition did not fire: Contact's lede is **three lines and masked at 1920, 1440 and 1280 alike**, never single-line, so no part of the removal was a no-op. **Seven masked ledes before, six after**, and the earlier "eight wired, seven animating" figure was corrected to seven wired in the same pass. Below 1280 no lede was ever masked, the island's own `min-width: 1280` gate. **All four removal targets existed on disk and were absent from `HEAD`**, so R18.1's repo lesson held a second consecutive round. **The Index carried ten animated targets, not five**: five `.idx-num` and five `.idx-body` on `--idx-row` at `cover 15% -> 50%`, with the clip `inset(0px -32px)` on `.idx-item`; clip, stagger and hover were confirmed separately owned before anything was cut. **Nothing moved**: page height, ten section tops and heights, footer and 533 left-edge cells **0.000px**, four conditions x thirteen widths, dev and `astro build` + `astro preview`, Index row heights 0.000px on every row at every width. The one number that should have moved did: ink-to-rule at scroll 0 shifted **84px at 1920 and 1440, 74.88px at 1280, exactly `3 x --idx-name-size`**, the removed `from` keyframe. `astro-island` count in `dist` **8 -> 7**. Listeners 1 and 1, JS weight delta 0. Gold 3 of 3, 0 of 8. **Residue knowingly left. The 7 / 3 / 3 recorded here is a snapshot of the mechanism as it stood, counting masked ledes; it was retired September 11 2026 and re-measured at 21 / 24 / 25 after the ledes moved to transform. Covered by R19's constraint 7, built and measuring 0 frozen at all three widths.** |
 | R18.3 | Masthead name link | **SHIPPED AND ACCEPTED September 11 2026.** `.mast-name` wrapped in `<a class="mast-home" href="#top" aria-label="Back to top">`; the span, its class, its text and its `aria-hidden` are byte-identical. **`display: flex` on the anchor is load-bearing**: the span was a direct flex item of `.masthead` and was blockified, and an inline anchor would generate a line box sized by the ANCHOR'S strut rather than the name's. Colour and underline neutralised explicitly against the UA sheet. Hover 0.7 / active 0.55 at 260ms, opacity only, chosen over `.mast-row`'s treatment because opacity is scale-free and survives the 10.5px-to-26.66px tier gap; `focus-visible` is R16's ring exactly. **Name ink 0.000px on all four metrics at 1920 / 1440 / 1280**, taken from a Range over the text node rather than the element box, and **the rest-state captures are byte-identical before and after** at all three. Page height, ten section tops and heights, footer and **1,885 left-edge cells 0.000px at all thirteen widths**, zero non-zero. Listeners 1 and 1, islands 7, `dist` JS **226,474 before and after**. `#top` verified to land at scrollY 0, match no `:target` and resolve to no element. Accessible name `Back to top`, reached at Tab #1. **Third harness fault found and fixed: Puppeteer's `clip` is page-relative, so the first capture pass photographed the Cover and returned six byte-identical images.** Focus ring overhangs the viewport top by 5px, byte-identical to `summary.mast-jump`'s, matched rather than introduced. |
-| PASS A | About: measure, drop cap, closing line | **SHIPPED AND ACCEPTED September 16 2026.** Three changes in one round because they interact. **The measure is capped at `max-width: 39.4118em` (670px), overriding this file's span-only rule for About alone on Jackson's ruling** — no span solves band 1, which has no breakpoint above 1280. **670 was swept 1px at a time**: paragraph 1 holds 78 characters to 708px under the new cap but **paragraph 2 only to 670**, and 670 is also the measure the 750px threshold already carries, reached independently. **The cap is two lines**, size written from the body tokens at 60.714px, **margin-top solved against Chrome's ROUNDED baseline** `round(asc) + floor(half-leading)` rather than the smooth one — the model is proven on the body's own 21.000px and the 0.749px it predicts IS the measured miss. **Baseline 0.000px and cap-top −0.256px at all thirteen widths**, not the three required. **The closing line moved to column 8 / band 2 column 9** on a derived one-empty-column rule, cutting the 1920 gap 478 → 389 and holding 122px continuous across the 1280/1279 boundary; R2's bottom-alignment identical to the hundredth. Paragraph 1 now ≥3 lines and ≤74 characters everywhere, counted two agreeing ways. **Nothing else moved**: 0.000px on every other section, 1,807 left-edge cells, thirteen widths. Listeners 1/1, islands 7, JS 226,474 unchanged, gold 1/0 unchanged. **Reported and not fixed: every other section's body overruns the ceiling at 1920** (84 / 83 / 80 / 85 / 102). **Open: the 1920 gap is 389px, not one column.** |
+| PASS A | About: measure, drop cap, closing line | **SHIPPED AND ACCEPTED September 16 2026.** Three changes in one round because they interact. **The measure is capped at `max-width: 39.4118em` (670px), overriding this file's span-only rule for About alone on Jackson's ruling** — no span solves band 1, which has no breakpoint above 1280. **670 was swept 1px at a time**: paragraph 1 holds 78 characters to 708px under the new cap but **paragraph 2 only to 670**, and 670 is also the measure the 750px threshold already carries, reached independently. **The cap is two lines**, size written from the body tokens at 60.714px, **margin-top solved against Chrome's ROUNDED baseline** `round(asc) + floor(half-leading)` rather than the smooth one — the model is proven on the body's own 21.000px and the 0.749px it predicts IS the measured miss. **Baseline 0.000px and cap-top −0.256px at all thirteen widths**, not the three required. **The closing line moved to column 8 / band 2 column 9** on a derived one-empty-column rule, cutting the 1920 gap 478 → 389 and holding 122px continuous across the 1280/1279 boundary; R2's bottom-alignment identical to the hundredth. Paragraph 1 now ≥3 lines and ≤74 characters everywhere, counted two agreeing ways. **Nothing else moved**: 0.000px on every other section, 1,807 left-edge cells, thirteen widths. Listeners 1/1, islands 7, JS 226,474 unchanged, gold 1/0 unchanged. **Reported and not fixed: every other section's body overruns the ceiling at 1920** (84 / 83 / 80 / 85 / 102). **Open: the 1920 gap is 389px, not one column** — reopened and re-diagnosed by PASS D, which found the cause is About's own composition (its lede stops halfway and its right column is near-empty) rather than the page's width. |
 **Preserved from the old build, do not rebuild:** the contact form (Phase F), the Fraunces
 optical system (Phase B), the locked palette, and the standing rules in this file.
 
@@ -3559,6 +3697,12 @@ lands on the page's thesis at the structural pivot.
   after explicit approval. **Never push to GitHub without explicit instruction.** Every pass
   states which commit it based on.
 - **Scope isolation:** one concern, one branch, one prompt.
+- **`CONTEXT.md`, `COPY.md` and `PRIVACY.md` are hand-maintained and are NEVER edited by Claude
+  Code.** A prompt's modified-file stop therefore **MUST exclude all three** and cover `src/`,
+  `public/` and config only. B.1 stopped a whole round on `CONTEXT.md` being dirty, which it
+  always is.
+- **A missing section in a warm dev server is a cache report, not a measurement.** Clear
+  `.astro` and the Vite cache and load cold before treating any disappearance as a regression.
 - **Do not rule a number that can be derived in the prompt.** (R9, and it is the most
   expensive lesson in the rebuild.) R9 took **nine passes, five of which corrected chat's
   own rulings** rather than Claude Code's work: a foot close that applied R6.3's surplus rule

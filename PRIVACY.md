@@ -13,12 +13,15 @@ because this page does not use it.
 different organizations and the first person singular breaks the moment a Foundation inquiry is
 involved.
 
-**Two blanks remain**, marked `[[ ]]` below:
+**The date is set, not blank.** `[[DATE]]` is resolved to **September 16 2026** and written
+into the copy below. "Last updated" means last changed, so it is the date the policy last
+changed and **not** the launch date. It moves only when this file's page copy moves. **The
+build sets copy verbatim, so the literal date MUST live here rather than as a token the build
+substitutes.**
 
-1. **The effective date.** Set it to the launch date.
-2. **The contact address.** Written as `mcclain@premierleadersllc.com` per her September 7
-   decision. **If that mailbox fails its delivery check, this page reverts to
-   `premierleadersllc@gmail.com` along with the Contact section.** The two must never disagree.
+**One condition remains, not a blank.** The contact address is `mcclain@premierleadersllc.com`
+per her September 7 decision. **If that mailbox fails its delivery check, this page reverts to
+`premierleadersllc@gmail.com` along with the Contact section.** The two must never disagree.
 
 Not legal advice. One pass by an actual lawyer would be cheap insurance.
 
@@ -27,7 +30,7 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 ## Page copy
 
 **Title:** Privacy Policy
-**Standfirst:** Dr. Syreeta McClain. Last updated [[DATE]].
+**Standfirst:** Dr. Syreeta McClain. Last updated September 16 2026.
 
 **Opening statement:**
 > This site collects almost nothing. Here is exactly what it does collect, where it goes, and
@@ -38,6 +41,13 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 > drsyreetamcclain.com is a set of static pages. There are no accounts to create, nothing to
 > buy, no advertising, no analytics, and no tracking cookies. You can read every page on this
 > site without giving us anything at all.
+
+### Do Not Track
+
+> Some browsers send a Do Not Track signal, and some send a Global Privacy Control signal,
+> asking a site not to follow you from one website to the next. This site does not follow you
+> anywhere, and no advertiser or analytics service watches you here, so there is nothing for
+> those signals to switch off. We honor them.
 
 ### What you can give us
 
@@ -73,6 +83,12 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 > We keep messages for as long as we need them to respond and to keep a reasonable record of
 > the conversation. If you would like your message deleted, write to us and we will delete it.
 
+### How your message is held
+
+> This site keeps no database and has no accounts, so nothing you send is stored on the site
+> itself. Your message lives in the same protected mailboxes as the rest of our
+> correspondence, and only the people who need to answer you read it.
+
 ### Your choices
 
 > You can ask us what information we hold about you, ask us to correct it, or ask us to delete
@@ -97,7 +113,9 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 
 ### Changes
 
-> If this policy changes, the date at the top changes with it.
+> If this policy changes, we post the new version on this page and change the date at the top.
+> There is no mailing list here, so this page is the notice. Check the date to see whether
+> anything has moved since you last read it.
 
 ### Contact
 
@@ -114,11 +132,26 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
   passes do not need legal text and the privacy pass does not need hub copy.
 - **`COPY.md`'s Page Footer section needs one pointer line** saying the privacy page's copy
   lives in `PRIVACY.md`, so its absence is not read as an oversight.
-- `/privacy` currently 404s. `COPY.md` already specifies a **conspicuous** Privacy Policy link
-  in the Page Footer, so the link exists and the route does not.
 - The Children section is worth keeping even though it is boilerplate elsewhere. She is a high
   school principal, the site discusses students, and the sentence stating that no student
   information is collected is the one a district reader would look for.
+- **Do Not Track is the one disclosure CalOPPA names by title.** The obligation attaches to
+  sites that follow a visitor across third-party sites, which this one does not, so it very
+  likely does not bite. It is one section and it is what a reader checking compliance looks
+  for. **Do not delete it to save a heading.**
+- **The Changes section is the notification process**, not a courtesy. CalOPPA asks an operator
+  to describe how it tells people the policy changed; a bare date change is thinner than that,
+  so the section says the page itself is the notice.
+- **`How your message is held` is the smallest honest security statement.** Every claim in it
+  is structural: no database, no accounts, mailbox sign-in. **MUST NOT be expanded into
+  encryption or security-practice claims** — this is the over-promising the client-data note
+  warns about, and it is the one section here that could be made false by writing more.
+- **Three sections were added after the September 16 build.** `/privacy` was built from the
+  earlier version, so its `<h2>` sequence is now short by three and the Changes body no longer
+  matches. **The page needs one more copy pass**, string-set and byte-compared, no layout work.
+- **Verify Vercel Analytics and Speed Insights are off** before this page ships. The copy
+  states there are no analytics, and both are opt-in products on the hosting account rather
+  than in the repo, so the repo cannot prove it.
 - The Cloudflare and Formspree sections are only accurate once the real keys and the real form
   endpoint ship. **Do not publish this page while the TEST sitekey is still live**, because it
   would describe protection the site does not yet have.
