@@ -73,13 +73,59 @@
  */
 import { Image } from 'astro:assets';
 import portraitHero from '../assets/portrait-hero.jpg';
+
+/* PASS F — THE LOCKUP REPLACES THE NAME.
+ *
+ * `?raw`, not <img>. CONTEXT.md's Logo entry: `currentColor` does not
+ * resolve through an <img>, and the mark's colour is chosen at the
+ * placement and inherited. THE FILE ON DISK IS NEVER EDITED — the two
+ * replacements below are exactly the two CONTEXT.md sanctions, the
+ * <metadata> block and the c2pa namespace declaration, and nothing
+ * else. The root tag keeps its own viewBox, `fill="currentColor"` and
+ * `role="img"` byte-for-byte; the class, the sizing and the
+ * `aria-hidden` all live on a WRAPPER, so no attribute of the client's
+ * artwork is rewritten at inline time.
+ *
+ * The C2PA manifest is inert and is stripped here, so it never reaches
+ * the browser. 29 paths, one fill value, no <defs>, no <style>.
+ */
+import lockupRaw from '../../brand_assets/mcclain-lockup.svg?raw';
+const lockupSvg = lockupRaw
+  .replace(/<metadata>[\s\S]*?<\/metadata>/, '')
+  .replace(/\s+xmlns:c2pa="[^"]*"/, '');
 ---
 
 <section class="sheet cover" id="sec-portrait" aria-labelledby="cover-heading">
   <div class="win-cover-head">
-    <p class="kicker cover-credit">KNOW Women: 50 Under 50 Women to Know in NJ, 2026</p>
+    <!--
+      PASS F. THE MARK IS A SUBSTITUTION, NOT AN ADDITION: it replaces
+      the name's INK, not the heading. PASS E.1's candidate C set the
+      lockup beside the <h1> and the Cover read as her name printed
+      twice; the lockup IS her name, so it takes the name's place.
 
-    <h1 class="cover-name">Dr. Syreeta McClain</h1>
+      OPTION CHOSEN: the <h1> KEEPS ITS TEXT, visually hidden in the
+      bands where the mark renders, and the mark is aria-hidden
+      decoration beside it. The alternative — the mark as the <h1>'s
+      content, carrying the accessible name through an SVG <title> —
+      was rejected for two reasons. First, it makes the page's only
+      level-1 heading depend on SVG title exposure, which varies by
+      AT and by browser, where a text node does not. Second, the mark
+      is BAND-GATED (see the sizing note), so under that option the
+      <h1>'s accessible name would come from the SVG above 1024 and
+      from text below it — the page's most important string would be
+      sourced differently at different viewport widths. Here the
+      accessible name is the same text node at every width: "Dr.
+      Syreeta McClain".
+
+      The heading outline does not move. Same single <h1>, same text,
+      same position in source, same <h2> after it: h1 -> h2 "Portrait"
+      -> h2 "About".
+
+      NO WHITESPACE between the two spans. A whitespace text node here
+      is an anonymous inline box between two block-level children and
+      would open a line box of 0.9em under the mark.
+    -->
+    <h1 class="cover-name"><span class="cover-name-text">Dr. Syreeta McClain</span><span class="cover-mark" aria-hidden="true" set:html={lockupSvg}></span></h1>
 
     <!--
       AUTHORED AFTER THE <h1>, NOT BEFORE IT. CONTEXT.md's structure is
@@ -99,8 +145,6 @@ import portraitHero from '../assets/portrait-hero.jpg';
       1920, 1440, 1280, 1024, 1023, 900, 750 and 390.
     -->
     <h2 id="cover-heading" class="vh">Portrait</h2>
-
-    <p class="cover-tagline">Where Leadership Meets <em class="legacy">Legacy</em></p>
   </div>
 
   <!--
@@ -228,33 +272,51 @@ import portraitHero from '../assets/portrait-hero.jpg';
     justify-content: flex-start;
   }
 
-  /* THE VOID, resolved. R1 pinned this block to the top of a 655px row
-     with 245px of content in it, which put the whole 270px remainder in
-     one lump between the tagline and the roles — a hole with nothing on
-     either side of it to measure against.
+  /* THE TOP INSET — PASS G.
+     ========================
+     The credit line used to be the head's first child and carried
+     `padding-block-start: var(--s5)`, described here as keeping it "off
+     the trim the way a cover line is inset from the head margin in
+     print". PASS G deletes the credit line. The inset is NOT deleted
+     with it: the reason it existed is a property of the head, not of
+     that paragraph, and the mark is simply what is first now.
 
-     Centring splits that remainder into two gaps instead of one, and the
-     overlap above does the rest: once the name physically crosses onto
-     the photograph the left column stops reading as a separate empty
-     panel and the space between the two clusters becomes the cover's
-     negative space rather than a gap in a list.
+     SO NO NEW VALUE IS INTRODUCED. The same 64px moves from the
+     departing element onto the container, expressed as the Cover's own
+     `--cover-trim` rather than as a bare `--s5`, because the two are the
+     same 64 and stating it as the trim ties the head's top inset to the
+     section's bottom trim — they can never disagree, the same argument
+     `.cover-portrait`'s bleed already makes.
 
-     Space was redistributed; nothing was invented to fill it, and the
-     button stays on the bottom trim as CONTEXT.md's composition table
-     requires. The small inset below keeps the credit line off the trim
-     the way a cover line is inset from the head margin in print. */
-  .cover-credit{ padding-block-start: var(--s5); }
+     In bands 1 and 2 this also equals `--gutter`, so the Cover's first
+     ink is inset one trim from the top and one trim from the left: the
+     mark's box top lands on 64 and its ink lands on x = 64. In bands 3
+     and 4 the gutter is 40 and clamp(24px, 6.4vw, 40px) and the top
+     inset stays 64, which is correct — the bottom trim does not narrow
+     in those bands either.
 
-  /* The largest type on the page, and unambiguously so: 132px against a
-     33px tagline is 4x, and against 16px body copy 8.25x. CONTEXT.md's
-     lede-to-body floor is 3x; the failure it was written against was
-     ~1.8x, where the eye reads two tiers as one.
+     ONE RULE, ALL FOUR BANDS. The band-4 override that used to re-state
+     the credit line's inset is gone with the credit line. */
+  .win-cover-head{ padding-block-start: var(--cover-trim); }
+
+  /* The largest object on the page, and unambiguously so. The tagline
+     this comment used to measure against is gone (PASS G); the ratio
+     that survives is against 16px body copy, 8.25x at 1920, well over
+     CONTEXT.md's 3x lede-to-body floor.
 
      opsz 144 with wght 300 and SOFT 15 — sharp, high-contrast, near-
      Didot. All four axes stated; none is left to Fraunces' defaults of
-     wght 900 / WONK 1 / SOFT 100. */
+     wght 900 / WONK 1 / SOFT 100. These still govern bands 3 and 4,
+     where the type renders and the mark does not.
+
+     MARGIN-TOP IS 0, PASS G. It was `var(--s4)`, the gap between the
+     credit line and the name. With the credit line deleted there is
+     nothing above to be separated from, and the head's own
+     `padding-block-start` is now what holds the mark off the trim. A
+     surviving s4 here would stack on top of that inset and read as an
+     arbitrary 104px. */
   .cover-name{
-    margin: var(--s4) 0 0;
+    margin: 0;
     /* Optical hang, measured not guessed. Round 1 put this at -0.055em,
        which set the box left edge to 57.2px at 1440 against a 64px trim
        and a 62.6px credit line — the D's stem then sat LEFT of every
@@ -287,7 +349,30 @@ import portraitHero from '../assets/portrait-hero.jpg';
        Overlap rule requires it to be unambiguous, so the type grows.
 
        9.79vw gives 141px and a 174px overrun at 1440 — 33% of the plate. */
-    font-size: clamp(58px, 9.79vw, 152px);
+    /* PASS F hoists this into a token. The mark's width is derived from
+       it (see .cover-mark), so the type and the thing standing in for
+       the type read ONE value and cannot drift apart. The expression
+       itself is unchanged. */
+    --name-size: clamp(58px, 9.79vw, 152px);
+    font-size: var(--name-size);
+
+    /* THE <h1>'s RENDERED INK WIDTH, as a multiple of its own font-size.
+       MEASURED, not calculated: a pixel scan of the rendered face at
+       dsf 2 gives 6.7467 at 1920 (fs 152, ink 1025.50px) and 6.7454 -
+       6.7497 across the six single-line band-3 widths, so it is a
+       constant of the string in this face to four figures. It is NOT
+       the advance ratio, which measures 6.7653 - the trailing -0.03em
+       letter-spacing pulls the advance box inside the final n's ink.
+
+       A canvas TextMetrics measurement of this string is WRONG and was
+       discarded: canvas cannot take font-variation-settings, so it
+       renders Fraunces at its defaults (wght 900 / WONK 1 / SOFT 100)
+       with optical sizing free, and its ink/fs drifts 6.74 -> 7.88 as
+       the size falls. Same trap as CONTEXT.md's "enumerate every axis"
+       gotcha, one layer down. */
+    --name-ink-ratio: 6.747;
+    --name-ink: calc(var(--name-size) * var(--name-ink-ratio));
+
     line-height: 0.9;
     letter-spacing: -0.03em;
     color: var(--obsidian);
@@ -309,42 +394,165 @@ import portraitHero from '../assets/portrait-hero.jpg';
     margin-right: -40%;
   }
 
-  /* Roman, not italic. Italic with WONK 1 is the pull quote's device
-     and the pivot loses its force if the Cover has already spent it. */
-  .cover-tagline{
-    margin: var(--s3) 0 0;
-    font-family: var(--display);
-    font-variation-settings: var(--fx-display);
-    font-weight: 340;
-    /* Held against the name at 3x or better across the whole range,
-       which is CONTEXT.md's floor: 123.8/33 = 3.75x at 1440,
-       110/29.4 = 3.74x at 1280, 88/23.5 = 3.74x at 1024, and
-       58/19 = 3.05x at 390 and 360. The round-1 values fell to 2.6x on
-       a phone, inside the band where the eye stops reading two tiers. */
-    font-size: clamp(19px, 2.3vw, 33px);
-    line-height: 1.24;
-    letter-spacing: -0.005em;
-    color: var(--slate);
+  /* ================================================================
+     THE MARK — PASS F
+     ================================================================
+
+     THE SIZING RULE INVERTS HERE, and this is the round's whole
+     constraint. Everywhere else on this page a mark's HEIGHT is set
+     and its width follows (CONTEXT.md, Logo entry). This mark is
+     standing in for a line of type that occupies a known measure, so
+     its WIDTH is set from that measure and the height follows.
+
+     WIDTH = the <h1>'s rendered ink width. Not its box (widened 34%
+     by margin-right: -40%), not a column count, not a chosen size.
+     One token, --name-ink, derived from the type's own --name-size.
+
+     HEIGHT IS NEVER SET. The lockup's ink is 3.5582:1 and distorting
+     her mark is prohibited by her guidelines. The box carries the
+     viewBox aspect of 3.5692 and the browser derives the height from
+     the width alone; measured, the rendered ink comes back at 3.5582.
+
+     THE BOX IS 0.4186% WIDER THAN THE INK, and the correction matters
+     because of what it lands on. getBBox against the stored viewBox:
+     15.672uu of slack on the left, 0.393uu on the right, of 3837.64 —
+     CONTEXT.md's stored 0.419% / 0.111%, confirmed rather than
+     re-derived, and "essentially all of it on the left" confirmed too.
+     So the box is grossed up by 1/(1 - 0.004186) for the INK to
+     measure --name-ink, and hung left by the artwork's own left slack
+     for the ink to LAND ON THE PAGE TRIM.
+
+     That hang is the exact analogue of the type's -0.038em, which is
+     the D's left sidebearing, and it exists for the same reason: the
+     Cover's strongest alignment is four elements on one optical left
+     edge at x = 64 — credit line, name, roles, button. Without it the
+     page's largest object would sit 4.3px inside the other three at
+     1920, which is visible. It is a proportion of the mark's own
+     width, not a swept pixel constant, so it holds at every width.
+
+     Colour is INHERITED. `fill="currentColor"` on the artwork's root,
+     `color` from .cover-name (Obsidian), never overridden here. */
+  .cover-mark{
+    /* Gated OFF by default and switched on per band below — see the
+       band note. Stated here so the phone case is the default rather
+       than an override. */
+    display: none;
+    --mark-box: calc(var(--name-ink) / 0.9958140);
+    --mark-hang: calc(var(--mark-box) * 0.0040839);
+    width: var(--mark-box);
+    margin-left: calc(var(--mark-hang) * -1);
   }
 
-  /* 1 of 3 saturated gold type accents, budgeted by name in CONTEXT.md.
-     Colour alone was not a typographic device — one recoloured word at
-     the same size and weight as its neighbours reads as an anchor tag.
-     Committed to instead: italic, a step up in size, and a loosened
-     letterfit, so it reads as an editorial flourish that happens to be
-     gold rather than as a link.
-
-     WONK 0, deliberately. Italic Fraunces with WONK 1 gives the flagged
-     ball terminals that are the Feature Quote's signature; spending that
-     here would cost the pivot its own device. Same opsz and SOFT as the
-     roman around it, so only the slope and the scale change. */
-  .cover-tagline .legacy{
-    font-style: italic;
-    font-variation-settings: 'opsz' 96, 'wght' 340, 'SOFT' 32, 'WONK' 0;
-    font-size: 1.14em;
-    letter-spacing: 0.004em;
-    color: var(--gold);
+  .cover-mark :global(svg){
+    display: block;
+    width: 100%;
+    /* NOT set. The viewBox derives it. Stated explicitly so a later
+       pass does not read the absence as an oversight. */
+    height: auto;
+    /* Tailwind's preflight puts `max-width: 100%` on <img>, and this
+       file has already been bitten by it once (see .cover-plate img).
+       svg is not in that rule today; released anyway, because a box
+       deliberately wider than its parent's content box is exactly what
+       that rule silently eats. */
+    max-width: none;
   }
+
+  /* ---- The band gate ----------------------------------------------
+     BAND 1 (>=1280) and BAND 2 (1024-1279): the mark renders, the
+     heading text is visually hidden.
+     BAND 3 (751-1023) and BAND 4 (<=750): THE TYPE STAYS. The mark
+     does not render at all.
+
+     THIS IS A MEASUREMENT, NOT A PREFERENCE, and it is the finding the
+     round was told to look for. The lockup's thinnest sustained stroke
+     is 0.76% of its own height (PASS E.1, carried forward, not
+     re-derived), so it needs 161-210px of height for 1.25 device px at
+     dsf 1; the shipped legible height was 168px. The derived height is
+     --name-ink / 3.5582 = 1.8962 x --name-size, and it falls THROUGH
+     that floor inside band 3:
+
+         1920  288.2px      1023  189.9px
+         1440  267.3px       901  167.3px   <- under 168
+         1280  237.6px       900  167.1px   <- under 168
+         1279  237.4px       800  148.5px   <- under 161
+         1024  190.1px       751  139.4px   <- under 161
+                             750  139.2px   <- under 161
+
+     Band 3 is 751-1023 and the floor is crossed at about 905px, inside
+     it. Gating mid-band would mean a new breakpoint, which is a layout
+     move and is not this round's. So the gate is the band boundary
+     that already exists, 1024, and band 3 keeps the type.
+
+     CONTEXT.md is explicit that the width MUST NOT be raised to rescue
+     the height — that distorts the composition to fit the artwork, and
+     the measure is R1's, not the mark's.
+
+     BAND 4 HAS A SECOND, INDEPENDENT REASON. At 390 the name wraps to
+     two lines and a lockup cannot wrap: held to the 340px measure it
+     would stand 95.6px tall, 44% under even the permissive floor, and
+     released to its derived width it runs off both trims — which is
+     exactly the wreck PASS E.1 captured. The type stays.
+
+     Gating is the page's existing move, not a new one: the masthead,
+     the folio and all page motion are already band-gated.
+     ---------------------------------------------------------------- */
+  @media (min-width: 1024px){
+    .cover-mark{ display: block; }
+
+    /* THE NAME'S INK IS REPLACED, THE HEADING IS NOT. clip-path, the
+       same mechanism as the .vh primitive and for the same reason:
+       `display: none` and `visibility: hidden` both remove it from the
+       accessibility tree, which is the one thing this round MUST NOT
+       do. position: absolute takes it out of flow with no offsets, so
+       it stays at its static position and contributes nothing to the
+       flex column; the <h1>'s height then equals the mark's exactly.
+
+       Not the .vh class itself, because .vh is unconditional and this
+       is band-gated. Same treatment, scoped. */
+    .cover-name-text{
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* The type's own optical hang comes OFF with the type. -0.038em is
+       the D's left sidebearing and there is no D rendering here; left
+       on, it would drag the mark 5.8px past the page trim at 1920.
+       The mark brings its own hang — see --mark-hang. */
+    .cover-name{ margin-left: 0; }
+  }
+
+  /* THE TAGLINE AND ITS GOLD ARE DELETED — PASS G.
+     `Where Leadership Meets Legacy` and the `.legacy` <em> inside it
+     are gone from the markup, so `.cover-tagline` and
+     `.cover-tagline .legacy` are gone with them.
+
+     THIS SPENDS ONE OF THE THREE SATURATED GOLD TYPE ACCENTS DOWNWARD.
+     CONTEXT.md's pinned budget names three by name — "the 'Legacy'
+     tagline, the About drop cap, the pull quote" — and this was the
+     first. The page goes 3 -> 2. That is the authorised outcome of the
+     ruling, not a side effect, and the two survivors are untouched.
+
+     THE COVER NOW CARRIES NO GOLD AT ALL. Nothing is added back
+     anywhere to compensate: not the role line, not the button, not the
+     foot rule. See the report.
+
+     Tokens that were used here and SURVIVE because others use them:
+       --fx-display  -> SectionBlog.astro, PortraitBand.astro, privacy.astro
+       --gold        -> About.astro's drop cap, FeatureQuote.astro, and
+                        every focus-visible outline on the page
+       --slate       -> .cover-roles below, and page-wide
+       --s3          -> .cover-rule's bottom margin and .cover-cta below
+     Nothing became orphaned in CSS. The `.legacy` CLASS NAME survives
+     independently in FeatureQuote.astro, which scopes its own rule;
+     comments in About.astro and EducationalLeader.astro still point at
+     "the Cover's .legacy" and are now stale. Out of scope, reported. */
 
   /* THE RULE. 1px, Smoked Slate, spanning the text window. `margin-top:
      auto` in the stretched flex column drops it to the foot of row 1; the
@@ -571,8 +779,11 @@ import portraitHero from '../assets/portrait-hero.jpg';
       margin-bottom: 0;
     }
 
-    .cover-credit{ padding-block-start: var(--s5); }
-    .cover-name{ margin-top: var(--s3); margin-right: 0; }
+    /* PASS G: the credit line's inset override is gone with the credit
+       line, and the name's s3 top margin with it — the head's own
+       padding-block-start holds the top inset in every band. Only the
+       overrun cancel is still needed here. */
+    .cover-name{ margin-right: 0; }
 
     /* Nothing to raise above: the photograph is no longer beside the
        type, so the stacking and the flex centring both come off and the
