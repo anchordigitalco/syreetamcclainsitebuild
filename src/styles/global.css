@@ -136,6 +136,57 @@
   --grid-gap: 24px;
 
   /* ----------------------------------------------------------
+     R20 -- THE PAGE'S MAXIMUM MEASURE.
+
+     Jackson's ruling: the page caps at 1600, the capped grid is
+     CENTRED, and the full-bleed photographic plates continue to the
+     viewport edge. Type does not scale.
+
+     --measure-cap is the CONTENT box at the cap, not the cap:
+     1600 - 2 x 64 = 1472. The cap itself is never written down as a
+     number anywhere, because the thing the grid actually needs is the
+     track total, and deriving 1472 from 1600 in two places is how the
+     two drift apart.
+
+     WHY THIS IS NOT A max-width, AND WHY --gutter IS NOT REDEFINED.
+     Both are the same reason, and both are load-bearing:
+
+       1. A max-width on .sheet would cap the SECTION, and the three
+          Obsidian grounds -- the Feature Quote, Contact and the
+          footer -- have no bleed mechanism of their own. Their colour
+          reaches both edges only because .sheet is full width. Cap the
+          element and the page gains a hard vertical seam at 1600 with
+          Porcelain beyond it. The cap therefore lands on PADDING, and
+          .sheet stays full width.
+
+       2. Redefining --gutter would have carried the two photographic
+          plates along for free, since both escape by exactly
+          calc(var(--gutter) * -1). It is still wrong: --gutter is also
+          read as an internal offset, and a percentage in a shared
+          token re-resolves against each consumer's own containing
+          block. Measured at 2560, against a correct trim of 544px, the
+          percentage form yields -172.33px at .cover-portrait and
+          +32.33px at .ath-bleed, because a grid item's margin
+          percentage resolves against its GRID AREA. The plates invert.
+
+     So the two jobs are split by unit, each getting the one that is
+     correct for it, and --gutter keeps its 64px everywhere:
+
+       page-edge padding  ->  100%,  which excludes a classic
+                              scrollbar and resolves against the page
+       plate outer edge   ->  100vw, the only unit that tracks an
+                              unbounded viewport against a pinned
+                              1472px measure
+
+     The 100vw half is safe HERE and nowhere else: a negative margin
+     moves only the plate's OUTER edge, the inner edge is set by the
+     grid line and does not move (measured, R20), and body already
+     carries overflow-x: hidden so a classic scrollbar's half-width
+     overshoot is clipped rather than scrolled.
+     ---------------------------------------------------------- */
+  --measure-cap: 1472px;
+
+  /* ----------------------------------------------------------
      VERTICAL RHYTHM — three values, never one.
        tight    — things that belong to each other
        standard — ordinary section change
@@ -744,6 +795,25 @@ a{ color: inherit; }
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gap);
   padding-inline: var(--gutter);
+}
+
+/* R20 -- THE CAP. One property, on the padding, above 1600 only.
+   .sheet stays full width, so every Obsidian ground still reaches both
+   edges; only the 12 tracks are pulled in and centred.
+
+   100%, not 100vw: this resolves against .sheet's containing block,
+   which excludes a classic scrollbar. It is exact.
+
+   The max() is not decoration. The query fires on VIEWPORT width while
+   100% measures the CONTENT width, so on a classic-scrollbar platform
+   there is a sliver from 1600 to 1600+scrollbar where the percentage
+   term dips under 64px. The max() floors it at the gutter and the
+   boundary stays continuous: at exactly 1600, (1600-1472)/2 = 64, the
+   gutter's own value, so nothing steps. */
+@media (min-width: 1600px){
+  .sheet{
+    padding-inline: max(var(--gutter), calc((100% - var(--measure-cap)) / 2));
+  }
 }
 
 /* ============================================================

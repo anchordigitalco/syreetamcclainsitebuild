@@ -822,4 +822,25 @@ const lockupSvg = lockupRaw
       --crop-y: 12%;
     }
   }
+
+  /* R20 -- THE CAP. Above 1600 the section's padding is no longer
+     --gutter, so a -64px escape would leave the plate short of the trim
+     by the whole surplus -- 480px of Porcelain at 2560, measured.
+
+     100vw, and it has to be. The trim grows without bound with the
+     viewport while the measure is pinned at 1472, so no percentage of a
+     capped grid area can track it; a grid item's margin percentage also
+     resolves against its own area, which yields -172.33px here instead
+     of 544px.
+
+     It is safe because a negative margin moves only the RIGHT edge.
+     The left edge -- the seam the Cover's overlap is measured against --
+     is the grid line and does not move. Verified under both forms at
+     1600, 1920 and 2560, R20. body carries overflow-x: hidden, so a
+     classic scrollbar's half-width overshoot is clipped, not scrolled. */
+  @media (min-width: 1600px){
+    .cover-portrait{
+      margin-right: calc(-1 * max(var(--gutter), (100vw - var(--measure-cap)) / 2));
+    }
+  }
 </style>

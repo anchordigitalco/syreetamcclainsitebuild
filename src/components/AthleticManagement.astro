@@ -1339,4 +1339,21 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
   @media (max-width: 750px){
     .ath-bleed{ margin-inline: calc(var(--gutter) * -1); }
   }
+
+  /* R20 -- THE CAP. The mirror of the Cover's plate, on the other trim.
+     Above 1600 the section's padding exceeds --gutter, so the -64px
+     escape would strand the spread inside the page: measured as an
+     isolated build, the percentage form leaves it at x=480 rather than
+     x=0, which is the hard seam this round exists to avoid.
+
+     Only the LEFT edge moves. The frame's right trim stays on column
+     7's grid line, which is what the type's left edge is measured from
+     (see the .ath-bleed rule above), so the 100vw term cannot reach any
+     measured relationship. overflow-x: hidden on body clips the
+     overshoot a classic scrollbar would introduce. */
+  @media (min-width: 1600px){
+    .ath-bleed{
+      margin-inline-start: calc(-1 * max(var(--gutter), (100vw - var(--measure-cap)) / 2));
+    }
+  }
 </style>

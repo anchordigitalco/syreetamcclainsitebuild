@@ -936,4 +936,30 @@ import { sections } from '../data/sections';
       }
     }
   }
+
+  /* R20 -- THE CAP. The bar's whole point is that it introduces no
+     fourth edge: the name lands on --gutter, which is the grid's column
+     1. Above 1600 column 1 moves inward, so the bar's padding has to
+     follow it or the name is left alone out on the old trim while every
+     section's type sits centred hundreds of pixels to its right.
+
+     100%, like .sheet: the bar is position: fixed, so its percentage
+     resolves against the initial containing block, which excludes a
+     classic scrollbar. Exact, and no vw needed -- nothing here bleeds.
+
+     THE SELECTOR CHAIN IS COPIED, NOT SIMPLIFIED. The bar's padding is
+     declared at :global(html.js-motion) .masthead inside BOTH a media
+     query and an @supports -- the bar does not exist at all outside
+     that combination, since .masthead is display:none by default. A
+     flat `.masthead` rule here loses the specificity contest silently
+     and measures 64px at every width, which is exactly what the first
+     build of this rule did. min-width:1600 already implies the 1280
+     the original carries. */
+  @media (min-width: 1600px) and (prefers-reduced-motion: no-preference){
+    @supports (animation-timeline: view()){
+      :global(html.js-motion) .masthead{
+        padding-inline: max(var(--gutter), calc((100% - var(--measure-cap)) / 2));
+      }
+    }
+  }
 </style>
