@@ -180,15 +180,17 @@ const inquiries = [
 // component no longer renders a privacy link, so it no longer declares
 // the path — an unused const here would be the next pass's invitation to
 // re-add the second link.
-const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
+// R21.5: no address is published on the page. The form is the only
+// contact route; routing lives in the Formspree account, not here.
 ---
 
 <section class="sheet contact on-obsidian" id="sec-contact" aria-labelledby="contact-heading">
   <!--
-    THE TEXT COLUMN — columns 1-5. One grid item carrying three
-    registers on one left edge: the hairline head, the lede, and the
-    direct address. Authored as a single item rather than three
-    because sharing that edge IS the column's composition.
+    THE TEXT COLUMN — columns 1-5. One grid item carrying two
+    registers on one left edge: the hairline head and the lede.
+    Authored as a single item because sharing that edge IS the
+    column's composition. (R21.5 removed the direct address that was
+    its third register.)
   -->
   <div class="win-contact-text contact-text">
     <!-- ENTRANCE A. The hairline caps the head and the kicker hangs
@@ -230,15 +232,6 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
     node returns to where it was before R18. Set verbatim from
     COPY.md. The other six ledes are untouched. -->
     <p class="contact-lede">Speaking, consulting, partnership, and press inquiries.</p>
-
-    <!-- The direct address. COPY.md's "Direct email" line, and the
-         fallback every error state below points at. It sits here, in
-         the text column, because this row of the Composition table
-         holds NO margin content. -->
-    <div class="contact-direct">
-      <p class="contact-direct-label">Direct email</p>
-      <a class="contact-direct-link" href={`mailto:${inbox}`}>{inbox}</a>
-    </div>
   </div>
 
   <!--
@@ -442,73 +435,24 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
     text-wrap: balance;
   }
 
-  /* ---- THE DIRECT ADDRESS ---------------------------------------
-     Not marginalia — this row of the Composition table holds no
-     margin content — but it takes the page's marginal register:
-     a tracked uppercase label over a lowercase link, both Slate,
-     both on the baseline lattice. */
-  /* Pushed to the foot of the column. See .contact-text. The lede's
-     own 0.75lh bottom margin is the FLOOR of this gap — an auto
-     margin adds to it — so when the section stacks and there is no
-     surplus to absorb, the address sits exactly where the derivation
-     put it. */
-  .contact-direct{ margin-top: auto; }
-
-  .contact-direct-label{
-    margin: 0;
-    margin-left: -0.11em;           /* half of 0.22em tracking */
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 10.5px;
-    line-height: var(--baseline);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    /* R14: the faint tier, 4.73:1. The light-ground rule here was
-       Slate at 0.82 -- a colour knocked down by an opacity, two alphas
-       stacked to reach one number. On this ground the tier IS the
-       opacity and there is only one: 0.53 against full Porcelain.
-       Same floor (4.5:1), one value instead of two. */
-    color: var(--ink);
-    opacity: var(--a-faint);
+  /* R21.5 — THE LEDE TAKES THE FOOT THE ADDRESS HELD. With the direct
+     address removed the column read as a lede over 361-424px of dead
+     ground beside a form that runs to its button. Four distributions of
+     what remains were captured at 1440: all at the top (dead ground),
+     the whole block at the foot (the hairline head leaves the form's
+     top edge), the block centred (floats on no edge), and this one —
+     rule and kicker stay on the section's top content edge beside NAME,
+     and the lede takes an auto margin on BOTH sides, so it sits in the
+     vertical middle of the space between the kicker and the column's
+     foot (the column is stretched to the form's row, so its foot is
+     the button's). Seated at the foot it overshot: the statement sat a
+     long way under its own kicker and its last line crossed a 768 fold
+     when Contact is jumped to. Nothing added. Beside bands only;
+     stacked, the lede keeps its ordinary rhythm above the form. */
+  @media (min-width: 1024px){
+    .contact-lede{ margin-block: auto; }
   }
 
-  /* .edu-link's treatment, reused rather than reinvented: lowercase
-     so the address reads as an address, an underline OFFSET rather
-     than a border so the descender in "g" is not struck through, and
-     Slate at 0.42 — no gold. Transform and opacity only. */
-  .contact-direct-link{
-    display: inline-block;
-    margin-top: 2px;
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 1.4;
-    letter-spacing: 0.01em;
-    color: var(--ink);                        /* R14: 13.97:1 */
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    /* --rule-ui, 3.44:1. A link's underline is what identifies it as a
-       link, so it is a 1.4.11 component and takes the 3:1 tier rather
-       than the decorative one. Slate at 0.42 was the light ground's
-       value and is 1.6:1 here. */
-    text-decoration-color: var(--rule-ui);
-    transition:
-      transform 260ms var(--ease),
-      opacity   260ms var(--ease);
-  }
-
-  .contact-direct-link:hover{ transform: translateY(-1px); opacity: 0.7; }
-  .contact-direct-link:active{ transform: translateY(0); opacity: 1; }
-  /* THE FOCUS RING, RE-DERIVED ON THIS GROUND. Not ported: CONTEXT.md
-     is explicit that 12.9:1 was measured against Porcelain, and R10
-     caught this exact defect once already at 2.4:1. Floor is WCAG
-     1.4.11's 3:1. Porcelain on Obsidian measures 13.97:1 nominal. */
-  .contact-direct-link:focus-visible{
-    outline: 1px solid var(--porcelain);
-    outline-offset: 4px;
-    text-decoration-color: var(--porcelain);
-  }
 
   /* ================================================================
      THE FORM — PHASE F, PORTED. Everything from here down is the
@@ -605,7 +549,7 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
        lattice — snapping the direct block hung beside the form — no
        longer applies, because R10 moved that block into the text
        column and bottom-aligns it with an auto margin. The lattice
-       stays anyway: .kicker, .contact-direct-label and .plate-caption
+       stays anyway: .kicker and .plate-caption
        all set line-height: var(--baseline), and taking one 10.5px
        uppercase line off the page's shared lattice to buy 4.5px would
        trade a system for a number. */
@@ -830,7 +774,8 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
     /* Quiet tier as a flat rgba rather than color + opacity: an
        opacity here would knock down the mailto: link nested inside
        this paragraph along with it, and that link has to clear the
-       4.5:1 floor on its own. 7.53:1. */
+       4.5:1 floor on its own. 7.53:1. (R21.5 removed that link; the
+       value stands, since the body text still has to hold 7.53:1.) */
     color: rgba(231, 226, 221, 0.71);
   }
 
@@ -854,19 +799,6 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
     color: var(--ink);                       /* R14: 13.97:1 */
   }
 
-  /* The mailto: fallback every error state surfaces. Full ink, so it
-     clears 4.5:1 on its own regardless of the quiet paragraph it is
-     nested in, and its focus ring is re-derived like every other one
-     in this file. */
-  .form-status :global(a){
-    color: var(--porcelain);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    text-decoration-color: var(--rule-ui);
-  }
-  .form-status :global(a:hover){ text-decoration-color: var(--porcelain); }
-  .form-status :global(a:focus-visible){ outline: 1px solid var(--porcelain); outline-offset: 4px; }
 
   /* ---- BAND 3 · 751-1023 -----------------------------------------
      The section stacks; the primitives in global.css do that. What is
@@ -921,9 +853,10 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
      port. Client-side fetch POST, response rendered inline, zero main-frame
      navigations; honeypot short-circuits before any request is made; four
      states, with the three error kinds distinguished and every one of them
-     surfacing the mailto: fallback; Turnstile rendered explicitly so the
+     (R21.5: no longer surfacing an email fallback — the page publishes
+     no address); Turnstile rendered explicitly so the
      widget id is retained for reset() after a failed submission. -->
-<script is:inline define:vars={{ endpoint, sitekey, inbox }}>
+<script is:inline define:vars={{ endpoint, sitekey }}>
 (function () {
   function init() {
     var form    = document.getElementById('contact-form');
@@ -937,7 +870,6 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
     if (!form) return;
 
     var widgetId = null;
-    var mailto = '<a href="mailto:' + inbox + '">' + inbox + '</a>';
 
     // ---- Subject line carries the inquiry type -------------------------
     function syncSubject() {
@@ -1004,7 +936,7 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
       if (!endpoint) {
         fail(
           'Not configured',
-          'The form endpoint is missing. Please email ' + mailto + ' directly.'
+          'The form endpoint is missing.'
         );
         return;
       }
@@ -1013,8 +945,7 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
       if (!token || !token.value) {
         fail(
           'Verification needed',
-          'The verification check has not completed. Wait a moment and try again, ' +
-          'or email ' + mailto + ' directly.'
+          'The verification check has not completed. Wait a moment and try again.'
         );
         return;
       }
@@ -1031,7 +962,7 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
             setState(
               'success',
               'Received. She&rsquo;ll be in touch.',
-              'A copy of your inquiry has been sent. If it is urgent, ' + mailto + ' reaches her directly.'
+              'A copy of your inquiry has been sent.'
             );
             form.reset();
             syncSubject();
@@ -1046,14 +977,13 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
             if (/captcha|turnstile|challenge/i.test(msg) || res.status === 403) {
               fail(
                 'Verification failed',
-                'The security check did not pass. Please complete it again and resend, ' +
-                'or email ' + mailto + ' directly.'
+                'The security check did not pass. Please complete it again and resend.'
               );
             } else {
               fail(
                 'Not sent',
                 (msg ? msg + ' ' : 'The message could not be sent. ') +
-                'Please try again, or email ' + mailto + ' directly.'
+                'Please try again.'
               );
             }
           });
@@ -1063,7 +993,7 @@ const inbox = 'mcclain' + '@' + 'premierleadersllc.com';
           fail(
             'Connection problem',
             'The message could not be sent because the connection failed. ' +
-            'Check your network and try again, or email ' + mailto + ' directly.'
+            'Check your network and try again.'
           );
         });
     });
