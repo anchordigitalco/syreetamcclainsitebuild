@@ -77,6 +77,45 @@ import LedeReveal from './LedeReveal.tsx';
  * OVERLAP: ZERO. Two of three are spent and the third is reserved
  * for R6.
  */
+
+/* R21 SLICE 3 — THE FOUNDATION'S OWN MARK REPLACES THE ASTERISK.
+ *
+ * Inlined the way Cover.astro inlines the lockup: `?raw` from
+ * brand_assets/, prepared at inline time, THE FILE ON DISK NEVER
+ * EDITED. It is mark only — torch, arch, rays and the EL monogram; no
+ * wordmark, so the kicker's EVERYDAY LEGENDS FOUNDATION is not printed
+ * twice. Recolouring to one ink is authorised (R21): shipped in its
+ * supplied gold it would be a saturated accent against a spent budget.
+ *
+ * WHAT THE PREPARATION DOES, in order, and why each is safe:
+ *   1. <metadata> (the ~7.7 KB C2PA manifest), the c2pa namespace and
+ *      the <title> go. The mark is aria-hidden at the placement, so a
+ *      title would name nothing.
+ *   2. <defs> goes: six linearGradients that NO path references.
+ *   3. THE FOUR FAINT PATHS GO — #F8FAFE at 25%, 10% and 9.8% opacity
+ *      and #B4B5B8 at 5%. Rendered at target size they sit over the
+ *      flame's interior streaks; flattened to full-opacity ink they
+ *      FILL those streaks and the flame becomes a blob. They are not
+ *      knockouts: the gold geometry already carries the streaks as
+ *      real holes, so dropping the overlays restores exactly the shape
+ *      the supplied render shows. No fill-rule change was needed.
+ *   4. Every fill and fill-opacity goes; the root takes
+ *      fill="currentColor". The 0.976-1.0 opacities (and one 0.756)
+ *      flatten to one ink, which is the point.
+ *   5. Each path's identical scale(1.06667) is hoisted to one <g>, and
+ *      whitespace around path commands is dropped. Coordinates are not
+ *      rounded.
+ * 24,281 bytes on disk -> 10,909 inlined. 37 paths -> 33. */
+import legendsRaw from '../../brand_assets/everyday-legends-logo.svg?raw';
+const legendsViewBox = legendsRaw.match(/viewBox="([^"]+)"/)![1];
+const legendsPaths = [...legendsRaw.replace(/<metadata>[\s\S]*?<\/metadata>/, '').matchAll(/<path\b[^>]*?\/?>/g)]
+  .map((m) => m[0])
+  .filter((tag) => !/fill="#(F8FAFE|B4B5B8)"/i.test(tag))
+  .map((tag) => {
+    const d = tag.match(/\sd="([^"]*)"/)![1].replace(/\s+/g, ' ').trim().replace(/ ?([MLCQZmlcqz]) ?/g, '$1');
+    return `<path d="${d}"/>`;
+  });
+const legendsSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${legendsViewBox}" fill="currentColor"><g transform="scale(1.06667)">${legendsPaths.join('')}</g></svg>`;
 ---
 
 <section class="sheet legends" id="sec-legends">
@@ -108,7 +147,7 @@ import LedeReveal from './LedeReveal.tsx';
     as a stray asterisk between the subtitle and the opening
     statement.
   -->
-  <div class="win-legends-mark legends-mark" aria-hidden="true">*</div>
+  <div class="win-legends-mark legends-mark" aria-hidden="true" set:html={legendsSvg}></div>
 
   <!-- R18.1 — THE LEDE LINE MASK. The island nests INSIDE this
   paragraph; it does not replace it. The paragraph is the grid item
@@ -263,35 +302,45 @@ import LedeReveal from './LedeReveal.tsx';
      than of a viewport. Expressed in `em` of the mark's own size, so
      it re-resolves with the type at every width. Nothing here is a
      pixel offset swept from one viewport. */
-  .legends-mark{
-    /* Measured, not assumed: canvas TextMetrics on the rendered face,
-       ink height / font-size for '*' in Fraunces at these four axes. */
-    --mark-ink-ratio: 0.489;
-    font-family: var(--display);
-    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 20, 'WONK' 0;
-    font-weight: 400;
-    /* R15: THE 1.6 IS UNCHANGED AND THE COUNTERPART MOVED. The spec is
-       "1.6 times the lede," and the lede this mark opens is no longer
-       --lede-size, it is --legends-lede-size. Left pointing at the
-       shared token the mark would have stayed at 87.5px of ink beside
-       a 78.4px lede -- 1.12x a lede capital, which is this rule's own
-       stated fail condition: a mark that reads as a footnote marker
-       rather than as the section's entrance, with the empty column
-       beside it no longer reading as a hang.
+  /* ---- R21 SLICE 3 — THE MARK IS THE FOUNDATION'S -----------------
+     Everything above this rule describes the Fraunces asterisk it
+     replaces and is kept as the derivation's history. What carries
+     over is the RELATIONSHIP, restated for an SVG, which has a fixed
+     aspect and no optical centre of its own:
 
-       THE OPTICAL CORRECTION BELOW SURVIVES THE CHANGE, and that is a
-       property of the expression rather than luck. The mark's ink
-       centre is a fixed fraction of its own size and the lede's cap
-       centre is a fixed fraction of ITS own size; the correction is
-       written in `em` of the mark, so it reduces to
-       (lede cap fraction / 3.2720) - (mark ink fraction) with the type
-       size cancelling out entirely. The mark stays 3.2720x whatever it
-       opens, so the -0.1553em holds at every size. Re-measured on the
-       rendered ink after the change, not assumed. */
-    font-size: calc(var(--legends-lede-size) * 1.6 / var(--mark-ink-ratio));
-    line-height: 1;
+     INK HEIGHT = 1.6 x THE LEDE IT OPENS, the asterisk's own rule, on
+     --legends-lede-size. The viewBox is a superset of the ink: 0.950617
+     of its height and 0.956098 of its width are ink (the path union,
+     measured against the viewBox), so the box is grossed up by
+     1/0.950617 for the INK to measure 1.6 x the lede.
+
+     WHICH DIMENSION BINDS IS MEASURED, NOT ASSUMED. The ink is 1.1455:1.
+     At 1.6 x the lede its width is 1.8328 x the lede — 102.2px at 1024
+     against 129.3px of columns 1-2, 143.7 at 1440 against 198.7, 163.7
+     from 1770 up against 225.3. HEIGHT BINDS in bands 1 and 2, with
+     0.72-0.79 of the window used and column 3 left empty — the hang.
+
+     HUNG LEFT BY THE ARTWORK'S OWN LEFT SLACK (41 of 1845 viewBox
+     units = 0.025309 x the box height) so the INK, not the box, lands
+     on column 1's line.
+
+     VERTICAL: the ink centre on the lede's first-line cap centre, as
+     the asterisk's was. Written in lede-size so type size cancels:
+     measured off the rendered ink with no offset at 2560, 1920, 1600,
+     1440, 1280, 1279 and 1024, the error divided by the lede's size is
+     -0.268 to -0.281, one number to within the pixel quantisation of
+     the ink edge. Shipped at the median, -0.2757. */
+  .legends-mark{
+    --el-box-h: calc(var(--legends-lede-size) * 1.6 / 0.950617);
     color: var(--slate);
-    margin-top: -0.1553em;   /* 0.115 optical - 0.2703 measured */
+    margin-top: calc(var(--legends-lede-size) * -0.2757);
+    margin-left: calc(var(--el-box-h) * -0.025309);
+  }
+  .legends-mark :global(svg){
+    display: block;
+    height: var(--el-box-h);
+    width: auto;
+    max-width: none;
   }
 
   /* ---- LEDE ------------------------------------------------------
@@ -464,9 +513,39 @@ import LedeReveal from './LedeReveal.tsx';
        were MEASURED off the rendered ink, so they hold at every width
        in these two bands — verified identical at 1023, 750 and 375.
        The rhythm terms are the body's tokens, as everywhere else. */
+    /* R21: the Foundation's mark, trimmed to its ink the same way —
+       0.025309 of the box above the ink, 0.024074 below it (39 of 1620
+       viewBox units). BAND 4 (<=750) takes these as written: a row of
+       its own, full measure, height binding at 1.6 x the lede. */
     .legends-mark{
-      margin-top: -0.0936em;
-      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh) - 0.4205em);
+      margin-top: calc(var(--el-box-h) * -0.025309);
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh) - var(--el-box-h) * 0.024074);
+    }
+  }
+
+  /* BAND 3 (751-1023): WIDTH BINDS. The mark holds column 1 of 8 only,
+     66-100px, and 1.6 x the lede needs 95-102px of ink width, so the
+     ink is set to the column's width and the height follows from the
+     viewBox. Percentage margins on a grid item resolve against its
+     grid area's width, which is exactly the column, so the ink trims
+     and the hang stay exact with no pixel value:
+       box width  = column / 0.956098
+       hang       = 0.022222 x box  = 2.3243%
+       top trim   = 0.025309 x box height = 2.3243%
+       bottom     = 0.024074 x box height = 2.2109%
+     The SVG's own `100%` is NOT the column: the negative hang widens
+     the stretched grid item to 1.023243 x the column, so the width is
+     divided by 1.023243 x 0.956098 = 0.97832. Measured: at 0.956098
+     alone the ink ran 1.6px past column 1 at 1023. */
+  @media (min-width: 751px) and (max-width: 1023px){
+    .legends-mark{
+      margin-top: -2.3243%;
+      margin-left: -2.3243%;
+      margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh) - 2.2109%);
+    }
+    .legends-mark :global(svg){
+      width: calc(100% / 0.97832);
+      height: auto;
     }
   }
 
