@@ -168,8 +168,13 @@ import LedeReveal from './LedeReveal.tsx';
     padding-block: 96px;
   }
 
+  /* R21 slice 1 SUPERSEDES THE svh TERM ABOVE. The Cover is now
+     100svh, so the fold IS the Cover's bottom edge and the lede no
+     longer needs buying below it: the band this padding created was
+     20svh of empty ground under the portrait. Flat 96px, the value
+     the bottom already carries. The note above is kept as history. */
   @media (min-width: 1024px){
-    .about{ padding-top: max(96px, calc(20svh + 12px)); }
+    .about{ padding-top: 96px; }
   }
 
   /* ---- LEDE ------------------------------------------------------

@@ -236,8 +236,15 @@ const lockupSvg = lockupRaw
        the fold so the page has a reason to scroll. 78 was tested and
        reads slightly cramped under the tagline; 82 starts to re-open the
        hole. The plate still bleeds off the bottom trim — the section is
-       simply shorter. */
-    min-height: 80svh;
+       simply shorter.
+       R21 SLICE 1 SUPERSEDES THIS: 100svh, Jackson's ruling (option A).
+       At 80svh the portrait ended 20svh above the fold and About's
+       svh-derived top padding filled the gap with empty ground, so the
+       photograph read as stopping short of the page. At 100svh the
+       plate's bottom bleed lands on the fold. The hole R1.4 warned
+       about is answered by the head's distribution below, not by
+       shortening the section. */
+    min-height: 100svh;
     padding-block: 0 var(--cover-trim);
   }
 
@@ -526,6 +533,31 @@ const lockupSvg = lockupRaw
        on, it would drag the mark 5.8px past the page trim at 1920.
        The mark brings its own hang — see --mark-hang. */
     .cover-name{ margin-left: 0; }
+
+    /* R21 SLICE 1 — THE NAME DESCENDS, AND THE PHOTOGRAPH SETS HOW FAR.
+       At 100svh the column is taller than its content and the slack has
+       to land somewhere. Three distributions were built and captured at
+       1440x900 on the build: name centred in the head, name grouped
+       low on the foot, and name at the upper third. ALL THREE PUT
+       MCCLAIN'S LAST GLYPHS ON HER HAIR: the photograph keeps its scale
+       at 100svh and only shows more of her below, and her hair widens
+       as it falls, so every row lower is a row closer to it. Measured
+       against the pixels actually behind the glyphs: 1px clearance and
+       1.7-2.2:1 at 1024-1440. The seam's clean backdrop is high in the
+       frame, beside her head — R1's reason for top-aligning the head.
+       SO THE DESCENT IS BOUNDED BY CLEARANCE, not by balance. Swept in
+       steps of 0.1 x --name-size (the unit that tracks the plate's
+       scale, both being vw-driven), at viewport heights 768, 900 and
+       1080 — height matters, because the crop's `--crop-y` lifts the
+       photograph further on a shorter plate. 0.2 is the largest step
+       that keeps the overrunning glyphs at least --s3 (24px) clear of
+       the subject at every width from 1024 to 2560 and every one of
+       those heights: 31px at worst, glyph contrast 6.43:1 minimum.
+       0.3 closes to 23px at 1279x768; 0.4 to 10px.
+       Written on the <h1> because --name-size is declared here.
+       Bands: >=1280 and 1024-1279 descend; 751-1023 and <=750 are the
+       stacked Cover with min-height auto and no seam, untouched. */
+    .cover-name{ margin-top: calc(0.2 * var(--name-size)); }
   }
 
   /* THE TAGLINE AND ITS GOLD ARE DELETED — PASS G.
