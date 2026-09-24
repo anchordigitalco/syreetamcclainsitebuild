@@ -331,9 +331,18 @@ const legendsSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${legendsVi
      -0.268 to -0.281, one number to within the pixel quantisation of
      the ink edge. Shipped at the median, -0.2757. */
   .legends-mark{
-    --el-box-h: calc(var(--legends-lede-size) * 1.6 / 0.950617);
+    /* R21.4: x 1.25, ruled up from the asterisk's 1.6 x the lede so the
+       mark reads as the opener rather than as a badge. Chosen on the
+       screenshot from 1.15 / 1.20 / 1.25 at 1440 and 1024. Height still
+       binds in bands 1-2: at 1024, the binding width, the ink is 127.7px
+       against 129.33px of columns 1-2, column 3 still empty. Band 3 is
+       width-bound to column 1 below and cannot grow; band 4 grows.
+       The seat moves with the size: the ink centre sits 0.500617 of the
+       box down, so the correction is -0.2757 - 0.8426 x 0.25 = -0.4864,
+       re-measured on the rendered ink. */
+    --el-box-h: calc(var(--legends-lede-size) * 1.6 * 1.25 / 0.950617);
     color: var(--slate);
-    margin-top: calc(var(--legends-lede-size) * -0.2757);
+    margin-top: calc(var(--legends-lede-size) * -0.4864);
     margin-left: calc(var(--el-box-h) * -0.025309);
   }
   .legends-mark :global(svg){

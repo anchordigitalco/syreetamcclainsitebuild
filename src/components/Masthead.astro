@@ -980,8 +980,9 @@ const lockupSvg = lockupRaw
      out and the mark reads as "SM". A known, accepted cost -- see the
      PASS E.1 amendment in CONTEXT.md -- not a regression.
 
-     HEIGHT IS THE BAR'S INNER HEIGHT, --mast-h, derived, not chosen: the
-     bar carries no vertical padding, so its inner height is its height.
+     HEIGHT IS DERIVED FROM THE BAR'S INNER HEIGHT, --mast-h (the bar
+     carries no vertical padding): the ink is --mast-h - 2 x --s1, see
+     the R21.4 correction at the rule.
      Width follows from the viewBox (3.5692:1), never set. The box is hung
      left by the artwork's own left slack (0.40839% of its width, the same
      figure .cover-mark uses) so the INK lands on --gutter, the edge the
@@ -1016,14 +1017,25 @@ const lockupSvg = lockupRaw
         white-space: nowrap;
         border: 0;
       }
+      /* R21.4 CORRECTION. Fitted at the full --mast-h the INK filled
+         the bar edge to edge: the lockup's path union is its viewBox
+         to within 0.04% vertically ("dr" ascender at the top, the M's
+         serif at the bottom), so ink height = box height = 56px, with
+         0px clearance and the ink crossing the bar's 1px bottom rule
+         at y 55. Nothing was clipped; the size was simply the whole bar.
+         Now the INK is --mast-h less one --s1 each side (40px), centred
+         in a wrapper that keeps the bar's full height, so the link's
+         hit area and CONTENTS do not move. */
       :global(html.js-motion) .mast-mark{
-        display: block;
+        --mast-mark-h: calc(var(--mast-h) - 2 * var(--s1));
+        display: flex;
+        align-items: center;
         height: var(--mast-h);
-        margin-left: calc(var(--mast-h) * 3.5692 * -0.0040839);
+        margin-left: calc(var(--mast-mark-h) * 3.5692 * -0.0040839);
       }
       :global(html.js-motion) .mast-mark :global(svg){
         display: block;
-        height: 100%;
+        height: var(--mast-mark-h);
         width: auto;
         max-width: none;
       }
