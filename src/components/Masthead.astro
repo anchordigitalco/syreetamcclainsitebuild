@@ -196,6 +196,16 @@
  * ===================================================================
  */
 import { sections } from '../data/sections';
+
+/* R21 SLICE 2 — THE LOCKUP SETS HER NAME IN THE BAR. Inlined exactly as
+ * Cover.astro inlines it (PASS F): `?raw`, the <metadata> block and the
+ * c2pa namespace stripped and nothing else, so the root keeps its own
+ * viewBox, `fill="currentColor"` and `role="img"` byte-for-byte. The
+ * wrapper carries aria-hidden, so the role="img" is never exposed. */
+import lockupRaw from '../../brand_assets/mcclain-lockup.svg?raw';
+const lockupSvg = lockupRaw
+  .replace(/<metadata>[\s\S]*?<\/metadata>/, '')
+  .replace(/\s+xmlns:c2pa="[^"]*"/, '');
 ---
 
 <div class="masthead">
@@ -219,7 +229,7 @@ import { sections } from '../data/sections';
       aria-label gives the link a functional name instead of repeating
       the heading. */}
   <a class="mast-home" href="#top" aria-label="Back to top">
-    <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span>
+    <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span><span class="mast-mark" aria-hidden="true" set:html={lockupSvg}></span>
   </a>
 
   {/* ONE DISCLOSURE, SO "ONE THING OPEN AT A TIME" IS STRUCTURAL. No
@@ -959,6 +969,63 @@ import { sections } from '../data/sections';
     @supports (animation-timeline: view()){
       :global(html.js-motion) .masthead{
         padding-inline: max(var(--gutter), calc((100% - var(--measure-cap)) / 2));
+      }
+    }
+  }
+
+  /* R21 SLICE 2 -- THE LOCKUP REPLACES THE NAME'S INK, JACKSON'S RULING.
+     PASS E.1 measured this artwork needing 161-210px of height for its
+     thinnest stroke to survive 1.25 device px at dsf 1. The bar is 56px.
+     Ruled to ship anyway: the script "dr" and the hairline serifs thin
+     out and the mark reads as "SM". A known, accepted cost -- see the
+     PASS E.1 amendment in CONTEXT.md -- not a regression.
+
+     HEIGHT IS THE BAR'S INNER HEIGHT, --mast-h, derived, not chosen: the
+     bar carries no vertical padding, so its inner height is its height.
+     Width follows from the viewBox (3.5692:1), never set. The box is hung
+     left by the artwork's own left slack (0.40839% of its width, the same
+     figure .cover-mark uses) so the INK lands on --gutter, the edge the
+     name's ink used.
+
+     THE TEXT STAYS AND IS VISUALLY HIDDEN, same clip-path mechanism as
+     .cover-name-text. It keeps its own aria-hidden (R16: it is already the
+     page's <h1>); the link's accessible name is still aria-label="Back to
+     top". The mark wrapper is aria-hidden, so no image is exposed.
+
+     COLOUR IS INHERITED. Nothing here sets color or fill on the mark;
+     fill="currentColor" resolves through .mast-home's `color: inherit` to
+     the bar's Obsidian.
+
+     THE SELECTOR CHAIN IS COPIED FROM THE BAR'S OWN RULES, not flattened.
+     The bar exists only as :global(html.js-motion) .masthead inside this
+     media query and this @supports; R20 shipped a flat rule that lost to
+     that chain silently. Band 1 only, because the bar is band 1 only --
+     below 1280 there is no bar and nothing to replace.
+     ------------------------------------------------------------------ */
+  .mast-mark{ display: none; }
+  @media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
+    @supports (animation-timeline: view()){
+      :global(html.js-motion) .mast-name{
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+      :global(html.js-motion) .mast-mark{
+        display: block;
+        height: var(--mast-h);
+        margin-left: calc(var(--mast-h) * 3.5692 * -0.0040839);
+      }
+      :global(html.js-motion) .mast-mark :global(svg){
+        display: block;
+        height: 100%;
+        width: auto;
+        max-width: none;
       }
     }
   }
