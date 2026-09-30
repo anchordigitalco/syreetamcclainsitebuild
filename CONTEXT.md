@@ -139,7 +139,7 @@ Page order. This table is the design; everything above it is vocabulary.
 | About | Gold drop cap, two lines. No kicker, no rule | lede 1 to 9, body 1 to 6 capped at 670px, closing 7 to 9 | none | top padding lands the lede just under the fold | full |
 | Educational Leader | Hairline head, kicker and subtitle outdented to 1 to 3 | body 4 to 11 | none, by design | 110 | full, coda set apart |
 | Field band | Letterbox, no type | full width | field | about 40 above and below | image only |
-| Premier Leadership | Image first | photo 1 to 5, body 6 to 11, four topics in margin | seated portrait | 80 | abridged: lede, one paragraph, button |
+| Premier Leadership | Image first | photo 1 to 5, body 6 to 11, topics in a full-width Cashmere band below the photo and text, centered, all widths. | seated portrait | 80 | abridged: lede, one paragraph, button |
 | Everyday Legends | Foundation mark hung in 1 to 2 | body 3 to 8, handle in margin | none | 70 | abridged: lede, one paragraph, button |
 | Athletic Management | The spread: photo breaks the left trim | bleachers bleed 1 to 7, text 8 to 12, detail inset 4 to 7 overlapping upward | bleed + inset | 110 | full; coda anchored to the bleed frame's bottom, caption baseline on the coda's last baseline |
 | Feature Quote | The pivot, on Obsidian | 2 to 10 | none | 150, largest | pull quote only |
@@ -213,7 +213,11 @@ Why this exists: at phone widths the ledes ended on "students.", "forward." and
 - **Charging It to the Game** as a kicker may break only at its designed point between its
   two halves, never elsewhere.
 - **Speaking topics** each sit on one line. At any width where the longest topic does not
-  fit the margin on one line, the topics move under the body. MUST NOT overflow.
+  fit on one line, the topics move under the body. MUST NOT overflow.
+- **The topics panel.** The speaking topics sit in a sidebar panel, like a magazine fact
+  box: Cashmere ground, square corners, no border, no shadow, headed by her SM submark in
+  Obsidian. Same panel at every width, beside the body or under it. The submark is
+  decorative (`aria-hidden`) and is not a gold use.
 - **Authored line breaks are not orphans.** The Charging It to the Game coda is three hard
   lines by design. Each line is checked as its own block: it may wrap, and if it wraps it MUST
   NOT orphan. The three lines MUST NOT be run together, centered, or ruled apart. About's

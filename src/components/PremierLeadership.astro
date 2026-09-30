@@ -95,23 +95,40 @@ import LedeReveal from './LedeReveal.tsx';
  */
 import { Image } from 'astro:assets';
 import portraitSeated from '../assets/portrait-seated.jpg';
+
+/* THE TOPICS PANEL'S SUBMARK. Inlined the way EverydayLegends.astro
+ * inlines the Foundation mark: `?raw` from brand_assets/, prepared at
+ * inline time, THE FILE ON DISK NEVER EDITED.
+ *   1. <metadata> (the C2PA manifest) and the c2pa namespace go.
+ *   2. role="img" goes: the mark is aria-hidden at the placement, so a
+ *      role would announce nothing.
+ *   3. THE THREE FAINT PATHS GO — #FDFDFD at 7.1% and 2.7%, #C4C4C3 at
+ *      4.7%. Rendered over Cashmere, the mark with and without them is
+ *      indistinguishable; flattened to one ink they would print as
+ *      solid shapes. Same finding as the Legends mark.
+ *   4. The root keeps fill="currentColor", so the ink is the
+ *      placement's `color`: Obsidian. */
+import submarkRaw from '../../brand_assets/mcclain-submark.svg?raw';
+const submarkSvg = submarkRaw
+  .replace(/<metadata>[\s\S]*?<\/metadata>/, '')
+  .replace(/\s+xmlns:c2pa="[^"]*"/, '')
+  .replace(/\s+role="img"/, '')
+  .replace(/<path\b[^>]*\bfill="#(FDFDFD|C4C4C3)"[^>]*?\/?>/gi, '');
 ---
 
 <section class="sheet prem" id="sec-pillar">
   <!--
     SOURCE ORDER IS STRUCTURAL. plate -> head -> lede -> body ->
-    topics -> button is what makes grid's sparse cursor seat the
-    topics list in the BODY's row rather than the lede's, which is the
-    whole mechanism by which it clears the lede — which overruns into
-    the margin's columns — at every width and every line count, with
-    nothing counted. Reordering these siblings changes the
-    composition. See global.css.
+    button -> topics. The first five are main's arrangement, unchanged.
+    The topics band comes LAST, so grid's sparse cursor puts it in a
+    row of its own after the button at every width; see the band's
+    comment below and global.css. Reordering these siblings changes
+    the composition.
 
-    It is also the right reading order from 1279 down, where the topics
-    fall under the body, and in the phone stack: photograph,
-    name, subtitle, opening statement, body, the four topics, then the
-    button. The button stays the last thing in the section, which is
-    why it is a grid item of its own rather than a child of the body.
+    It is also the reading order at every width: photograph, name,
+    subtitle, opening statement, body, button, then the four topics.
+    The button is a grid item of its own rather than a child of the
+    body, so it keeps its own row.
   -->
   <figure class="win-prem-plate prem-plate plate-draw" style="--curtain-exit: -1">
     <!--
@@ -243,36 +260,6 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     <p>Twenty years of leading schools, building programs, and navigating complex systems. Premier&nbsp;Leadership brings that experience beyond the schoolhouse to help others turn vision into action.</p>
   </div>
 
-  <!--
-    THE LIVE MARGIN — the four speaking and workshop topics. Authored
-    HERE, directly after the body and before the button, so
-    auto-placement seats it in the body's row and baseline-locks it to
-    the body's FIRST line. Moving it to the end of the section would
-    drop it into the button's row and empty the margin for the
-    section's whole upper half, which is the void condition R-shell
-    flagged and R3 closed.
-
-    A <ul>, because four topics are a list. NO bullets, no numerals,
-    no rules between items — a numeral here would be countable and
-    would collide with the Index's own 01-05 numbering, which is the
-    bug CONTEXT.md has had flagged four times.
-
-    THE LABEL IS NEW. R4 shipped this column with no label at all
-    while Everyday Legends below it carried INSTAGRAM, so two sections
-    built to rhyme had margins that did not: R5's read as marginalia
-    and R4's read as a second column of body copy. The label is set in
-    R5's treatment exactly — same size, weight, tracking, case, colour
-    and knock-down, and the same 2px gap to the content under it.
-  -->
-  <div class="win-prem-margin prem-margin">
-    <p class="prem-margin-label">Speaking topics</p>
-    <ul class="prem-topics">
-      <li>Alternative &amp; <span class="keep">Non-Traditional</span> Education</li>
-      <li>Leadership Development</li>
-      <li>Parenting Athletes</li>
-      <li>NIL Management</li>
-    </ul>
-  </div>
 
   <!--
     Website only. The button IS the link — COPY.md gives this section
@@ -285,6 +272,31 @@ import portraitSeated from '../assets/portrait-seated.jpg';
   <p class="win-prem-body prem-cta">
     <a class="btn-solid" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Explore Premier&nbsp;Leadership</a>
   </p>
+
+  <!--
+    THE TOPICS BAND — the four speaking and workshop topics, in a
+    full-width Cashmere band below the photograph and the text, at
+    every width. AUTHORED LAST, after the button: spanning 1 / -1, it
+    is auto-placed into the first row the plate leaves free, which is
+    the row after the button. Authored before the button, it would
+    push the button below itself. It is also the reading order:
+    photograph, name, subtitle, opening statement, body, button, then
+    the topics.
+
+    A <ul>, because four topics are a list. NO bullets, no numerals,
+    no rules between items — a numeral here would be countable and
+    would collide with the Index's own 01-05 numbering.
+  -->
+  <div class="win-prem-margin prem-margin">
+    <span class="prem-mark" aria-hidden="true" set:html={submarkSvg}></span>
+    <p class="prem-margin-label">Speaking topics</p>
+    <ul class="prem-topics">
+      <li>Alternative&nbsp;&amp; <span class="keep">Non-Traditional Education</span></li>
+      <li>Leadership Development</li>
+      <li>Parenting Athletes</li>
+      <li>NIL Management</li>
+    </ul>
+  </div>
 </section>
 
 <style>
@@ -331,7 +343,12 @@ import portraitSeated from '../assets/portrait-seated.jpg';
 
      Row 5 collapses to zero at any width where the list is shorter
      than the body and the button together. Nothing here is a
-     measurement and nothing goes stale when the copy rewraps. */
+     measurement and nothing goes stale when the copy rewraps.
+
+     THE TOPICS BAND ROUND: the list no longer spills into row 5. It
+     IS row 5, the full-width band below the plate and the button.
+     The track list is main's, unchanged, so rows 1-4 and the plate
+     spanning them are main's too. */
   .prem{
     padding-block: 80px;
     grid-template-rows: auto auto auto auto 1fr;
@@ -537,143 +554,116 @@ import portraitSeated from '../assets/portrait-seated.jpg';
      interactive state. */
   .prem-cta{ margin: 0; display: flex; }
 
-  /* ---- THE LIVE MARGIN — the four speaking topics ----------------
-     THE REGISTER IS R3's, NOT THE BODY's. R4 shipped these at 13px in
-     Smoked Slate with no label, beside a 17px body in the same Smoked
-     Slate, and the column read as a second measure of body copy
-     rather than as marginalia. Everyday Legends directly below got
-     this right and R4 did not, which is the worst outcome for two
-     sections built to rhyme.
+  /* ---- THE TOPICS BAND — the four speaking topics ---------------
+     A full-width Cashmere band in its own row below the photograph and
+     the text, at every width. Square, no border, no shadow.
 
-     The block now takes `.edu-margin`'s exact shape — the one
-     Educational Leader's district link uses, and the one Everyday
-     Legends' Instagram handle reuses: a 10.5px tracked uppercase
-     label set on the BODY's line-height, with the content 2px under
-     it at 13px. Three sections, one margin register.
+     SPAN. 1 / -1 (global.css): from the plate's left edge, which is
+     column 1, to the right content edge, which is where the
+     masthead's CONTENTS link ends. It never runs into the gutter.
 
-     BASELINE-LOCKED TO THE BODY'S FIRST LINE, and the arithmetic
-     CANCELS rather than being swept. A first baseline sits at
-     half-leading plus ascent, which reduces to
+     THE PLATE DOES NOT SEE IT. The plate spans rows 1-4 (head, lede,
+     body, button) and the band sits in row 5, so the plate's height
+     and its bottom edge on the button are main's exactly.
 
-         B = lh/2 + (asc - desc)/2 x font-size
+     GAP ABOVE: --s5. Two heavy horizontal edges meet here, the plate's
+     and the button's foot above and the band's top below, and a gap
+     that reads as a step rather than a near miss needs the page-level
+     token, not the paragraph one (R4.2's lesson). Section padding is
+     main's 80, unchanged.
 
-     Montserrat's asc - desc is 0.717 (published hhea 968/-251; R2
-     cross-checked it at 0.716 from rendered ink), so the constant is
-     0.3585. Giving this block the BODY's line-height makes the lh/2
-     term identical on both sides and the whole expression collapses
-     to the difference in font size alone:
-
-         B_body - B_margin = 0.3585 x (17px - 10.5px) = 2.33px
-
-     R4 previously carried the LONG form of this expression, because
-     it gave the block its own tighter leading and could not collapse
-     the lh/2 terms. Adopting R3's register retires that: the long
-     form is gone and this is now byte-identical to `.edu-margin` and
-     `.legends-margin`. Written with `1em` so it re-resolves off this
-     block's own font-size. Nothing here is a swept pixel boundary and
-     no line count appears in it.
-
-     The two-row span, the document-order seating and the lock all
-     stay exactly as they were. */
+     PADDING: --s4 top and bottom, --s2 either side. Everything inside
+     is centred, so the side padding only binds on phones, and --s2 is
+     what it has to be there: at 360 with a 15px scrollbar the band is
+     297px, and the widest phrase that must hold a line at 19.5px,
+     "Non-Traditional Education", is 262.14px. 297 - 32 = 265 holds it;
+     --s3 left 249px and it overflowed from 360 to 372, and "Leadership
+     Development" (252.33px) orphaned from 360 to 363. */
   .prem-margin{
+    margin-top: var(--s5);
+    padding: var(--s4) var(--s2);
+    background: var(--cashmere);
+    text-align: center;
     font-size: 10.5px;
     line-height: calc(var(--bio-size) * var(--bio-lh));
-    margin-top: calc(0.3585 * (var(--bio-size) - 1em));
   }
 
-  /* IDENTICAL to .legends-margin-label — same size, weight, tracking,
-     case, colour and knock-down, and the same optical half-tracking
-     pullback so the S lands on the column line rather than on the
-     tracking space after it.
+  /* THE SUBMARK, SIZED AGAINST THE LABEL. The label sets on the
+     body's line, 30.6px, and the mark is TWO of the label's line
+     boxes tall (61.2px). The width follows from the mark's own viewBox
+     (1597.74 x 1618.49), never set. Obsidian, so it is not a gold use.
+     The gap under it is half a label line. Centred by the mark's box
+     (its viewBox), not by its ink. */
+  .prem-mark{
+    display: block;
+    height: 2lh;
+    margin-bottom: 0.5lh;
+    color: var(--obsidian);
+  }
 
-     Slate at 0.82, not a lighter knock-down. Measured in R1: Slate on
-     Porcelain is 7.54:1 at full strength; at 0.78 the composite falls
-     to 4.45:1, under the floor. 0.82 composites to 4.90:1 and
-     passes. */
+  .prem-mark :global(svg){
+    display: block;
+    height: 100%;
+    width: auto;
+    margin-inline: auto;
+  }
+
+  /* Same size, weight, tracking, case and colour as
+     .legends-margin-label, except:
+
+     FULL-STRENGTH SLATE, NOT 0.82. The 0.82 knock-down was sized for
+     Porcelain (4.90:1). On Cashmere it composites to about 4.0:1,
+     under AA for 10.5px type.
+
+     CENTRED. Letter-spacing adds 0.22em after the last letter too, so
+     a centred line would sit 0.11em left of centre. Widening the box
+     by that 0.22em on the right puts the letters on the centre line. */
   .prem-margin-label{
     margin: 0;
-    margin-left: -0.11em;           /* half of 0.22em tracking */
+    margin-right: -0.22em;          /* the trailing 0.22em of tracking */
+    text-align: center;
     font-family: var(--sans);
     font-weight: 400;
     font-size: 10.5px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--slate);
-    opacity: 0.82;
   }
 
-  /* The topics themselves, in `.edu-link`'s metrics — 13px, weight
-     400, line-height 1.4, 0.01em — and the same RENDERED gap under
-     the label, so this column and Everyday Legends' sit on the same
-     lattice.
+  /* THE TOPICS. 1.5 x the 13px they were set at in the margin, so
+     19.5px, written as that ratio. Smoked Slate at full strength. A
+     stacked list, one topic to a line, each line centred.
 
-     4px HERE AGAINST THE 2px `.edu-link` AND `.legends-link` DECLARE,
-     and that is what makes the two match rather than what breaks it.
-     Those two are `display: inline-block`, so their 2px margin sits
-     on top of the half-leading of the parent's 30.6px strut and the
-     gap RENDERS at 4px. This is a block-level <ul> with no strut
-     above it, so 2px rendered 2px — measured, R4 2px against R5 4px,
-     which is the one thing that did not match on first build. The
-     declared numbers differ so the rendered ones do not.
+     ONE BLOCK, NOT FOUR ITEMS. The old margin list opened a 1.4lh gap
+     between items; here the items sit on the list's own leading with
+     half a line between them, so the four read as one block.
 
-     SMOKED SLATE AT FULL STRENGTH, not Obsidian and not knocked down.
-     `.edu-link` is Obsidian because it is a LINK and needs the
-     affordance; these are four sentences of marginal content, so
-     CONTEXT.md routes them to Slate. Full strength rather than the
-     label's 0.82 because there are four sentences to read here and
-     7.54:1 is worth having — the demotion is carried by size, leading
-     and the label above, which is enough.
+     THE PHONE WRAP (Jackson's ruling). At 19.5px the longest topic is
+     394.69px, and a 360 phone has 312px of content. Below about 508px
+     (524 with a 15px scrollbar) it cannot hold one line, and it sets
+     on two, balanced and centred. The markup binds it so the only
+     break is after the ampersand: "Alternative &" / "Non-Traditional
+     Education". The half-line item gap is what keeps those two lines
+     reading as one item: it is wider than the leading inside the
+     wrapped item. --s2 under the label, so the list is clear of the
+     tracked caps without drifting away from them.
 
-     NO bullets, no numerals, no rules between items, no gold.
-
-     ITEM-TO-ITEM GAP is 1.4 of this list's own line-height via `lh`,
-     not a pixel value, so it tracks the type. Comfortably larger than
-     the leading inside a wrapped item, which is what makes four
-     two-line items read as four items rather than eight lines. */
+     NO bullets, no numerals, no rules between items, no gold. */
   .prem-topics{
-    margin: 4px 0 0;
+    margin: var(--s2) 0 0;
     padding: 0;
     list-style: none;
     font-family: var(--sans);
     font-weight: 400;
-    font-size: 13px;
+    font-size: calc(13px * 1.5);
     line-height: 1.4;
     letter-spacing: 0.01em;
     color: var(--slate);
-    text-wrap: pretty;
+    text-wrap: balance;
   }
 
-  .prem-topics li + li{ margin-top: 1.4lh; }
+  .prem-topics li + li{ margin-top: 0.5lh; }
 
-  /* ---- THE TOPICS UNDER THE BODY · <= 1279 ----------------------
-     No margin at or below 1279 holds the longest topic on one line
-     (measured in global.css, at .win-prem-body's band-2 block), so
-     the list falls under the body here, as it does on phones, and
-     takes the phone band's treatment.
-
-     The row track list comes off. The topics no longer span into a
-     spill row: they sit in a row of their own, and the plate spans
-     every row down to the button's, so all five rows are intrinsic.
-
-     The 7.3px baseline lock would read as a fifth line of the
-     paragraph rather than as a list, so the block takes ordinary
-     rhythm instead — --s4 each side of the list, because it has to
-     read as a block change and not as a paragraph break. Same
-     treatment, same reasoning, as Educational Leader's district link.
-
-     THE BODY -> BUTTON GAP MOVES ONTO THE BUTTON. With the topics
-     beside the body the derived gap belongs to the body. Here they
-     fall BETWEEN them, and leaving the gap on the body puts 93.55px
-     above the list and ZERO below it — the button sits flush against
-     the last topic and reads as a fifth item. So --s4 under the body,
-     and the derived calc(1.75 x body line) above the button, because
-     that is the gap that says the button is leaving the text block. */
-  @media (max-width: 1279px){
-    .prem{ grid-template-rows: none; }
-    .prem-margin{ margin-top: var(--s4); }
-    .prem-body{ margin-bottom: var(--s4); }
-    .prem-cta{ margin-top: calc(1.75 * var(--bio-size) * var(--bio-lh)); }
-  }
 
   /* ---- BAND 2's STACKING CROSSOVER · <= 1121 --------------------
      THE SECTION STACKS EARLY. See the measured 1121 and the rule that
@@ -683,8 +673,13 @@ import portraitSeated from '../assets/portrait-seated.jpg';
      The plate takes a block gap under it rather than sitting beside
      type. Two body lines — from the body's own tokens, not a pixel —
      the same value band 3 uses, because it is the same relationship
-     in the same stacked arrangement. */
+     in the same stacked arrangement.
+
+     The row track list comes off: there are no longer four rows for
+     the plate to span. The topics band follows the button here too,
+     in its own row, with the same --s5 above it. */
   @media (max-width: 1121px){
+    .prem{ grid-template-rows: none; }
     .prem-plate{ margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh)); }
 
     /* R4.2 — AN INTRINSIC ASPECT COMES BACK, and it has to. Stacked,

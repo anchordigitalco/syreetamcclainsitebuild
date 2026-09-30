@@ -1325,8 +1325,8 @@ a{ color: inherit; }
 
    ---- .win-prem-body — the body paragraph AND the button -------
    ONE PRIMITIVE, one window, per the Composition table. They are two
-   grid ITEMS rather than one so the topics list can be authored
-   between them and still seat in the body's row; see the walk below.
+   grid ITEMS rather than one so the button keeps a row of its own,
+   the row the plate's bottom edge is set on; see the walk below.
      >= 1280    columns 6-9. Four columns, held two short of the
                 head's right edge. That right-edge variance is this
                 section's internal composition, the same device About
@@ -1339,91 +1339,34 @@ a{ color: inherit; }
                 below.
      <= 750     1 / -1.
 
-   ---- .win-prem-margin — the four speaking topics --------------
-   THE SECOND PIECE OF LIVE BAND-3 MARGINALIA ON THE PAGE, and one of
-   the two tests of whether that column reads as filled rather than
-   as established-but-empty.
+   ---- .win-prem-margin — the topics band ----------------------
+   THE TOPICS BAND ROUND. The four speaking topics sit in a
+   full-width Cashmere band in a row of their own, below the
+   photograph and the text, at every width.
+     all widths  1 / -1: from column 1, the plate's left edge, to the
+                 right content edge, where the masthead's CONTENTS
+                 link ends. Never into the gutter.
 
-   IT SPANS THREE ROWS IN THE SIDE-BY-SIDE BAND — THE BODY'S, THE
-   BUTTON'S, AND THE SPILL ROW UNDER THEM — AND EACH HALF OF THAT IS
-   A SEPARATE CORRECTION.
-
-   R4 built it spanning ONE row and the topics list PUSHED THE BUTTON
-   DOWN wherever it was taller than the body: a grid row is as tall as
-   its tallest item, so at 1024, where the margin is two columns of
-   129px and the four topics wrap to sixteen lines, the body-to-button
-   gap rendered at ~210px against the 53.55px the type tokens ask for.
-   The gap is derived from the body's line-height and MUST NOT be
-   inflated by an unrelated item in the same row.
-
-   R4.1 answered that with `span 2`, which halved the problem rather
-   than removing it. MEASURED, at the shipped R4.1 build: the topics
-   list is TALLER THAN THE BODY'S ROW PLUS THE BUTTON'S ROW AT EVERY
-   WIDTH IN BOTH 12-COLUMN BANDS, so it was setting the last row's
-   height everywhere — row 4 rendered 82.86px at 1440 against a 48.5px
-   button, 137.42px at 1279 and 173.80px at 1122. The button never
-   moved, because the row grows DOWNWARD from the button's top, so
-   nothing was visibly wrong and it was invisible until R4.2 needed
-   the row's bottom edge to mean something.
-
-   R4.2 NEEDS THAT ROW'S BOTTOM TO BE THE BUTTON'S BOTTOM, because the
-   plate now stretches to it. So the margin is given a THIRD row to
-   spill into, and `.prem`'s track list makes that third row the only
-   FLEXIBLE one. That is not decoration — it is the mechanism. CSS
-   Grid sizes items that span a flexible track in a separate step from
-   items that do not, and that step distributes space ONLY to the
-   flexible tracks in the span. The topics list therefore contributes
-   NOTHING to the body's row or to the button's row; all of its
-   surplus lands in the spill row below the button, where it is
-   ordinary section space. The body's derived gap is safe, the
-   button's row is exactly one button tall, and the plate's bottom
-   edge is the button's bottom edge by construction.
-
-   It is still a span, not a row number — nothing here says WHICH
-   rows, so document order still places it and there is nothing to go
-   stale. The span is band 1's only: from 1279 down the list sits in
-   a row of its own under the body, and `.prem` drops the track list.
-     >= 1280    columns 10-12, seated in the BODY's row and
-                top-aligned in it.
-     <= 1279    UNDER THE BODY, in the body's window, between the body
-                and the button — which is why the button is a separate
-                grid item. No orphans: each topic sits on one line, and
-                the longest (262.33px) fits band 1's three-column margin
-                from 1280 up but no two-column margin below it. Measured
-                at 1px, 360-1600, with and without a 15px scrollbar.
-
-   THE PLACEMENT WALK, BAND 1. No line count anywhere, and no
-   hardcoded offset:
+   THE PLACEMENT WALK, 12 COLUMNS. No line count and no hardcoded
+   offset. The band is authored LAST, after the button:
 
      plate   definite at 1-4 / rows 1-4, placed before the auto pass
      head    wants col 5 · row 1 free      -> row 1, cursor -> col 12
      lede    wants col 5, BEHIND cursor    -> row 2, cursor -> col 12
      body    wants col 5, behind cursor    -> row 3, cursor -> col 10
-     topics  wants col 10, AT the cursor   -> row 3, BESIDE THE BODY,
-                                              spanning rows 3-5
-     button  wants col 5, behind cursor    -> row 4
+     button  wants col 5, behind cursor    -> row 4, cursor -> col 10
+     band    wants 1 / -1; rows 1-4 hold the plate -> row 5
 
-   Row 5 holds nothing of its own. It exists so the topics list has a
-   flexible track to spill into, and it collapses to zero at any width
-   where the list is shorter than the body and button together.
-
-   The topics land in the body's row because of DOCUMENT ORDER — they
-   are authored immediately after the body — and a grid row is a
-   horizontal band by definition, so their clearance against the lede
-   is structurally true at every width and every rendered line count.
-   Nothing counts the lede's lines and nothing hardcodes a top offset.
-
-   From 1279 down the topics want the body's first column, behind the
-   cursor, so they drop to a row of their own under the body and the
-   button follows them: 1122-1279, head 1, lede 2, body 3, topics 4,
-   button 5, the plate spanning rows 1-5; stacked, plate row 1, head 2,
-   lede 3, body 4, topics 5, button 6.
+   Row 5 is `.prem`'s flexible track, so the band cannot inflate rows
+   1-4 and the plate, which spans them, keeps main's height and its
+   bottom edge on the button's. Stacked, from 1121 down: plate row 1,
+   head 2, lede 3, body 4, button 5, band 6.
    ============================================================ */
 
 .win-prem-plate    { grid-column: 1 / 5;  grid-row: 1 / 5; }
 .win-prem-head     { grid-column: 5 / 12; }
 .win-prem-body     { grid-column: 5 / 10; }
-.win-prem-margin   { grid-column: 10 / 13; grid-row: span 3; align-self: start; }
+.win-prem-margin   { grid-column: 1 / -1; }
 
 /* ============================================================
    R5 — EVERYDAY LEGENDS FOUNDATION.  Entrance B, decorative mark.
@@ -2060,24 +2003,10 @@ a{ color: inherit; }
 
   /* R4 — Premier Leadership. THE PLATE DOES NOT MOVE: it holds 1-5
      and rows 1-4 in both 12-column bands, so it is absent from this
-     block by design rather than by omission. Everything to the right
-     of it gives up column 11 to the live margin, which is two columns
-     here for the same forced reason as R3's district link — the body
-     window runs to column 10, so a margin asking for column 10 sits
-     behind grid's sparse cursor and drops a row. */
+     block by design rather than by omission. The body takes column 10
+     here, as it always has. The topics band is 1 / -1 at every width
+     and is absent here for the same reason. */
   .win-prem-body   { grid-column: 5 / 11; }
-
-  /* THE TOPICS LEAVE THE MARGIN HERE. No orphans: each topic sits on
-     one line, and the longest ("Alternative & Non-Traditional
-     Education", 262.33px) does not fit a two-column margin anywhere in
-     this band (152.75-171.83px, 149-169.33px with a 15px scrollbar).
-     Band 1's three-column margin holds it from 1280 up (270px at 1280,
-     266.25px with the scrollbar). So from 1279 down the list takes the
-     body's window, under the body, as it does on phones. The plate
-     spans one more row, to the button's, so its bottom edge stays the
-     button's bottom edge (R4.2). */
-  .win-prem-plate  { grid-row: 1 / 6; }
-  .win-prem-margin { grid-column: 5 / 11; grid-row: auto; }
 
   /* R5 — Everyday Legends. THE MARK, THE HEAD AND THE LEDE ARE ALL
      UNCHANGED from band 1 and are absent here for that reason: the
@@ -2344,9 +2273,8 @@ a{ color: inherit; }
    would have grown to 1120px at 1024 and then DROPPED to 878 at 1023
    — discontinuous, and in the wrong direction.
 
-   THE TOPICS SIT UNDER THE BODY HERE, in its 1-8 window, as they do
-   from 1279 down. A margin beside the body cannot hold the longest
-   topic on one line anywhere in this sub-band.
+   THE TOPICS BAND follows the button in a row of its own, 1 / -1,
+   as it does at every width.
 
    THE PLATE GOES BACK TO ITS OWN ASPECT RATIO. (R4.2.) It belongs to
    the side-by-side arrangement and does not survive the stack. And a
@@ -2376,7 +2304,6 @@ a{ color: inherit; }
   .win-prem-head   { grid-column: 1 / 10; }
   :root{ --prem-head-cols: 9; }   /* the lede cap reads this span */
   .win-prem-body   { grid-column: 1 / 9;  }
-  .win-prem-margin { grid-column: 1 / 9;  }   /* under the body; see 1279 */
 }
 
 /* ============================================================
@@ -2450,13 +2377,11 @@ a{ color: inherit; }
      and a 3-column measure is not a measure. The plate goes wide at
      1-6 and the type falls below it, so `grid-row` is released back
      to auto — the four-row span is a 12-column arrangement and does
-     not survive into a stack. The four topics stay under the body, in
-     its window (see 1279): a two-column margin cannot hold the longest
-     on one line. */
+     not survive into a stack. The topics band follows the button,
+     1 / -1, as it does at every width. */
   .win-prem-plate  { grid-column: 1 / 7; grid-row: auto; }
   .win-prem-head   { grid-column: 1 / 6; }
   .win-prem-body   { grid-column: 1 / 6; }
-  .win-prem-margin { grid-column: 1 / 6; }
 
   /* R5 — Everyday Legends. THE HANG COLLAPSES, and it is forced: the
      band-3 type window is left-anchored at column 1, so the mark
@@ -2542,7 +2467,6 @@ a{ color: inherit; }
   .win-prem-head    { grid-column: 1 / 7; }
   :root{ --prem-head-cols: 6; }   /* the lede cap reads this span */
   .win-prem-body    { grid-column: 1 / 7; }
-  .win-prem-margin  { grid-column: 1 / 7; }
   .win-legends-head { grid-column: 1 / 7; }
   .win-legends-lede { grid-column: 1 / 7; }
   .win-legends-body { grid-column: 1 / 7; }
