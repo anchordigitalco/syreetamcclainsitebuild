@@ -182,7 +182,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
   placement and box are untouched. Only the text node moves into the
   island, and the island renders that same string verbatim until it
   has measured the rendered line boxes. Copy is COPY.md's. -->
-  <p class="win-chg-lede chg-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="There are lessons that cannot be taught in a classroom, found in a playbook, or measured on a scoreboard." /></p>
+  <p class="win-chg-lede chg-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text={"There are lessons that cannot be taught in a\u00a0classroom, found in a playbook, or measured on a\u00a0scoreboard."} /></p>
 
   <!--
     THE TYPE COLUMN. One block, one left edge, three registers now:
@@ -720,6 +720,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     font-size: var(--closing-size);
     line-height: var(--chg-turn-lh);
     letter-spacing: -0.012em;
+    text-wrap: pretty;              /* No orphans */
     color: var(--obsidian);
   }
 
@@ -800,7 +801,12 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
      text-wrap: balance is DELIBERATELY ABSENT, and prohibited: these
      lines are authored breaks and asking the browser to balance them
      is asking it to re-break lines whose breaks are the design. So are
-     hyphenation and any tightening of the tracking. */
+     hyphenation and any tightening of the tracking.
+
+     text-wrap: pretty IS NOT balance, and it is here. It moves no
+     authored break; it only acts when one of the three lines wraps on
+     its own at a phone measure, and then keeps that wrap from leaving
+     one word on the last line (CONTEXT.md, No orphans). */
   .chg-coda p{
     margin: 0;
     font-family: var(--display);
@@ -816,6 +822,7 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
     line-height: 1.3;
     letter-spacing: -0.012em;
     color: var(--obsidian);
+    text-wrap: pretty;
   }
 
   /* THE AUTHORED BREAK, BAND 4 ONLY.

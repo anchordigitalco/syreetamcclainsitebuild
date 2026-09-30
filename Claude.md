@@ -135,3 +135,4 @@ RETURNING stock;
 - Do not put SUPABASE_SERVICE_ROLE_KEY in any NEXT_PUBLIC_ variable
 - Do not use req.json() before constructEvent in Stripe webhooks
 - Do not rely on middleware as the only auth check
+- No orphans. Any text block that wraps must end with at least two words on its last line, at every width.

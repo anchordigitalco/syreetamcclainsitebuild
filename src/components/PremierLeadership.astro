@@ -107,7 +107,8 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     nothing counted. Reordering these siblings changes the
     composition. See global.css.
 
-    It is also the right stacked reading order below 750: photograph,
+    It is also the right reading order from 1279 down, where the topics
+    fall under the body, and in the phone stack: photograph,
     name, subtitle, opening statement, body, the four topics, then the
     button. The button stays the last thing in the section, which is
     why it is a grid item of its own rather than a child of the body.
@@ -239,7 +240,7 @@ import portraitSeated from '../assets/portrait-seated.jpg';
   <p class="win-prem-head prem-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Leadership is not a position. It is the responsibility to move people, ideas, and organizations forward." /></p>
 
   <div class="win-prem-body prem-body">
-    <p>Twenty years of leading schools, building programs, and navigating complex systems. Premier Leadership brings that experience beyond the schoolhouse to help others turn vision into action.</p>
+    <p>Twenty years of leading schools, building programs, and navigating complex systems. Premier&nbsp;Leadership brings that experience beyond the schoolhouse to help others turn vision into action.</p>
   </div>
 
   <!--
@@ -266,7 +267,7 @@ import portraitSeated from '../assets/portrait-seated.jpg';
   <div class="win-prem-margin prem-margin">
     <p class="prem-margin-label">Speaking topics</p>
     <ul class="prem-topics">
-      <li>Alternative &amp; Non-Traditional Education</li>
+      <li>Alternative &amp; <span class="keep">Non-Traditional</span> Education</li>
       <li>Leadership Development</li>
       <li>Parenting Athletes</li>
       <li>NIL Management</li>
@@ -282,7 +283,7 @@ import portraitSeated from '../assets/portrait-seated.jpg';
     costs Anchor referral attribution from every client site it ships.
   -->
   <p class="win-prem-body prem-cta">
-    <a class="btn-solid" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Explore Premier Leadership</a>
+    <a class="btn-solid" href="https://www.premierleadersllc.com" target="_blank" rel="noopener">Explore Premier&nbsp;Leadership</a>
   </p>
 </section>
 
@@ -644,22 +645,46 @@ import portraitSeated from '../assets/portrait-seated.jpg';
 
   .prem-topics li + li{ margin-top: 1.4lh; }
 
+  /* ---- THE TOPICS UNDER THE BODY · <= 1279 ----------------------
+     No margin at or below 1279 holds the longest topic on one line
+     (measured in global.css, at .win-prem-body's band-2 block), so
+     the list falls under the body here, as it does on phones, and
+     takes the phone band's treatment.
+
+     The row track list comes off. The topics no longer span into a
+     spill row: they sit in a row of their own, and the plate spans
+     every row down to the button's, so all five rows are intrinsic.
+
+     The 7.3px baseline lock would read as a fifth line of the
+     paragraph rather than as a list, so the block takes ordinary
+     rhythm instead — --s4 each side of the list, because it has to
+     read as a block change and not as a paragraph break. Same
+     treatment, same reasoning, as Educational Leader's district link.
+
+     THE BODY -> BUTTON GAP MOVES ONTO THE BUTTON. With the topics
+     beside the body the derived gap belongs to the body. Here they
+     fall BETWEEN them, and leaving the gap on the body puts 93.55px
+     above the list and ZERO below it — the button sits flush against
+     the last topic and reads as a fifth item. So --s4 under the body,
+     and the derived calc(1.75 x body line) above the button, because
+     that is the gap that says the button is leaving the text block. */
+  @media (max-width: 1279px){
+    .prem{ grid-template-rows: none; }
+    .prem-margin{ margin-top: var(--s4); }
+    .prem-body{ margin-bottom: var(--s4); }
+    .prem-cta{ margin-top: calc(1.75 * var(--bio-size) * var(--bio-lh)); }
+  }
+
   /* ---- BAND 2's STACKING CROSSOVER · <= 1121 --------------------
      THE SECTION STACKS EARLY. See the measured 1121 and the rule that
      produced it in global.css; the primitives there move every window
-     and what is left here is the two things a span cannot express.
-
-     The row track list comes off: there are no longer four rows for
-     the plate to span, so `auto auto auto 1fr` would hand the last
-     row a flex factor for nothing and open dead ground under the
-     button.
+     and what is left here is the one thing a span cannot express.
 
      The plate takes a block gap under it rather than sitting beside
      type. Two body lines — from the body's own tokens, not a pixel —
      the same value band 3 uses, because it is the same relationship
      in the same stacked arrangement. */
   @media (max-width: 1121px){
-    .prem{ grid-template-rows: none; }
     .prem-plate{ margin-bottom: calc(2.0 * var(--bio-size) * var(--bio-lh)); }
 
     /* R4.2 — AN INTRINSIC ASPECT COMES BACK, and it has to. Stacked,
@@ -720,30 +745,4 @@ import portraitSeated from '../assets/portrait-seated.jpg';
        identical at every width in every band. */
   }
 
-  /* ---- BAND 4 · <= 750 -------------------------------------------
-     One stacked column. The topics fall inline under the body in
-     reading order, so the 7.3px baseline correction would read as a
-     fifth line of the paragraph rather than as a marginal note. It
-     takes ordinary rhythm instead — --s4, because it has to read as a
-     block change and not as a paragraph break. Same treatment, same
-     reasoning, as Educational Leader's district link. */
-  @media (max-width: 750px){
-    .prem-margin{ margin-top: var(--s4); }
-
-    /* THE BODY -> BUTTON GAP MOVES ONTO THE BUTTON. In every other
-       band the topics sit BESIDE the body and the button follows it
-       directly, so the derived gap belongs to the body. Here the
-       topics fall INLINE BETWEEN them, and leaving the gap on the
-       body put 93.55px above the list and ZERO below it — the button
-       sat flush against the last topic and read as a fifth item.
-
-       The two gaps are now the right way round: --s4 under the body,
-       because a block change is what separates the paragraph from the
-       list, and the derived calc(1.75 x body line) under the list,
-       because that is the gap that says the button is leaving the
-       text block. Same tokens, same arithmetic, applied to the pair
-       of elements the stack actually puts either side of it. */
-    .prem-body{ margin-bottom: var(--s4); }
-    .prem-cta{ margin-top: calc(1.75 * var(--bio-size) * var(--bio-lh)); }
-  }
 </style>

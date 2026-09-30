@@ -59,9 +59,9 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 ### Where an inquiry goes
 
 > When you send the form, it is handled by Formspree, a form processing service, which
-> delivers it to us by email. Inquiries about the Everyday Legends Foundation go to the
-> Foundation at info@everydaylegend.com, because it is a separate organization. Every other
-> inquiry goes to mcclain@premierleadersllc.com.
+> delivers it to us by email. Inquiries about the Everyday Legends Foundation go through the
+> [contact form](/#sec-contact) to the Foundation, because it is a separate organization. Every other
+> inquiry goes through the [contact form](/#sec-contact) to Dr. McClain.
 >
 > We use what you send us to answer you. That is all. We do not sell it, we do not share it
 > for advertising, and we will not add you to a mailing list.
@@ -92,7 +92,7 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 ### Your choices
 
 > You can ask us what information we hold about you, ask us to correct it, or ask us to delete
-> it. Write to mcclain@premierleadersllc.com and we will take care of it. Some information may need to
+> it. Write to us through the [contact form](/#sec-contact) and we will take care of it. Some information may need to
 > be kept where the law requires it.
 >
 > If you live somewhere with specific privacy laws, including the European Union and
@@ -119,8 +119,8 @@ Not legal advice. One pass by an actual lawyer would be cheap insurance.
 
 ### Contact
 
-> Questions about this policy, or about information you have sent us? Write to
-> mcclain@premierleadersllc.com.
+> Questions about this policy, or about information you have sent us? Write to us through the
+> [contact form](/#sec-contact).
 
 ---
 

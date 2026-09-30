@@ -103,7 +103,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Do Not Track</h2>
         <div class="privacy-body">
-          <p>Some browsers send a Do Not Track signal, and some send a Global Privacy Control signal, asking a site not to follow you from one website to the next. This site does not follow you anywhere, and no advertiser or analytics service watches you here, so there is nothing for those signals to switch off. We honor them.</p>
+          <p>Some browsers send a Do&nbsp;Not&nbsp;Track signal, and some send a Global&nbsp;Privacy&nbsp;Control signal, asking a site not to follow you from one website to the next. This site does not follow you anywhere, and no advertiser or analytics service watches you here, so there is nothing for those signals to switch off. We honor them.</p>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Where an inquiry goes</h2>
         <div class="privacy-body">
-          <p>When you send the form, it is handled by Formspree, a form processing service, which delivers it to us by email. Inquiries about the Everyday Legends Foundation go to the Foundation at info@everydaylegend.com, because it is a separate organization. Every other inquiry goes to mcclain@premierleadersllc.com.</p>
+          <p>When you send the form, it is handled by Formspree, a form processing service, which delivers it to us by email. Inquiries about the Everyday&nbsp;Legends&nbsp;Foundation go through the <a href="/#sec-contact">contact form</a> to the Foundation, because it is a separate organization. Every other inquiry goes through the <a href="/#sec-contact">contact form</a> to Dr.&nbsp;McClain.</p>
           <p>We use what you send us to answer you. That is all. We do not sell it, we do not share it for advertising, and we will not add you to a mailing list.</p>
         </div>
       </div>
@@ -128,7 +128,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Spam protection</h2>
         <div class="privacy-body">
-          <p>The contact form uses Cloudflare Turnstile to tell a person from a bot. There is no puzzle to solve. Your browser sends Cloudflare technical signals about the request so it can make that judgment. Cloudflare's own privacy policy governs what it does with them.</p>
+          <p>The contact form uses Cloudflare&nbsp;Turnstile to tell a person from a bot. There is no puzzle to solve. Your browser sends Cloudflare technical signals about the request so it can make that judgment. Cloudflare's own privacy policy governs what it does with them.</p>
         </div>
       </div>
 
@@ -160,7 +160,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Your choices</h2>
         <div class="privacy-body">
-          <p>You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Write to mcclain@premierleadersllc.com and we will take care of it. Some information may need to be kept where the law requires it.</p>
+          <p>You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Write to us through the <a href="/#sec-contact">contact form</a> and we will take care of it. Some information may need to be kept where the law requires it.</p>
           <p>If you live somewhere with specific privacy laws, including the European Union and California, those laws may give you additional rights. We honor them where they apply.</p>
         </div>
       </div>
@@ -201,7 +201,7 @@ import PageFooter from '../components/PageFooter.astro';
         <hr class="privacy-rule" />
         <h2 class="privacy-h2">Contact</h2>
         <div class="privacy-body">
-          <p>Questions about this policy, or about information you have sent us? Write to mcclain@premierleadersllc.com.</p>
+          <p>Questions about this policy, or about information you have sent us? Write to us through the <a href="/#sec-contact">contact form</a>.</p>
         </div>
       </div>
     </section>
@@ -254,6 +254,7 @@ import PageFooter from '../components/PageFooter.astro';
     line-height: 1.3;
     letter-spacing: -0.01em;
     color: var(--obsidian);
+    text-wrap: pretty;              /* No orphans */
   }
 
   /* .mast-home's interaction, copied rather than imported, PLUS a resting
@@ -262,7 +263,8 @@ import PageFooter from '../components/PageFooter.astro';
      (1px, 4px offset); its colour there is --rule-ui, which exists only
      under .on-obsidian, so this takes that treatment's own light-ground
      value, Slate at 0.42 (.edu-link, .mast-jump). Opacity only. */
-  .privacy-home{
+  .privacy-home,
+  .privacy-body a{
     color: inherit;
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -270,9 +272,12 @@ import PageFooter from '../components/PageFooter.astro';
     text-decoration-color: rgba(71, 68, 64, 0.42);
     transition: opacity 260ms var(--ease);
   }
-  .privacy-home:hover{ opacity: 0.7; }
-  .privacy-home:active{ opacity: 0.55; }
-  .privacy-home:focus-visible{
+  .privacy-home:hover,
+  .privacy-body a:hover{ opacity: 0.7; }
+  .privacy-home:active,
+  .privacy-body a:active{ opacity: 0.55; }
+  .privacy-home:focus-visible,
+  .privacy-body a:focus-visible{
     outline: 1px solid var(--obsidian);
     outline-offset: 4px;
   }
@@ -288,7 +293,7 @@ import PageFooter from '../components/PageFooter.astro';
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: clamp(52px, 3.8vw, 64px);
+    font-size: var(--lede-size);    /* was the token's clamp restated; reads the token so the lede cap reaches it */
     line-height: 1.18;
     letter-spacing: -0.018em;
     color: var(--obsidian);

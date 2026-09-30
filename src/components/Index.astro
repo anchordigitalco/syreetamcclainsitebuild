@@ -229,7 +229,7 @@ const blogHref = `#${blog.id}`;
         <span class="idx-num" aria-hidden="true">01</span>
         <span class="idx-body">
           <span class="idx-line"><span class="idx-name">Premier Leadership</span></span>
-          <span class="idx-desc">Consulting &amp; leadership development</span>
+          <span class="idx-desc">Consulting &amp; leadership&nbsp;development</span>
         </span>
       </a>
     </li>
@@ -243,7 +243,7 @@ const blogHref = `#${blog.id}`;
       >
         <span class="idx-num" aria-hidden="true">02</span>
         <span class="idx-body">
-          <span class="idx-line"><span class="idx-name">Everyday Legends Foundation</span></span>
+          <span class="idx-line"><span class="idx-name">Everyday Legends&nbsp;Foundation</span></span>
           <span class="idx-desc">Education, sports &amp; community</span>
         </span>
       </a>
@@ -300,7 +300,7 @@ const blogHref = `#${blog.id}`;
                   target="_blank"
                   rel="noopener">jaylenmcclain.com</a>
               </span>
-              <span class="idx-bro-prog">Ohio State Football | #8</span>
+              <span class="idx-bro-prog"><span class="keep">Ohio State Football | #8</span></span>
             </li>
             <li class="idx-bro">
               <span class="idx-bro-line">
@@ -312,7 +312,7 @@ const blogHref = `#${blog.id}`;
                   target="_blank"
                   rel="noopener">kjmcclain.com</a>
               </span>
-              <span class="idx-bro-prog">University of Tennessee Football | #40</span>
+              <span class="idx-bro-prog"><span class="keep">University of Tennessee</span> <span class="keep">Football | #40</span></span>
             </li>
             <li class="idx-bro">
               <span class="idx-bro-line">
@@ -322,7 +322,7 @@ const blogHref = `#${blog.id}`;
                     when the site ships; nothing else changes. */}
                 <span class="idx-bro-site">cammcclain.com</span>
               </span>
-              <span class="idx-bro-prog">Seton Hall Prep Football | #6 · Class of 2028</span>
+              <span class="idx-bro-prog"><span class="keep">Seton Hall Prep Football | #6 ·</span> <span class="keep">Class of 2028</span></span>
             </li>
           </ul>
         </div>
@@ -480,6 +480,7 @@ const blogHref = `#${blog.id}`;
     font-size: var(--lede-size);
     line-height: var(--lede-lh);
     color: var(--obsidian);
+    text-wrap: balance;             /* No orphans: the one lede that had no wrap rule */
   }
 
   /* THE FIFTH RULE. R8 shipped four — between the five entries, none
@@ -665,6 +666,7 @@ const blogHref = `#${blog.id}`;
     font-size: var(--idx-name-size);
     line-height: var(--idx-name-lh);
     color: var(--obsidian);
+    text-wrap: balance;             /* No orphans: display text */
   }
 
   /* Montserrat 11px / 500 / 0.14em / uppercase, Smoked Slate.
@@ -690,6 +692,7 @@ const blogHref = `#${blog.id}`;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--slate);
+    text-wrap: pretty;              /* No orphans */
   }
 
   /* ---- THE ROW HAIRLINES ------------------------------------------

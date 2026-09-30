@@ -77,10 +77,10 @@ import LedeReveal from './LedeReveal.tsx';
   placement and box are untouched. Only the text node moves into the
   island, and the island renders that same string verbatim until it
   has measured the rendered line boxes. Copy is COPY.md's. -->
-  <p class="win-about-lede about-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Two decades of seeing possibility in young people, and rebuilding the systems that serve them." /></p>
+  <p class="win-about-lede about-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text={"Two decades of\u00a0seeing possibility in young people, and rebuilding the systems that serve\u00a0them."} /></p>
 
   <div class="win-about-body about-body">
-    <p><span class="dropcap">D</span>r. Syreeta McClain is a high school principal, an educational consultant, and the co-founder of a foundation built to honor the people who show up when no one is watching.</p>
+    <p><span class="dropcap">D</span>r. Syreeta McClain is a high school principal, an educational consultant, and the <span class="keep">co-founder</span> of a foundation built to honor the people who show up when no one is watching.</p>
     <p>Today that work extends into college athletics, where she manages the careers of her three sons, bringing the same conviction to NIL, branding, and recruiting that she brought to school leadership.</p>
   </div>
 
@@ -204,7 +204,7 @@ import LedeReveal from './LedeReveal.tsx';
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: clamp(52px, 3.8vw, 64px);
+    font-size: var(--lede-size);    /* was the token's clamp restated; reads the token so the lede cap reaches it */
     line-height: 1.18;
     letter-spacing: -0.018em;
     color: var(--obsidian);

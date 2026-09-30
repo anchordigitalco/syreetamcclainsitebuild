@@ -19,6 +19,8 @@ to be followed. Build history lives in git commit messages, never here.
   - Cover credit line ("KNOW Women...") and tagline ("Where Leadership Meets Legacy"): removed
     in PASS G on composition grounds. The tagline appears nowhere on the page.
   - Contact "Direct email" line and the `mailto:` fallback: removed in R21. No email ships.
+  - PRIVACY.md's two email addresses (the Foundation's and hers): replaced with a link to
+    the contact form (`/#sec-contact`). The no-email rule covers `/privacy` too.
   - Index entry 01 reads "Premier Leadership", never with the LLC suffix. The suffix appears
     only in the About paragraph, where she wrote it.
 
@@ -94,8 +96,14 @@ boxed form inputs; bento grids; glassmorphism; any script face; flat solid hero 
 | Small / body-adjacent | 9 to 24 | 60 to 80 | 0 | per tokens |
 
   The tokens file holds the live values. If it disagrees with this table, report the drift.
-- Lede to body size: 3x minimum from 440px up, 2.5x below 440px. The relief applies to the
-  shared lede token, never to one lede on its own.
+- Lede to body size: 3x minimum from 440px up, relaxing below 440px only as far as the
+  next rule needs.
+- At every width, the shared lede token is capped so the widest bound word pair on the page
+  fits its column ("organizations forward." in Premier Leadership sets the cap). This is not
+  a phone-only rule: it failed at 676 when it was scoped below 440. The cap applies to the
+  shared token, never to one lede on its own.
+- The Cover name has its own token. Below 448px it scales down only as far as needed for
+  "Syreeta McClain" to fit on one line. It breaks only after "Dr."
 - Sizes are declared against their counterpart, never set independently. The Index numeral
   derives from `--lede-size`.
 - Opacity hierarchy: primary 100%, secondary about 70%, tertiary lower.
@@ -187,16 +195,25 @@ Why this exists: at phone widths the ledes ended on "students.", "forward." and
   word. A hyphenated compound counts as one word and never splits.
 - **Scope.** Every visible text element on `/` and `/privacy`: masthead, ledes, kickers,
   subtitles, body, Index names and subtitles, captions, buttons, form labels and errors,
-  footer. Every width from 320 to 1600. Above 1600 the measure is fixed and nothing
-  rewraps, so 320 to 1600 covers every case.
-- **Display text is stricter.** Ledes, section names, the Feature Quote and Index names MUST
-  NOT hold a single word on any line, first, middle or last. At display size a lone word
-  reads as a hole.
+  footer. Every width from 360 to 1600. 360 is the narrowest width in the nineteen and the
+  narrowest phone in current use. Above 1600 the measure is fixed and nothing rewraps.
+  The sweep also runs with a classic 15px scrollbar showing, since a desktop browser with
+  visible scrollbars lays the page out narrower than its window width.
+- **Display text is stricter.** In ledes, section names, the Feature Quote and Index names,
+  a first or middle line may hold one word only if that word fills at least 45% of the line.
+  A short word alone ("seeing", "that") reads as a hole. A long word that fills its line
+  ("responsibility", "organizations") does not.
 - **Names never break.** Dr. Syreeta McClain, Premier Leadership, Everyday Legends, The
   McClain Brothers, and any other proper name stay on one line. The footer may break only
   after "McClain.", giving "© 2026 Dr. Syreeta McClain." then "All rights reserved."
 - **Middot lines break only at a middot.** The roles line (Educator · Consultant · Momager ·
-  Founder) and the McClain Brothers program lines keep each item whole.
+  Founder) keeps each item whole. The McClain Brothers program lines keep each item whole
+  where it fits. Where it does not, the line breaks between the school and the sport
+  ("University of Tennessee" / "Football | #40"), never leaving a number alone.
+- **Charging It to the Game** as a kicker may break only at its designed point between its
+  two halves, never elsewhere.
+- **Speaking topics** each sit on one line. At any width where the longest topic does not
+  fit the margin on one line, the topics move under the body. MUST NOT overflow.
 - **Authored line breaks are not orphans.** The Charging It to the Game coda is three hard
   lines by design. Each line is checked as its own block: it may wrap, and if it wraps it MUST
   NOT orphan. The three lines MUST NOT be run together, centered, or ruled apart. About's
@@ -205,16 +222,19 @@ Why this exists: at phone widths the ledes ended on "students.", "forward." and
   1. `text-wrap: balance` on display text, `text-wrap: pretty` on body.
   2. Non-breaking spaces or nowrap spans binding specific word pairs in markup. Wording is
      unchanged.
-  3. Below 440px only, the lede ratio relaxes from 3x to 2.5x on the shared token.
+  3. The shared lede token cap and the Cover name relief, as set out under Typography.
 - **Never:** change wording, add a `<br>` tied to a width, change letter-spacing or
   word-spacing to force a fit, hide words, or resize one block out of its shared scale.
+- Shipped text now carries non-breaking spaces. Any comparison against COPY.md treats them
+  as ordinary spaces.
 - **Known limit.** Chromium stops balancing past a small number of lines (six at time of
   writing), and falls back to plain wrapping without warning. A lede that runs longer than
   the limit is not protected by `balance`. Confirm the limit in the installed Chrome rather
   than trusting this line.
 - **Precedence:** wording, then no orphans, then no one-word display lines, then the ratio.
-  If a block still fails at 2.5x, report the block and its width range. That is not a stop.
-- **Proof.** `orphans.mjs` in the repo root sweeps 320 to 1600 at 1px steps on preview, with
+  If a block still fails after the relief, report the block and its width range. That is not
+  a stop.
+- **Proof.** `orphans.mjs` in the repo root sweeps 360 to 1600 at 1px steps on preview, with
   reduced motion and every reveal settled, and lists each hit by section, element, width
   range and last line. Zero hits is the pass condition. It runs at the end of every round.
 

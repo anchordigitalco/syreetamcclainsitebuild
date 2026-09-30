@@ -109,10 +109,10 @@ import LedeReveal from './LedeReveal.tsx';
   placement and box are untouched. Only the text node moves into the
   island, and the island renders that same string verbatim until it
   has measured the rendered line boxes. Copy is COPY.md's. -->
-  <p class="win-edu-lede edu-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Education should not require students to fit into systems. Strong systems evolve to fit the students." /></p>
+  <p class="win-edu-lede edu-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text={"Education should not require students to fit into systems. Strong systems evolve to fit the\u00a0students."} /></p>
 
   <div class="win-edu-body edu-body">
-    <p>For more than two decades, Dr. McClain has built her career around students whose potential does not show up in traditional measures.</p>
+    <p>For more than two decades, Dr.&nbsp;McClain has built her career around students whose potential does not show up in traditional measures.</p>
     <p>Her work in customized programming, alternative education, and student engagement creates pathways for students navigating complex academic and personal circumstances, built on innovation, collaboration, and unwavering advocacy.</p>
   </div>
 
@@ -232,7 +232,7 @@ import LedeReveal from './LedeReveal.tsx';
     font-family: var(--display);
     font-variation-settings: var(--fx-lede);
     font-weight: 350;
-    font-size: clamp(52px, 3.8vw, 64px);
+    font-size: var(--lede-size);    /* was the token's clamp restated; reads the token so the lede cap reaches it */
     line-height: 1.18;
     letter-spacing: -0.018em;
     color: var(--obsidian);

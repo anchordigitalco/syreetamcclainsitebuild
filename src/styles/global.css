@@ -220,8 +220,46 @@
      Floor check, CONTEXT.md's lede-to-body ratio: 3x minimum, 3-4x
      target, against a 17px body. 52px is 3.06x at the clamp floor and
      54.72px is 3.22x at 1440 — inside the band at every width. */
-  --lede-size: clamp(52px, 3.8vw, 64px);
+  --lede-size: min(
+    clamp(52px, 3.8vw, 64px),
+    calc(var(--prem-lede-window) / var(--lede-pair-k))
+  );
   --lede-lh:   1.18;
+
+  /* NO ORPHANS: THE LEDE CAP (CONTEXT.md, Typography; allowed fix 3).
+     At every width the shared token is capped so the widest bound word
+     pair on the page fits its column: "organizations forward." in
+     Premier Leadership. The clamp above is unchanged and wins wherever
+     the column is wide enough; the cap only binds where it is not
+     (measured: 360-561 with a classic scrollbar, band 4 only).
+
+     --lede-pair-k is the pair's advance as a multiple of the lede's
+     font-size, MEASURED in the lede face (474.6px at 52px, 387.9px at
+     42.5px: 9.127), rounded up so the pair fits rather than grazes.
+
+     --prem-lede-window is .win-prem-head's width, written from the
+     same tokens that place it: the sheet's content width, its track
+     count and gap, and the span. --grid-cols and --prem-head-cols are
+     restated in every band beside the rule they describe.
+
+     --sb-allow: 100vw counts a classic scrollbar that the layout does
+     not get, so the content width reserves one (CONTEXT.md sweeps with
+     a 15px scrollbar showing). Where there is no scrollbar, a phone,
+     the lede sets about 1.6px under the exact fit. */
+  --lede-pair-k:   9.13;
+  --sb-allow:      15px;
+  --grid-cols:     12;
+  --prem-head-cols: 7;
+  --sheet-content: min(
+    calc(100vw - var(--sb-allow) - 2 * var(--gutter)),
+    var(--measure-cap)
+  );
+  --prem-lede-window: calc(
+    var(--prem-head-cols)
+      * (var(--sheet-content) - (var(--grid-cols) - 1) * var(--grid-gap))
+      / var(--grid-cols)
+    + (var(--prem-head-cols) - 1) * var(--grid-gap)
+  );
 
   /* THE PIVOT'S SIZE, PROMOTED TO A TOKEN (R14/R15).
 
@@ -766,6 +804,11 @@ body{
   white-space: nowrap;
   border: 0;
 }
+
+/* No orphans (CONTEXT.md): binds a hyphenated compound so it never
+   breaks at its hyphen, which a non-breaking space cannot do. Word
+   pairs are bound with &nbsp; in the markup instead. */
+.keep{ white-space: nowrap; }
 
 ::selection{ background: var(--gold); color: var(--porcelain); }
 
@@ -1338,22 +1381,16 @@ a{ color: inherit; }
 
    It is still a span, not a row number — nothing here says WHICH
    rows, so document order still places it and there is nothing to go
-   stale. AND IT IS STILL `span 2` BELOW 1121, where the section
-   stacks: there is no track list there, so there is no flexible row
-   to spill into, and R4.1's two-row distribution is the shipped,
-   reviewed behaviour for the stacked arrangement. See the crossover
-   block.
+   stale. The span is band 1's only: from 1279 down the list sits in
+   a row of its own under the body, and `.prem` drops the track list.
      >= 1280    columns 10-12, seated in the BODY's row and
                 top-aligned in it.
-     1024-1279  columns 11-12. TWO columns, not three, for the same
-                forced reason as R3's district link: the 12-column
-                body windows run to column 10 in this band, so a
-                margin asking for column 10 asks for a column behind
-                grid's sparse cursor and drops to a row of its own.
-     751-1023   columns 7-8 of 8, still in the body's row.
-     <= 750     1 / -1, inline in reading order, between the body and
-                the button — which is why the button is a separate
-                grid item.
+     <= 1279    UNDER THE BODY, in the body's window, between the body
+                and the button — which is why the button is a separate
+                grid item. No orphans: each topic sits on one line, and
+                the longest (262.33px) fits band 1's three-column margin
+                from 1280 up but no two-column margin below it. Measured
+                at 1px, 360-1600, with and without a 15px scrollbar.
 
    THE PLACEMENT WALK, BAND 1. No line count anywhere, and no
    hardcoded offset:
@@ -1376,9 +1413,11 @@ a{ color: inherit; }
    is structurally true at every width and every rendered line count.
    Nothing counts the lede's lines and nothing hardcodes a top offset.
 
-   The same walk holds in band 3 with the plate stacked: plate row 1,
-   head row 2, lede row 3, body row 4 with the topics beside it at
-   7-8, button row 5.
+   From 1279 down the topics want the body's first column, behind the
+   cursor, so they drop to a row of their own under the body and the
+   button follows them: 1122-1279, head 1, lede 2, body 3, topics 4,
+   button 5, the plate spanning rows 1-5; stacked, plate row 1, head 2,
+   lede 3, body 4, topics 5, button 6.
    ============================================================ */
 
 .win-prem-plate    { grid-column: 1 / 5;  grid-row: 1 / 5; }
@@ -2027,7 +2066,18 @@ a{ color: inherit; }
      window runs to column 10, so a margin asking for column 10 sits
      behind grid's sparse cursor and drops a row. */
   .win-prem-body   { grid-column: 5 / 11; }
-  .win-prem-margin { grid-column: 11 / 13; }
+
+  /* THE TOPICS LEAVE THE MARGIN HERE. No orphans: each topic sits on
+     one line, and the longest ("Alternative & Non-Traditional
+     Education", 262.33px) does not fit a two-column margin anywhere in
+     this band (152.75-171.83px, 149-169.33px with a 15px scrollbar).
+     Band 1's three-column margin holds it from 1280 up (270px at 1280,
+     266.25px with the scrollbar). So from 1279 down the list takes the
+     body's window, under the body, as it does on phones. The plate
+     spans one more row, to the button's, so its bottom edge stays the
+     button's bottom edge (R4.2). */
+  .win-prem-plate  { grid-row: 1 / 6; }
+  .win-prem-margin { grid-column: 5 / 11; grid-row: auto; }
 
   /* R5 — Everyday Legends. THE MARK, THE HEAD AND THE LEDE ARE ALL
      UNCHANGED from band 1 and are absent here for that reason: the
@@ -2294,25 +2344,13 @@ a{ color: inherit; }
    would have grown to 1120px at 1024 and then DROPPED to 878 at 1023
    — discontinuous, and in the wrong direction.
 
-   THE MARGIN IS 10-12 HERE, NOT 11-12, AND THAT IS FORCED BY A
-   MEASUREMENT. The body vacates column 10 in this sub-band (it runs
-   1-8), so column 10 is free and sits AHEAD of grid's sparse cursor —
-   the row-drop that forces 11-12 in the side-by-side band does not
-   exist here. And 11-12 does not fit the content: the SPEAKING TOPICS
-   label's ink is 130.03px with its trailing letter-space removed,
-   against a two-column margin of 131.16px at 1035 and 129.34px at
-   1024, so the label WRAPS TO TWO LINES from 1035 down. A tracked
-   uppercase label that wraps is not a label. Three columns is 206px
-   at 1024 and holds it with room.
+   THE TOPICS SIT UNDER THE BODY HERE, in its 1-8 window, as they do
+   from 1279 down. A margin beside the body cannot hold the longest
+   topic on one line anywhere in this sub-band.
 
-   THE MARGIN GOES BACK TO `span 2` HERE, AND THE PLATE GOES BACK TO
-   ITS OWN ASPECT RATIO. (R4.2.) Both belong to the side-by-side
-   arrangement and neither survives the stack. There is no track list
-   below this crossover — `.prem` releases `grid-template-rows` — so
-   there is no flexible spill row for a three-row span to reach, and
-   `span 3` would simply distribute the topics list across three
-   intrinsic rows and push the button down, which is the R4.1 bug
-   restored. And a stretched plate in a stacked row is a plate with no
+   THE PLATE GOES BACK TO ITS OWN ASPECT RATIO. (R4.2.) It belongs to
+   the side-by-side arrangement and does not survive the stack. And a
+   stretched plate in a stacked row is a plate with no
    height at all: it is alone in its row, so stretching it to the row
    is stretching it to itself. The component gives it `aspect-ratio:
    4 / 5` back in the same media query, which is where the plate's
@@ -2330,14 +2368,15 @@ a{ color: inherit; }
      head    wants col 1, behind cursor  -> row 2, cursor -> col 10
      lede    wants col 1, behind cursor  -> row 3, cursor -> col 10
      body    wants col 1, behind cursor  -> row 4, cursor -> col 9
-     margin  wants col 10, AHEAD, free   -> rows 4-5, BESIDE THE BODY
-     button  wants col 1, behind cursor  -> row 5
+     margin  wants col 1, behind cursor  -> row 5, UNDER THE BODY
+     button  wants col 1, behind cursor  -> row 6
    ============================================================ */
 @media (max-width: 1121px){
   .win-prem-plate  { grid-column: 1 / 10; grid-row: auto; }
   .win-prem-head   { grid-column: 1 / 10; }
+  :root{ --prem-head-cols: 9; }   /* the lede cap reads this span */
   .win-prem-body   { grid-column: 1 / 9;  }
-  .win-prem-margin { grid-column: 10 / 13; grid-row: span 2; }
+  .win-prem-margin { grid-column: 1 / 9;  }   /* under the body; see 1279 */
 }
 
 /* ============================================================
@@ -2370,6 +2409,8 @@ a{ color: inherit; }
        itself survives, in the phone block, where it does real work. */
     --gutter:   40px;
     --grid-gap: 20px;
+    --grid-cols: 8;               /* the lede cap reads the track count */
+    --prem-head-cols: 5;          /* .win-prem-head 1 / 6, below */
   }
 
   .sheet{
@@ -2409,12 +2450,13 @@ a{ color: inherit; }
      and a 3-column measure is not a measure. The plate goes wide at
      1-6 and the type falls below it, so `grid-row` is released back
      to auto — the four-row span is a 12-column arrangement and does
-     not survive into a stack. The margin becomes a real column at 7-8
-     and holds the four topics. */
+     not survive into a stack. The four topics stay under the body, in
+     its window (see 1279): a two-column margin cannot hold the longest
+     on one line. */
   .win-prem-plate  { grid-column: 1 / 7; grid-row: auto; }
   .win-prem-head   { grid-column: 1 / 6; }
   .win-prem-body   { grid-column: 1 / 6; }
-  .win-prem-margin { grid-column: 7 / 9; }
+  .win-prem-margin { grid-column: 1 / 6; }
 
   /* R5 — Everyday Legends. THE HANG COLLAPSES, and it is forced: the
      band-3 type window is left-anchored at column 1, so the mark
@@ -2498,7 +2540,9 @@ a{ color: inherit; }
      column 6 closes and the body and the margin become a gutter
      apart, exactly as it does for About and Educational Leader. */
   .win-prem-head    { grid-column: 1 / 7; }
+  :root{ --prem-head-cols: 6; }   /* the lede cap reads this span */
   .win-prem-body    { grid-column: 1 / 7; }
+  .win-prem-margin  { grid-column: 1 / 7; }
   .win-legends-head { grid-column: 1 / 7; }
   .win-legends-lede { grid-column: 1 / 7; }
   .win-legends-body { grid-column: 1 / 7; }
@@ -2545,6 +2589,8 @@ a{ color: inherit; }
        page gutter is a desktop-space value; it steps down here. */
     --gutter:   clamp(24px, 6.4vw, 40px);
     --grid-gap: 0px;
+    --grid-cols: 1;               /* the lede cap: one track, */
+    --prem-head-cols: 1;          /* and the lede spans it */
   }
 
   .sheet{
@@ -3007,6 +3053,7 @@ a{ color: inherit; }
   text-transform: uppercase;
   color: var(--slate);
   opacity: 0.82;
+  text-wrap: pretty;              /* No orphans */
 }
 
 /* ============================================================
@@ -3028,6 +3075,7 @@ a{ color: inherit; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
+  text-wrap: pretty;              /* No orphans */
   cursor: pointer;
   transition:
     transform 260ms var(--ease),

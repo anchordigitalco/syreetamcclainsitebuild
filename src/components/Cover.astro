@@ -125,7 +125,7 @@ const lockupSvg = lockupRaw
       is an anonymous inline box between two block-level children and
       would open a line box of 0.9em under the mark.
     -->
-    <h1 class="cover-name"><span class="cover-name-text">Dr. Syreeta McClain</span><span class="cover-mark" aria-hidden="true" set:html={lockupSvg}></span></h1>
+    <h1 class="cover-name"><span class="cover-name-text">Dr. Syreeta&nbsp;McClain</span><span class="cover-mark" aria-hidden="true" set:html={lockupSvg}></span></h1>
 
     <!--
       AUTHORED AFTER THE <h1>, NOT BEFORE IT. CONTEXT.md's structure is
@@ -399,6 +399,22 @@ const lockupSvg = lockupRaw
 
        Overridden back to 0 below 1280; see the collapse note. */
     margin-right: -40%;
+  }
+
+  /* NO ORPHANS: THE COVER NAME RELIEF (CONTEXT.md, Typography).
+     Below 448px the name scales down only as far as "Syreeta McClain"
+     needs to fit one line; with the &nbsp; in the markup, the name then
+     breaks only after "Dr.". 5.5586em is the pair's MEASURED advance
+     (322.4px at 58px), less the -0.038em optical hang the box gains:
+     5.5206, rounded up. --sheet-content is the lede cap's content
+     width, classic-scrollbar allowance included. */
+  @media (max-width: 447px){
+    .cover-name{
+      --name-size: min(
+        clamp(58px, 9.79vw, 152px),
+        calc(var(--sheet-content) / 5.53)
+      );
+    }
   }
 
   /* ================================================================
