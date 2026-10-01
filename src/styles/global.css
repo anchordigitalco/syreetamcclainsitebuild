@@ -46,6 +46,23 @@
   --cashmere:  var(--color-cashmere);
   --porcelain: var(--color-porcelain);
 
+  /* ACCESSIBILITY AUDIT (1.4.3). The margin labels and the plate
+     caption were Slate at opacity 0.82, which composites to 4.36:1 on
+     the darkest grain pixel of the page ground (#D9D3CF, measured under
+     all three at eleven widths, both scrollbar modes). This is the
+     LIGHTEST solid colour on the Slate -> Porcelain line that clears
+     4.5:1 there once rounded to a real hex: 85.1% Slate. 4.54:1 on
+     #D9D3CF, 4.94:1 on the typical ground, 5.23:1 on flat Porcelain.
+     Not one of the five palette hexes; it is a mix of two of them. */
+  --slate-label: #5f5b57;
+
+  /* ACCESSIBILITY AUDIT (1.4.3). The About drop cap only: Antique Gold
+     darkened along the OKLCH lightness line, hue held, for the 3:1
+     large-text minimum. Measured under the cap at seven widths: 3.00:1
+     on the darkest grain pixel (#DAD5CF), 3.22:1 on the mean ground,
+     3.41:1 on flat Porcelain. Antique Gold is 2.14:1 there.
+     Every other gold on the page stays --gold. */
+  --gold-dropcap: #947343;
   --hair:        rgba(26, 22, 19, 0.16);
   --hair-strong: rgba(26, 22, 19, 0.30);
   --hair-light:  rgba(231, 226, 221, 0.22);
@@ -761,6 +778,48 @@ html{ -webkit-text-size-adjust: 100%; }
    ============================================================ */
 @media (prefers-reduced-motion: no-preference){
   html{ scroll-behavior: smooth; }
+}
+
+/* ACCESSIBILITY AUDIT (2.4.11) — FOCUS NEVER SITS UNDER THE BAR.
+   A scroll margin on FOCUSABLE ELEMENTS ONLY, from 1280 up, where the
+   bar exists. When focus moves to something under or behind the bar,
+   the browser scrolls it clear by one bar-height. No scroll-padding on
+   the root and nothing on a section or a jump target, so R16's note
+   above stands: every Contents jump lands exactly where it did before
+   this audit. The fragment targets (#sec-*, #main, #top) are not
+   focusable, so this selector cannot reach them. */
+@media (min-width: 1280px){
+  :is(a, button, input, select, textarea, summary, [tabindex]){
+    scroll-margin-top: var(--mast-h);
+  }
+}
+
+/* ACCESSIBILITY AUDIT — THE SKIP LINK (2.4.1). First in <body>, so it is
+   the first tab stop on both pages. Visually hidden until it has focus,
+   then it prints at the top-left trim in the button's own register:
+   Obsidian ground, Porcelain type, the kicker's tracked caps. Above the
+   bar (50) and the grain sheet (60). */
+.skip-link{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-110%);
+  z-index: 70;
+  padding: var(--s2) var(--s3);
+  background: var(--obsidian);
+  color: var(--porcelain);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.skip-link:focus{
+  transform: none;
+  outline: 2px solid var(--porcelain);
+  outline-offset: -6px;
 }
 
 body{
@@ -2975,8 +3034,7 @@ a{ color: inherit; }
   line-height: var(--baseline);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--slate);
-  opacity: 0.82;
+  color: var(--slate-label);      /* was Slate at 0.82; see the token */
   text-wrap: pretty;              /* No orphans */
 }
 

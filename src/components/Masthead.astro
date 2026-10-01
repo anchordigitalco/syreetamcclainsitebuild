@@ -208,7 +208,10 @@ const lockupSvg = lockupRaw
   .replace(/\s+xmlns:c2pa="[^"]*"/, '');
 ---
 
-<div class="masthead">
+{/* ACCESSIBILITY AUDIT. A <header> rather than a <div>: it is a sibling
+    of <main>, so it exposes the banner landmark. Class-based styling is
+    unchanged. */}
+<header class="masthead">
   {/* R18.3. THE NAME LINKS TO THE TOP OF THE DOCUMENT.
 
       `#top` AND NOT `#sec-portrait`, AND THE DIFFERENCE IS TWO THINGS.
@@ -228,7 +231,7 @@ const lockupSvg = lockupRaw
       element is its PARENT. This is the icon-button pattern, and the
       aria-label gives the link a functional name instead of repeating
       the heading. */}
-  <a class="mast-home" href="#top" aria-label="Back to top">
+  <a class="mast-home" href="#top" aria-label="Syreeta McClain, back to top">
     <span class="mast-name" aria-hidden="true">Dr. Syreeta McClain</span><span class="mast-mark" aria-hidden="true" set:html={lockupSvg}></span>
   </a>
 
@@ -257,7 +260,7 @@ const lockupSvg = lockupRaw
       </ul>
     </nav>
   </details>
-</div>
+</header>
 
 <script is:inline>
   /* R19. The two behaviours CSS cannot express on a <details>; see the
@@ -679,6 +682,89 @@ const lockupSvg = lockupRaw
      arrival IS the masthead, the page had no navigation before this
      slice, and the Index section still does the navigating.
      ================================================================ */
+  /* ---- ACCESSIBILITY AUDIT: THE KEYBOARD BAR (2.4.7, 2.4.11) ------
+     The bar used to render only behind all four gates above. With
+     reduced motion, or in an engine without scroll-driven animation, it
+     did not exist, and with motion on its two controls took focus while
+     the bar was parked off the trim at the top of the page.
+
+     So from 1280 up the bar is ALWAYS laid out, under every motion
+     preference, and parked off the trim by the same translateY(-100%)
+     the arrival animates from. Parked, it is exactly as invisible to a
+     pointer as it was when it did not render. It comes down only while
+     one of its own controls has KEYBOARD focus:
+
+       :has(:focus-visible), not :focus-within. A click on Contents also
+       focuses it, and :focus-within would hold the bar down after mouse
+       use, which would change the bar for pointer and touch readers.
+
+     !important is the mechanism, not a shortcut: the motion block below
+     drives `transform` from a scroll-driven animation, and an animated
+     value outranks every normal declaration. An important one outranks
+     the animation, and only this one rule carries it.
+
+     The declarations repeat the motion block's layout byte for byte;
+     that block still owns the arrival, the withdrawals and the hairline
+     there, and nothing in it is changed. Placed BEFORE it, so at 1600
+     the motion block's own cap padding still wins where it applies. */
+  @media (min-width: 1280px){
+    :global(html.js-motion) .masthead{
+      display: flex;
+      align-items: flex-start;
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      z-index: 50;
+      padding-inline: var(--gutter);
+      background-color: var(--porcelain);
+      background-image: var(--page-ground);
+      background-repeat: no-repeat;
+      background-position: left top;
+      background-size: 100% 100vh;
+      transform: translateY(-100%);
+    }
+    :global(html.js-motion) .masthead:has(:focus-visible){
+      transform: none !important;
+    }
+    :global(html.js-motion) .masthead::after{
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--hair);
+    }
+    :global(html.js-motion) .mast-name{
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+    :global(html.js-motion) .mast-mark{
+      --mast-mark-h: calc(var(--mast-h) - 2 * var(--s1));
+      display: flex;
+      align-items: center;
+      height: var(--mast-h);
+      margin-left: calc(var(--mast-mark-h) * 3.5692 * -0.0040839);
+    }
+    :global(html.js-motion) .mast-mark :global(svg){
+      display: block;
+      height: var(--mast-mark-h);
+      width: auto;
+      max-width: none;
+    }
+  }
+  @media (min-width: 1600px){
+    :global(html.js-motion) .masthead{
+      padding-inline: max(var(--gutter), calc((100% - var(--measure-cap)) / 2));
+    }
+  }
+
   @media (min-width: 1280px) and (prefers-reduced-motion: no-preference){
     @supports (animation-timeline: view()){
 

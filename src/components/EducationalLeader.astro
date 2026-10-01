@@ -1,5 +1,5 @@
 ---
-import LedeReveal from './LedeReveal.tsx';
+import Lede from './Lede.astro';
 /**
  * EDUCATIONAL LEADER — slice R3.
  *
@@ -109,7 +109,7 @@ import LedeReveal from './LedeReveal.tsx';
   placement and box are untouched. Only the text node moves into the
   island, and the island renders that same string verbatim until it
   has measured the rendered line boxes. Copy is COPY.md's. -->
-  <p class="win-edu-lede edu-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text={"Education should not require students to fit into systems. Strong systems evolve to fit the\u00a0students."} /></p>
+  <p class="win-edu-lede edu-lede"><Lede text={"Education should not require students to fit into systems. Strong systems evolve to fit the\u00a0students."} /></p>
 
   <div class="win-edu-body edu-body">
     <p>For more than two decades, Dr.&nbsp;McClain has built her career around students whose potential does not show up in traditional measures.</p>
@@ -126,7 +126,7 @@ import LedeReveal from './LedeReveal.tsx';
   -->
   <div class="win-edu-margin edu-margin">
     <p class="edu-margin-label">District</p>
-    <a class="edu-link" href="https://www.ucvts.org" target="_blank" rel="noopener">ucvts.org</a>
+    <a class="edu-link" href="https://www.ucvts.org" target="_blank" rel="noopener">ucvts.org<span class="vh"> (opens in new tab)</span></a>
   </div>
 
   <!-- The 38% rule. Its own grid item and its own primitive, because it
@@ -319,8 +319,7 @@ import LedeReveal from './LedeReveal.tsx';
     font-size: 10.5px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--slate);
-    opacity: 0.82;
+    color: var(--slate-label);    /* was Slate at 0.82; see the token */
   }
 
   /* Lowercase, so the URL reads as a URL. Underline offset rather than

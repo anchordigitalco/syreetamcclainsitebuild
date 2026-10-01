@@ -302,10 +302,11 @@ const inquiries = [
     </form>
 
     <!-- Four states share one live region. Never an opacity:0 reveal — the
-         region is empty and `hidden` at rest, and content is written into it.
+         region is empty at rest (in the accessibility tree, not `hidden`), and
+         content is written into it.
          OUTSIDE the form on purpose: the success state hides the form, and a
          status region nested inside it would be hidden along with it. -->
-    <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
+    <div class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1"></div>
 
     <!-- THE CONTACT COLUMN'S PRIVACY LINK IS DELETED (R10.1).
          R10 shipped two privacy links roughly 150px apart at the foot of
@@ -734,7 +735,10 @@ const inquiries = [
     cursor: pointer;
   }
 
-  .contact-submit[disabled]{
+  /* ACCESSIBILITY AUDIT (2.4.3): the button is aria-disabled while
+     sending, not disabled, so it keeps focus. Same look either way. */
+  .contact-submit[disabled],
+  .contact-submit[aria-disabled="true"]{
     cursor: default;
     opacity: 0.62;
     transform: none;
@@ -751,8 +755,17 @@ const inquiries = [
      instead of Fraunces. .form-status is in the markup, so the element
      itself stays scoped; only its injected children are global. */
   /* Sits directly under the button that produced it. No top margin at rest —
-     the element is `hidden` then and contributes no box at all. */
+     the element is empty then (:empty, below) and has no height. */
   .form-status{ max-width: 52ch; margin-top: var(--s4); }
+
+  /* ACCESSIBILITY AUDIT (4.1.3). The region is in the DOM and in the
+     accessibility tree at rest, EMPTY rather than `hidden`, so a screen
+     reader is already watching it when text is written in. Empty, it
+     takes no margin and has no height, so the page is unchanged. It is
+     focused (tabindex -1) on success, and draws no ring for that: it is
+     a message, not a control. */
+  .form-status:empty{ margin-top: 0; }
+  .form-status:focus{ outline: none; }
 
   .form-status[data-state="success"] :global(.status-head){
     margin: 0;
@@ -882,28 +895,36 @@ const inquiries = [
     // ---- The four states ----------------------------------------------
     // idle | submitting | success | error. One live region, polite, so a
     // screen reader is told the outcome without being interrupted mid-field.
+    // ACCESSIBILITY AUDIT. The status region is never `hidden`: it stays
+    // in the accessibility tree, empty at rest, and only its text changes
+    // (4.1.3). The button is aria-disabled while sending, not disabled, so
+    // focus is never dropped to <body>; `sending` is what blocks a second
+    // submit (2.4.3).
+    var sending = false;
+
     function setState(state, head, body) {
       if (state === 'idle') {
-        status.hidden = true;
         status.removeAttribute('data-state');
         status.innerHTML = '';
         form.hidden = false;
-        submit.disabled = false;
+        sending = false;
+        submit.removeAttribute('aria-disabled');
         idle.hidden = false; busy.hidden = true;
         return;
       }
 
       if (state === 'submitting') {
-        submit.disabled = true;
+        sending = true;
+        submit.setAttribute('aria-disabled', 'true');
         idle.hidden = true; busy.hidden = false;
-        status.hidden = true;
+        status.removeAttribute('data-state');
         status.innerHTML = '';
         return;
       }
 
-      submit.disabled = false;
+      sending = false;
+      submit.removeAttribute('aria-disabled');
       idle.hidden = false; busy.hidden = true;
-      status.hidden = false;
       status.setAttribute('data-state', state);
       status.innerHTML =
         '<p class="status-head">' + head + '</p>' +
@@ -912,10 +933,22 @@ const inquiries = [
       // The form is replaced on success; on error it stays put so the typed
       // message is not thrown away.
       form.hidden = (state === 'success');
+
+      // Focus follows the outcome. Success: the message itself, since the
+      // form it replaced has gone. Error: the first invalid field, if any
+      // field is at fault; otherwise focus stays on the button, which
+      // never lost it.
+      if (state === 'success') status.focus();
     }
 
-    function fail(head, body) {
+    function focusInvalid(fieldName) {
+      var f = (fieldName && form.elements[fieldName]) || form.querySelector(':invalid');
+      if (f && typeof f.focus === 'function') f.focus();
+    }
+
+    function fail(head, body, fieldName) {
       setState('error', head, body);
+      focusInvalid(fieldName);
       // A spent token fails the retry too. Reset so the next submission
       // carries a fresh one.
       if (window.turnstile && widgetId !== null) {
@@ -926,6 +959,7 @@ const inquiries = [
     // ---- Submit ---------------------------------------------------------
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (sending) return;
 
       // Honeypot. Report success to the bot and send nothing.
       if (pot && pot.value) {
@@ -974,6 +1008,9 @@ const inquiries = [
             var msg = data && data.errors && data.errors.length
               ? data.errors.map(function (x) { return x.message; }).join(' ')
               : '';
+            var badField = data && data.errors && data.errors.length
+              ? (data.errors.filter(function (x) { return x.field; })[0] || {}).field
+              : '';
             if (/captcha|turnstile|challenge/i.test(msg) || res.status === 403) {
               fail(
                 'Verification failed',
@@ -983,7 +1020,8 @@ const inquiries = [
               fail(
                 'Not sent',
                 (msg ? msg + ' ' : 'The message could not be sent. ') +
-                'Please try again.'
+                'Please try again.',
+                badField
               );
             }
           });

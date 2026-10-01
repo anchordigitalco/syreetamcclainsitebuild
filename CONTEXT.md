@@ -71,6 +71,13 @@ boxed form inputs; bento grids; glassmorphism; any script face; flat solid hero 
 | Cashmere | `#D1C7BD` | warm neutral |
 | Porcelain | `#E7E2DD` | dominant light ground |
 
+Accessibility variants (contrast fixes, used only where named):
+
+| Hex | Use |
+|---|---|
+| `#947343` | the About drop cap (darkened Antique Gold) |
+| `#5F5B57` | margin labels and captions (Smoked Slate toward Porcelain) |
+
 - 60/30/10, gold is the 10. No color outside these five.
 - Gold is never a fill and never a background wash.
 - **Gold budget: 2 saturated uses at rest.** The About drop cap and "Legacy" in the Feature

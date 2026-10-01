@@ -52,6 +52,9 @@ const { title } = Astro.props;
   <script is:inline>document.documentElement.classList.add('js-motion');</script>
 </head>
 <body>
+  <!-- ACCESSIBILITY AUDIT (2.4.1). The first focusable element on every
+       page; visually hidden until focused (global.css, .skip-link). -->
+  <a class="skip-link" href="#main">Skip to main content</a>
   <slot />
 
   <!-- Grain sits last and is a SIBLING of the content, never an ancestor —

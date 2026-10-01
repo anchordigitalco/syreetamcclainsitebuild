@@ -1,5 +1,5 @@
 ---
-import LedeReveal from './LedeReveal.tsx';
+import Lede from './Lede.astro';
 /**
  * THE INDEX — slice R8. The funnel spread, five destinations.
  *
@@ -205,7 +205,7 @@ const blogHref = `#${blog.id}`;
   placement and box are untouched. Only the text node moves into the
   island, and the island renders that same string verbatim until it
   has measured the rendered line boxes. Copy is COPY.md's. -->
-  <p class="idx-body idx-lede"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text="Where the work continues." /></p>
+  <p class="idx-body idx-lede"><Lede text="Where the work continues." /></p>
 
   {/* An <ol>, because the entries are an ordered list and the numerals
       are its numbering. The displayed numerals are authored text
@@ -231,6 +231,7 @@ const blogHref = `#${blog.id}`;
           <span class="idx-line"><span class="idx-name">Premier Leadership</span></span>
           <span class="idx-desc">Consulting &amp; leadership&nbsp;development</span>
         </span>
+        <span class="vh"> (opens in new tab)</span>
       </a>
     </li>
 
@@ -246,6 +247,7 @@ const blogHref = `#${blog.id}`;
           <span class="idx-line"><span class="idx-name">Everyday Legends&nbsp;Foundation</span></span>
           <span class="idx-desc">Education, sports &amp; community</span>
         </span>
+        <span class="vh"> (opens in new tab)</span>
       </a>
     </li>
 
@@ -256,6 +258,7 @@ const blogHref = `#${blog.id}`;
           <span class="idx-line"><span class="idx-name">Educational Leadership</span></span>
           <span class="idx-desc">Alternative education high school principal</span>
         </span>
+        <span class="vh"> (opens in new tab)</span>
       </a>
     </li>
 
@@ -298,7 +301,7 @@ const blogHref = `#${blog.id}`;
                   class="idx-bro-site idx-bro-link"
                   href="https://jaylenmcclain.com"
                   target="_blank"
-                  rel="noopener">jaylenmcclain.com</a>
+                  rel="noopener">jaylenmcclain.com<span class="vh"> (opens in new tab)</span></a>
               </span>
               <span class="idx-bro-prog"><span class="keep">Ohio State Football | #8</span></span>
             </li>
@@ -310,7 +313,7 @@ const blogHref = `#${blog.id}`;
                   class="idx-bro-site idx-bro-link"
                   href="https://kjmcclain.com"
                   target="_blank"
-                  rel="noopener">kjmcclain.com</a>
+                  rel="noopener">kjmcclain.com<span class="vh"> (opens in new tab)</span></a>
               </span>
               <span class="idx-bro-prog"><span class="keep">University of Tennessee</span> <span class="keep">Football | #40</span></span>
             </li>

@@ -1,0 +1,22 @@
+---
+/* ACCESSIBILITY AUDIT (1.3.1) — ONE SENTENCE FOR SCREEN READERS.
+ *
+ * Split into block-level line spans from 1280 up, a lede was exposed as
+ * separate line fragments with no paragraph around them. So every lede
+ * now carries its whole sentence once, in visually hidden text (global
+ * .vh: absolutely positioned and clipped, so it adds no box to the line
+ * layout), and the VISIBLE lede — the island, split or not — sits in an
+ * aria-hidden span. One reading at every width, split or unsplit, with
+ * or without JavaScript.
+ *
+ * Done here in HTML, not inside LedeReveal.tsx, so the island is
+ * byte-identical and the JS total stays at the 226,474 ceiling (inside
+ * the island it cost 66 bytes). The wrapper is a bare inline span with
+ * no padding, margin or border; the island's root is display: contents
+ * (global.css), so the lines lay out as before. Verified by pixel diff.
+ */
+import LedeReveal from './LedeReveal.tsx';
+interface Props { text: string }
+const { text } = Astro.props;
+---
+<span class="vh">{text}</span><span aria-hidden="true"><LedeReveal client:media="(hover: hover) and (pointer: fine)" text={text} /></span>

@@ -125,7 +125,41 @@ const lockupSvg = lockupRaw
       is an anonymous inline box between two block-level children and
       would open a line box of 0.9em under the mark.
     -->
-    <h1 class="cover-name"><span class="cover-name-text">Dr. Syreeta&nbsp;McClain</span><span class="cover-mark" aria-hidden="true" set:html={lockupSvg}></span></h1>
+    <h1 class="cover-name"><span class="cover-name-text">Dr. Syreeta&nbsp;McClain</span><span class="cover-mark" aria-hidden="true" set:html={lockupSvg}></span><span class="cover-name-probe" aria-hidden="true"><span>Syreeta McClain</span></span></h1>
+    {/* ACCESSIBILITY AUDIT (1.4.12) — THE NAME FITS ITS BOX UNDER TEXT
+        SPACING. "Syreeta McClain" is bound to one line, so a reader's
+        letter- and word-spacing override pushed it 124px past the column
+        at 385. This sets --name-fit only when the name's widest line is
+        wider than the <h1>; normally it never is (closest: 0.45px of room
+        at 448), so --name-fit stays unset and the name renders exactly as
+        before. The probe is a hidden copy set at --name-size: a spacing
+        override changes its width, the ResizeObserver fires, the fit is
+        recomputed. Line widths scale with font-size (em spacing scales
+        too), so the fit is the width ratio, never a loop. */}
+    <script is:inline>
+      (function () {
+        var h = document.querySelector('.cover-name');
+        var t = h && h.querySelector('.cover-name-text');
+        var probe = h && h.querySelector('.cover-name-probe > span');
+        if (!t || !probe) return;
+        function fit() {
+          var tr = t.getBoundingClientRect();
+          if (tr.width <= 1) { h.style.removeProperty('--name-fit'); return; }
+          var r = document.createRange(); r.selectNodeContents(t);
+          var rects = r.getClientRects(), w = 0;
+          for (var i = 0; i < rects.length; i++) w = Math.max(w, rects[i].width);
+          var cur = parseFloat(h.style.getPropertyValue('--name-fit')) || 1;
+          var avail = h.getBoundingClientRect().width;
+          var base = w / cur;
+          if (base > avail + 1) h.style.setProperty('--name-fit', String(avail / base));
+          else h.style.removeProperty('--name-fit');
+        }
+        if (window.ResizeObserver) new ResizeObserver(fit).observe(probe);
+        window.addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+        fit();
+      })();
+    </script>
 
     <!--
       AUTHORED AFTER THE <h1>, NOT BEFORE IT. CONTEXT.md's structure is
@@ -322,6 +356,27 @@ const lockupSvg = lockupRaw
      `padding-block-start` is now what holds the mark off the trim. A
      surviving s4 here would stack on top of that inset and read as an
      arbitrary 104px. */
+  /* The fit probe (see the script under the <h1>): a hidden, one-line copy
+     at --name-size, so a text-spacing override changes its width. No box,
+     no paint, no scrollable overflow, no accessibility node. */
+  .cover-name-probe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;              /* a hidden box still counts toward
+                                      scrollable overflow; this clips it */
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .cover-name-probe > span{
+    display: inline-block;         /* its own box, so the observer sees
+                                      every change in spacing */
+    white-space: nowrap;
+    font-size: var(--name-size);
+  }
+
   .cover-name{
     margin: 0;
     /* Optical hang, measured not guessed. Round 1 put this at -0.055em,
@@ -361,7 +416,8 @@ const lockupSvg = lockupRaw
        the type read ONE value and cannot drift apart. The expression
        itself is unchanged. */
     --name-size: clamp(58px, 9.79vw, 152px);
-    font-size: var(--name-size);
+    /* --name-fit is unset (1) in normal rendering; see the probe script. */
+    font-size: calc(var(--name-size) * var(--name-fit, 1));
 
     /* THE <h1>'s RENDERED INK WIDTH, as a multiple of its own font-size.
        MEASURED, not calculated: a pixel scan of the rendered face at
