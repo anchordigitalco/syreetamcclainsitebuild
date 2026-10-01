@@ -79,6 +79,7 @@ import Contact from '../components/Contact.astro';
 import PageFooter from '../components/PageFooter.astro';
 import FolioMarginalia from '../components/FolioMarginalia.astro';
 import Masthead from '../components/Masthead.astro';
+import Contents from '../components/Contents.astro';
 ---
 
 <BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
@@ -91,6 +92,10 @@ import Masthead from '../components/Masthead.astro';
       <main> nothing. It carries NO SCRIPT — the folio's own history of
       being mounted before <main> and capturing an empty section list
       does not apply, because there is nothing here to capture. */}
+  {/* Contents (below 1280) mounts BEFORE the masthead: the masthead's
+      inline script closes both disclosures and runs where it is parsed,
+      so .toc must already exist. They never render at the same width. */}
+  <Contents />
   <Masthead />
 
   <main id="main">

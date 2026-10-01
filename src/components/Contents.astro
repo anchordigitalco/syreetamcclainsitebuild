@@ -1,0 +1,189 @@
+---
+/**
+ * CONTENTS, BELOW 1280. The masthead's disclosure for the widths where
+ * the masthead does not render (it is display:none under 1280).
+ *
+ * ONE LIST, TWO DEVICES. The eight section rows come from sections.ts,
+ * the same module Masthead.astro maps, so the hrefs cannot drift. "Top"
+ * is `#top`, as .mast-home links it: the spec's document-top fragment,
+ * which lands at scrollY 0 and matches no :target.
+ *
+ * THE SAME MECHANISM AS THE MASTHEAD. A <details> whose <summary> is
+ * the button, real <a href="#..."> rows, no scrolling code. Closing on
+ * a jump, on Escape and on a tap outside is the masthead's own inline
+ * script (Masthead.astro), which selects `.toc` beside `.mast-index`.
+ * That script runs where it is parsed, so THIS COMPONENT MUST BE
+ * MOUNTED BEFORE <Masthead /> (index.astro).
+ *
+ * NO SCROLL-MARGIN, NO SCROLL-PADDING (R16). Every row lands where a
+ * direct load of /#id lands.
+ */
+import { sections } from '../data/sections';
+---
+
+<details class="toc">
+  {/* aria-label because Chrome exposes the text-transformed "CONTENTS"
+      as the name; this keeps it "Contents", matching the visible label. */}
+  <summary class="toc-jump" aria-label="Contents">Contents</summary>
+  <nav class="toc-panel" aria-label="Sections">
+    <ul class="toc-list" role="list">
+      <li><a class="toc-row toc-top" href="#top">Top</a></li>
+      {sections.map((s) => (
+        <li><a class="toc-row" href={`#${s.id}`}>{s.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</details>
+
+<style>
+  /* The control and the footer's clearance share these, so the space
+     the footer keeps is derived from the control, never measured
+     separately. */
+  :global(:root){
+    --toc-h: 44px;            /* WCAG 2.5.5 target, and no taller */
+    --toc-inset: var(--s2);
+    --toc-row: var(--s4);     /* 40px rows: 2.5.8 asks 24 */
+    /* Obsidian- and Slate-tinted, low opacity, four layers: a soft
+       contact edge all round (what separates it on the Cashmere topics
+       band), a near shadow, a far one, and a top highlight. */
+    --toc-lift:
+      0 0 1.5px rgba(26, 22, 19, 0.22),
+      0 2px 4px -1px rgba(26, 22, 19, 0.14),
+      0 14px 30px -8px rgba(71, 68, 64, 0.34),
+      inset 0 1px 0 rgba(231, 226, 221, 0.55);
+  }
+
+  .toc{
+    position: fixed;
+    right: calc(var(--toc-inset) + env(safe-area-inset-right, 0px));
+    bottom: calc(var(--toc-inset) + env(safe-area-inset-bottom, 0px));
+    z-index: 50;
+  }
+
+  /* THE BUTTON. The btn-solid register (Montserrat 500, tracked caps)
+     at the label's own size, in the inverse fill. */
+  .toc-jump{
+    display: flex;
+    align-items: center;
+    height: var(--toc-h);
+    padding-inline: 20px calc(20px - 0.2em);
+    background: var(--cashmere);
+    color: var(--obsidian);
+    box-shadow: var(--toc-lift);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    list-style: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: transform 260ms var(--ease);
+  }
+  .toc-jump::-webkit-details-marker{ display: none; }
+
+  @media (hover: hover){
+    .toc-jump:hover{ transform: translateY(-2px); }
+  }
+  .toc-jump:active{ transform: translateY(0) scale(0.97); }
+
+  /* The site's focus ring, 1px Obsidian, set inside the fill so it
+     reads on Porcelain, Cashmere and Obsidian grounds alike. */
+  .toc-jump:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: -5px;
+  }
+
+  /* Open: the masthead's own signal, an underline under the label. */
+  .toc[open] > .toc-jump{
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  /* THE PANEL. A fact box, like the topics panel: Cashmere, square
+     corners, no border. It opens upward from the button's right edge. */
+  .toc-panel{
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + var(--s1));
+    padding: var(--s1) var(--s3);
+    background: var(--cashmere);
+    box-shadow: var(--toc-lift);
+    transform-origin: right bottom;
+  }
+
+  .toc-list{
+    display: grid;
+    grid-auto-rows: var(--toc-row);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc-row{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: var(--display);
+    font-variation-settings: 'opsz' 18, 'wght' 400, 'SOFT' 60, 'WONK' 0;
+    font-size: var(--bio-size);
+    line-height: 1;
+    color: var(--obsidian);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 140ms var(--ease);
+  }
+
+  /* Top is the way back to the Cover, not a section: a hairline sets it
+     apart from the eight. */
+  .toc-top{ border-bottom: 1px solid var(--hair-strong); }
+
+  @media (hover: hover){
+    .toc-row:hover{
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+    }
+  }
+  .toc-row:focus-visible{
+    outline: 1px solid var(--obsidian);
+    outline-offset: 2px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .toc-row:active{ opacity: 0.7; }
+
+  /* Opening is the only motion, on transform and opacity. Closing snaps:
+     ::details-content hides on close before anything could animate. */
+  @media (prefers-reduced-motion: no-preference){
+    .toc[open] .toc-panel{
+      animation: toc-open 200ms var(--ease);
+    }
+  }
+  @keyframes toc-open{
+    from{ opacity: 0; transform: translateY(6px) scale(0.98); }
+  }
+
+  @media (min-width: 751px){
+    :global(:root){ --toc-inset: var(--s3); }
+  }
+
+  /* THE FOOTER KEEPS ROOM FOR THE CONTROL, inside its own Obsidian, so
+     at max scroll the footer links sit above the button. */
+  @media (max-width: 1279px){
+    :global(.sheet.page-footer.on-obsidian){
+      padding-bottom: calc(
+        var(--toc-h) + var(--toc-inset) + env(safe-area-inset-bottom, 0px) + var(--s3)
+      );
+    }
+  }
+
+  @media (min-width: 1280px){
+    .toc{ display: none; }
+  }
+</style>

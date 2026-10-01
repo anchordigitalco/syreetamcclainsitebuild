@@ -197,6 +197,12 @@
  */
 import { sections } from '../data/sections';
 
+/* MOBILE CONTENTS. The inline script below also serves Contents.astro's
+ * .toc (below 1280): Escape and close-on-jump for both, and for .toc
+ * alone a close on a tap outside. This disclosure's behaviour is
+ * unchanged. .toc is mounted before this component so it exists when
+ * the script runs. */
+
 /* R21 SLICE 2 — THE LOCKUP SETS HER NAME IN THE BAR. Inlined exactly as
  * Cover.astro inlines it (PASS F): `?raw`, the <metadata> block and the
  * c2pa namespace stripped and nothing else, so the root keeps its own
@@ -267,14 +273,18 @@ const lockupSvg = lockupRaw
      note at the head of this file. Nothing here is required for the
      list to open, close or navigate. */
   (function () {
-    var d = document.querySelector('.mast-index');
-    if (!d) return;
-    var s = d.querySelector('summary');
-    d.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && d.open) { d.open = false; s.focus(); }
+    document.querySelectorAll('.mast-index, .toc').forEach(function (d) {
+      var s = d.querySelector('summary');
+      d.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && d.open) { d.open = false; s.focus(); }
+      });
+      d.addEventListener('click', function (e) {
+        if (e.target.closest('a')) d.open = false;
+      });
     });
-    d.addEventListener('click', function (e) {
-      if (e.target.closest('.mast-row')) d.open = false;
+    var t = document.querySelector('.toc');
+    if (t) document.addEventListener('pointerdown', function (e) {
+      if (t.open && !t.contains(e.target)) t.open = false;
     });
   })();
 </script>
