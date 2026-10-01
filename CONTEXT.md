@@ -143,7 +143,7 @@ Page order. This table is the design; everything above it is vocabulary.
 |---|---|---|---|---|---|
 | Masthead | Client logo lockup at bar height, links to top | full | none | n/a | lockup only |
 | Cover | The cover itself | text 1 to 7, portrait 8 to 12, 100svh, plate reaches the floor | portrait, bleeds | flush top | lockup mark in place of the set name (gated at 1024), roles line, button. No credit line, no tagline |
-| About | Gold drop cap, two lines. No kicker, no rule | lede 1 to 9, body 1 to 6 capped at 670px, closing 7 to 9 | none | top padding lands the lede just under the fold | full |
+| About | Gold drop cap, two lines. No kicker, no rule | lede 1 to 9, body 1 to 6 capped at 670px, closing 7 to 9 | none | top padding lands the lede just under the fold, above 750 only; at 750 and below it follows the phone section rhythm | full |
 | Educational Leader | Hairline head, kicker and subtitle outdented to 1 to 3 | body 4 to 11 | none, by design | 110 | full, coda set apart |
 | Field band | Letterbox, no type | full width | field | about 40 above and below | image only |
 | Premier Leadership | Image first | photo 1 to 5, body 6 to 11, topics in a full-width Cashmere band below the photo and text, centered, all widths. | seated portrait | 80 | abridged: lede, one paragraph, button |
@@ -177,6 +177,9 @@ An abridged section that looks thin is a composition problem. MUST NOT add copy 
 
 ## Mobile and collapse
 
+- **Phone section rhythm (750 and below).** Every boundary between two light-ground sections
+  lands between `--s5` and `--s7`, most near `--s6`, ranked as on desktop. Set by section
+  padding in tokens or `--vr` tokens, never raw px. Boundaries against Obsidian keep theirs.
 - Four bands: Band 1 is 1440 to 1280, Band 2 is 1279 to 1024, Band 3 is 1023 to 751, Band 4
   is 750 and below. Above 1440 the 1600 cap governs.
 - **The nineteen widths.** Cite this list; do not re-derive it.

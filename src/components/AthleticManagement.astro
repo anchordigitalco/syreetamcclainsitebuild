@@ -1356,4 +1356,14 @@ import athleticsDetail from '../assets/athletics-detail.jpg';
       margin-inline-start: calc(-1 * max(var(--gutter), (100vw - var(--measure-cap)) / 2));
     }
   }
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes.
+     The bottom stays 110: it meets the Feature Quote's Obsidian. */
+  @media (max-width: 750px){
+    .ath{ padding-top: var(--vr-tight); }
+  }
 </style>

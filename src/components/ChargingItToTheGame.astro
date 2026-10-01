@@ -1178,4 +1178,14 @@ import lifestyleStreet from '../assets/lifestyle-street-inset.jpg';
 
     .chg-coda-break{ display: inline; }
   }
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes.
+     The bottom stays 40, the designed 110/40 against Contact. */
+  @media (max-width: 750px){
+    .chg{ padding-top: var(--s5); }
+  }
 </style>

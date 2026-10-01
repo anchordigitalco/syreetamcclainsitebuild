@@ -435,4 +435,13 @@ import Lede from './Lede.astro';
   @media (max-width: 1023px){
     .edu-head{ margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh)); }
   }
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes. */
+  @media (max-width: 750px){
+    .edu{ padding-block: var(--vr-tight); }
+  }
 </style>

@@ -567,4 +567,13 @@ const legendsSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${legendsVi
   @media (max-width: 750px){
     .legends-margin{ margin-top: var(--s4); }
   }
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes. */
+  @media (max-width: 750px){
+    .legends{ padding-block: var(--s3) var(--s4); }
+  }
 </style>

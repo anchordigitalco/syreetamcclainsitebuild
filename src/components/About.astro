@@ -699,4 +699,15 @@ import Lede from './Lede.astro';
       margin-bottom: 0;
     }
   }
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes.
+     About no longer buys separation from the fold here: its gap from the
+     Cover is ordinary section rhythm. */
+  @media (max-width: 750px){
+    .about{ padding-block: var(--s2) var(--s5); }
+  }
 </style>

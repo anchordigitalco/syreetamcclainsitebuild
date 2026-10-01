@@ -740,4 +740,13 @@ const submarkSvg = submarkRaw
        identical at every width in every band. */
   }
 
+
+  /* ---- PHONE SECTION SPACING · <= 750 ------------------------------
+     Phone boundaries land between --s5 and --s7, ranked as on desktop
+     (largest: Index > Charging, About > Educational Leader, Educational
+     Leader > Premier, Everyday Legends > Athletic, Premier > Everyday
+     Legends; smallest: Cover > About). Above 750 nothing changes. */
+  @media (max-width: 750px){
+    .prem{ padding-block: var(--vr-tight) var(--s5); }
+  }
 </style>
