@@ -424,4 +424,15 @@ import Lede from './Lede.astro';
     .edu-head-rule{ width: 96px; }
     .edu-rule{ width: 38%; }
   }
+
+  /* ---- STACKED HEAD · <= 1023 -------------------------------------
+     Below 1024 the head stacks above the lede (global.css band 3 puts
+     both in column 1), and the grid has no row gap, so the subtitle
+     ran straight into the lede. The head takes the same one-body-line
+     margin Premier, Athletic and Charging give theirs, so kicker and
+     subtitle read as one unit and the lede as the next. 1024 and up,
+     beside the lede, is untouched. */
+  @media (max-width: 1023px){
+    .edu-head{ margin-bottom: calc(1.0 * var(--bio-size) * var(--bio-lh)); }
+  }
 </style>
