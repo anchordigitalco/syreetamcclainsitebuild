@@ -6,6 +6,10 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+// One absolute canonical per page, always on the www .com, whatever host
+// served the request. astro.config.mjs sets `site` and trailingSlash 'never'.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -14,10 +18,15 @@ const { title } = Astro.props;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
+  <link rel="canonical" href={canonical} />
   <!-- FAVICON. Her SM submark (brand_assets/mcclain-submark.svg, path data
-       unchanged) in Antique Gold on an Obsidian tile, her own gold/obsidian
-       colourway. The tile is solid so the mark holds on light and dark tab
-       bars. The only favicon tags in the codebase; files in public/. -->
+       unchanged) in Antique Gold on an Obsidian square, her own gold/obsidian
+       colourway. The square runs edge to edge with no rounding and no
+       transparency, so the mark holds on Google's light and dark result
+       pages and on any tab bar. The ICO carries 16/32/48; the 16 and 32
+       frames, and the SVG below 32px, thicken the hairlines so the M's
+       diagonal and the "dr." survive. Google reads these from the homepage
+       <head>. The only favicon tags in the codebase; files in public/. -->
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -58,6 +67,10 @@ const { title } = Astro.props;
        state, which is the failure the pattern exists to prevent, arriving
        from the other direction. -->
   <script is:inline>document.documentElement.classList.add('js-motion');</script>
+
+  <!-- Page-specific head content. The homepage puts its Search Console
+       verification tag and WebSite JSON-LD here. -->
+  <slot name="head" />
 </head>
 <body>
   <!-- ACCESSIBILITY AUDIT (2.4.1). The first focusable element on every
