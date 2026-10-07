@@ -82,7 +82,18 @@ import Masthead from '../components/Masthead.astro';
 import Contents from '../components/Contents.astro';
 ---
 
-<BaseLayout title="Dr. Syreeta McClain — Where Leadership Meets Legacy">
+<BaseLayout title="Dr. Syreeta McClain | Educator · Consultant · Momager · Founder">
+  {/* GOOGLE SEARCH CONSOLE. MUST NOT be removed: Search Console re-checks
+      this tag and drops verification for the property if it is gone. */}
+  <meta slot="head" name="google-site-verification" content="I5vlwzvKLJUsc8m_t9RCrg9d84gtjtSpxqIHjhbCqMY" />
+  {/* WebSite structured data, homepage only. Google takes the site name it
+      shows beside the favicon in search results from here. */}
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Dr. Syreeta McClain',
+    url: 'https://www.drsyreetamcclain.com/',
+  })} />
   {/* R16. MOUNTED BEFORE <main>, unlike the folio. It is site chrome
       that sits at the top of the viewport, so DOM order, visual order
       and tab order agree; and its one link reaches the tab order
